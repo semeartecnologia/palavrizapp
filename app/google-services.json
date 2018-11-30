@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "383925985769",
+    "firebase_url": "https://palavrizapp.firebaseio.com",
+    "project_id": "palavrizapp",
+    "storage_bucket": "palavrizapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383925985769:android:091d195dfd492dfa",
+        "android_client_info": {
+          "package_name": "com.semear.tec.palavrizapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "383925985769-dj07hq82pcrbf0kogt0va7kjgvq12ven.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.semear.tec.palavrizapp",
+            "certificate_hash": "2ec6c2ac9b124941fd111ce08074bc1fb4fdf4cc"
+          }
+        },
+        {
+          "client_id": "383925985769-jqd002o3thrflvskmnla8bhuto9ttecn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj2mrgSZ3Tw14Wocxv4uVBWl8kDB3RZmw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "383925985769-jqd002o3thrflvskmnla8bhuto9ttecn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
