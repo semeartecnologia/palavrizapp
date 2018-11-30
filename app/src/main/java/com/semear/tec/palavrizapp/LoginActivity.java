@@ -12,6 +12,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.facebook.CallbackManager;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,11 +27,17 @@ public class LoginActivity extends AppCompatActivity  {
     @BindView(R.id.login_progress) View mProgressView;
     @BindView(R.id.login_form) View mLoginFormView;
 
+    //Facebook
+    CallbackManager callbackManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         ButterKnife.bind(this);
+
+        callbackManager = CallbackManager.Factory.create();
 
 
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
