@@ -1,18 +1,36 @@
-package com.semear.tec.palavrizapp;
+package com.semear.tec.palavrizapp.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.semear.tec.palavrizapp.R;
+import com.semear.tec.palavrizapp.utils.Constants;
+import com.semear.tec.palavrizapp.viewmodel.LoginViewModel;
+import com.semear.tec.palavrizapp.viewmodel.RegisterViewModel;
+
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,13 +40,20 @@ public class LoginActivity extends AppCompatActivity  {
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    @BindView(R.id.email) AutoCompleteTextView mEmailView;
+    @BindView(R.id.email) EditText mEmailView;
     @BindView(R.id.password) EditText mPasswordView;
     @BindView(R.id.login_progress) View mProgressView;
-    @BindView(R.id.login_form) View mLoginFormView;
+    @BindView(R.id.btn_facebook_login) ImageView btnFacebook;
+    @BindView(R.id.btn_instragram_login) ImageView btnInstagram;
+    @BindView(R.id.btn_google_login) ImageView btnGoogle;
+
+    @BindView(R.id.btn_register) TextView btnRegister;
 
     //Facebook
+    @BindView(R.id.login_facebook) LoginButton fbLogin;
     CallbackManager callbackManager;
+
+    private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +62,9 @@ public class LoginActivity extends AppCompatActivity  {
 
         ButterKnife.bind(this);
 
-        callbackManager = CallbackManager.Factory.create();
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel.initViewModel();
+        handleFacebookLogin();
 
 
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
@@ -51,6 +78,40 @@ public class LoginActivity extends AppCompatActivity  {
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(view -> attemptLogin());
 
+        btnRegister.setOnClickListener(v ->
+                loginViewModel.startRegisterActivity(mEmailView.getText().toString())
+        );
+
+        btnFacebook.setOnClickListener( v ->
+                fbLogin.performClick()
+        );
+
+
+
+
+    }
+
+
+    public void handleFacebookLogin(){
+        callbackManager = CallbackManager.Factory.create();
+        fbLogin.setReadPermissions("email");
+
+        // Callback registration
+        fbLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                loginViewModel.handleFacebookAccessToken(LoginActivity.this, loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Toast.makeText(getApplicationContext(), getString(R.string.facebook_fail_login), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -97,7 +158,7 @@ public class LoginActivity extends AppCompatActivity  {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+            //showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
@@ -114,16 +175,16 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
 
-    private void showProgress(final boolean show) {
+   /* private void showProgress(final boolean show) {
 
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+      //      mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+      //      mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            //        show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+           //         mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -136,7 +197,7 @@ public class LoginActivity extends AppCompatActivity  {
                 }
             });
 
-    }
+    }*/
 
 
 
@@ -174,7 +235,7 @@ public class LoginActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+//            showProgress(false);
 
             if (success) {
                 finish();
@@ -187,8 +248,14 @@ public class LoginActivity extends AppCompatActivity  {
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            showProgress(false);
+            //    showProgress(false);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 

@@ -7,6 +7,8 @@
     <color name="colorSecondary">#ffff00</color>
     <color name="colorSecondaryDark">#c7cc00</color>
     <color name="colorSecondaryLight">#ffff5a</color>
-    <color name="colorPrimaryText">#ffffff</color>
+    <color name="colorPrimaryText">#fff9f9</color>
     <color name="colorSecondaryText">#000000</color>
+
+    <color name="light_grey">#50838383</color>
 </resources>

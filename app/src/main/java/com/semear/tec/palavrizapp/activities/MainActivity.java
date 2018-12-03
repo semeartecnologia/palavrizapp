@@ -1,17 +1,17 @@
-package com.semear.tec.palavrizapp;
+package com.semear.tec.palavrizapp.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import butterknife.ButterKnife;
+import com.semear.tec.palavrizapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+        setContentView(R.layout.activity_main);
+
     }
 
 }

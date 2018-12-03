@@ -3,6 +3,8 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
+    <string name="prompt_fullname">Nome Completo</string>
+    <string name="prompt_location">Localização</string>
     <string name="action_sign_in">Entrar</string>
     <string name="action_sign_in_short">Entrar</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -10,10 +12,18 @@
     <string name="error_incorrect_password">Senha incorreta</string>
     <string name="error_field_required">Esse campo é obrigatório</string>
     <string name="permission_rationale">"Precisamos de sua localização para permitir seu cadastro no sistema."</string>
-    <string name="salute_you">Olá %s</string>
+    <string name="salute_you">Ol %s</string>
 
     <string name="facebook_app_id">316074488998586</string>
     <string name="fb_login_protocol_scheme">fb316074488998586</string>
+    <string name="facebook_fail_login">Erro ao logar com facebook, tente novamente</string>
+
+    <string name="not_registered_yet">Ainda não é registrado?</string>
+    <string name="register_now_btn">Registre agora</string>
+
+    <string name="sign_in_with">Login com</string>
+    <string name="or">OU</string>
+    <string name="title_activity_main">MainActivity</string>
 
 
 </resources>
