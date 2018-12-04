@@ -1,17 +1,13 @@
-package com.semear.tec.palavrizapp.activities;
+package com.semear.tec.palavrizapp.ui.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,16 +17,17 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.semear.tec.palavrizapp.R;
 import com.semear.tec.palavrizapp.utils.Constants;
 import com.semear.tec.palavrizapp.viewmodel.LoginViewModel;
-import com.semear.tec.palavrizapp.viewmodel.RegisterViewModel;
-
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +41,6 @@ public class LoginActivity extends AppCompatActivity  {
     @BindView(R.id.password) EditText mPasswordView;
     @BindView(R.id.login_progress) View mProgressView;
     @BindView(R.id.btn_facebook_login) ImageView btnFacebook;
-    @BindView(R.id.btn_instragram_login) ImageView btnInstagram;
     @BindView(R.id.btn_google_login) ImageView btnGoogle;
 
     @BindView(R.id.btn_register) TextView btnRegister;
@@ -53,7 +49,13 @@ public class LoginActivity extends AppCompatActivity  {
     @BindView(R.id.login_facebook) LoginButton fbLogin;
     CallbackManager callbackManager;
 
+    //Google
+    @BindView(R.id.login_google)
+    SignInButton gLogin;
+
     private LoginViewModel loginViewModel;
+
+    public static final int G_SIGN_IN = 233;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class LoginActivity extends AppCompatActivity  {
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.initViewModel();
         handleFacebookLogin();
+
 
 
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
@@ -86,11 +89,19 @@ public class LoginActivity extends AppCompatActivity  {
                 fbLogin.performClick()
         );
 
+        btnGoogle.setOnClickListener( v ->
+                handleGmailLogin()
+        );
+
 
 
 
     }
 
+    public void handleGmailLogin(){
+        Intent signInIntent = loginViewModel.getGoogleSignInClient().getSignInIntent();
+        startActivityForResult(signInIntent, G_SIGN_IN);
+    }
 
     public void handleFacebookLogin(){
         callbackManager = CallbackManager.Factory.create();
@@ -100,7 +111,7 @@ public class LoginActivity extends AppCompatActivity  {
         fbLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                loginViewModel.handleFacebookAccessToken(LoginActivity.this, loginResult.getAccessToken());
+                loginViewModel.authWithFacebook(LoginActivity.this, loginResult.getAccessToken());
             }
 
             @Override
@@ -256,6 +267,18 @@ public class LoginActivity extends AppCompatActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == G_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                loginViewModel.authWithGoogle(LoginActivity.this, account);
+            } catch (ApiException e) {
+                Toast.makeText(getApplication(), getApplication().getString(R.string.google_fail_login), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
 

@@ -1,10 +1,9 @@
-package com.semear.tec.palavrizapp.activities;
+package com.semear.tec.palavrizapp.ui.activities;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import com.semear.tec.palavrizapp.R;

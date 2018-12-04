@@ -1,4 +1,4 @@
-package com.semear.tec.palavrizapp.activities;
+package com.semear.tec.palavrizapp.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

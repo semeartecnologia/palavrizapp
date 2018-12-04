@@ -4,7 +4,7 @@ public class User {
 
     private String userId;
     private String fullname;
-    private String emailLogin;
+    private String email;
     private String password;
     private String location;
     private UserType userType;
@@ -12,9 +12,9 @@ public class User {
 
     public User(){}
 
-    public User(String fullname, String emailLogin, String password, String location, UserType userType) {
+    public User(String fullname, String email, String password, String location, UserType userType) {
         this.fullname = fullname;
-        this.emailLogin = emailLogin;
+        this.email = email;
         this.password = password;
         this.location = location;
         this.userType = userType;
@@ -29,11 +29,11 @@ public class User {
     }
 
     public String getEmailLogin() {
-        return emailLogin;
+        return email;
     }
 
     public void setEmailLogin(String emailLogin) {
-        this.emailLogin = emailLogin;
+        this.email = emailLogin;
     }
 
     public String getPassword() {

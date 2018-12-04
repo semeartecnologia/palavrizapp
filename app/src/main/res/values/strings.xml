@@ -18,6 +18,8 @@
     <string name="fb_login_protocol_scheme">fb316074488998586</string>
     <string name="facebook_fail_login">Erro ao logar com facebook, tente novamente</string>
 
+    <string name="google_fail_login">Erro ao logar com google, tente novamente</string>
+
     <string name="not_registered_yet">Ainda não é registrado?</string>
     <string name="register_now_btn">Registre agora</string>
 

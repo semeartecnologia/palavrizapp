@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context=".activities.LoginActivity">
+    tools:context=".ui.activities.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -46,13 +46,6 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp" />
 
-
-                <ImageView
-                    android:id="@+id/btn_instragram_login"
-                    android:src="@drawable/instagram_icon"
-                    android:layout_marginStart="16dp"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp" />
 
 
                 <ImageView
@@ -103,6 +96,12 @@
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_facebook"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/login_google"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
