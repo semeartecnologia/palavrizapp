@@ -24,4 +24,8 @@ public enum UserType {
         this.userType = userType;
     }
 
+    public int getUserType(){
+        return userType;
+    }
+
 }

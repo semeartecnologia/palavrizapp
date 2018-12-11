@@ -12,7 +12,7 @@
     <string name="error_incorrect_password">Senha incorreta</string>
     <string name="error_field_required">Esse campo é obrigatório</string>
     <string name="permission_rationale">"Precisamos de sua localização para permitir seu cadastro no sistema."</string>
-    <string name="salute_you">Ol %s</string>
+    <string name="salute_you">Olá %s</string>
 
     <string name="facebook_app_id">316074488998586</string>
     <string name="fb_login_protocol_scheme">fb316074488998586</string>
@@ -26,6 +26,11 @@
     <string name="sign_in_with">Login com</string>
     <string name="or">OU</string>
     <string name="title_activity_main">MainActivity</string>
+
+    <!-- Planos -->
+    <string name="card_title_plan">Seu Plano</string>
+    <string name="card_text_plan">%s</string>
+    <string name="card_see_more_plans">Veja mais planos ></string>
 
 
 </resources>

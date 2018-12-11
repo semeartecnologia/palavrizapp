@@ -6,4 +6,7 @@ public class Constants {
 
     public static final String EXTRA_LOGIN = "login_extra";
     public static final String GOOGLE_API_SECRET = BuildConfig.GOOGLE_API_SECRET;
+
+    //Shared Preferences
+    public static final String SESSION_USER = "session_user";
 }

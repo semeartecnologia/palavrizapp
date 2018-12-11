@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.semear.tec.palavrizapp.R;
+import com.semear.tec.palavrizapp.repositories.SessionManager;
 import com.semear.tec.palavrizapp.ui.activities.LoginActivity;
 import com.semear.tec.palavrizapp.ui.activities.MainActivity;
 import com.semear.tec.palavrizapp.ui.activities.RegisterActivity;
@@ -35,6 +36,7 @@ public class LoginViewModel extends AndroidViewModel {
     private MainRepository mainRepository;
     private FirebaseAuth mAuth;
     private GoogleSignInClient googleSignInClient;
+    private SessionManager sessionManager;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -43,7 +45,13 @@ public class LoginViewModel extends AndroidViewModel {
     public void initViewModel(){
         mainRepository = new MainRepository();
         mAuth = FirebaseAuth.getInstance();
+        sessionManager = new SessionManager(getApplication());
         initGmailLogin();
+
+        // se o cara ja tem um login no cache, passa pra tela principal
+        if (isUserOnline()){
+            startMainActivity();
+        }
     }
 
 
@@ -51,6 +59,9 @@ public class LoginViewModel extends AndroidViewModel {
         return googleSignInClient;
     }
 
+    /**
+     * Algumas configs para inicializar a autenticação via GMAIL
+     */
     public void initGmailLogin(){
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -60,6 +71,11 @@ public class LoginViewModel extends AndroidViewModel {
         googleSignInClient = GoogleSignIn.getClient(getApplication(), gso);
     }
 
+    /**
+     * Metodo para fazer autenticação pelo GMAIL
+     * @param activity
+     * @param acct
+     */
     public void authWithGoogle(Activity activity, GoogleSignInAccount acct) {
         //Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -75,6 +91,11 @@ public class LoginViewModel extends AndroidViewModel {
                 });
     }
 
+    /**
+     * Método para fazer autenticação pelo Facebook
+     * @param activity
+     * @param token
+     */
     public void authWithFacebook(Activity activity, AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
@@ -88,18 +109,35 @@ public class LoginViewModel extends AndroidViewModel {
                 });
     }
 
+    /**
+     * Pega os dados do usuário de um Login com Sucesso e registra no REAL TIME DATABASE caso ainda não
+     * tenha sido feito
+     */
     private void getUserDataAndLogin(){
+
+        //pega o usuario corrente, independente do tipo de login
         FirebaseUser gUser = mAuth.getCurrentUser();
+
+        //cria o objeto
         User user = new User();
         user.setUserId(gUser.getUid());
         user.setEmailLogin(gUser.getEmail());
         user.setFullname(gUser.getDisplayName());
-        //padrao, depois tem que trocar isso
+
+        //plano padrao, depois tem que trocar isso
         user.setUserType(UserType.ESTUDANTE_PLANO1);
+
+        //Salva Login no cache Shared Preferences
+        sessionManager.setUserOnline(user, true);
+
+        //registra pelo repositorio e passa pra tela principal
         mainRepository.registerUser(user);
         startMainActivity();
     }
 
+    /**
+     * Chama a activity Main
+     */
     private void startMainActivity(){
         Intent it = new Intent(getApplication(), MainActivity.class);
         getApplication().startActivity(it);
@@ -113,6 +151,14 @@ public class LoginViewModel extends AndroidViewModel {
         Intent it = new Intent(getApplication(), RegisterActivity.class);
         it.putExtra(Constants.EXTRA_LOGIN, email);
         getApplication().startActivity(it);
+    }
+
+    /**
+     * checa se o usuario ja esta online
+     * @return
+     */
+    public boolean isUserOnline(){
+        return sessionManager.isUserLoggedIn();
     }
 
 }
