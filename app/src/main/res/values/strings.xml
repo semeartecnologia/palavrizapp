@@ -37,5 +37,8 @@
     <string name="card_text_themes">Explore os temas disponíveis</string>
     <string name="card_see_more_themes">Ver temas ></string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>
