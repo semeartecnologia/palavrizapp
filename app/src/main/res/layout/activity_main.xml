@@ -10,6 +10,7 @@
         android:layout_height="140dp">
 
         <TextView
+            android:id="@+id/user_greetings"
             android:layout_centerInParent="true"
             android:text="@string/salute_you"
             android:textSize="24sp"
@@ -27,6 +28,8 @@
         android:layout_height="wrap_content" />
 
     <include layout="@layout/card_user_planos"/>
+
+    <include layout="@layout/card_user_temas"/>
 
 
 </LinearLayout>

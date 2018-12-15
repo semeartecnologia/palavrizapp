@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:text="@string/card_title_plan"
+            android:text="@string/card_title_themes"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:textSize="16sp"
@@ -21,16 +21,15 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/no_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:textSize="16sp"
-            android:text="@string/card_text_plan" />
+            android:text="@string/card_text_themes" />
 
         <TextView
-            android:text="@string/card_see_more_plans"
+            android:text="@string/card_see_more_themes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

@@ -28,12 +28,12 @@ public class User {
         this.fullname = fullname;
     }
 
-    public String getEmailLogin() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmailLogin(String emailLogin) {
-        this.email = emailLogin;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

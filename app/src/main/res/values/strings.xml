@@ -29,8 +29,13 @@
 
     <!-- Planos -->
     <string name="card_title_plan">Seu Plano</string>
-    <string name="card_text_plan">%s</string>
+    <string name="card_text_plan">Plano Grátis</string>
     <string name="card_see_more_plans">Veja mais planos ></string>
+
+    <!-- Temas -->
+    <string name="card_title_themes">Temas</string>
+    <string name="card_text_themes">Explore os temas disponíveis</string>
+    <string name="card_see_more_themes">Ver temas ></string>
 
 
 </resources>

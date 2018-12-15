@@ -16,7 +16,7 @@ public class RegisterViewModel extends ViewModel {
     public boolean register(User user){
 
         if (user.getFullname().isEmpty() ||
-                user.getEmailLogin().isEmpty() ||
+                user.getEmail().isEmpty() ||
                 user.getPassword().isEmpty() ||
                 user.getLocation().isEmpty()){
             return false;

@@ -121,7 +121,7 @@ public class LoginViewModel extends AndroidViewModel {
         //cria o objeto
         User user = new User();
         user.setUserId(gUser.getUid());
-        user.setEmailLogin(gUser.getEmail());
+        user.setEmail(gUser.getEmail());
         user.setFullname(gUser.getDisplayName());
 
         //plano padrao, depois tem que trocar isso

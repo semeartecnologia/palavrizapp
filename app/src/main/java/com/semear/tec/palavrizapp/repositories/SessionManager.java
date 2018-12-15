@@ -33,4 +33,11 @@ public class SessionManager {
     public boolean isUserLoggedIn(){
         return sharedPref.getBoolean(IS_LOGGED_IN, false);
     }
+
+    public User getUserLogged(){
+        User user = new User();
+        user.setFullname(sharedPref.getString(USER_FULLNAME,""));
+        user.setUserId(sharedPref.getString(USER_UID,""));
+        return user;
+    }
 }
