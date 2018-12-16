@@ -30,8 +30,8 @@
     <!-- Planos -->
     <!-- Dashboard -->
     <string name="card_title_plan">Seu Plano</string>
-    <string name="card_text_plan">Plano Grátis</string>
     <string name="card_see_more_plans">Veja mais planos ></string>
+
     <!-- Fragment Planos -->
     <string name="free_plan_title">Plano Free</string>
     <string name="free_plan_text">Este plano te da direito a ver até 10 aulas e enviar apenas 2 redações</string>
@@ -39,13 +39,15 @@
     <string name="basic_plan_text">Veja até 3 aulas por dia e envie até 2 redações por mês</string>
     <string name="advanced_plan_title">Plano Avançado</string>
     <string name="advanced_plan_text">Utilize toda a nossa plataforma sem limite de acesso</string>
+    <string name="btn_update">Atualizar Plano</string>
 
     <!-- Temas -->
     <string name="card_title_themes">Temas</string>
     <string name="card_text_themes">Explore os temas disponíveis</string>
     <string name="card_see_more_themes">Ver temas ></string>
 
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

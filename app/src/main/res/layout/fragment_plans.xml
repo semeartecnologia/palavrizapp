@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.fragments.PlansFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvPlans"
+        android:layout_above="@id/btn_update_plan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <TextView
+        android:id="@+id/btn_update_plan"
+        android:text="@string/btn_update"
+        android:enabled="false"
+        android:layout_alignParentBottom="true"
+        style="@style/BtnUpdatePlan"/>
 
-</LinearLayout>
+
+</RelativeLayout>

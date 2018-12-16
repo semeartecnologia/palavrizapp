@@ -7,11 +7,11 @@ import android.support.annotation.NonNull;
 import com.semear.tec.palavrizapp.models.User;
 import com.semear.tec.palavrizapp.repositories.SessionManager;
 
-public class MainViewModel extends AndroidViewModel {
+public class DashboardViewModel extends AndroidViewModel {
 
     SessionManager sessionManager;
 
-    public MainViewModel(@NonNull Application application) {
+    public DashboardViewModel(@NonNull Application application) {
         super(application);
     }
 

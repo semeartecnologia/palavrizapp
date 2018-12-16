@@ -1,49 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <FrameLayout
-        android:id="@+id/frameContent"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <fragment
-            android:name="com.semear.tec.palavrizapp.ui.fragments.PlansFragment"
-            android:id="@+id/fragmentView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </FrameLayout>
-
-    <RelativeLayout
-        android:id="@+id/content_header"
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="140dp">
-
-        <TextView
-            android:id="@+id/user_greetings"
-            android:layout_centerInParent="true"
-            android:text="@string/salute_you"
-            android:textSize="24sp"
-            android:textColor="@color/colorPrimaryText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </RelativeLayout>
-
-    <ImageView
-        android:layout_marginTop="-32dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/default_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <include layout="@layout/card_user_planos"/>
-
-    <include layout="@layout/card_user_temas"/>
+<FrameLayout android:id="@+id/frameContent"
+    android:visibility="visible"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-</LinearLayout>
+
+</FrameLayout>

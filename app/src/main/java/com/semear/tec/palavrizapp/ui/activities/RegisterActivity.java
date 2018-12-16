@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.semear.tec.palavrizapp.R;
+import com.semear.tec.palavrizapp.models.Plans;
 import com.semear.tec.palavrizapp.models.User;
 import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.utils.Constants;
@@ -59,7 +60,8 @@ public class RegisterActivity extends AppCompatActivity {
                     email.getText().toString(),
                     password.getText().toString(),
                     location.getText().toString(),
-                    UserType.STUDENT
+                    UserType.STUDENT,
+                    Plans.FREE_PLAN
             );
 
             registerViewModel.register(user);

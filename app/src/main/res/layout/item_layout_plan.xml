@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
+    android:layout_marginTop="8dp"
     android:layout_height="80dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -11,7 +12,7 @@
         android:layout_height="match_parent">
 
         <RadioButton
-            android:id="@+id/radio_free_plan"
+            android:id="@+id/radio_plan"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
             android:layout_width="wrap_content"
@@ -24,7 +25,7 @@
             android:textSize="16sp"
             android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/radio_free_plan"
+            android:layout_toEndOf="@id/radio_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -32,10 +33,10 @@
             tools:text="Acompanhe algumas aulas demonstrativas e envia até 2 redações"
             android:id="@+id/plan_text"
             android:layout_width="wrap_content"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
-            android:layout_toEndOf="@id/radio_free_plan"
+            android:layout_toEndOf="@id/radio_plan"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>

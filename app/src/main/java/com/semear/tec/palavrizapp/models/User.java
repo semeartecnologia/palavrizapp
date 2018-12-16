@@ -78,4 +78,12 @@ public class User {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
+
+    public Plans getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plans plan) {
+        this.plan = plan;
+    }
 }

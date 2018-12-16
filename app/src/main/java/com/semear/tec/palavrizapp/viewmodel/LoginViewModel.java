@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.semear.tec.palavrizapp.R;
+import com.semear.tec.palavrizapp.models.Plans;
 import com.semear.tec.palavrizapp.repositories.SessionManager;
 import com.semear.tec.palavrizapp.ui.activities.LoginActivity;
 import com.semear.tec.palavrizapp.ui.activities.MainActivity;
@@ -124,8 +125,9 @@ public class LoginViewModel extends AndroidViewModel {
         user.setEmail(gUser.getEmail());
         user.setFullname(gUser.getDisplayName());
 
-        //plano padrao, depois tem que trocar isso
+        //tipo e plano padrao, depois tem que trocar isso
         user.setUserType(UserType.STUDENT);
+        user.setPlan(Plans.FREE_PLAN);
 
         //Salva Login no cache Shared Preferences
         sessionManager.setUserOnline(user, true);
@@ -140,7 +142,7 @@ public class LoginViewModel extends AndroidViewModel {
      */
     private void startMainActivity(){
         Intent it = new Intent(getApplication(), MainActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         getApplication().startActivity(it);
     }
 
