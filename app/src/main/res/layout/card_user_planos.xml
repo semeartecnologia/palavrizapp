@@ -30,6 +30,7 @@
             android:text="@string/card_text_plan" />
 
         <TextView
+            android:id="@+id/btn_see_more_plans"
             android:text="@string/card_see_more_plans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

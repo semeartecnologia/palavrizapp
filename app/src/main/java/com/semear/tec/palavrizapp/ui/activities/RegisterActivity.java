@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
                     email.getText().toString(),
                     password.getText().toString(),
                     location.getText().toString(),
-                    UserType.ESTUDANTE_PLANO1
+                    UserType.STUDENT
             );
 
             registerViewModel.register(user);

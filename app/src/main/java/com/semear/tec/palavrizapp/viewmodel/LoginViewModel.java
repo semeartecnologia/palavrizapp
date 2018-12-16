@@ -125,7 +125,7 @@ public class LoginViewModel extends AndroidViewModel {
         user.setFullname(gUser.getDisplayName());
 
         //plano padrao, depois tem que trocar isso
-        user.setUserType(UserType.ESTUDANTE_PLANO1);
+        user.setUserType(UserType.STUDENT);
 
         //Salva Login no cache Shared Preferences
         sessionManager.setUserOnline(user, true);
@@ -140,6 +140,7 @@ public class LoginViewModel extends AndroidViewModel {
      */
     private void startMainActivity(){
         Intent it = new Intent(getApplication(), MainActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplication().startActivity(it);
     }
 

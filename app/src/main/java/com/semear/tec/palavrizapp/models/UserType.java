@@ -6,9 +6,9 @@ package com.semear.tec.palavrizapp.models;
 public enum UserType {
 
     /**
-     * Todos estudantes do plano 1 (mudar nome)
+     * Todos estudantes
      */
-    ESTUDANTE_PLANO1(0),
+    STUDENT(0),
     /**
      * Corretores
      */

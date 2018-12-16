@@ -8,6 +8,7 @@ public class User {
     private String password;
     private String location;
     private UserType userType;
+    private Plans plan;
 
 
     public User(){}
@@ -18,6 +19,16 @@ public class User {
         this.password = password;
         this.location = location;
         this.userType = userType;
+    }
+
+
+    public User(String fullname, String email, String password, String location, UserType userType, Plans plan) {
+        this.fullname = fullname;
+        this.email = email;
+        this.password = password;
+        this.location = location;
+        this.userType = userType;
+        this.plan = plan;
     }
 
     public String getFullname() {

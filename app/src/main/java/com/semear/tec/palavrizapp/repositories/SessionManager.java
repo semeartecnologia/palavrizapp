@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import com.semear.tec.palavrizapp.models.User;
 import com.semear.tec.palavrizapp.utils.Constants;
 
+/**
+ * Classe Cache do Usuario
+ */
 public class SessionManager {
 
     private Context context;
@@ -21,6 +24,11 @@ public class SessionManager {
 
     }
 
+    /**
+     * salva os dados do usuario no cache, e seta isLoggedIn
+     * @param user
+     * @param isLoggedIn
+     */
     public void setUserOnline(User user, Boolean isLoggedIn){
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(IS_LOGGED_IN, isLoggedIn);
@@ -30,10 +38,18 @@ public class SessionManager {
         editor.apply();
     }
 
+    /**
+     * verifica se o usuario esta logado
+     * @return boolean
+     */
     public boolean isUserLoggedIn(){
         return sharedPref.getBoolean(IS_LOGGED_IN, false);
     }
 
+    /**
+     * Retorna o usuario do cache
+     * @return
+     */
     public User getUserLogged(){
         User user = new User();
         user.setFullname(sharedPref.getString(USER_FULLNAME,""));

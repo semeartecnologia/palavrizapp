@@ -8,6 +8,10 @@ public class MainRepository {
     RoomRepository roomRepository;
 
 
+    /**
+     * Registra usuario no firebase
+     * @param user
+     */
     public void registerUser(User user){
         firebaseRepositoriy = new FirebaseRepository();
         firebaseRepositoriy.saveUser(user);
