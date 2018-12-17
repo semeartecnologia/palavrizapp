@@ -67,6 +67,8 @@
                 android:layout_marginTop="16dp"
                 android:hint="@string/prompt_email"
                 style="@style/LoginForm"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:inputType="textEmailAddress" />
 
 
@@ -76,6 +78,8 @@
                 android:hint="@string/prompt_password"
                 style="@style/LoginForm"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:inputType="textPassword" />
 
 

@@ -17,7 +17,7 @@ public class FirebaseRepository {
 
     public void  saveUser(User user){
         //novo usuario cadastrando email na mao
-        if (user.getUserId().isEmpty()){
+        if (user.getUserId() == null || user.getUserId().isEmpty()){
             user.setUserId(fDatabase.getReference("users/").push().getKey());
         }
         myRef = fDatabase.getReference("users/" + user.getUserId());

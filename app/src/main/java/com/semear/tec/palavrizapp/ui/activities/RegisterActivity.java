@@ -5,6 +5,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.semear.tec.palavrizapp.R;
 import com.semear.tec.palavrizapp.models.Plans;
@@ -19,11 +21,12 @@ import butterknife.ButterKnife;
 public class RegisterActivity extends AppCompatActivity {
 
 
-    @BindView(R.id.et_email) TextInputEditText email;
-    @BindView(R.id.et_fullname) TextInputEditText fullname;
-    @BindView(R.id.et_password) TextInputEditText password;
-    @BindView(R.id.et_location) TextInputEditText location;
-    @BindView(R.id.register_now) Button btnRegister;
+    @BindView(R.id.et_email) EditText email;
+    @BindView(R.id.et_fullname) EditText fullname;
+    @BindView(R.id.et_password) EditText password;
+    @BindView(R.id.et_location) EditText location;
+    @BindView(R.id.register_now)
+    TextView btnRegister;
 
     private RegisterViewModel registerViewModel;
 
