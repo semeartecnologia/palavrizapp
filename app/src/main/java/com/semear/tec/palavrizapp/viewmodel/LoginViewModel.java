@@ -9,6 +9,11 @@ import android.support.design.widget.Snackbar;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -32,22 +37,29 @@ import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.repositories.MainRepository;
 import com.semear.tec.palavrizapp.utils.Constants;
 
+import java.util.concurrent.Executor;
+
 public class LoginViewModel extends AndroidViewModel {
 
     private MainRepository mainRepository;
     private FirebaseAuth mAuth;
     private GoogleSignInClient googleSignInClient;
     private SessionManager sessionManager;
+    private CallbackManager callbackManager;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
     }
 
     public void initViewModel(){
+
+        //inicializacao de dados
         mainRepository = new MainRepository();
         mAuth = FirebaseAuth.getInstance();
         sessionManager = new SessionManager(getApplication());
         initGmailLogin();
+
+
 
         // se o cara ja tem um login no cache, passa pra tela principal
         if (isUserOnline()){
@@ -70,11 +82,51 @@ public class LoginViewModel extends AndroidViewModel {
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(getApplication(), gso);
+
+    }
+
+    public CallbackManager initFacebookLogin(Activity activity, LoginButton fbLogin){
+
+            callbackManager = CallbackManager.Factory.create();
+            fbLogin.setReadPermissions("email");
+
+            // Callback registration
+            fbLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    authWithFacebook(activity, loginResult.getAccessToken());
+                }
+
+                @Override
+                public void onCancel() {
+                }
+
+                @Override
+                public void onError(FacebookException exception) {
+                    Toast.makeText(getApplication(), getApplication().getString(R.string.facebook_fail_login), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        return callbackManager;
+    }
+
+    /**
+     * Método para fazer autenticação pelo EMAIL
+     */
+    public void authWithEmail(String email, String password){
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener((Executor) this, task -> {
+                    if (task.isSuccessful()) {
+                        getUserDataAndLogin();
+                    } else {
+                        Toast.makeText(getApplication(), getApplication().getString(R.string.email_fail_login), Toast.LENGTH_SHORT).show();
+                    }
+
+                });
     }
 
     /**
      * Metodo para fazer autenticação pelo GMAIL
-     * @param activity
      * @param acct
      */
     public void authWithGoogle(Activity activity, GoogleSignInAccount acct) {
@@ -88,13 +140,11 @@ public class LoginViewModel extends AndroidViewModel {
                     } else {
                         Toast.makeText(getApplication(), getApplication().getString(R.string.google_fail_login), Toast.LENGTH_SHORT).show();
                     }
-
                 });
     }
 
     /**
      * Método para fazer autenticação pelo Facebook
-     * @param activity
      * @param token
      */
     public void authWithFacebook(Activity activity, AccessToken token) {

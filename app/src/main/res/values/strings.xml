@@ -1,36 +1,36 @@
 <resources>
+    <!-- NOME DO APP -->
     <string name="app_name">Palavrizapp</string>
-    <!-- Strings related to login -->
+
+    <!-- REGISTRO -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
     <string name="prompt_fullname">Nome Completo</string>
     <string name="prompt_location">Localização</string>
-    <string name="action_sign_in">Entrar</string>
-    <string name="action_sign_in_short">Entrar</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">Senha incorreta</string>
     <string name="error_field_required">Esse campo é obrigatório</string>
     <string name="permission_rationale">"Precisamos de sua localização para permitir seu cadastro no sistema."</string>
-    <string name="salute_you">Olá %s</string>
+    <string name="register_now_btn">Registrar</string>
 
+    <!-- LOGIN !-->
     <string name="facebook_app_id">316074488998586</string>
     <string name="fb_login_protocol_scheme">fb316074488998586</string>
     <string name="facebook_fail_login">Erro ao logar com facebook, tente novamente</string>
-
     <string name="google_fail_login">Erro ao logar com google, tente novamente</string>
-
+    <string name="email_fail_login">Erro ao logar com e-mail, tente novamente</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">Senha incorreta</string>
+    <string name="action_sign_in">Entrar</string>
+    <string name="action_sign_in_short">Entrar</string>
     <string name="not_registered_yet">Ainda não é registrado?</string>
-    <string name="register_now_btn">Registrar</string>
-
     <string name="sign_in_with">Login com</string>
     <string name="or">OU</string>
-    <string name="title_activity_main">MainActivity</string>
 
-    <!-- Planos -->
     <!-- Dashboard -->
     <string name="card_title_plan">Seu Plano</string>
     <string name="card_see_more_plans">Veja mais planos ></string>
+    <string name="salute_you">Olá %s</string>
+    <string name="title_activity_main">Dashboard</string>
 
     <!-- Fragment Planos -->
     <string name="free_plan_title">Plano Free</string>
@@ -45,9 +45,5 @@
     <string name="card_title_themes">Temas</string>
     <string name="card_text_themes">Explore os temas disponíveis</string>
     <string name="card_see_more_themes">Ver temas ></string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 </resources>
