@@ -46,4 +46,10 @@
     <string name="card_text_themes">Explore os temas disponíveis</string>
     <string name="card_see_more_themes">Ver temas ></string>
 
+
+    <!-- Curso -->
+    <string name="course_theme">Tema Aula</string>
+    <string name="course_title">Título Aula</string>
+    <string name="course_content">Example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur imperdiet iaculis urna, in pharetra nulla laoreet et. Mauris pellentesque urna aliquam, iaculis leo placerat, laoreet mi. Curabitur nisi justo, ultrices nec scelerisque pulvinar, tincidunt eget mauris. Praesent at ligula venenatis, condimentum orci at, aliquam urna. Quisque vulputate eros ut libero aliquam sodales. Morbi sit amet egestas metus. Curabitur ut est vel neque lacinia tempor.</string>
+    course_theme
 </resources>
