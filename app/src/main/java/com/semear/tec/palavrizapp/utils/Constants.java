@@ -9,4 +9,11 @@ public class Constants {
 
     //Shared Preferences
     public static final String SESSION_USER = "session_user";
+
+    //Database Local
+    public static final int  DB_VERSION = 1;
+    public static final String DB_NAME = "palavrizapp_db";
+    public static final String TABLE_THEMES = "themes";
+    public static final String TABLE_GROUPS = "groups";
+
 }
