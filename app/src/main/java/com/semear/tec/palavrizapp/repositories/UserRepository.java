@@ -1,21 +1,26 @@
 package com.semear.tec.palavrizapp.repositories;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.semear.tec.palavrizapp.models.User;
 
-public class FirebaseRepository {
-
+/**
+ * Repositorio para o Banco de Dados de Usuarios
+ */
+public class UserRepository {
 
     private FirebaseDatabase fDatabase;
     private DatabaseReference myRef;
 
-    public FirebaseRepository(){
+    public UserRepository(){
         fDatabase = FirebaseDatabase.getInstance();
     }
 
-    public void  saveUser(User user){
+    /**
+     * Registra usuario no firebase
+     * @param user
+     */
+    public void registerUser(User user){
         //novo usuario cadastrando email na mao
         if (user.getUserId() == null || user.getUserId().isEmpty()){
             user.setUserId(fDatabase.getReference("users/").push().getKey());
@@ -23,5 +28,4 @@ public class FirebaseRepository {
         myRef = fDatabase.getReference("users/" + user.getUserId());
         myRef.setValue(user);
     }
-
 }

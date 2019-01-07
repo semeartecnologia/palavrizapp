@@ -2,6 +2,7 @@ package com.semear.tec.palavrizapp.models;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -9,6 +10,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static com.semear.tec.palavrizapp.utils.Constants.TABLE_THEMES;
 
 @Entity(tableName = TABLE_THEMES,
+        indices = {@Index("groupId")},
         foreignKeys = @ForeignKey(entity = Groups.class,
         parentColumns = "id",
         childColumns = "groupId",
@@ -19,6 +21,7 @@ public class Themes {
     @NonNull
     private int themeId;
 
+    @NonNull
     private int groupId; // Foreign Key
     private String themeName;
 

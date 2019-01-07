@@ -3,14 +3,14 @@ package com.semear.tec.palavrizapp.viewmodel;
 import android.arch.lifecycle.ViewModel;
 
 import com.semear.tec.palavrizapp.models.User;
-import com.semear.tec.palavrizapp.repositories.MainRepository;
+import com.semear.tec.palavrizapp.repositories.UserRepository;
 
 public class RegisterViewModel extends ViewModel {
 
-    private MainRepository mainRepository;
+    private UserRepository userRepository;
 
     public void initViewModel(){
-        mainRepository = new MainRepository();
+        userRepository = new UserRepository();
     }
 
     public boolean register(User user){
@@ -23,7 +23,7 @@ public class RegisterViewModel extends ViewModel {
         }
 
 
-        mainRepository.registerUser(user);
+        userRepository.registerUser(user);
         return true;
     }
 }

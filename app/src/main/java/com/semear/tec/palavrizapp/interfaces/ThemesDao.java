@@ -22,4 +22,7 @@ public interface ThemesDao {
     @Query("SELECT * FROM " + TABLE_THEMES)
     LiveData<List<Themes>> getAllThemes();
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllThemes(Themes... themes);
+
 }

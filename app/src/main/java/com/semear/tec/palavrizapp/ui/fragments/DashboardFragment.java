@@ -29,6 +29,9 @@ public class DashboardFragment extends Fragment {
     @BindView(R.id.user_plan)
     TextView tvUserPlan;
 
+    @BindView(R.id.btn_see_more_themes)
+    TextView btnSeeMoreThemes;
+
 
     private DashboardViewModel dashboardViewModel;
 
@@ -60,8 +63,10 @@ public class DashboardFragment extends Fragment {
         tvUserPlan.setText(user.getPlan().getPlanTitle(getContext()));
 
         MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null)
+        if (mainActivity != null) {
             btnSeeMorePlans.setOnClickListener(v -> mainActivity.changeFragment(new PlansFragment()));
+            btnSeeMoreThemes.setOnClickListener(v -> mainActivity.changeFragment(new ThemesFragment()));
+        }
     }
 
 
