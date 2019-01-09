@@ -35,7 +35,15 @@ public class InitData {
                 new Themes(12, 2, "Jovens e Crianças em situação de abandono/risco"),
                 new Themes(13, 2, "Intolerância na Internet"),
                 new Themes(14, 2, "Intolerância de gênero"),
-                new Themes(15, 2, "Patrimônio Cultural")
+                new Themes(15, 2, "Patrimônio Cultural"),
+
+                new Themes(16, 3, "Educação e tecnologia", "Educação"),
+                new Themes(17, 3, "Violência na escola", "Educação"),
+                new Themes(18, 3, "Educação, justiça social e desenvolvimento econômico", "Educação"),
+                new Themes(19, 3, "Saúde e prevenção de doenças", "Saúde"),
+                new Themes(20, 3, "DST e os jovens brasileiros", "Saúde"),
+                new Themes(21, 3, "Combate a epidemias/endemias", "Saúde"),
+                new Themes(22, 3, "Drogas (ligadas à questão de saúde)", "Saúde")
         };
 
     }

@@ -2,6 +2,7 @@ package com.semear.tec.palavrizapp.models;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -24,11 +25,21 @@ public class Themes {
     @NonNull
     private int groupId; // Foreign Key
     private String themeName;
+    private String subgroup;
 
     public Themes(@NonNull int themeId, int groupId, String themeName) {
         this.themeId = themeId;
         this.groupId = groupId;
         this.themeName = themeName;
+        this.subgroup = "";
+    }
+
+    @Ignore
+    public Themes(@NonNull int themeId, @NonNull int groupId, String themeName, String subgroup) {
+        this.themeId = themeId;
+        this.groupId = groupId;
+        this.themeName = themeName;
+        this.subgroup = subgroup;
     }
 
     @NonNull
@@ -54,5 +65,13 @@ public class Themes {
 
     public void setThemeName(String themeName) {
         this.themeName = themeName;
+    }
+
+    public String getSubgroup() {
+        return subgroup;
+    }
+
+    public void setSubgroup(String subgroup) {
+        this.subgroup = subgroup;
     }
 }
