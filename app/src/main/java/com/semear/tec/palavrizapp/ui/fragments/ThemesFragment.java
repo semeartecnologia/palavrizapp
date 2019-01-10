@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.semear.tec.palavrizapp.R;
 import com.semear.tec.palavrizapp.ui.adapters.ThemesAdapter;
-import com.semear.tec.palavrizapp.viewmodel.DashboardViewModel;
 import com.semear.tec.palavrizapp.viewmodel.ThemesViewModel;
 
 /**

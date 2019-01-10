@@ -5,6 +5,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -30,6 +31,7 @@ import com.semear.tec.palavrizapp.ui.activities.RegisterActivity;
 import com.semear.tec.palavrizapp.models.User;
 import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.repositories.UserRepository;
+import com.semear.tec.palavrizapp.ui.activities.WelcomeActivity;
 import com.semear.tec.palavrizapp.utils.Constants;
 
 import java.util.concurrent.Executor;
@@ -54,11 +56,9 @@ public class LoginViewModel extends AndroidViewModel {
         sessionManager = new SessionManager(getApplication());
         initGmailLogin();
 
-
-
-        // se o cara ja tem um login no cache, passa pra tela principal
+        // se o cara ja tem um login no cache, loga o cidadão
         if (isUserOnline()){
-            startMainActivity();
+            getUserDataAndLogin();
         }
     }
 
@@ -89,6 +89,7 @@ public class LoginViewModel extends AndroidViewModel {
             fbLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
+                    Log.d("faceid",loginResult.getAccessToken().getUserId());
                     authWithFacebook(activity, loginResult.getAccessToken());
                 }
 
@@ -168,7 +169,13 @@ public class LoginViewModel extends AndroidViewModel {
         User user = new User();
         user.setUserId(gUser.getUid());
         user.setEmail(gUser.getEmail());
+
         user.setFullname(gUser.getDisplayName());
+
+        if (gUser.getPhotoUrl() != null)
+            user.setPhotoUri(gUser.getPhotoUrl().toString());
+        else
+            user.setPhotoUri("");
 
         //tipo e plano padrao, depois tem que trocar isso
         user.setUserType(UserType.STUDENT);
@@ -177,9 +184,17 @@ public class LoginViewModel extends AndroidViewModel {
         //Salva Login no cache Shared Preferences
         sessionManager.setUserOnline(user, true);
 
-        //registra pelo repositorio e passa pra tela principal
+        //registra usuario pelo repositorio
         userRepository.registerUser(user);
-        startMainActivity();
+
+        //Verifica se é a primeira vez dele e passa pra Welcome Screen
+        if (sessionManager.isUserFirstTime()){
+            startWelcomeActivity(user.getPhotoUri(), gUser.getDisplayName());
+        }else{
+            startMainActivity();
+        }
+
+
     }
 
     /**
@@ -187,8 +202,21 @@ public class LoginViewModel extends AndroidViewModel {
      */
     private void startMainActivity(){
         Intent it = new Intent(getApplication(), MainActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getApplication().startActivity(it);
+    }
+
+
+    /**
+     * Chama a activity Welcome First Time
+     */
+    private void startWelcomeActivity(String photoUri, String username){
+        Intent it = new Intent(getApplication(), WelcomeActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        it.putExtra("photoUri", photoUri);
+        it.putExtra("username", username);
+        getApplication().startActivity(it);
+
     }
 
     /**

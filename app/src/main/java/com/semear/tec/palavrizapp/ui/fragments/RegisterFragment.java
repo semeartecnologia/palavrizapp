@@ -1,15 +1,11 @@
 package com.semear.tec.palavrizapp.ui.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.semear.tec.palavrizapp.R;
 
 
 public class RegisterFragment extends Fragment {

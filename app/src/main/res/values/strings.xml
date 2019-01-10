@@ -46,10 +46,40 @@
     <string name="card_text_themes">Explore os temas disponíveis</string>
     <string name="card_see_more_themes">Ver temas ></string>
 
+    <!-- Aulas -->
+    <string name="card_title_aulas">Aulas</string>
+    <string name="card_text_aulas">Assista aqui nossas aulas de diversos temas</string>
+    <string name="card_see_more_aulas">Ver aulas ></string>
 
     <!-- Curso -->
-    <string name="course_theme">Tema Aula</string>
-    <string name="course_title">Título Aula</string>
-    <string name="course_content">Example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur imperdiet iaculis urna, in pharetra nulla laoreet et. Mauris pellentesque urna aliquam, iaculis leo placerat, laoreet mi. Curabitur nisi justo, ultrices nec scelerisque pulvinar, tincidunt eget mauris. Praesent at ligula venenatis, condimentum orci at, aliquam urna. Quisque vulputate eros ut libero aliquam sodales. Morbi sit amet egestas metus. Curabitur ut est vel neque lacinia tempor.</string>
-    course_theme
+    <string name="course_theme">Primeira Aula</string>
+    <string name="course_title">Utilizando nosso aplicativo</string>
+    <string name="course_content">Apresentação de como utilizar devidamente nosso aplicativo, veja os detalhes de todas suas funções. </string>
+
+    <!-- Welcome Activity -->
+    <string name="next">Próximo</string>
+    <string name="start">Começar</string>
+
+    <!-- Tela Intro 1 -->
+    <string name="intro_screen_title_1">Olá %s</string>
+    <string name="intro_screen_text_1">Seja bem-vindo ao Palavrizapp, nova plataforma de ensino</string>
+
+    <!-- Tela Intro 2 -->
+    <string name="intro_screen_title_2">Assista a Aulas</string>
+    <string name="intro_screen_text_2">Veja aulas de Português e redação sobre os mais variados temas</string>
+
+    <!-- Tela Intro 3 -->
+    <string name="intro_screen_title_3">Faça redações</string>
+    <string name="intro_screen_text_3">Desenvolva sua redação e envie-nos uma foto para corrigirmos pra você</string>
+
+    <!-- Tela Intro 4 -->
+    <string name="intro_screen_title_4">Receba o Feedback</string>
+    <string name="intro_screen_text_4">Sua redação será corrigida e analisada por nossos profissionais</string>
+
+    <string name="first_class_onboard_title">Começe agora</string>
+    <string name="first_class_onboard_text">Assista sua primeira aula grátis</string>
+
+    <!-- Classroom -->
+    <string name="btn_concluir">Concluir</string>
+
 </resources>

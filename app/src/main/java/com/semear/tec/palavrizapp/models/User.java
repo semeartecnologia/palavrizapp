@@ -9,6 +9,7 @@ public class User {
     private String location;
     private UserType userType;
     private Plans plan;
+    private String photoUri;
 
 
     public User(){}
@@ -85,5 +86,13 @@ public class User {
 
     public void setPlan(Plans plan) {
         this.plan = plan;
+    }
+
+    public String getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 }

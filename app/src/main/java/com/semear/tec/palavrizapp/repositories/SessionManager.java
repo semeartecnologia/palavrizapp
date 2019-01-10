@@ -19,6 +19,7 @@ public class SessionManager {
     private static final String USER_FULLNAME = "user_fullname";
     private static final String USER_TYPE = "user_type";
     private static final String USER_PLAN = "user_plan";
+    private static final String FIRST_TIME = "first_time";
 
     public SessionManager(Context context){
         this.context = context;
@@ -70,4 +71,16 @@ public class SessionManager {
         editor.putInt(USER_PLAN, userPlan);
         editor.apply();
     }
+
+    /**
+     * seta primeira vez do usuario no sistema
+     * @param firstTime
+     */
+    public void setUserFirstTime(boolean firstTime){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(FIRST_TIME, firstTime);
+        editor.apply();
+    }
+
+    public boolean isUserFirstTime(){return sharedPref.getBoolean(FIRST_TIME, true);}
 }

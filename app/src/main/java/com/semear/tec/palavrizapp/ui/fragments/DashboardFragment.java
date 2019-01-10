@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.semear.tec.palavrizapp.R;
@@ -29,8 +30,17 @@ public class DashboardFragment extends Fragment {
     @BindView(R.id.user_plan)
     TextView tvUserPlan;
 
-    @BindView(R.id.btn_see_more_themes)
-    TextView btnSeeMoreThemes;
+    @BindView(R.id.btn_see_more_aulas)
+    TextView btnSeeMoreaulas;
+
+    @BindView(R.id.layout_card_aulas)
+    RelativeLayout cardAulas;
+
+    @BindView(R.id.layout_card_plans)
+    RelativeLayout cardPlans;
+
+
+
 
 
     private DashboardViewModel dashboardViewModel;
@@ -54,6 +64,19 @@ public class DashboardFragment extends Fragment {
 
         initView();
 
+        //código pra ativar o onboard
+       /** if ( getActivity() != null ) {
+            new Handler().postDelayed(
+                    () -> new MaterialTapTargetPrompt.Builder(getActivity())
+                            .setTarget(cardAulas)
+                            .setPrimaryText(getString(R.string.first_class_onboard_title))
+                            .setSecondaryText(getString(R.string.first_class_onboard_text))
+                            .setPromptFocal(new RectanglePromptFocal())
+                            .show(), 1000
+            );
+        }**/
+
+
         return v;
     }
 
@@ -65,7 +88,9 @@ public class DashboardFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             btnSeeMorePlans.setOnClickListener(v -> mainActivity.changeFragment(new PlansFragment()));
-            btnSeeMoreThemes.setOnClickListener(v -> mainActivity.changeFragment(new ThemesFragment()));
+            cardPlans.setOnClickListener(v -> mainActivity.changeFragment(new PlansFragment()));
+            btnSeeMoreaulas.setOnClickListener(v -> mainActivity.changeFragment(new ThemesFragment()));
+            cardAulas.setOnClickListener(v -> mainActivity.changeFragment(new ThemesFragment()));
         }
     }
 
