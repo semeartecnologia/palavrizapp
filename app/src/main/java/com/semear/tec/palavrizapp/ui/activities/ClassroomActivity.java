@@ -72,7 +72,7 @@ public class ClassroomActivity extends YouTubeBaseActivity {
 
         if (sessionManager.isUserFirstTime()){
                 nextLesson.setText(getString(R.string.btn_concluir));
-                sessionManager.setUserFirstTime(false);
+                //sessionManager.setUserFirstTime(false);
                 nextLesson.setOnClickListener(view->finish());
         }else{
             nextLesson.setOnClickListener(view->{});

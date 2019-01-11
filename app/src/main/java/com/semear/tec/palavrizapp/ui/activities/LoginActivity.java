@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity  {
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.initViewModel();
 
+
         this.callbackManager = loginViewModel.initFacebookLogin(LoginActivity.this, fbLogin);
 
         btnRegister.setOnClickListener(v ->

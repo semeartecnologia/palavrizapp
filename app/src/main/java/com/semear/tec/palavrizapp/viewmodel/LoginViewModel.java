@@ -56,6 +56,8 @@ public class LoginViewModel extends AndroidViewModel {
         sessionManager = new SessionManager(getApplication());
         initGmailLogin();
 
+        startWelcomeActivity("", "Achiles Siqueira");
+
         // se o cara ja tem um login no cache, loga o cidadão
         if (isUserOnline()){
             getUserDataAndLogin();
