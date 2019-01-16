@@ -50,6 +50,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.activities.WelcomeActivity" />
         <activity android:name=".ui.activities.ClassroomActivity"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9fccde76341c25f9c7fff7bba5833402cf51ccce" />
     </application>
 
 </manifest>
