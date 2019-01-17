@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -99,6 +100,7 @@ public class LoginViewModel extends AndroidViewModel {
 
                 @Override
                 public void onError(FacebookException exception) {
+                    Crashlytics.logException(exception.getCause());
                     Toast.makeText(getApplication(), getApplication().getString(R.string.facebook_fail_login), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -115,6 +117,7 @@ public class LoginViewModel extends AndroidViewModel {
                     if (task.isSuccessful()) {
                         getUserDataAndLogin();
                     } else {
+                        Crashlytics.logException(task.getException());
                         Toast.makeText(getApplication(), getApplication().getString(R.string.email_fail_login), Toast.LENGTH_SHORT).show();
                     }
 
@@ -134,6 +137,7 @@ public class LoginViewModel extends AndroidViewModel {
                     if (task.isSuccessful()) {
                         getUserDataAndLogin();
                     } else {
+                        Crashlytics.logException(task.getException());
                         Toast.makeText(getApplication(), getApplication().getString(R.string.google_fail_login), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -150,6 +154,7 @@ public class LoginViewModel extends AndroidViewModel {
                     if (task.isSuccessful()) {
                         getUserDataAndLogin();
                     } else {
+                        Crashlytics.logException(task.getException());
                         Toast.makeText(getApplication(), getApplication().getString(R.string.facebook_fail_login), Toast.LENGTH_SHORT).show();
                     }
 
