@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class LoginViewModel extends AndroidViewModel {
     private GoogleSignInClient googleSignInClient;
     private SessionManager sessionManager;
     private CallbackManager callbackManager;
+    private String versionName;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -56,6 +58,12 @@ public class LoginViewModel extends AndroidViewModel {
         mAuth = FirebaseAuth.getInstance();
         sessionManager = new SessionManager(getApplication());
         initGmailLogin();
+
+        try {
+            versionName = getApplication().getPackageManager().getPackageInfo(getApplication().getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            versionName = "";
+        }
 
         // se o cara ja tem um login no cache, loga o cidadão
         if (isUserOnline()){
@@ -201,6 +209,8 @@ public class LoginViewModel extends AndroidViewModel {
 
 
     }
+
+    public String getVersionName(){ return this.versionName;}
 
     /**
      * Chama a activity Main

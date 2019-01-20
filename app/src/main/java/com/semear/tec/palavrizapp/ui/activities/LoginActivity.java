@@ -1,8 +1,11 @@
 package com.semear.tec.palavrizapp.ui.activities;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +50,8 @@ public class LoginActivity extends AppCompatActivity  {
     @BindView(R.id.login_facebook) LoginButton fbLogin;
     CallbackManager callbackManager;
 
+    @BindView(R.id.tv_version_name) TextView tvVersionName;
+
     //Google
     @BindView(R.id.login_google)
     SignInButton gLogin;
@@ -81,6 +86,8 @@ public class LoginActivity extends AppCompatActivity  {
 
         btnEmail.setOnClickListener(view -> emailLogin());
 
+        tvVersionName.setText(loginViewModel.getVersionName());
+
     }
 
     public void emailLogin(){
@@ -90,6 +97,27 @@ public class LoginActivity extends AppCompatActivity  {
     public void gmailLogin(){
         Intent signInIntent = loginViewModel.getGoogleSignInClient().getSignInIntent();
         startActivityForResult(signInIntent, G_SIGN_IN);
+    }
+
+    public void alertGooglePlayError(){
+        String titleAlert = getString(R.string.alert_gplay_title);
+        String textAlert = getString(R.string.alert_gplay_text);
+        String btnAlert = getString(R.string.alert_gplay_btn_accept);
+
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(LoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(LoginActivity.this);
+        }
+
+        builder.setTitle(titleAlert)
+                .setMessage(textAlert)
+                .setPositiveButton(btnAlert, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 
@@ -106,7 +134,8 @@ public class LoginActivity extends AppCompatActivity  {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 loginViewModel.authWithGoogle(LoginActivity.this, account);
             } catch (ApiException e) {
-                Toast.makeText(getApplication(), getApplication().getString(R.string.google_fail_login), Toast.LENGTH_SHORT).show();
+                alertGooglePlayError();
+                e.printStackTrace();
             }
         }
     }
