@@ -10,6 +10,7 @@
     <string name="error_field_required">Esse campo é obrigatório</string>
     <string name="permission_rationale">"Precisamos de sua localização para permitir seu cadastro no sistema."</string>
     <string name="register_now_btn">Registrar</string>
+    <string name="register_fail">Falha ao registrar no sistema, verifique sua conexão</string>
 
     <!-- LOGIN !-->
     <string name="facebook_app_id">316074488998586</string>

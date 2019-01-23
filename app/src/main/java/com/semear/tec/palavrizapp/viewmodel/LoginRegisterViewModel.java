@@ -38,7 +38,7 @@ import com.semear.tec.palavrizapp.utils.Constants;
 
 import java.util.concurrent.Executor;
 
-public class LoginViewModel extends AndroidViewModel {
+public class LoginRegisterViewModel extends AndroidViewModel {
 
     private UserRepository userRepository;
     private FirebaseAuth mAuth;
@@ -47,7 +47,7 @@ public class LoginViewModel extends AndroidViewModel {
     private CallbackManager callbackManager;
     private String versionName;
 
-    public LoginViewModel(@NonNull Application application) {
+    public LoginRegisterViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -119,9 +119,9 @@ public class LoginViewModel extends AndroidViewModel {
     /**
      * Método para fazer autenticação pelo EMAIL
      */
-    public void authWithEmail(String email, String password){
+    public void authWithEmail(Activity activity, String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Executor) this, task -> {
+                .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
                         getUserDataAndLogin();
                     } else {
@@ -131,6 +131,29 @@ public class LoginViewModel extends AndroidViewModel {
 
                 });
     }
+
+    public boolean checkFields(String fullname, String email, String password){
+        if ( fullname.isEmpty() || email.isEmpty() || password.isEmpty())
+            return false;
+        return true;
+    }
+
+    /**
+     * Método para fazer registro pelo EMAIL
+     */
+    public void registerWithEmail(Activity activity, String email, String password){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(activity, task -> {
+                    if (task.isSuccessful()) {
+                        getUserDataAndLogin();
+                    } else {
+                        Crashlytics.logException(task.getException());
+                        Toast.makeText(getApplication(), getApplication().getString(R.string.register_fail), Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+    }
+
 
     /**
      * Metodo para fazer autenticação pelo GMAIL

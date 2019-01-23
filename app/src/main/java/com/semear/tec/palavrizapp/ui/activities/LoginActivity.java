@@ -1,7 +1,6 @@
 package com.semear.tec.palavrizapp.ui.activities;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.CallbackManager;
@@ -23,7 +21,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.semear.tec.palavrizapp.R;
-import com.semear.tec.palavrizapp.viewmodel.LoginViewModel;
+import com.semear.tec.palavrizapp.utils.Commons;
+import com.semear.tec.palavrizapp.viewmodel.LoginRegisterViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +55,7 @@ public class LoginActivity extends AppCompatActivity  {
     @BindView(R.id.login_google)
     SignInButton gLogin;
 
-    private LoginViewModel loginViewModel;
+    private LoginRegisterViewModel loginViewModel;
 
     public static final int G_SIGN_IN = 233;
 
@@ -67,7 +66,7 @@ public class LoginActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel = ViewModelProviders.of(this).get(LoginRegisterViewModel.class);
         loginViewModel.initViewModel();
 
         this.callbackManager = loginViewModel.initFacebookLogin(LoginActivity.this, fbLogin);
@@ -91,35 +90,13 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
     public void emailLogin(){
-
+        loginViewModel.authWithEmail(LoginActivity.this, mEmailView.getText().toString(), mPasswordView.getText().toString());
     }
 
     public void gmailLogin(){
         Intent signInIntent = loginViewModel.getGoogleSignInClient().getSignInIntent();
         startActivityForResult(signInIntent, G_SIGN_IN);
     }
-
-    public void alertGooglePlayError(){
-        String titleAlert = getString(R.string.alert_gplay_title);
-        String textAlert = getString(R.string.alert_gplay_text);
-        String btnAlert = getString(R.string.alert_gplay_btn_accept);
-
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(LoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(LoginActivity.this);
-        }
-
-        builder.setTitle(titleAlert)
-                .setMessage(textAlert)
-                .setPositiveButton(btnAlert, (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -134,7 +111,10 @@ public class LoginActivity extends AppCompatActivity  {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 loginViewModel.authWithGoogle(LoginActivity.this, account);
             } catch (ApiException e) {
-                alertGooglePlayError();
+                String titleAlert = getString(R.string.alert_gplay_title);
+                String textAlert = getString(R.string.alert_gplay_text);
+                String btnAlert = getString(R.string.alert_gplay_btn_accept);
+                Commons.showAlert(LoginActivity.this, titleAlert, textAlert, btnAlert);
                 e.printStackTrace();
             }
         }
