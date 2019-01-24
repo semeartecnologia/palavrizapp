@@ -55,6 +55,14 @@
           }
         },
         {
+          "client_id": "383925985769-6nejb8pp22ceu6btnfd6tpf2o9r7e15u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.semear.tec.palavrizapp",
+            "certificate_hash": "6697c9e8e170195855e98ecb0644242d06c9cc7c"
+          }
+        },
+        {
           "client_id": "383925985769-jqd002o3thrflvskmnla8bhuto9ttecn.apps.googleusercontent.com",
           "client_type": 3
         }
