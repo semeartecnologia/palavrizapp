@@ -18,10 +18,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginFragment : Fragment() {
 
     private var loginViewModel: LoginRegisterViewModel? = null
-
     val G_SIGN_IN = 233
-
-    var callbackManager: CallbackManager?
+    var callbackManager: CallbackManager? = null
 
     companion object {
         fun newInstance(): LoginFragment{
@@ -30,19 +28,23 @@ class LoginFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_login, container, false)
+        return inflater.inflate(R.layout.activity_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupView()
+        initViewModel()
+    }
 
+    fun initViewModel(){
         loginViewModel = ViewModelProviders.of(activity ?: return).get(LoginRegisterViewModel::class.java)
         loginViewModel?.initViewModel()
     }
 
     fun setupView(){
         initFabric()
+        initDebugData()
         setupRegisterButton()
         setupFacebookLoginButton()
         setupCallbackFacebookManager()
@@ -62,23 +64,23 @@ class LoginFragment : Fragment() {
     }
 
     fun setupRegisterButton(){
-        btn_register.setOnClickListener({ v -> loginViewModel?.startRegisterActivity(email.getText().toString()) })
+        btn_register.setOnClickListener { loginViewModel?.startRegisterActivity(email.getText().toString()) }
     }
 
     fun setupFacebookLoginButton(){
-        btn_facebook_login.setOnClickListener({ v -> login_facebook.performClick() })
+        btn_facebook_login.setOnClickListener { login_facebook.performClick() }
     }
 
     fun setupGmailLoginButton(){
-        btn_google_login.setOnClickListener({ v -> gmailLogin() })
+        btn_google_login.setOnClickListener { gmailLogin() }
     }
 
     fun setupEmailLoginButton(){
-        email_sign_in_button.setOnClickListener({ view -> emailLogin() })
+        email_sign_in_button.setOnClickListener { emailLogin() }
     }
 
     fun setVersionNameText(){
-        tv_version_name.setText(loginViewModel.getVersionName())
+        tv_version_name.text = loginViewModel?.versionName
     }
 
     fun setupCallbackFacebookManager(){
@@ -86,11 +88,11 @@ class LoginFragment : Fragment() {
     }
 
     fun emailLogin() {
-        loginViewModel.authWithEmail(activity, email.toString(), password.toString())
+        loginViewModel?.authWithEmail(activity, email.toString(), password.toString())
     }
 
     fun gmailLogin() {
-        val signInIntent = loginViewModel.getGoogleSignInClient().signInIntent
+        val signInIntent = loginViewModel?.googleSignInClient?.signInIntent
         startActivityForResult(signInIntent, G_SIGN_IN)
     }
 

@@ -79,13 +79,11 @@ public class ClassroomActivity extends YouTubeBaseActivity {
         mYoutubePlayerView.initialize(Constants.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                Log.d("youtubio", "sucesso");
                 youTubePlayer.loadVideo(codVideo);
             }
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                Log.d("youtubio", "erro dos brow");
             }
         });
 
