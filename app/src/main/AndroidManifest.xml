@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activities.LoginActivity"
+            android:name=".modules.login.LoginActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
@@ -43,13 +43,13 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.RegisterActivity" />
+        <activity android:name=".modules.register.RegisterActivity" />
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name=".modules.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activities.WelcomeActivity" />
-        <activity android:name=".ui.activities.ClassroomActivity"></activity>
+        <activity android:name=".modules.welcome.WelcomeActivity" />
+        <activity android:name=".modules.classroom.ClassroomActivity"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9fccde76341c25f9c7fff7bba5833402cf51ccce" />

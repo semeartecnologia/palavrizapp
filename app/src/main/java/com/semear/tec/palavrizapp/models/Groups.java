@@ -4,7 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import static com.semear.tec.palavrizapp.utils.Constants.TABLE_GROUPS;
+import static com.semear.tec.palavrizapp.utils.constants.Constants.TABLE_GROUPS;
 
 @Entity(tableName = TABLE_GROUPS)
 public class Groups {

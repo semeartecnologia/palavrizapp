@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 
-import com.semear.tec.palavrizapp.R;
-import com.semear.tec.palavrizapp.ui.activities.LoginActivity;
-
 public class Commons {
 
     public static void showAlert(Activity activity, String titleAlert, String textAlert, String btnAlert){

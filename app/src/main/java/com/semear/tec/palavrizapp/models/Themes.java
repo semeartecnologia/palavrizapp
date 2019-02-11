@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
-import static com.semear.tec.palavrizapp.utils.Constants.TABLE_THEMES;
+import static com.semear.tec.palavrizapp.utils.constants.Constants.TABLE_THEMES;
 
 @Entity(tableName = TABLE_THEMES,
         indices = {@Index("groupId")},
