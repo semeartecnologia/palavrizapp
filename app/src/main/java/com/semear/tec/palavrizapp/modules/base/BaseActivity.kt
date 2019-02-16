@@ -1,11 +1,15 @@
 package com.semear.tec.palavrizapp.modules.base
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
+import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment
 
-class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
+    //flag verificadora se é smartphone ou tablet
     var isPhone: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 
+import com.semear.tec.palavrizapp.utils.constants.Constants;
+
+
 public class Commons {
 
     public static void showAlert(Activity activity, String titleAlert, String textAlert, String btnAlert){
@@ -22,5 +25,7 @@ public class Commons {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
+
 
 }

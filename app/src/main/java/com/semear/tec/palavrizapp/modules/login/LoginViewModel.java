@@ -3,6 +3,7 @@ package com.semear.tec.palavrizapp.modules.login;
 import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -36,7 +37,9 @@ import com.semear.tec.palavrizapp.utils.repositories.UserRepository;
 import com.semear.tec.palavrizapp.modules.welcome.WelcomeActivity;
 import com.semear.tec.palavrizapp.utils.constants.Constants;
 
-public class LoginRegisterViewModel extends AndroidViewModel {
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
+public class LoginViewModel extends AndroidViewModel {
 
     private UserRepository userRepository;
     private FirebaseAuth mAuth;
@@ -45,7 +48,10 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     private CallbackManager callbackManager;
     private String versionName;
 
-    public LoginRegisterViewModel(@NonNull Application application) {
+    private MutableLiveData<Boolean> showEmailPasswordIncorrectDialog = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+
+    public LoginViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -69,6 +75,9 @@ public class LoginRegisterViewModel extends AndroidViewModel {
         }
     }
 
+
+    public MutableLiveData<Boolean> getShowEmailPasswordIncorrectDialog() {return showEmailPasswordIncorrectDialog;}
+    public MutableLiveData<Boolean> getIsLoading() {return isLoading;}
 
     public GoogleSignInClient getGoogleSignInClient() {
         return googleSignInClient;
@@ -118,39 +127,25 @@ public class LoginRegisterViewModel extends AndroidViewModel {
      * Método para fazer autenticação pelo EMAIL
      */
     public void authWithEmail(Activity activity, String email, String password){
+        isLoading.postValue(true);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
+                        isLoading.postValue(false);
+                        showEmailPasswordIncorrectDialog.postValue(false);
                         getUserDataAndLogin();
+
                     } else {
-                        Crashlytics.logException(task.getException());
-                        Toast.makeText(getApplication(), getApplication().getString(R.string.email_fail_login), Toast.LENGTH_SHORT).show();
+                        isLoading.postValue(false);
+                        showEmailPasswordIncorrectDialog.postValue(true);
                     }
 
                 });
     }
 
-    public boolean checkFields(String fullname, String email, String password){
-        if ( fullname.isEmpty() || email.isEmpty() || password.isEmpty())
-            return false;
-        return true;
-    }
 
-    /**
-     * Método para fazer registro pelo EMAIL
-     */
-    public void registerWithEmail(Activity activity, String email, String password){
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity, task -> {
-                    if (task.isSuccessful()) {
-                        getUserDataAndLogin();
-                    } else {
-                        Crashlytics.logException(task.getException());
-                        Toast.makeText(getApplication(), getApplication().getString(R.string.register_fail), Toast.LENGTH_SHORT).show();
-                    }
 
-                });
-    }
+
 
 
     /**
@@ -238,7 +233,7 @@ public class LoginRegisterViewModel extends AndroidViewModel {
      */
     private void startMainActivity(){
         Intent it = new Intent(getApplication(), MainActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        it.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getApplication().startActivity(it);
     }
 
@@ -248,20 +243,17 @@ public class LoginRegisterViewModel extends AndroidViewModel {
      */
     private void startWelcomeActivity(String photoUri, String username){
         Intent it = new Intent(getApplication(), WelcomeActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        it.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         it.putExtra("photoUri", photoUri);
         it.putExtra("username", username);
         getApplication().startActivity(it);
 
     }
 
-    /**
-     * Se tiver digitado algum e-mail no login, passa ele pro Registro
-     * @param email
-     */
-    public void startRegisterActivity(String email){
+
+    public void startRegisterActivity(){
         Intent it = new Intent(getApplication(), RegisterActivity.class);
-        it.putExtra(Constants.EXTRA_LOGIN, email);
+        it.addFlags(FLAG_ACTIVITY_NEW_TASK);
         getApplication().startActivity(it);
     }
 
