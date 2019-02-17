@@ -70,8 +70,9 @@ public class LoginViewModel extends AndroidViewModel {
             versionName = "";
         }
 
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
         // se o cara ja tem um login no cache, loga o cidadão
-        if (isUserOnline()){
+        if (isUserOnline() || firebaseUser != null){
             getUserDataAndLogin();
         }
     }
