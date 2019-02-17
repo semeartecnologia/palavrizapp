@@ -43,7 +43,7 @@ public class PlansFragment extends Fragment {
         btnUpdatePlan.setOnClickListener(view -> {
             sessionManager.setUserPlan(mAdapter.getLastCheckedPos());
             if(getActivity() != null)
-                ((MainActivity) getActivity()).changeFragment(new DashboardFragment());
+                ((MainActivity) getActivity()).changeFragment(new DashboardFragment(), "Dashboard");
         });
 
         return v;

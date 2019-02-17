@@ -65,33 +65,34 @@ public class DashboardFragment extends Fragment {
 
         initView();
 
-        //código pra ativar o onboard
-       /** if ( getActivity() != null ) {
-            new Handler().postDelayed(
-                    () -> new MaterialTapTargetPrompt.Builder(getActivity())
-                            .setTarget(cardAulas)
-                            .setPrimaryText(getString(R.string.first_class_onboard_title))
-                            .setSecondaryText(getString(R.string.first_class_onboard_text))
-                            .setPromptFocal(new RectanglePromptFocal())
-                            .show(), 1000
-            );
-        }**/
-
-
         return v;
     }
 
     public void initView(){
+
         User user = dashboardViewModel.getCurrentUser();
         tvHelloUser.setText(String.format(getString(R.string.salute_you),user.getFullname()));
         tvUserPlan.setText(user.getPlan().getPlanTitle(getContext()));
 
         MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            btnSeeMorePlans.setOnClickListener(v -> mainActivity.changeFragment(new PlansFragment()));
-            cardPlans.setOnClickListener(v -> mainActivity.changeFragment(new PlansFragment()));
-            btnSeeMoreaulas.setOnClickListener(v -> mainActivity.changeFragment(new ThemesFragment()));
-            cardAulas.setOnClickListener(v -> mainActivity.changeFragment(new ThemesFragment()));
+            mainActivity.setActionBarTitle("Dashboard");
+            btnSeeMorePlans.setOnClickListener(v -> {
+                mainActivity.changeFragment(new PlansFragment(), "Planos");
+                mainActivity.setActionBarTitle("Planos");
+            });
+            cardPlans.setOnClickListener(v -> {
+                mainActivity.changeFragment(new PlansFragment(), "Planos");
+                mainActivity.setActionBarTitle("Planos");
+            });
+            btnSeeMoreaulas.setOnClickListener(v -> {
+                mainActivity.changeFragment(new ThemesFragment(), "Aulas" );
+                mainActivity.setActionBarTitle("Aulas");
+            });
+            cardAulas.setOnClickListener(v -> {
+                mainActivity.changeFragment(new ThemesFragment(), "Aulas");
+                mainActivity.setActionBarTitle("Aulas");
+            });
         }
     }
 

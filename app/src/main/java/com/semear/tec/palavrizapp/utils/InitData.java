@@ -2,6 +2,7 @@ package com.semear.tec.palavrizapp.utils;
 
 import com.semear.tec.palavrizapp.models.Groups;
 import com.semear.tec.palavrizapp.models.Themes;
+import com.semear.tec.palavrizapp.models.VideoPreview;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,18 @@ public class InitData {
                 new Groups(4, "Política", "Participação Política"),
                 new Groups(5, "Comportamentos", "Comportamentos")
         };
+    }
+
+
+    public static ArrayList<VideoPreview> getListVideoPreview(){
+        return new ArrayList<VideoPreview>() {{
+            add(new VideoPreview(1,"Matrícula", "Veja detallhes sobre a matrícula", "WmSKaVruVrM")); // WmSKaVruVrM
+            add(new VideoPreview(2,"Sociedade do Espetáculo", "Sociedade do Espetáculo", "Gxzt-QsoeoM")); //Gxzt-QsoeoM
+            add(new VideoPreview(3,"ENEM 1", "Como sua prova é corrigida", "CAr3WF2t658")); // CAr3WF2t658
+
+            add(new VideoPreview(4,"Projeto de texto", "Projeto de texto", "p7GjrTa5Rws"));//p7GjrTa5Rws
+
+        }};
     }
 
     public static final Themes[] getInitialThemes(){

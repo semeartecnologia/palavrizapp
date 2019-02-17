@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.semear.tec.palavrizapp.R;
+import com.semear.tec.palavrizapp.models.VideoPreview;
+import com.semear.tec.palavrizapp.utils.InitData;
 import com.semear.tec.palavrizapp.utils.adapters.ThemesAdapter;
 
 /**
@@ -21,7 +23,8 @@ public class ThemesFragment extends Fragment {
 
 
     ThemesViewModel themesViewModel;
-    private RecyclerView recyclerThemes;
+    private RecyclerView recyclerTheme1;
+    private RecyclerView recyclerTheme2;
     private ThemesAdapter mAdapter;
 
     public ThemesFragment() {}
@@ -39,11 +42,16 @@ public class ThemesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_themes, container, false);
 
         mAdapter = new ThemesAdapter();
-        recyclerThemes = v.findViewById(R.id.rv_themes);
-        recyclerThemes.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerThemes.setAdapter(mAdapter);
+        recyclerTheme1 = v.findViewById(R.id.rv_themes);
+        recyclerTheme1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerTheme1.setAdapter(mAdapter);
 
-        getListOfThemes();
+        recyclerTheme2 = v.findViewById(R.id.rv_redacao);
+        recyclerTheme2.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerTheme2.setAdapter(mAdapter);
+
+        //getListOfThemes();
+        getListOfMovies();
 
         return v;
     }
@@ -54,6 +62,12 @@ public class ThemesFragment extends Fragment {
                 mAdapter.addThemes(theme);
             }
         });
+    }
+
+    public void getListOfMovies(){
+        for(VideoPreview vp : InitData.getListVideoPreview()){
+            mAdapter.addVideo(vp);
+        }
     }
 
 }

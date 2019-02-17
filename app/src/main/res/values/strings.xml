@@ -101,6 +101,10 @@
 
     <!-- Classroom -->
     <string name="btn_concluir">Concluir</string>
+    <string name="actionbar_classroom_title">Sala de Aula</string>
+    <string name="first_class_title">Aula 01 - Bem-vindo ao Palavrizapp</string>
+    <string name="first_class_subtitle">Conheça nossa plataforma de ensino</string>
+    <string name="first_class_description">Esse vídeo ensina como utilizar devidamente nosso aplicativo, veja os detalhes de todas suas funções. </string>
 
     <!-- Contextual Menu -->
     <string name="logout">Logout</string>

@@ -50,7 +50,7 @@
             android:name=".modules.MainActivity"
             android:label="@string/title_activity_main"/>
         <activity android:name=".modules.welcome.WelcomeActivity" />
-        <activity android:name=".modules.classroom.ClassroomActivity"></activity>
+        <activity android:name=".modules.classroom.ClassroomActivity"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9fccde76341c25f9c7fff7bba5833402cf51ccce" />
