@@ -48,8 +48,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".modules.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_main"/>
         <activity android:name=".modules.welcome.WelcomeActivity" />
         <activity android:name=".modules.classroom.ClassroomActivity"></activity>
         <meta-data

@@ -3,6 +3,8 @@
     <string name="app_name">Palavrizapp</string>
 
     <!-- REGISTRO -->
+    <string name="actionbar_register_title">Registre-se</string>
+    <string name="registering_loading">Registrando…</string>
     <string name="prompt_email">Seu e-mail</string>
     <string name="prompt_password">Senha</string>
     <string name="prompt_confirm_password">Confirme sua Senha</string>
@@ -99,6 +101,9 @@
 
     <!-- Classroom -->
     <string name="btn_concluir">Concluir</string>
+
+    <!-- Contextual Menu -->
+    <string name="logout">Logout</string>
 
 
 

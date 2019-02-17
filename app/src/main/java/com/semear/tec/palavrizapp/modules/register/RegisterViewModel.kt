@@ -21,7 +21,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
     private lateinit var userRepository : UserRepository
     private lateinit var sessionManager : SessionManager
 
-    private var isLoading = MutableLiveData<Boolean>()
+    var isLoading = MutableLiveData<Boolean>()
     var showMessageMissingFields = MutableLiveData<Boolean>()
     var showMessageErrorRegister = MutableLiveData<Boolean>()
     var showMessagePwdNotMatch = MutableLiveData<Boolean>()
@@ -37,8 +37,8 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
      */
     fun registerWithEmail(activity: Activity, email: String, password: String, confirmPassword: String, fullname: String,
                           radioCheckedId: Int) {
-        isLoading.postValue(true)
         if (checkFields(fullname, email, password, confirmPassword, radioCheckedId)) {
+            isLoading.postValue(true)
             mAuth?.createUserWithEmailAndPassword(email, password)
                     ?.addOnCompleteListener(activity) { task ->
                         if (task.isSuccessful) {
@@ -50,8 +50,6 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
                         }
 
                     }
-        }else {
-            isLoading.postValue(false)
         }
     }
 
@@ -72,7 +70,6 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
     {
         //pega o usuario corrente, independente do tipo de login
         val gUser = mAuth?.currentUser
-
         //cria o objeto
         val user = User()
         user.userId = gUser?.uid
@@ -84,13 +81,10 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
         //tipo e plano padrao, depois tem que trocar isso
         user.userType = UserType.STUDENT
         user.plan = Plans.FREE_PLAN
-
         //Salva Login no cache Shared Preferences
         sessionManager.setUserOnline(user, true)
-
         //registra usuario pelo repositorio
         userRepository.registerUser(user)
-
         startWelcomeActivity(user.photoUri, fullname.split(" ")[0])
         }
 

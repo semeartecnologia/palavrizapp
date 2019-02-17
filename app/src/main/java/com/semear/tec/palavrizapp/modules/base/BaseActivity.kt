@@ -1,11 +1,11 @@
 package com.semear.tec.palavrizapp.modules.base
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
-import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment
+import android.widget.Toast
+import com.semear.tec.palavrizapp.modules.login.LoginActivity
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -27,6 +27,16 @@ open class BaseActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    fun redirectToLogin(){
+        val it = Intent(this, LoginActivity::class.java)
+        startActivity(it)
+    }
+
+    fun showToast(text: String, show: Boolean) {
+        if (show)
+            Toast.makeText(application, text, Toast.LENGTH_SHORT).show()
     }
 
 }

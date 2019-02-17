@@ -26,7 +26,7 @@ class LoginActivity : BaseActivity() {
     private var callbackManager: CallbackManager? = null
 
     companion object {
-        val G_SIGN_IN = 233
+        const val G_SIGN_IN = 233
     }
 
     private var loginViewModel: LoginViewModel? = null
@@ -54,6 +54,10 @@ class LoginActivity : BaseActivity() {
 
         loginViewModel?.isLoading?.observe(this,
                 Observer {showProgressBar(it == true)})
+
+        loginViewModel?.showCompleteFields?.observe(this,
+                Observer {showToast(getString(R.string.fill_all_fields), it == true)
+        })
     }
 
     private fun initFabric(){
@@ -106,7 +110,6 @@ class LoginActivity : BaseActivity() {
                     .setNeutralButton(forgotPassword) { dialog, _ -> dialog.dismiss() }
                     .show()
         }
-
     }
 
     fun showProgressBar(show: Boolean){

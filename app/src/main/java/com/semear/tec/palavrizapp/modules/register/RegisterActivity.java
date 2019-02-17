@@ -1,37 +1,38 @@
 package com.semear.tec.palavrizapp.modules.register;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.semear.tec.palavrizapp.R;
+import com.semear.tec.palavrizapp.modules.base.BaseActivity;
 import com.semear.tec.palavrizapp.utils.constants.Constants;
-import com.semear.tec.palavrizapp.modules.login.LoginViewModel;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
 
+    @BindView(R.id.textInputName) TextInputLayout textInputName;
+    @BindView(R.id.textInputEmail) TextInputLayout textInputEmail;
+    @BindView(R.id.textInputPwd) TextInputLayout textInputPwd;
+    @BindView(R.id.textInputPwdConfirm) TextInputLayout textInputConfirmPwd;
     @BindView(R.id.email) TextInputEditText email;
     @BindView(R.id.fullname) TextInputEditText fullname;
     @BindView(R.id.password) TextInputEditText password;
     @BindView(R.id.confirm_password) TextInputEditText confirmPassword;
     @BindView(R.id.radioGroupGender) RadioGroup radioGender;
     @BindView(R.id.profile_image) ImageView profileImage;
+    @BindView(R.id.progress_register) ProgressBar progressBar;
+    @BindView(R.id.tv_registering) TextView tvRegistering;
     @BindView(R.id.register_now)
     TextView btnRegister;
 
@@ -41,20 +42,26 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_register);
-
         ButterKnife.bind(this);
-        getSupportActionBar().hide();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             email.setText(extras.getString(Constants.EXTRA_LOGIN));
         }
 
+        setupActionBar();
         initViewModel();
         setupButtonEvents();
         registerObservers();
 
 
+    }
+
+    public void setupActionBar(){
+        if ( getSupportActionBar() != null ) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.actionbar_register_title));
+        }
     }
 
     private void initViewModel(){
@@ -71,6 +78,37 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerViewModel.getShowMessagePwdNotMatch().observe(this,
                 aBoolean -> showToast(getString(R.string.pwd_not_match), aBoolean));
+
+        registerViewModel.isLoading().observe(this,
+                this::toggleLoading);
+    }
+
+    private void toggleLoading(boolean isLoading){
+        if (isLoading){
+            email.setVisibility(View.GONE);
+            textInputEmail.setVisibility(View.GONE);
+            password.setVisibility(View.GONE);
+            textInputPwd.setVisibility(View.GONE);
+            fullname.setVisibility(View.GONE);
+            textInputName.setVisibility(View.GONE);
+            confirmPassword.setVisibility(View.GONE);
+            textInputConfirmPwd.setVisibility(View.GONE);
+            radioGender.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+            tvRegistering.setVisibility(View.VISIBLE);
+        }else {
+            email.setVisibility(View.VISIBLE);
+            textInputEmail.setVisibility(View.VISIBLE);
+            password.setVisibility(View.VISIBLE);
+            textInputPwd.setVisibility(View.VISIBLE);
+            fullname.setVisibility(View.VISIBLE);
+            textInputName.setVisibility(View.VISIBLE);
+            confirmPassword.setVisibility(View.VISIBLE);
+            textInputConfirmPwd.setVisibility(View.VISIBLE);
+            radioGender.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            tvRegistering.setVisibility(View.GONE);
+        }
     }
 
     private void changeAvatarMale(){
@@ -79,11 +117,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void changeAvatarFemale(){
         Picasso.get().load(R.drawable.avatar_woman_512).into(profileImage);
-    }
-
-    private void showToast(String text, Boolean show){
-        if (show)
-            Toast.makeText(getApplication(), text, Toast.LENGTH_SHORT).show();
     }
 
     private void setupButtonEvents(){

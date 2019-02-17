@@ -42,6 +42,16 @@ public class SessionManager {
         editor.apply();
     }
 
+    public void setUserOffline(){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(IS_LOGGED_IN, false);
+        editor.putString(USER_UID, "");
+        editor.putString(USER_FULLNAME, "");
+        editor.putInt(USER_TYPE, -1);
+        editor.putInt(USER_PLAN, -1);
+        editor.apply();
+    }
+
     /**
      * verifica se o usuario esta logado
      * @return boolean

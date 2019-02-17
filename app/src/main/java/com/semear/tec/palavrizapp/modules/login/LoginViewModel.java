@@ -49,6 +49,7 @@ public class LoginViewModel extends AndroidViewModel {
     private String versionName;
 
     private MutableLiveData<Boolean> showEmailPasswordIncorrectDialog = new MutableLiveData<>();
+    private MutableLiveData<Boolean> showCompleteFields = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application) {
@@ -75,18 +76,25 @@ public class LoginViewModel extends AndroidViewModel {
         }
     }
 
-
     public MutableLiveData<Boolean> getShowEmailPasswordIncorrectDialog() {return showEmailPasswordIncorrectDialog;}
+    public MutableLiveData<Boolean> getShowCompleteFields(){return  showCompleteFields;}
     public MutableLiveData<Boolean> getIsLoading() {return isLoading;}
-
     public GoogleSignInClient getGoogleSignInClient() {
         return googleSignInClient;
+    }
+
+    private boolean checkFields(String email, String password){
+        if (email.isEmpty() || password.isEmpty()) {
+            showCompleteFields.postValue(true);
+            return false;
+        }
+        return true;
     }
 
     /**
      * Algumas configs para inicializar a autenticação via GMAIL
      */
-    public void initGmailLogin(){
+    private void initGmailLogin(){
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getApplication().getString(R.string.default_web_client_id))
@@ -127,24 +135,23 @@ public class LoginViewModel extends AndroidViewModel {
      * Método para fazer autenticação pelo EMAIL
      */
     public void authWithEmail(Activity activity, String email, String password){
-        isLoading.postValue(true);
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity, task -> {
-                    if (task.isSuccessful()) {
-                        isLoading.postValue(false);
-                        showEmailPasswordIncorrectDialog.postValue(false);
-                        getUserDataAndLogin();
+        if (checkFields(email, password)) {
+            isLoading.postValue(true);
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(activity, task -> {
+                        if (task.isSuccessful()) {
+                            isLoading.postValue(false);
+                            showEmailPasswordIncorrectDialog.postValue(false);
+                            getUserDataAndLogin();
 
-                    } else {
-                        isLoading.postValue(false);
-                        showEmailPasswordIncorrectDialog.postValue(true);
-                    }
+                        } else {
+                            isLoading.postValue(false);
+                            showEmailPasswordIncorrectDialog.postValue(true);
+                        }
 
-                });
+                    });
+        }
     }
-
-
-
 
 
 
@@ -154,13 +161,15 @@ public class LoginViewModel extends AndroidViewModel {
      */
     public void authWithGoogle(Activity activity, GoogleSignInAccount acct) {
         //Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
+        isLoading.postValue(true);
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
+                        isLoading.postValue(false);
                         getUserDataAndLogin();
                     } else {
+                        isLoading.postValue(false);
                         Crashlytics.logException(task.getException());
                         Toast.makeText(getApplication(), getApplication().getString(R.string.google_fail_login), Toast.LENGTH_SHORT).show();
                     }
@@ -173,11 +182,14 @@ public class LoginViewModel extends AndroidViewModel {
      */
     public void authWithFacebook(Activity activity, AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        isLoading.postValue(true);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
+                        isLoading.postValue(false);
                         getUserDataAndLogin();
                     } else {
+                        isLoading.postValue(false);
                         Crashlytics.logException(task.getException());
                         Toast.makeText(getApplication(), getApplication().getString(R.string.facebook_fail_login), Toast.LENGTH_SHORT).show();
                     }
