@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_height="120dp">
+
+    <TextView
+        android:id="@+id/question_username"
+        tools:text="arthurmazer -"
+        android:layout_toEndOf="@id/profile_image"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/titillium_light"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/question_time"
+        tools:text="8h"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/question_username"
+        android:fontFamily="@font/titillium_light"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@id/question_username"
+        tools:text="Mussum Ipsum, cacilds vidis litro abertis. Si num tem leite então bota uma Si num tem leite então bota uma Si num tem leite então bota uma Si num tem leite então bota uma "
+        android:id="@+id/question_text"
+        android:fontFamily="@font/titillium_semibold"
+        android:layout_marginStart="16dp"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        tools:text="@string/view_replies"
+        android:id="@+id/view_replies"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/question_divider"
+        android:fontFamily="@font/titillium_bold"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/question_divider"
+        android:layout_alignParentBottom="true"
+        android:background="@color/light_grey"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+
+
+</RelativeLayout>

@@ -3,84 +3,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/mauve"
     android:orientation="vertical">
 
+   <VideoView
+       android:layout_width="match_parent"
+       android:layout_height="160dp" />
+
     <android.support.v7.widget.CardView
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="32dp"
-        android:layout_marginTop="8dp"
-        android:elevation="8dp"
-        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimaryText"
+        app:cardCornerRadius="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/content_panel"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <fragment
-                class="com.google.android.youtube.player.YouTubePlayerSupportFragment"
-                android:id="@+id/youtube_fragment"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_height="180dp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/video_title"
+                    tools:text="Titulo do video"
+                    android:fontFamily="@font/titillium_light"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorSecondaryText"
+                    android:layout_margin="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                
+                <TextView
+                    android:id="@+id/video_description"
+                    android:layout_marginStart="16sp"
+                    android:layout_marginEnd="16sp"
+                    android:maxLength="220"
+                    tools:text="Mussum Ipsum, cacilds vidis litro abertis. Copo furadis é disculpa de bebadis, arcu quam euismod magna. Nullam volutpat risus nec leo commodo, ut interdum diam laoreet. Sed non consequat odio. Mauris nec dolor in eros "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <View
+                    android:layout_margin="16dp"
+                    android:background="@color/light_grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+
+                <TextView
+                    tools:text="@string/questions_label"
+                    android:fontFamily="@font/titillium_light"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorSecondaryText"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <include layout="@layout/item_add_question"/>
 
 
 
-            <TextView
-                android:layout_below="@id/youtube_fragment"
-                android:id="@+id/course_title"
-                android:text="@string/course_theme"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/titillium_semibold"
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/course_subtitle"
-                android:text="@string/course_title"
-                android:layout_below="@id/course_title"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/titillium_regular"
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/course_description"
-                android:layout_below="@id/course_subtitle"
-                android:text="@string/course_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="15dp"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp" />
 
-            <Button
-                android:layout_alignParentBottom="true"
-                android:id="@+id/next_lesson"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Próxima Aula" />
 
-        </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+
 
     </android.support.v7.widget.CardView>
-
 
 
 

@@ -13,7 +13,6 @@ import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_SUBTITLE_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO
-import kotlinx.android.synthetic.main.activity_classroom.*
 
 
 class ClassroomActivity : BaseActivity() {
@@ -48,19 +47,19 @@ class ClassroomActivity : BaseActivity() {
     fun setupExtras(){
         if (intent != null) {
             codVideo = intent?.getStringExtra(EXTRA_COD_VIDEO)
-            course_title?.text = intent?.getStringExtra(EXTRA_TITLE_VIDEO)
-            course_subtitle?.text = intent?.getStringExtra(EXTRA_SUBTITLE_VIDEO)
-            course_description?.text = intent?.getStringExtra(EXTRA_DESCRPTION_VIDEO)
+          //  course_title?.text = intent?.getStringExtra(EXTRA_TITLE_VIDEO)
+          //  course_subtitle?.text = intent?.getStringExtra(EXTRA_SUBTITLE_VIDEO)
+           // course_description?.text = intent?.getStringExtra(EXTRA_DESCRPTION_VIDEO)
         }
     }
 
     fun setupViewObservers(){
         classroomViewModel?.isUserFirstTime?.observe(this, Observer { it ->
             if (it == true){
-                next_lesson?.text = getString(R.string.btn_concluir)
-                next_lesson?.setOnClickListener { finish() }
+              //  next_lesson?.text = getString(R.string.btn_concluir)
+              //  next_lesson?.setOnClickListener { finish() }
             }else{
-                next_lesson?.setOnClickListener { }
+              //  next_lesson?.setOnClickListener { }
             }
         })
 
