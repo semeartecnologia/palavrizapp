@@ -3,22 +3,20 @@ package com.semear.tec.palavrizapp.modules.classroom
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
-import com.semear.tec.palavrizapp.utils.constants.Constants
+import com.semear.tec.palavrizapp.modules.classroom.video_view.VideoFragment
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_SUBTITLE_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO
+import kotlinx.android.synthetic.main.activity_classroom.*
 
 
 class ClassroomActivity : BaseActivity() {
 
-    private var codVideo : String? = String()
+    private var videoUrl = ""
     private var classroomViewModel: ClassroomViewModel? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +29,11 @@ class ClassroomActivity : BaseActivity() {
         setupActionBar()
         setupExtras()
         setupViewObservers()
-        initYoutubePlayer()
+        setupVideoFragment()
+    }
+
+    private fun setupVideoFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance("https://firebasestorage.googleapis.com/v0/b/palavrizapp.appspot.com/o/SampleVideo_1280x720_2mb.mp4?alt=media&token=dec12fc4-178e-4ee5-890e-9682da2ebe0b")).commit()
     }
 
     fun initViewModel(){
@@ -46,37 +48,24 @@ class ClassroomActivity : BaseActivity() {
 
     fun setupExtras(){
         if (intent != null) {
-            codVideo = intent?.getStringExtra(EXTRA_COD_VIDEO)
-          //  course_title?.text = intent?.getStringExtra(EXTRA_TITLE_VIDEO)
-          //  course_subtitle?.text = intent?.getStringExtra(EXTRA_SUBTITLE_VIDEO)
-           // course_description?.text = intent?.getStringExtra(EXTRA_DESCRPTION_VIDEO)
+            videoUrl = intent?.getStringExtra(EXTRA_COD_VIDEO) ?: ""
+            video_title?.text = intent?.getStringExtra(EXTRA_TITLE_VIDEO)
+            video_description?.text = intent?.getStringExtra(EXTRA_DESCRPTION_VIDEO)
         }
     }
 
     fun setupViewObservers(){
         classroomViewModel?.isUserFirstTime?.observe(this, Observer { it ->
             if (it == true){
-              //  next_lesson?.text = getString(R.string.btn_concluir)
-              //  next_lesson?.setOnClickListener { finish() }
+                //  next_lesson?.text = getString(R.string.btn_concluir)
+                //  next_lesson?.setOnClickListener { finish() }
             }else{
-              //  next_lesson?.setOnClickListener { }
+                //  next_lesson?.setOnClickListener { }
             }
         })
 
     }
 
-    fun initYoutubePlayer(){
-        val youTubePlayerFragment = supportFragmentManager
-                .findFragmentById(R.id.youtube_fragment) as YouTubePlayerSupportFragment
-        youTubePlayerFragment.initialize(Constants.YOUTUBE_API_KEY, object : YouTubePlayer.OnInitializedListener {
-            override fun onInitializationSuccess(provider: YouTubePlayer.Provider, youTubePlayer: YouTubePlayer, b: Boolean) {
-                youTubePlayer.loadVideo(codVideo)
-                youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL)
-            }
 
 
-
-            override fun onInitializationFailure(provider: YouTubePlayer.Provider, youTubeInitializationResult: YouTubeInitializationResult) {}
-        })
-    }
 }

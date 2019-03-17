@@ -70,6 +70,7 @@ ext {
     butterKnifeVersion = '9.0.0-rc2'
     playServicesVersion = '16.0.1'
     picassoVersion = '2.71828'
+    exoplayerVersion = '2.9.6'
 }
 
 
@@ -122,6 +123,9 @@ dependencies {
     }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
+
+    //ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

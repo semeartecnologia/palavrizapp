@@ -44,7 +44,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         this.listGroupThemes.clear();
 
         //adiciona na lista e notifica
-
         int currentId = -1;
         for (GroupThemes groupThemes : listThemes){
 
@@ -81,12 +80,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
 
         viewHolder.title.setText(vp.getMovieTitle());
         viewHolder.description.setText(vp.getDescription());
-        /**final GroupThemes groupTheme = this.listGroupThemes.get(i);
-
-        //viewHolder.title.setText(plan.getPlanTitle(context));
-        viewHolder.groupIdText.setText("Grupo " + groupTheme.getId());
-        viewHolder.groupName.setText(groupTheme.getGroupName());
-        viewHolder.conceptTheme.setText("Tema conceito: " + groupTheme.getTemaConceito());**/
 
     }
 
@@ -115,26 +108,13 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
                 it.putExtra(EXTRA_COD_VIDEO, urlyoutube);
                 it.putExtra(EXTRA_TITLE_VIDEO, title.getText().toString());
                 it.putExtra(EXTRA_SUBTITLE_VIDEO, description.getText().toString());
-                it.putExtra(EXTRA_DESCRPTION_VIDEO, "");
+                it.putExtra(EXTRA_DESCRPTION_VIDEO, "Nossa matrículas estão abertas para 2018, venha fazer matrícula com a gente!Veja mais informações sobre nossos planos em www.palavrizar.com.br");
                 ctx.startActivity(it);
             });
 
 
         }
 
-        /**public TextView groupIdText;
-        public TextView groupName;
-        public TextView conceptTheme;
-
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            groupIdText = itemView.findViewById(R.id.tv_group_id);
-            groupName = itemView.findViewById(R.id.tv_group_name);
-            conceptTheme = itemView.findViewById(R.id.tv_theme_concept);
-
-        }**/
 
     }
 }

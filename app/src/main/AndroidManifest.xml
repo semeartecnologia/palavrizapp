@@ -50,7 +50,11 @@
             android:name=".modules.MainActivity"
             android:label="@string/title_activity_main"/>
         <activity android:name=".modules.welcome.WelcomeActivity" />
-        <activity android:name=".modules.classroom.ClassroomActivity"/>
+        <activity android:name=".modules.classroom.ClassroomActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".modules.classroom.FullscreenVideoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:screenOrientation="landscape"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9fccde76341c25f9c7fff7bba5833402cf51ccce" />
