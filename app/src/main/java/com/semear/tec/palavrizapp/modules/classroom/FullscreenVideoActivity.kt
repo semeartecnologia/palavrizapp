@@ -7,7 +7,7 @@ import com.semear.tec.palavrizapp.modules.classroom.video_view.VideoFragment
 
 class FullscreenVideoActivity: AppCompatActivity() {
 
-    private var videoUrl = "https://firebasestorage.googleapis.com/v0/b/palavrizapp-debug.appspot.com/o/aulas%2Flingua_portuguesa%2Fvideo_3.mp4?alt=media&token=82d8bb27-a9e6-4a70-b69c-2a765af2aef5"
+    private var videoUrl = "https://firebasestorage.googleapis.com/v0/b/palavrizapp.appspot.com/o/video_2.mp4?alt=media&token=8f19e683-70df-45dd-9e99-5c3d9a74a1d1"
     private var positionVideo: Long = 0
     private var currentWindow = 0
 

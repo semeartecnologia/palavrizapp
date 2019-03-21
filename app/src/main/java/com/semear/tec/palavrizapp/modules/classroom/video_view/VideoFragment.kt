@@ -23,6 +23,12 @@ import com.google.android.exoplayer2.util.Util
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.modules.classroom.FullscreenVideoActivity
 import kotlinx.android.synthetic.main.video_view_fragment.*
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.FileDataSource.FileDataSourceException
+import com.google.android.exoplayer2.upstream.DataSpec
+import com.google.android.exoplayer2.upstream.FileDataSource
+
 
 class VideoFragment: Fragment() {
 
@@ -104,8 +110,8 @@ class VideoFragment: Fragment() {
         )
 
         player_view.player = player
-        player.playWhenReady = true
         prepareMediaSource()
+        player.playWhenReady = true
         player.seekTo(window, position)
 
     }

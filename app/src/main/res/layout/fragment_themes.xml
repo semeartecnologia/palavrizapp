@@ -6,35 +6,20 @@
     android:orientation="vertical"
     tools:context=".modules.themes.ThemesFragment">
 
-    <TextView
-        android:text="Língua Portuguesa"
-        android:layout_margin="12dp"
-        android:textAllCaps="true"
-        android:fontFamily="@font/titillium_semibold"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/theme_chooser"
+        android:layout_marginBottom="8dp"
+        android:elevation="8dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_themes"
-        android:layout_marginStart="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layoutAnimation="@anim/layout_fall_down_animation"
         android:layout_width="match_parent"
-        android:layout_height="250dp"/>
-
-    <TextView
-        android:text="Redação"
-        android:layout_margin="12dp"
-        android:fontFamily="@font/titillium_semibold"
-        android:textSize="16sp"
-        android:textAllCaps="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_redacao"
-        android:layout_marginStart="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"/>
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

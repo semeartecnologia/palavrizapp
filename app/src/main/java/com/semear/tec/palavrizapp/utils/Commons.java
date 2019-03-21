@@ -26,6 +26,24 @@ public class Commons {
                 .show();
     }
 
+    public static void showAlert(Activity activity, String titleAlert, String textAlert){
+
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(activity, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(activity);
+        }
+        builder.setTitle(titleAlert)
+                .setMessage(textAlert)
+                .setPositiveButton("ok", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+
 
 
 }

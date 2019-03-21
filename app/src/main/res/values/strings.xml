@@ -70,7 +70,7 @@
     <string name="card_title_aulas">Aulas</string>
     <string name="card_text_aulas">Assista aqui nossas aulas de diversos temas</string>
     <string name="card_see_more_aulas">Ver aulas ></string>
-    <string name="questions_label">Perguntas (%d)</string>
+    <string name="questions_label">Perguntas (0)</string>
     <string name="ask_a_question">Fazer uma pergunta!</string>
 
     <!-- Curso -->
@@ -113,10 +113,25 @@
     <string name="video_title">Título do vídeo</string>
     <string name="video_description">Descrição</string>
     <string name="video_category">Categoria</string>
+    <string name="video_size_title">%d/50</string>
+    <string name="video_size_desc">%d/200</string>
+
+    <!-- List Video -->
+    <string name="seen_already">Já visto</string>
+    <string name="upload_service_description">Serviço de upload de vídeos para o Palavrizapp</string>
+    <string name="btn_upload">Upload</string>
 
 
     <!-- Contextual Menu -->
     <string name="logout">Logout</string>
+
+    <!-- Upload Service -->
+    <string name="notification_title">Subindo vídeo</string>
+    <string name="notification_content">O upload do seu vídeo para o palavrizapp está sendo processado</string>
+    <string name="notification_ticker">Upload de vídeo em progresso</string>
+    <string name="upload_sucess_title">Sucesso</string>
+    <string name="upload_sucess_text">O vídeo estará disponível em breve</string>
+
 
 
 

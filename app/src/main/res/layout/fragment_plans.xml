@@ -8,6 +8,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvPlans"
         android:layout_above="@id/btn_update_plan"
+        android:layoutAnimation="@anim/layout_fall_down_animation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -17,6 +18,4 @@
         android:enabled="false"
         android:layout_alignParentBottom="true"
         style="@style/BtnUpdatePlan"/>
-
-
 </RelativeLayout>

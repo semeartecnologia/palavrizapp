@@ -24,7 +24,6 @@ public class ThemesFragment extends Fragment {
 
     ThemesViewModel themesViewModel;
     private RecyclerView recyclerTheme1;
-    private RecyclerView recyclerTheme2;
     private ThemesAdapter mAdapter;
 
     public ThemesFragment() {}
@@ -43,12 +42,9 @@ public class ThemesFragment extends Fragment {
 
         mAdapter = new ThemesAdapter();
         recyclerTheme1 = v.findViewById(R.id.rv_themes);
-        recyclerTheme1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerTheme1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerTheme1.setAdapter(mAdapter);
 
-        recyclerTheme2 = v.findViewById(R.id.rv_redacao);
-        recyclerTheme2.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerTheme2.setAdapter(mAdapter);
 
         //getListOfThemes();
         getListOfMovies();

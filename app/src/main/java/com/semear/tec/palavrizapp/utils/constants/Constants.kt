@@ -26,4 +26,16 @@ object Constants {
     const val POSITIVE = 1
     const val NEGATIVE = 2
     const val NEUTRAL = 0
+
+    //Video Upload
+    const val EXTRA_VIDEO_PATH = "video_path"
+
+    const val NOTIFICATION_ID = 1
+    const val EXTRA_FILE_URI = "extra_file_uri"
+    const val EXTRA_FILE_TITLE= "extra_file_title"
+    const val EXTRA_FILE_DESCRIPTION= "extra_file_description"
+    const val EXTRA_FILE_CATEGORY = "extra_file_cateogory"
+
+    //Broadcast
+    const val BROADCAST_UPLOAD_DONE = "upload_done"
 }

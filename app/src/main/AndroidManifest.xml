@@ -3,6 +3,7 @@
     package="com.semear.tec.palavrizapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -55,9 +56,16 @@
         <activity android:name=".modules.classroom.FullscreenVideoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:screenOrientation="landscape"/>
+        <activity android:name=".modules.upload.UploadActivity" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9fccde76341c25f9c7fff7bba5833402cf51ccce" />
+
+        <service
+            android:name=".modules.upload.UploadService"
+            android:description="@string/upload_service_description"
+            android:exported="false" />
     </application>
 
 </manifest>

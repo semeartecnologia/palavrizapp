@@ -1,11 +1,19 @@
 package com.semear.tec.palavrizapp.modules;
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -16,8 +24,11 @@ import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity;
 import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment;
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment;
 import com.semear.tec.palavrizapp.modules.themes.ThemesFragment;
+import com.semear.tec.palavrizapp.modules.upload.UploadActivity;
 import com.semear.tec.palavrizapp.utils.constants.Constants;
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +37,7 @@ import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VID
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_SUBTITLE_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO;
+import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_PATH;
 
 public class MainActivity extends BaseActivity {
 
@@ -34,6 +46,9 @@ public class MainActivity extends BaseActivity {
 
     SessionManager sessionManager;
     private MainViewModel mainViewModel;
+
+    private static int SELECT_VIDEO = 300;
+    private static int REQUEST_READ_STORAGE = 400;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +121,103 @@ public class MainActivity extends BaseActivity {
             case R.id.action_logout:
                 mainViewModel.logout();
                 return true;
+            case R.id.upload_video:
+                openPickVideoGllery();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void openPickVideoGllery(){
+        requestStoragePermission();
+    }
+
+    public void requestStoragePermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_READ_STORAGE);
+
+        }
+    }
+
+    @ Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_VIDEO) {
+                String selectedVideoPath = getRealPathFromURI(data.getData());
+                try {
+                    if(selectedVideoPath == null) {
+                        finish();
+                    } else {
+                        startUploadActivity(selectedVideoPath);
+                        //mainViewModel.uploadVideo(this, selectedVideoPath, "nome.mp4");
+                    }
+                } catch (Exception e) {
+
+                    Log.d("videao", "error");
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void startUploadActivity(String videoPath) {
+        Intent it = new Intent(this, UploadActivity.class);
+        it.putExtra(EXTRA_VIDEO_PATH, videoPath);
+        startActivity(it);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        if ( requestCode == REQUEST_READ_STORAGE){
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, SELECT_VIDEO);
+
+            }
+        }
+        /*switch (requestCode) {
+            case REQUEST_READ_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }*/
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if(cursor.moveToFirst()){
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 
 
