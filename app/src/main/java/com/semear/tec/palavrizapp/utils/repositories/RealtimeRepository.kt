@@ -11,6 +11,12 @@ class RealtimeRepository(val context: Context) {
     var reference = "videos/"
 
     fun saveVideo(video: Video){
-        mDatabaseReference.child(reference).child(video.category+"/").setValue(video)
+
+        var key = mDatabaseReference.child("videos/").push().key
+        if (key == null){
+            key = "-" + System.currentTimeMillis().toString()
+        }
+
+        mDatabaseReference.child(reference).child(video.category+"/").child("$key/").setValue(video)
     }
 }

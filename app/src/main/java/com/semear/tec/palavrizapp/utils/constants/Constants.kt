@@ -35,7 +35,9 @@ object Constants {
     const val EXTRA_FILE_TITLE= "extra_file_title"
     const val EXTRA_FILE_DESCRIPTION= "extra_file_description"
     const val EXTRA_FILE_CATEGORY = "extra_file_cateogory"
+    const val EXTRA_FILE_THUMBNAIL = "extra_file_thumbnail"
 
     //Broadcast
     const val BROADCAST_UPLOAD_DONE = "upload_done"
+    const val BROADCAST_UPLOAD_PROGRESS = "upload_progress"
 }

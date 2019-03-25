@@ -22,13 +22,9 @@ import com.semear.tec.palavrizapp.R;
 import com.semear.tec.palavrizapp.modules.base.BaseActivity;
 import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity;
 import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment;
-import com.semear.tec.palavrizapp.modules.plans.PlansFragment;
-import com.semear.tec.palavrizapp.modules.themes.ThemesFragment;
 import com.semear.tec.palavrizapp.modules.upload.UploadActivity;
-import com.semear.tec.palavrizapp.utils.constants.Constants;
+import com.semear.tec.palavrizapp.utils.Commons;
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +45,7 @@ public class MainActivity extends BaseActivity {
 
     private static int SELECT_VIDEO = 300;
     private static int REQUEST_READ_STORAGE = 400;
+    private static int REQUEST_WRITE_STORAGE = 401;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,13 +132,30 @@ public class MainActivity extends BaseActivity {
 
     public void requestStoragePermission(){
         if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
+                Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_READ_STORAGE);
 
+        }else{
+            requestWriteStoragePermission();
+        }
+    }
+
+    public void requestWriteStoragePermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_STORAGE);
+
+        }else{
+            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, SELECT_VIDEO);
         }
     }
 
@@ -149,7 +163,7 @@ public class MainActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_VIDEO) {
-                String selectedVideoPath = getRealPathFromURI(data.getData());
+                String selectedVideoPath = Commons.getRealPathFromURI(this, data.getData());
                 try {
                     if(selectedVideoPath == null) {
                         finish();
@@ -181,44 +195,18 @@ public class MainActivity extends BaseActivity {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+                requestWriteStoragePermission();
+
+            }
+        }else if ( requestCode == REQUEST_WRITE_STORAGE){
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, SELECT_VIDEO);
 
             }
         }
-        /*switch (requestCode) {
-            case REQUEST_READ_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }*/
     }
-
-    public String getRealPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if(cursor.moveToFirst()){
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
-    }
-
 
 }

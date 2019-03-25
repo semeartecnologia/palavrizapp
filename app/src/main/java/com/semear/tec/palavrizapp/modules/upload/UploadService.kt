@@ -10,6 +10,7 @@ import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_CATEGORY
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_DESCRIPTION
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_THUMBNAIL
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_TITLE
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_URI
 import com.semear.tec.palavrizapp.utils.constants.Constants.NOTIFICATION_ID
@@ -43,24 +44,26 @@ class UploadService : Service() {
         val fileTitle = intent?.getStringExtra(EXTRA_FILE_TITLE) ?: ""
         val fileDescription = intent?.getStringExtra(EXTRA_FILE_DESCRIPTION) ?: ""
         val fileCategory = intent?.getStringExtra(EXTRA_FILE_CATEGORY) ?: ""
+        val videoThumb = intent?.getStringExtra(EXTRA_FILE_THUMBNAIL) ?: ""
+        Log.d("teste", videoThumb)
         //Log.d("palavrizapp-service", "extras: $fileUri $fileName")
-        storageRepository.uploadVideo(Video(fileTitle,fileDescription,fileCategory,fileUri))
+        storageRepository.uploadVideo(Video(fileTitle,fileDescription,fileCategory,fileUri, videoThumb))
         return super.onStartCommand(intent, flags, startId)
     }
 
     private fun showNotification(){
         Log.d("palavrizapp-service", "showing")
-        val notificationIntent = Intent(applicationContext, UploadActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
-        val notification = NotificationCompat.Builder(this, "default")
-                .setContentTitle(getText(R.string.notification_title))
-                .setContentText(getText(R.string.notification_content))
+        //val notificationIntent = Intent(applicationContext, UploadActivity::class.java)
+        //val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        //val notification = NotificationCompat.Builder(this, "default")
+                //.setContentTitle(getText(R.string.notification_title))
+               // .setContentText(getText(R.string.notification_content))
                 //.setSmallIcon(R.drawable.ic_contact)
-                .setContentIntent(pendingIntent)
-                .setOngoing(true)
-                .setTicker(getText(R.string.notification_ticker))
-                .build()
-        startForeground(NOTIFICATION_ID, notification)
+                //.setContentIntent(pendingIntent)
+              //  .setOngoing(true)
+            //    .setTicker(getText(R.string.notification_ticker))
+          //      .build()
+        //startForeground(NOTIFICATION_ID, notification)
     }
 
     override fun onUnbind(intent: Intent?): Boolean {

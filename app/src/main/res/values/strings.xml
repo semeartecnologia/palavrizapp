@@ -131,6 +131,7 @@
     <string name="notification_ticker">Upload de vídeo em progresso</string>
     <string name="upload_sucess_title">Sucesso</string>
     <string name="upload_sucess_text">O vídeo estará disponível em breve</string>
+    <string name="upload_started">Seu vídeo está sendo carregado em segundo plano</string>
 
 
 

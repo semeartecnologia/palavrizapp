@@ -14,6 +14,7 @@ class UploadViewModel: ViewModel() {
         intent.putExtra(Constants.EXTRA_FILE_TITLE, video.title)
         intent.putExtra(Constants.EXTRA_FILE_DESCRIPTION, video.description)
         intent.putExtra(Constants.EXTRA_FILE_CATEGORY, video.category)
+        intent.putExtra(Constants.EXTRA_FILE_THUMBNAIL, video.videoThumb)
         context.startService(intent)
     }
 }
