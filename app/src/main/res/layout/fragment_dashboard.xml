@@ -33,5 +33,6 @@
 
     <include layout="@layout/card_aulas"/>
 
+    <include layout="@layout/card_send_essay"/>
 
 </LinearLayout>

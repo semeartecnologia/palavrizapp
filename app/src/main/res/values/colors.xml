@@ -12,6 +12,9 @@
 
     <color name="transparentWhite">#90ffffff</color>
 
+    <color name="transparentGrey30">#90727272</color>
+    <color name="transparentWhite60">#80ffffff</color>
+
     <color name="light_grey">#727272</color>
 
     <!-- Screens background color-->

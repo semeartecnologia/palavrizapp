@@ -4,8 +4,7 @@ import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -22,8 +21,10 @@ import com.semear.tec.palavrizapp.R;
 import com.semear.tec.palavrizapp.modules.base.BaseActivity;
 import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity;
 import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment;
+import com.semear.tec.palavrizapp.modules.essay.image_check.EssayCheckActivity;
 import com.semear.tec.palavrizapp.modules.upload.UploadActivity;
 import com.semear.tec.palavrizapp.utils.Commons;
+import com.semear.tec.palavrizapp.utils.constants.Constants;
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager;
 
 import butterknife.BindView;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO;
+import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_IMAGE_CHECK;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_SUBTITLE_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_PATH;
@@ -46,6 +48,8 @@ public class MainActivity extends BaseActivity {
     private static int SELECT_VIDEO = 300;
     private static int REQUEST_READ_STORAGE = 400;
     private static int REQUEST_WRITE_STORAGE = 401;
+    private static int REQUEST_IMAGE_CAPTURE = 345;
+    private static int REQUEST_IMAGE_CHECK = 405;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,32 +163,18 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @ Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_VIDEO) {
-                String selectedVideoPath = Commons.getRealPathFromURI(this, data.getData());
-                try {
-                    if(selectedVideoPath == null) {
-                        finish();
-                    } else {
-                        startUploadActivity(selectedVideoPath);
-                        //mainViewModel.uploadVideo(this, selectedVideoPath, "nome.mp4");
-                    }
-                } catch (Exception e) {
 
-                    Log.d("videao", "error");
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     private void startUploadActivity(String videoPath) {
         Intent it = new Intent(this, UploadActivity.class);
         it.putExtra(EXTRA_VIDEO_PATH, videoPath);
         startActivity(it);
+    }
 
+    private void startImageCheckActivity(Bitmap bmp){
+        Intent it = new Intent(this, EssayCheckActivity.class);
+        it.putExtra(EXTRA_IMAGE_CHECK, bmp);
+        startActivityForResult(it, REQUEST_IMAGE_CHECK);
     }
 
     @Override
@@ -205,6 +195,37 @@ public class MainActivity extends BaseActivity {
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, SELECT_VIDEO);
 
+            }
+        }
+    }
+
+    @ Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_VIDEO) {
+                String selectedVideoPath = Commons.getRealPathFromURI(this, data.getData());
+                try {
+                    if(selectedVideoPath == null) {
+                        finish();
+                    } else {
+                        startUploadActivity(selectedVideoPath);
+                        //mainViewModel.uploadVideo(this, selectedVideoPath, "nome.mp4");
+                    }
+                } catch (Exception e) {
+
+                    Log.d("videao", "error");
+                    e.printStackTrace();
+                }
+            }else  if (requestCode == REQUEST_IMAGE_CAPTURE){
+                if ( data.getExtras() != null) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    startImageCheckActivity(photo);
+                }
+            }
+        }else if (resultCode == Constants.RESULT_NEGATIVE){
+            if (requestCode == REQUEST_IMAGE_CHECK){
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
             }
         }
     }

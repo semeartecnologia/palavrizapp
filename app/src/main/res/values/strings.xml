@@ -73,6 +73,17 @@
     <string name="questions_label">Perguntas (0)</string>
     <string name="ask_a_question">Fazer uma pergunta!</string>
 
+    <!-- Essay -->
+    <string name="card_title_essay">Minhas Redações</string>
+    <string name="card_text_essay">Veja e envie suas redações para corrigirmos</string>
+    <string name="card_see_more_essay">Enviar redação ></string>
+    <string name="is_readable">Você consegue ler essa redação?</string>
+    <string name="positive_answer">Sim</string>
+    <string name="negative_answer">Não</string>
+    <string name="hint_essay_title">Título</string>
+    <string name="essay_title_field">Informe o título da redação</string>
+    <string name="essay_send">Enviar</string>
+
     <!-- Curso -->
     <string name="course_theme">Primeira Aula</string>
     <string name="course_title">Utilizando nosso aplicativo</string>
@@ -100,6 +111,11 @@
 
     <string name="first_class_onboard_title">Começe agora</string>
     <string name="first_class_onboard_text">Assista sua primeira aula grátis</string>
+
+    <!-- Tela Essay -->
+    <string name="no_essay_yet">Você ainda não enviou uma redação para corrigirmos</string>
+    <string name="btn_first_send">Envie sua primeira!</string>
+    <string name="title">Minhas redações</string>
 
     <!-- Classroom -->
     <string name="btn_concluir">Concluir</string>
@@ -132,8 +148,6 @@
     <string name="upload_sucess_title">Sucesso</string>
     <string name="upload_sucess_text">O vídeo estará disponível em breve</string>
     <string name="upload_started">Seu vídeo está sendo carregado em segundo plano</string>
-
-
 
 
 </resources>

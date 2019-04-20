@@ -40,4 +40,8 @@ object Constants {
     //Broadcast
     const val BROADCAST_UPLOAD_DONE = "upload_done"
     const val BROADCAST_UPLOAD_PROGRESS = "upload_progress"
+
+    //Essay
+    const val EXTRA_IMAGE_CHECK = "extra_image_check"
+    const val RESULT_NEGATIVE = 404;
 }
