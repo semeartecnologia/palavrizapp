@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.semear.tec.palavrizapp.R;
 import com.semear.tec.palavrizapp.models.User;
 import com.semear.tec.palavrizapp.modules.MainActivity;
+import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity;
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment;
 import com.semear.tec.palavrizapp.modules.themes.ThemesFragment;
 
@@ -53,11 +54,6 @@ public class DashboardFragment extends Fragment {
     @BindView(R.id.layout_card_essay)
     RelativeLayout cardEssay;
 
-
-
-
-    private static int REQUEST_CAMERA = 333;
-    private static int REQUEST_IMAGE_CAPTURE = 345;
     private DashboardViewModel dashboardViewModel;
 
     public DashboardFragment() {}
@@ -108,42 +104,19 @@ public class DashboardFragment extends Fragment {
                 mainActivity.setActionBarTitle("Aulas");
             });
             cardEssay.setOnClickListener(v -> {
-                checkCameraPermission();
+                //checkCameraPermission();
+                startMyEssayActivity();
             });
         }
     }
 
-    public void checkCameraPermission(){
-        if (getActivity() == null) return;
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            Log.d("permissao", "pede");
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.CAMERA},
-                    REQUEST_CAMERA);
-
-        }else{
-            Log.d("permissao", "concedida ja");
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            getActivity().startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-        }
+    private void startMyEssayActivity(){
+        Intent it = new Intent(getActivity(), MyEssayActivity.class);
+        startActivity(it);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if ( requestCode == REQUEST_CAMERA){
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
 
-    }
+
 
 
 

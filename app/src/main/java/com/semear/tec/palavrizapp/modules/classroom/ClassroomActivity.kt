@@ -33,7 +33,7 @@ class ClassroomActivity : BaseActivity() {
     }
 
     private fun setupVideoFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance("https://firebasestorage.googleapis.com/v0/b/palavrizapp.appspot.com/o/video_2.mp4?alt=media&token=8f19e683-70df-45dd-9e99-5c3d9a74a1d1")).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoUrl)).commit()
     }
 
     fun initViewModel(){

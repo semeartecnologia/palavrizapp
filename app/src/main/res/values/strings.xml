@@ -83,6 +83,16 @@
     <string name="hint_essay_title">Título</string>
     <string name="essay_title_field">Informe o título da redação</string>
     <string name="essay_send">Enviar</string>
+    <string name="upload_essay_title">Oops</string>
+    <string name="upload_essay_error">Erro ao enviar sua redação, tente novamente mais tarde</string>
+    <string name="upload_essay_success">Sucesso! Sua redação foi enviada, agora aguarde nosso feedback</string>
+    <string name="upload_status_waiting">Aguardando Feedback</string>
+    <string name="upload_status_done">Ver correção</string>
+    <string name="btn_send_essay">Enviar Redação</string>
+    <string name="essay_title">Título</string>
+    <string name="essay_theme">Tema</string>
+    <string name="essay_status">Status</string>
+    <string name="essay_action">Ação</string>
 
     <!-- Curso -->
     <string name="course_theme">Primeira Aula</string>

@@ -16,6 +16,7 @@ import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import java.io.File
 import android.R.attr.bitmap
+import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 import java.io.ByteArrayOutputStream
 
 
@@ -91,9 +92,8 @@ class StorageRepository(val context: Context) {
         }
     }
 
-    fun uploadEssay(essay: Essay, userId: String, bmp: Bitmap) {
+    fun uploadEssay(essay: Essay, userId: String, bmp: Bitmap, callback: EssayUploadCallback) {
         val refThumb = essaysParentRef.child("essay-"+System.currentTimeMillis())
-
         val baos = ByteArrayOutputStream()
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
@@ -102,21 +102,17 @@ class StorageRepository(val context: Context) {
         thumbTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
             if (!task.isSuccessful) {
                 task.exception?.let {
-                    Log.d("teste", "uplaod THUMB failed " + it.message)
-                    Log.d("teste", "uplaod THUMB failed " + it.cause)
-                    Log.d("teste", "uplaod THUMB failed " + it.stackTrace)
+                    callback.onFail()
                     throw it
                 }
             }
             return@Continuation refThumb.downloadUrl
         }).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("teste", "uplaod task THUMB sucessssss")
-                Log.d("teste", "uplaod TUMB success: " + refThumb.downloadUrl)
-
                 refThumb.downloadUrl.addOnSuccessListener {
                     essay.url= it.path ?: ""
                     realtimeRepository.saveEssay(essay, userId)
+                    callback.onSuccess()
                 }
 
             }

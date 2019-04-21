@@ -34,6 +34,7 @@
     <LinearLayout
         android:id="@+id/dialog_is_readable"
         android:background="@color/transparentGrey30"
+        android:visibility="visible"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="32dp"
         android:orientation="vertical"
@@ -88,7 +89,7 @@
         android:layout_marginBottom="32dp"
         android:orientation="vertical"
         android:layout_width="240dp"
-        android:layout_height="180dp">
+        android:layout_height="220dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -102,7 +103,7 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="100dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/et_title_essay"

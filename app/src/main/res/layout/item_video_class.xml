@@ -8,21 +8,36 @@
     android:weightSum="100">
 
 
-    <ImageView
-        android:id="@+id/video_thumbnail"
-        android:layout_weight="55"
-        android:layout_width="0dp"
-        android:layout_height="128dp"
+    <FrameLayout
+        android:background="@drawable/thumbnail_background"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/thumbnail_background"
-        android:src="@drawable/video_placeholder"
-         />
+        android:layout_weight="55"
+        android:layout_width="0dp"
+        android:layout_height="128dp">
+
+        <ImageView
+            tools:src="@drawable/thumb_aula_subs_pais"
+            android:id="@+id/video_thumbnail"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <ImageView
+            android:id="@+id/thumb_play"
+            android:layout_gravity="center"
+            android:elevation="8dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/video_placeholder"
+            />
+
+    </FrameLayout>
 
     <LinearLayout
-
         android:layout_marginTop="8dp"
         android:id="@+id/linearLayout2"
         android:layout_weight="45"

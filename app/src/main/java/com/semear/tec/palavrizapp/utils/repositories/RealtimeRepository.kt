@@ -1,15 +1,10 @@
 package com.semear.tec.palavrizapp.utils.repositories
 
 import android.content.Context
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.models.Video
-import com.google.android.youtube.player.internal.w
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ValueEventListener
-
+import com.semear.tec.palavrizapp.models.VideoCategory
 
 
 class RealtimeRepository(val context: Context) {
@@ -35,18 +30,53 @@ class RealtimeRepository(val context: Context) {
         mDatabaseReference.child(reference).child("$userId/").child("$key/").setValue(essay)
     }
 
-    fun getEssayList(userId: String){
+    fun getEssayList(userId: String, onCompletion: ((ArrayList<Essay>) -> Unit)){
         val reference = "essays/"
+        var essayList = arrayListOf<Essay>()
         val queryReference = mDatabaseReference.child(reference).child("$userId/")
         queryReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    var a = ""
-                }
+                essayList.clear()
+                dataSnapshot.children.mapNotNullTo(essayList) { it.getValue<Essay>(Essay::class.java) }
+                onCompletion(essayList)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                var b = ""
+                onCompletion(essayList)
+            }
+        })
+    }
+
+    fun getVideosList(category: String, onCompletion: ((ArrayList<Video>) -> Unit)){
+        val reference = "videos/"
+        var videoList = arrayListOf<Video>()
+        val queryReference = mDatabaseReference.child(reference).child("$category/")
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                videoList.clear()
+                dataSnapshot.children.mapNotNullTo(videoList) { it.getValue<Video>(Video::class.java) }
+                onCompletion(videoList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(videoList)
+            }
+        })
+    }
+
+    fun getVideosCategoryList(onCompletion: ((ArrayList<VideoCategory>) -> Unit)){
+        val reference = "videoCategory/"
+        var categoryList = arrayListOf<VideoCategory>()
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                categoryList.clear()
+                dataSnapshot.children.mapNotNullTo(categoryList) { it.getValue<VideoCategory>(VideoCategory::class.java) }
+                onCompletion(categoryList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(categoryList)
             }
         })
     }

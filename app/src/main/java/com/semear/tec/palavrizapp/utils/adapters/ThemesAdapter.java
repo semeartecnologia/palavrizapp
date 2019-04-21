@@ -8,12 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.semear.tec.palavrizapp.R;
 import com.semear.tec.palavrizapp.models.GroupThemes;
+import com.semear.tec.palavrizapp.models.Video;
 import com.semear.tec.palavrizapp.models.VideoPreview;
 import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,21 +29,24 @@ import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_V
 
 public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder> {
 
-    List<GroupThemes> listGroupThemes;
-    List<VideoPreview> listVideos;
+    List<Video> listVideos;
     Context ctx;
 
     public ThemesAdapter(){
-        this.listGroupThemes = new ArrayList<>();
         this.listVideos = new ArrayList<>();
     }
 
-    public void addVideo(VideoPreview v){
-        this.listVideos.add(v);
+    public void addAllVideo(ArrayList<Video> v){
+        this.listVideos.clear();
+        this.listVideos.addAll(v);
         this.notifyDataSetChanged();
-        Log.d("AULA", v.getMovieTitle());
     }
 
+    public void clearVideoList(){
+        this.listVideos.clear();
+    }
+
+/*
     public void addThemes(List<GroupThemes> listThemes){
         this.listGroupThemes.clear();
 
@@ -59,7 +66,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         }
 
         this.notifyDataSetChanged();
-    }
+    }*/
 
     @NonNull
     @Override
@@ -67,8 +74,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         this.ctx = viewGroup.getContext();
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_video_class, viewGroup, false);
-
-
         return new ViewHolder(v);
     }
 
@@ -76,10 +81,14 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        final VideoPreview vp = this.listVideos.get(i);
+        final Video video = this.listVideos.get(i);
 
-        viewHolder.title.setText(vp.getMovieTitle());
-        viewHolder.description.setText(vp.getDescription());
+        viewHolder.title.setText(video.getTitle());
+        viewHolder.description.setText(video.getDescription());
+
+        viewHolder.videoPath = video.getPath();
+        Glide.with(ctx).load(video.getVideoThumb()).into(viewHolder.videoThumb);
+
 
     }
 
@@ -93,7 +102,8 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         public int id;
         public TextView title;
         public TextView description;
-        public String urlyoutube;
+        public String videoPath;
+        ImageView videoThumb;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -101,14 +111,15 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
 
             title = itemView.findViewById(R.id.video_title);
             description = itemView.findViewById(R.id.video_description);
+            videoThumb = itemView.findViewById(R.id.video_thumbnail);
 
 
             itemView.setOnClickListener(v -> {
                 Intent it = new Intent(ctx, ClassroomActivity.class);
-                it.putExtra(EXTRA_COD_VIDEO, urlyoutube);
+                it.putExtra(EXTRA_COD_VIDEO, videoPath);
                 it.putExtra(EXTRA_TITLE_VIDEO, title.getText().toString());
-                it.putExtra(EXTRA_SUBTITLE_VIDEO, description.getText().toString());
-                it.putExtra(EXTRA_DESCRPTION_VIDEO, "Nossa matrículas estão abertas para 2018, venha fazer matrícula com a gente!Veja mais informações sobre nossos planos em www.palavrizar.com.br");
+                //it.putExtra(EXTRA_SUBTITLE_VIDEO, description.getText().toString());
+                it.putExtra(EXTRA_DESCRPTION_VIDEO, description.getText());
                 ctx.startActivity(it);
             });
 

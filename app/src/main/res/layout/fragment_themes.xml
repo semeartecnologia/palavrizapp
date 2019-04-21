@@ -7,16 +7,28 @@
     tools:context=".modules.themes.ThemesFragment">
 
     <Spinner
-        android:id="@+id/theme_chooser"
-        android:layout_marginBottom="8dp"
+        android:id="@+id/category_spinner"
+        android:layout_margin="8dp"
         android:elevation="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ProgressBar
+        android:id="@+id/progress_loading_videos"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_themes"
+        android:visibility="gone"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layoutAnimation="@anim/layout_fall_down_animation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

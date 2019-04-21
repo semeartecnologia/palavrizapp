@@ -38,6 +38,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
+            android:id="@+id/btn_first_essay"
             android:drawableStart="@drawable/ic_photo_camera_black_24dp"
             android:drawablePadding="8dp"
             android:layout_marginTop="16dp"

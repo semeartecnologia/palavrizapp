@@ -1,6 +1,9 @@
 package com.semear.tec.palavrizapp.models;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 
     private String userId;
     private String fullname;
@@ -95,4 +98,46 @@ public class User {
     public void setPhotoUri(String photoUri) {
         this.photoUri = photoUri;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.userId);
+        dest.writeString(this.fullname);
+        dest.writeString(this.email);
+        dest.writeString(this.password);
+        dest.writeString(this.location);
+        dest.writeInt(this.userType == null ? -1 : this.userType.ordinal());
+        dest.writeInt(this.plan == null ? -1 : this.plan.ordinal());
+        dest.writeString(this.photoUri);
+    }
+
+    protected User(Parcel in) {
+        this.userId = in.readString();
+        this.fullname = in.readString();
+        this.email = in.readString();
+        this.password = in.readString();
+        this.location = in.readString();
+        int tmpUserType = in.readInt();
+        this.userType = tmpUserType == -1 ? null : UserType.values()[tmpUserType];
+        int tmpPlan = in.readInt();
+        this.plan = tmpPlan == -1 ? null : Plans.values()[tmpPlan];
+        this.photoUri = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

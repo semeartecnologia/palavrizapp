@@ -29,10 +29,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <include layout="@layout/card_user_planos"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <include layout="@layout/card_aulas"/>
+            <include layout="@layout/card_user_planos"/>
 
-    <include layout="@layout/card_send_essay"/>
+            <include layout="@layout/card_aulas"/>
+
+            <include layout="@layout/card_send_essay"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </LinearLayout>
