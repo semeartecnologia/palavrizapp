@@ -24,8 +24,8 @@ android {
         applicationId "com.semear.tec.palavrizapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 13
-        versionName "v0.45"
+        versionCode 14
+        versionName "v0.75"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
