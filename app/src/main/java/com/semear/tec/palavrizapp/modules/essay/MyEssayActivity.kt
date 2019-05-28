@@ -83,7 +83,7 @@ class MyEssayActivity : AppCompatActivity() {
 
     private fun checkUserHasEssay() {
         progress_bar_loading?.visibility = View.VISIBLE
-        essayRepository?.getEssayList {
+        essayRepository?.getEssayListByUser {
             rv_my_essays.visibility = View.VISIBLE
             progress_bar_loading?.visibility = View.GONE
             if (it.isEmpty()){

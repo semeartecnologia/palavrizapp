@@ -13,9 +13,11 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.semear.tec.palavrizapp.R;
+import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.modules.base.BaseActivity;
 import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity;
 import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment;
@@ -67,7 +69,7 @@ public class MainActivity extends BaseActivity {
 
     private void registerObservers() {
         mainViewModel.isUserOnline().observe(this, isOnline -> {
-            if (!isOnline) {
+            if (isOnline != null && !isOnline) {
                 redirectToLogin();
             }
         });
@@ -104,6 +106,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        if (sessionManager.getUserLogged().getUserType() == UserType.ADMINISTRADOR) {
+            menu.getItem(1).setVisible(true);
+        }else{
+            menu.getItem(1).setVisible(false);
+        }
         return true;
     }
 

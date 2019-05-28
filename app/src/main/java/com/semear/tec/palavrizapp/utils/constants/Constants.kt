@@ -44,4 +44,5 @@ object Constants {
     //Essay
     const val EXTRA_IMAGE_CHECK = "extra_image_check"
     const val RESULT_NEGATIVE = 404;
+    const val EXTRA_ESSAY = "extra_essay"
 }

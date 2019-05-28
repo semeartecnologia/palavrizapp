@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- NOME DO APP -->
     <string name="app_name">Palavrizapp</string>
 
@@ -73,6 +73,13 @@
     <string name="questions_label">Perguntas (0)</string>
     <string name="ask_a_question">Fazer uma pergunta!</string>
 
+    <!-- Essay List Admin -->
+    <string name="card_title_essay_list">Corrigir Redações</string>
+    <string name="card_text_essay_list">Envie um feedback para os alunos</string>
+    <string name="card_see_more_essay_list">Corrigir ></string>
+    <string name="author" tools:ignore="Typos">Autor: %s</string>
+    <string name="post_date">Enviada em: %s</string>
+
     <!-- Essay -->
     <string name="card_title_essay">Minhas Redações</string>
     <string name="card_text_essay">Veja e envie suas redações para corrigirmos</string>
@@ -86,13 +93,20 @@
     <string name="upload_essay_title">Oops</string>
     <string name="upload_essay_error">Erro ao enviar sua redação, tente novamente mais tarde</string>
     <string name="upload_essay_success">Sucesso! Sua redação foi enviada, agora aguarde nosso feedback</string>
-    <string name="upload_status_waiting">Aguardando Feedback</string>
+    <string name="upload_status_waiting">Aguardando Correção</string>
+    <string name="upload_status_correcting">Correção em andamento</string>
     <string name="upload_status_done">Ver correção</string>
     <string name="btn_send_essay">Enviar Redação</string>
     <string name="essay_title">Título</string>
     <string name="essay_theme">Tema</string>
     <string name="essay_status">Status</string>
     <string name="essay_action">Ação</string>
+    <string name="user_not_found">Usuário não encontrado</string>
+    <string name="loading_essay">Carregando redação…</string>
+    <string name="btn_correct_this_essay">Corrigir</string>
+    <string name="btn_issue_essay">Relatar Problema</string>
+    <string name="tv_theme_placeholder">Tema: %s</string>
+
 
     <!-- Curso -->
     <string name="course_theme">Primeira Aula</string>

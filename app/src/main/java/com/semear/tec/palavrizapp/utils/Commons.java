@@ -1,5 +1,6 @@
 package com.semear.tec.palavrizapp.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +10,11 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 
 import com.semear.tec.palavrizapp.utils.constants.Constants;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class Commons {
@@ -57,6 +63,11 @@ public class Commons {
             cursor.close();
         }
         return res;
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String getCurrentTimeDate(){
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
     }
 
 

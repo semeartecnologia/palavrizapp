@@ -3,6 +3,7 @@ package com.semear.tec.palavrizapp.utils.repositories
 import android.content.Context
 import android.graphics.Bitmap
 import com.semear.tec.palavrizapp.models.Essay
+import com.semear.tec.palavrizapp.models.EssayListUser
 import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 
 class EssayRepository(val context: Context) {
@@ -17,8 +18,16 @@ class EssayRepository(val context: Context) {
         }
     }
 
-    fun getEssayList(onCompletion: ((ArrayList<Essay>) -> Unit)){
+    fun getEssayListByUser(onCompletion: ((ArrayList<Essay>) -> Unit)){
         val user = sessionManager.userLogged
-        realtimeRepository.getEssayList(user.userId, onCompletion)
+        realtimeRepository.getEssayListByUser(user.userId, onCompletion)
+    }
+
+    fun getEssayImage(filename: String, onCompletion: ((String) -> Unit)){
+        storageRepository.getEssay(filename, onCompletion)
+    }
+
+    fun getEssayList(onCompletion: ((ArrayList<Essay>) -> Unit)){
+        realtimeRepository.getEssayList(onCompletion)
     }
 }

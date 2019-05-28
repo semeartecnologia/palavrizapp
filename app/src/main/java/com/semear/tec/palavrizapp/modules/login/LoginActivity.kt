@@ -141,7 +141,9 @@ class LoginActivity : BaseActivity() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-                loginViewModel!!.authWithGoogle(this@LoginActivity, account)
+                if (account != null) {
+                    loginViewModel!!.authWithGoogle(this@LoginActivity, account)
+                }
             } catch (e: ApiException) {
                 val titleAlert = getString(R.string.alert_gplay_title)
                 val textAlert = getString(R.string.alert_gplay_text)

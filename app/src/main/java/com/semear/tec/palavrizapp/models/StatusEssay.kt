@@ -1,5 +1,5 @@
 package com.semear.tec.palavrizapp.models
 
 enum class StatusEssay {
-    UPLOADED, FEEDBACK_READY
+    UPLOADED, CORRECTING,FEEDBACK_READY
 }

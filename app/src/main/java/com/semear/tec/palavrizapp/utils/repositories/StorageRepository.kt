@@ -92,8 +92,25 @@ class StorageRepository(val context: Context) {
         }
     }
 
+    fun getEssay(filename: String, onCompletion: ((String) -> Unit)){
+        val refThumb = essaysParentRef.child("$filename")
+
+        Log.d("carajo", filename + ".jpeg")
+
+        refThumb.downloadUrl.addOnSuccessListener {
+            val pathStr = it.toString()
+            val path = it.path
+            var b = ""
+            onCompletion(pathStr)
+        }.addOnFailureListener {
+            onCompletion("")
+        }
+
+    }
+
     fun uploadEssay(essay: Essay, userId: String, bmp: Bitmap, callback: EssayUploadCallback) {
-        val refThumb = essaysParentRef.child("essay-"+System.currentTimeMillis())
+        val filename = "essay-"+System.currentTimeMillis()
+        val refThumb = essaysParentRef.child(filename)
         val baos = ByteArrayOutputStream()
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
@@ -109,12 +126,10 @@ class StorageRepository(val context: Context) {
             return@Continuation refThumb.downloadUrl
         }).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                refThumb.downloadUrl.addOnSuccessListener {
-                    essay.url= it.path ?: ""
-                    realtimeRepository.saveEssay(essay, userId)
-                    callback.onSuccess()
-                }
-
+                essay.url = filename
+                realtimeRepository.saveEssay(essay, userId)
+                realtimeRepository.saveEssayWaitingForFeedback(essay)
+                callback.onSuccess()
             }
         }
     }

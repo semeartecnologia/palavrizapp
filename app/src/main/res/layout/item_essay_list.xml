@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_layout_essay_list"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="16dp"
+    app:cardCornerRadius="8dp"
+    android:elevation="8dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/layout_card_aulas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100">
+
+        <LinearLayout
+
+            android:layout_weight="70"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                tools:text="Este é o título da Redação, pode ser muito grande então é melhor que caiba em até duas linhas"
+                android:id="@+id/tv_essay_title"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_essay_author"
+                android:text="@string/author"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_essay_date"
+                android:text="@string/post_date"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_essay_status"
+            android:gravity="center"
+            android:layout_marginEnd="9dp"
+            tools:text="Aguardando Correção"
+            android:layout_weight="30"
+            android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

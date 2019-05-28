@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,10 @@ import android.widget.TextView;
 
 import com.semear.tec.palavrizapp.R;
 import com.semear.tec.palavrizapp.models.User;
+import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.modules.MainActivity;
 import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity;
+import com.semear.tec.palavrizapp.modules.essay.essay_mark.EssayMarkFragment;
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment;
 import com.semear.tec.palavrizapp.modules.themes.ThemesFragment;
 
@@ -54,6 +57,14 @@ public class DashboardFragment extends Fragment {
     @BindView(R.id.layout_card_essay)
     RelativeLayout cardEssay;
 
+    @BindView(R.id.card_layout_essay_list)
+    CardView cardEssayListLayout;
+
+    @BindView(R.id.layout_card_essay_list)
+    RelativeLayout cardEssayList;
+
+
+
     private DashboardViewModel dashboardViewModel;
 
     public DashboardFragment() {}
@@ -74,6 +85,7 @@ public class DashboardFragment extends Fragment {
         ButterKnife.bind(this,v);
 
         initView();
+        checkUserTypeView();
 
         return v;
     }
@@ -107,12 +119,25 @@ public class DashboardFragment extends Fragment {
                 //checkCameraPermission();
                 startMyEssayActivity();
             });
+            cardEssayList.setOnClickListener(v -> {
+                mainActivity.changeFragment(new EssayMarkFragment(), "Sala de Correção");
+                mainActivity.setActionBarTitle("Sala de Correção");
+            });
         }
     }
 
     private void startMyEssayActivity(){
         Intent it = new Intent(getActivity(), MyEssayActivity.class);
         startActivity(it);
+    }
+
+    private void checkUserTypeView(){
+        User user = dashboardViewModel.getCurrentUser();
+        if (user.getUserType() == UserType.CORRETOR || user.getUserType() == UserType.ADMINISTRADOR){
+            cardEssayListLayout.setVisibility(View.VISIBLE);
+        }else{
+            cardEssayListLayout.setVisibility(View.GONE);
+        }
     }
 
 

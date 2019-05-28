@@ -30,7 +30,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
     fun initViewModel(){
         mAuth = FirebaseAuth.getInstance()
         sessionManager = SessionManager(getApplication())
-        userRepository = UserRepository()
+        userRepository = UserRepository(getApplication())
     }
     /**
      * Método para fazer registro pelo EMAIL

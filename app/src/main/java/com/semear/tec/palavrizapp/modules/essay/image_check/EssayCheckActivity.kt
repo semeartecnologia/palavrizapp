@@ -73,8 +73,9 @@ class EssayCheckActivity : AppCompatActivity() {
         btn_send_essay.setOnClickListener {
             layout_sendind_progress.visibility = View.VISIBLE
             val title = et_title_essay?.text.toString()
-            val essay = Essay(title, "", StatusEssay.UPLOADED, "")
             val user = sessionManager?.userLogged
+            val essay = Essay(title, "Tema Teste", user, Commons.getCurrentTimeDate() ,StatusEssay.UPLOADED, "")
+
             essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
 
                 override fun onSuccess() {
