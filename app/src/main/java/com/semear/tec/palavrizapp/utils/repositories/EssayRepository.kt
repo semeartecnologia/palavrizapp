@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.models.EssayListUser
+import com.semear.tec.palavrizapp.models.User
 import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 
 class EssayRepository(val context: Context) {
@@ -20,7 +21,7 @@ class EssayRepository(val context: Context) {
 
     fun getEssayListByUser(onCompletion: ((ArrayList<Essay>) -> Unit)){
         val user = sessionManager.userLogged
-        realtimeRepository.getEssayListByUser(user.userId, onCompletion)
+        realtimeRepository.getEssayListByUser(user. userId, onCompletion)
     }
 
     fun getEssayImage(filename: String, onCompletion: ((String) -> Unit)){
@@ -29,5 +30,17 @@ class EssayRepository(val context: Context) {
 
     fun getEssayList(onCompletion: ((ArrayList<Essay>) -> Unit)){
         realtimeRepository.getEssayList(onCompletion)
+    }
+
+    fun getEssayWaitingById(essayId: String,  onCompletion: (Essay?) -> Unit, onFail: () -> Unit){
+        realtimeRepository.getEssayWaitingById(essayId, onCompletion, onFail)
+    }
+
+    fun getEssayWaitingListenerChange(essayId: String, onChange: (Essay?) -> Unit, onFail: () -> Unit){
+        realtimeRepository.getEssayWaitingListenerChange(essayId, onChange, onFail)
+    }
+
+    fun setFeedbackOwnerOnEssay(essay: Essay, user: User, onCompletion: () -> Unit){
+        realtimeRepository.setFeedbackOwnerOnEssay(essay, user, onCompletion)
     }
 }

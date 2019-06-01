@@ -128,7 +128,6 @@ class StorageRepository(val context: Context) {
             if (task.isSuccessful) {
                 essay.url = filename
                 realtimeRepository.saveEssay(essay, userId)
-                realtimeRepository.saveEssayWaitingForFeedback(essay)
                 callback.onSuccess()
             }
         }

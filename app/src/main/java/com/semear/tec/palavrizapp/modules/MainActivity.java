@@ -197,7 +197,7 @@ public class MainActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_VIDEO) {
-                String selectedVideoPath = Commons.getRealPathFromURI(this, data.getData());
+                String selectedVideoPath = Commons.INSTANCE.getRealPathFromURI(this, data.getData());
                 try {
                     if (selectedVideoPath == null) {
                         finish();

@@ -3,12 +3,14 @@ package com.semear.tec.palavrizapp.models
 import android.os.Parcel
 import android.os.Parcelable
 
-class Feedback(var user: User?, var urlVideo: String?, var rating: Double) : Parcelable {
+class Feedback(var user: User? = null, var urlVideo: String? = "", var rating: Double? = 0.0) : Parcelable {
+
+
 
     constructor(source: Parcel) : this(
             source.readParcelable<User>(User::class.java.classLoader),
             source.readString(),
-            source.readDouble()
+            source.readValue(Double::class.java.classLoader) as Double?
     )
 
     override fun describeContents() = 0
@@ -16,7 +18,7 @@ class Feedback(var user: User?, var urlVideo: String?, var rating: Double) : Par
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeParcelable(user, 0)
         writeString(urlVideo)
-        writeDouble(rating)
+        writeValue(rating)
     }
 
     companion object {

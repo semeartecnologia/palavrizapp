@@ -37,12 +37,11 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
         holder.essayTheme = essayList[index].theme
 
         val status = essayList[index].status
-        if (status == StatusEssay.UPLOADED){
-            holder.essayStatus = context?.getString(R.string.upload_status_waiting)
-        }else if (status == StatusEssay.FEEDBACK_READY){
-            holder.essayStatus = context?.getString(R.string.upload_status_done)
+        when (status) {
+            StatusEssay.UPLOADED -> holder.essayStatus = context?.getString(R.string.upload_status_waiting)
+            StatusEssay.CORRECTING -> holder.essayStatus = context?.getString(R.string.upload_status_correcting)
+            StatusEssay.FEEDBACK_READY -> holder.essayStatus = context?.getString(R.string.upload_status_done)
         }
-
     }
 
     class ViewHolder(var view: View): RecyclerView.ViewHolder(view) {

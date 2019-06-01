@@ -4,27 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.semear.tec.palavrizapp.R;
-import com.semear.tec.palavrizapp.models.GroupThemes;
 import com.semear.tec.palavrizapp.models.Video;
-import com.semear.tec.palavrizapp.models.VideoPreview;
 import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO;
-import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_SUBTITLE_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO;
 
 public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder> {
@@ -87,7 +81,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         viewHolder.description.setText(video.getDescription());
 
         viewHolder.videoPath = video.getPath();
-        Glide.with(ctx).load(video.getVideoThumb()).into(viewHolder.videoThumb);
 
 
     }

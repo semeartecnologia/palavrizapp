@@ -1,20 +1,11 @@
 package com.semear.tec.palavrizapp.modules.dashboard;
 
-import android.Manifest;
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +17,7 @@ import com.semear.tec.palavrizapp.models.User;
 import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.modules.MainActivity;
 import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity;
-import com.semear.tec.palavrizapp.modules.essay.essay_mark.EssayMarkFragment;
+import com.semear.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFragment;
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment;
 import com.semear.tec.palavrizapp.modules.themes.ThemesFragment;
 
@@ -120,7 +111,7 @@ public class DashboardFragment extends Fragment {
                 startMyEssayActivity();
             });
             cardEssayList.setOnClickListener(v -> {
-                mainActivity.changeFragment(new EssayMarkFragment(), "Sala de Correção");
+                mainActivity.changeFragment(new EssayMarkListFragment(), "Sala de Correção");
                 mainActivity.setActionBarTitle("Sala de Correção");
             });
         }

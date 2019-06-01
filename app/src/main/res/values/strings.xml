@@ -106,6 +106,11 @@
     <string name="btn_correct_this_essay">Corrigir</string>
     <string name="btn_issue_essay">Relatar Problema</string>
     <string name="tv_theme_placeholder">Tema: %s</string>
+    <string name="dialog_confirmation_correct_title">Confirmação</string>
+    <string name="dialog_confirmation_correct_content">A redação está totalmente legível?</string>
+    <string name="dialog_essay_feedback_already_taken_title">Oops</string>
+    <string name="dialog_essay_feedback_already_taken_content">Parece que alguém já pegou essa redação para corrigir</string>
+    <string name="btn_correct_in_progress">Correção em Andamento</string>
 
 
     <!-- Curso -->
@@ -172,6 +177,9 @@
     <string name="upload_sucess_title">Sucesso</string>
     <string name="upload_sucess_text">O vídeo estará disponível em breve</string>
     <string name="upload_started">Seu vídeo está sendo carregado em segundo plano</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

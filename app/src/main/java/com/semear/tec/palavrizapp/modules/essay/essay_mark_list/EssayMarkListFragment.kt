@@ -1,4 +1,4 @@
-package com.semear.tec.palavrizapp.modules.essay.essay_mark
+package com.semear.tec.palavrizapp.modules.essay.essay_mark_list
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -17,10 +17,10 @@ import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY
 import com.semear.tec.palavrizapp.utils.interfaces.OnEssayClicked
 import kotlinx.android.synthetic.main.fragment_essay_mark.*
 
-class EssayMarkFragment : Fragment(), OnEssayClicked {
+class EssayMarkListFragment : Fragment(), OnEssayClicked {
 
 
-    private var essayMarkViewModel: EssayMarkViewModel? = null
+    private var essayMarkViewModel: EssayMarkListViewModel? = null
     private val adapter = EssayListAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,7 +42,7 @@ class EssayMarkFragment : Fragment(), OnEssayClicked {
     }
 
     fun initViewModel(){
-        essayMarkViewModel = ViewModelProviders.of(this).get(EssayMarkViewModel::class.java)
+        essayMarkViewModel = ViewModelProviders.of(this).get(EssayMarkListViewModel::class.java)
     }
 
     private fun setupView(){

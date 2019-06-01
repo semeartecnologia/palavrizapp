@@ -3,7 +3,7 @@ package com.semear.tec.palavrizapp.models
 import android.os.Parcel
 import android.os.Parcelable
 
-class Essay(var title: String = "", var theme: String = "", var author: User? = null, var postDate: String = "", var status: StatusEssay = StatusEssay.UPLOADED, var url: String = "", var feedback: Feedback? = null) : Parcelable {
+class Essay(var title: String = "", var theme: String = "", var author: User? = null, var postDate: String = "", var status: StatusEssay = StatusEssay.UPLOADED, var url: String = "", var essayId: String = "", var feedback: Feedback? = null) : Parcelable {
 
     constructor(source: Parcel) : this(
             source.readString(),
@@ -11,6 +11,7 @@ class Essay(var title: String = "", var theme: String = "", var author: User? = 
             source.readParcelable<User>(User::class.java.classLoader),
             source.readString(),
             StatusEssay.values()[source.readInt()],
+            source.readString(),
             source.readString(),
             source.readParcelable<Feedback>(Feedback::class.java.classLoader)
     )
@@ -24,6 +25,7 @@ class Essay(var title: String = "", var theme: String = "", var author: User? = 
         writeString(postDate)
         writeInt(status.ordinal)
         writeString(url)
+        writeString(essayId)
         writeParcelable(feedback, 0)
     }
 

@@ -25,16 +25,14 @@ class RealtimeRepository(val context: Context) {
         if (key == null){
             key = "-" + System.currentTimeMillis().toString()
         }
+        essay.essayId = key
         mDatabaseReference.child(reference).child("$userId/").child("$key/").setValue(essay)
+        saveEssayWaitingForFeedback(essay)
     }
 
-    fun saveEssayWaitingForFeedback(essay: Essay){
-        var reference = "essaysWaiting/${essay.theme}"
-        var key = mDatabaseReference.child("essaysWaiting/${essay.theme}").push().key
-        if (key == null){
-            key = "-" + System.currentTimeMillis().toString()
-        }
-        mDatabaseReference.child(reference).child("$key/").setValue(essay)
+    private fun saveEssayWaitingForFeedback(essay: Essay){
+        var reference = "essaysWaiting/${essay.theme}/${essay.essayId}/"
+        mDatabaseReference.child(reference).setValue(essay)
     }
 
     fun getEssayListByUser(userId: String, onCompletion: ((ArrayList<Essay>) -> Unit)){
@@ -89,6 +87,50 @@ class RealtimeRepository(val context: Context) {
                 onFail.invoke()
             }
         })
+    }
+
+    fun getEssayWaitingById(essayId: String,  onCompletion: (Essay?) -> Unit, onFail: () -> Unit){
+        var reference = "essaysWaiting/Tema Teste/"
+        val queryReference = mDatabaseReference.child(reference).child(essayId)
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                onFail.invoke()
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val essay = dataSnapshot.getValue(Essay::class.java)
+                onCompletion(essay)
+            }
+
+        })
+    }
+
+    fun getEssayWaitingListenerChange(essayId: String, onChange: (Essay?) -> Unit, onFail: () -> Unit){
+        var reference = "essaysWaiting/Tema Teste/"
+        val queryReference = mDatabaseReference.child(reference).child(essayId)
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                onFail.invoke()
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val essay = dataSnapshot.getValue(Essay::class.java)
+                onChange(essay)
+            }
+
+        })
+    }
+
+    fun setFeedbackOwnerOnEssay(essay: Essay, user: User, onCompletion: () -> Unit){
+        val childUpdates = HashMap<String, Any?>()
+        childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}/feedback"] = essay.feedback
+        childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}/status"] = StatusEssay.CORRECTING
+        childUpdates["/essays/${user.userId}/${essay.essayId}/feedback"] = essay.feedback
+        childUpdates["/essays/${user.userId}/${essay.essayId}/status"] = StatusEssay.CORRECTING
+
+        mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
+            onCompletion.invoke()
+        }
     }
 
     fun getVideosList(category: String, onCompletion: ((ArrayList<Video>) -> Unit)){

@@ -13,11 +13,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.modules.essay.image_check.EssayCheckActivity
-import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.adapters.MyEssayAdapter
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_IMAGE_CHECK
