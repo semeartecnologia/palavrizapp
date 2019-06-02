@@ -10,39 +10,24 @@ import android.support.annotation.NonNull;
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.TABLE_THEMES;
 
-@Entity(tableName = TABLE_THEMES,
-        indices = {@Index("groupId")},
-        foreignKeys = @ForeignKey(entity = Groups.class,
-        parentColumns = "id",
-        childColumns = "groupId",
-        onDelete = CASCADE))
+
 public class Themes {
 
-    @PrimaryKey
-    @NonNull
+
     private int themeId;
 
-    @NonNull
+
     private int groupId; // Foreign Key
     private String themeName;
     private String subgroup;
+    private String urlPdf;
 
-    public Themes(@NonNull int themeId, int groupId, String themeName) {
-        this.themeId = themeId;
-        this.groupId = groupId;
+    public Themes(String themeName, String urlPdf){
         this.themeName = themeName;
-        this.subgroup = "";
+        this.urlPdf = urlPdf;
     }
 
-    @Ignore
-    public Themes(@NonNull int themeId, @NonNull int groupId, String themeName, String subgroup) {
-        this.themeId = themeId;
-        this.groupId = groupId;
-        this.themeName = themeName;
-        this.subgroup = subgroup;
-    }
 
-    @NonNull
     public int getThemeId() {
         return themeId;
     }

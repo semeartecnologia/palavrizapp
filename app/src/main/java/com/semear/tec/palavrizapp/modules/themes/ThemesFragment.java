@@ -12,21 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.semear.tec.palavrizapp.R;
-import com.semear.tec.palavrizapp.models.VideoCategory;
-import com.semear.tec.palavrizapp.models.VideoPreview;
-import com.semear.tec.palavrizapp.utils.InitData;
 import com.semear.tec.palavrizapp.utils.adapters.ThemesAdapter;
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository;
 
 import java.util.ArrayList;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 /**
  * Fragmento de seleção de Temas

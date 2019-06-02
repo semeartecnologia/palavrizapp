@@ -30,6 +30,15 @@ class RealtimeRepository(val context: Context) {
         saveEssayWaitingForFeedback(essay)
     }
 
+    fun saveTheme(theme: Themes){
+        var reference = "themes/"
+        var key = mDatabaseReference.child("themes/").push().key
+        if (key == null){
+            key = "-" + System.currentTimeMillis().toString()
+        }
+        mDatabaseReference.child(reference).child("$key/").setValue(theme)
+    }
+
     private fun saveEssayWaitingForFeedback(essay: Essay){
         var reference = "essaysWaiting/${essay.theme}/${essay.essayId}/"
         mDatabaseReference.child(reference).setValue(essay)

@@ -74,6 +74,7 @@ object Commons {
 
         view.btn_create_theme  .setOnClickListener {
             createCallback.invoke(titleEditText.text.toString(), "")
+            createThemeDialog.dismiss()
         }
 
         createThemeDialog.show()

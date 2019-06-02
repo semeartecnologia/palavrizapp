@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.Themes
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.modules.MainActivity
 import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity
@@ -35,7 +36,6 @@ class DashboardFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
-        dashboardViewModel?.init()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -51,9 +51,9 @@ class DashboardFragment : Fragment() {
 
     private fun initView() {
 
-        val user = dashboardViewModel!!.currentUser
-        user_greetings?.text = String.format(getString(R.string.salute_you), user.fullname)
-        user_plan?.text = user.plan.getPlanTitle(context)
+        val user = dashboardViewModel?.currentUser
+        user_greetings?.text = String.format(getString(R.string.salute_you), user?.fullname)
+        user_plan?.text = user?.plan?.getPlanTitle(context)
 
         val mainActivity = activity as MainActivity?
 
@@ -92,6 +92,8 @@ class DashboardFragment : Fragment() {
                         startActivityForResult(i, 231)
 
                     },{ themeTitle, urlVideo ->
+                    val theme = Themes(themeTitle, urlVideo)
+                    dashboardViewModel?.saveTheme(theme)
 
             },{
 
