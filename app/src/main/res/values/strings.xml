@@ -121,7 +121,7 @@
     <string name="btn_correct_in_progress">Correção em Andamento</string>
     <string name="tv_hint_feedback">Escreva seu feedback!</string>
     <string name="upload_video_feedback">Anexar vídeo</string>
-    <string name="btn_send_feedback">Enviar correção</string>
+    <string name="btn_send_feedback">Enviar</string>
 
 
     <!-- Curso -->
@@ -192,6 +192,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel">Cancelar</string>
+    <string name="title_label">Título:</string>
+    <string name="theme_label">Tema:</string>
 
 
 </resources>
