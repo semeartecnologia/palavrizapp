@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -32,9 +33,8 @@ public class RegisterActivity extends BaseActivity {
     @BindView(R.id.radioGroupGender) RadioGroup radioGender;
     @BindView(R.id.profile_image) ImageView profileImage;
     @BindView(R.id.progress_register) ProgressBar progressBar;
-    @BindView(R.id.tv_registering) TextView tvRegistering;
-    @BindView(R.id.register_now)
-    TextView btnRegister;
+    @BindView(R.id.btn_register) Button btnRegister;
+    @BindView(R.id.btn_cancel) Button btnCancel;
 
     private RegisterViewModel registerViewModel;
 
@@ -85,29 +85,29 @@ public class RegisterActivity extends BaseActivity {
 
     private void toggleLoading(boolean isLoading){
         if (isLoading){
-            email.setVisibility(View.GONE);
-            textInputEmail.setVisibility(View.GONE);
-            password.setVisibility(View.GONE);
-            textInputPwd.setVisibility(View.GONE);
-            fullname.setVisibility(View.GONE);
-            textInputName.setVisibility(View.GONE);
-            confirmPassword.setVisibility(View.GONE);
-            textInputConfirmPwd.setVisibility(View.GONE);
-            radioGender.setVisibility(View.GONE);
+//            email.setVisibility(View.GONE);
+//            textInputEmail.setVisibility(View.GONE);
+//            password.setVisibility(View.GONE);
+//            textInputPwd.setVisibility(View.GONE);
+//            fullname.setVisibility(View.GONE);
+//            textInputName.setVisibility(View.GONE);
+//            confirmPassword.setVisibility(View.GONE);
+//            textInputConfirmPwd.setVisibility(View.GONE);
+//            radioGender.setVisibility(View.GONE);
+            btnRegister.setText("");
             progressBar.setVisibility(View.VISIBLE);
-            tvRegistering.setVisibility(View.VISIBLE);
         }else {
-            email.setVisibility(View.VISIBLE);
-            textInputEmail.setVisibility(View.VISIBLE);
-            password.setVisibility(View.VISIBLE);
-            textInputPwd.setVisibility(View.VISIBLE);
-            fullname.setVisibility(View.VISIBLE);
-            textInputName.setVisibility(View.VISIBLE);
-            confirmPassword.setVisibility(View.VISIBLE);
-            textInputConfirmPwd.setVisibility(View.VISIBLE);
-            radioGender.setVisibility(View.VISIBLE);
+//            email.setVisibility(View.VISIBLE);
+//            textInputEmail.setVisibility(View.VISIBLE);
+//            password.setVisibility(View.VISIBLE);
+//            textInputPwd.setVisibility(View.VISIBLE);
+//            fullname.setVisibility(View.VISIBLE);
+//            textInputName.setVisibility(View.VISIBLE);
+//            confirmPassword.setVisibility(View.VISIBLE);
+//            textInputConfirmPwd.setVisibility(View.VISIBLE);
+//            radioGender.setVisibility(View.VISIBLE);
+            btnRegister.setText(getString(R.string.register_now_btn));
             progressBar.setVisibility(View.GONE);
-            tvRegistering.setVisibility(View.GONE);
         }
     }
 
@@ -140,6 +140,10 @@ public class RegisterActivity extends BaseActivity {
             String name = fullname.getText().toString();
             String confPassword = confirmPassword.getText().toString();
             registerViewModel.registerWithEmail(RegisterActivity.this, emailText, passwordText, confPassword, name, radioGender.getCheckedRadioButtonId());
+        });
+
+        btnCancel.setOnClickListener(v -> {
+            finish();
         });
     }
 

@@ -77,11 +77,18 @@ class EssayCorrectFragment : Fragment() {
         setupTitleAndTheme(essay)
         setupVideoAttachmentButton()
         setupSendFeedbackButton(essay)
+        setupCancelButton(essay)
     }
 
     private fun setupSendFeedbackButton(essay: Essay) {
         btn_send_feedback?.setOnClickListener {
             viewmodel?.onSendEssayFeedback(essay,  et_feedback_text?.text.toString(), "")
+        }
+    }
+
+    private fun setupCancelButton(essay: Essay) {
+        btn_cancel?.setOnClickListener {
+            activity?.finish()
         }
     }
 

@@ -30,7 +30,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('C:/Users/arthur/Documents/Projects/palavrizapp/app/palavrizappKey.jks')
+            storeFile file('/home/guilherme/Projetos/palavrizapp/app/palavrizappKey.jks')
             keyAlias "palavrizapp"
             storePassword "palavrizapp1212"
             keyPassword "palavrizapp1313"

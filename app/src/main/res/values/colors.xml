@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#9B52BF</color>
-    <color name="colorPrimaryDark">#3a0053</color>
-    <color name="colorPrimaryLight">#9b3eb0</color>
+    <color name="colorPrimary">#67305C</color>
+    <color name="colorPrimaryDark">#3B0432</color>
+    <color name="colorPrimaryLight">#965C89</color>
     <color name="colorAccent">#ff9800</color>
     <color name="colorSecondary">#ffff00</color>
     <color name="colorSecondaryDark">#c7cc00</color>
     <color name="colorSecondaryLight">#ffff5a</color>
     <color name="colorSecondaryTransLight">#90ffff5a</color>
     <color name="colorPrimaryText">#fff9f9</color>
-    <color name="colorSecondaryText">#000000</color>
+    <color name="colorSecondaryText">#8C000000</color>
     <color name="lightRed">#FF7777</color>
+
+    <color name="facebook_blue">#4E54C8</color>
+    <color name="google_red">#ED213A</color>
 
     <color name="transparentWhite">#90ffffff</color>
 
     <color name="transparentGrey30">#90727272</color>
     <color name="transparentWhite60">#80ffffff</color>
 
-    <color name="light_grey">#727272</color>
+    <color name="light_gray">#eeeeee</color>
+    <color name="gray">#dddddd</color>
+    <color name="dark_gray">#bcbcbc</color>
 
     <!-- Screens background color-->
     <color name="bg_screen1">#f64c73</color>
