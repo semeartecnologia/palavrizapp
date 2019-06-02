@@ -7,6 +7,7 @@ import android.os.Bundle
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.models.Feedback
+import com.semear.tec.palavrizapp.models.StatusEssay
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.repositories.EssayRepository
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager
@@ -64,7 +65,7 @@ class EssayReviewViewModel(application: Application): AndroidViewModel(applicati
                         val userLogged = sessionManager.userLogged
                         essay.feedback = Feedback(userLogged, null, null)
 
-                        essayRepository?.setFeedbackOwnerOnEssay(essay, userLogged) {
+                        essayRepository?.setFeedbackOwnerOnEssay(essay, userLogged, StatusEssay.CORRECTING) {
                             //sucesso!! agora vc ta corrigindo
                             viewEventLiveData.postValue(ViewEvent.SuccessSettingOwner(essayId))
                         }
