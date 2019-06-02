@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="200dp"
+    android:minHeight="200dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:background="@color/transparentGrey30"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_theme_label" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputTitle"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/tv_theme_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:gravity="center_horizontal"
+            android:maxLength="50"
+            android:imeOptions="actionNext"
+            android:fontFamily="@font/titillium_regular"
+            android:hint="@string/create_theme_title"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_attachment_pdf_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:drawableStart="@drawable/ic_picture_as_pdf_black_24dp"
+        android:drawablePadding="8dp"
+        android:text="@string/pdf_attachment"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:weightSum="100"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/btn_cancel_theme"
+            android:text="@string/create_theme_cancel_option"
+            android:layout_weight="50"
+            android:layout_width="0dp"
+            android:paddingStart="16dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/lightRed"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/btn_create_theme"
+            android:textSize="16sp"
+            android:gravity="end"
+            android:paddingEnd="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/lightRed"
+            android:text="@string/create_theme_create_option"
+            android:layout_weight="50"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlSymmetry" />
+
+    </LinearLayout>
+
+</LinearLayout>

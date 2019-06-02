@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.models.EssayListUser
+import com.semear.tec.palavrizapp.models.StatusEssay
 import com.semear.tec.palavrizapp.models.User
 import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 
@@ -40,7 +41,7 @@ class EssayRepository(val context: Context) {
         realtimeRepository.getEssayWaitingListenerChange(essayId, onChange, onFail)
     }
 
-    fun setFeedbackOwnerOnEssay(essay: Essay, user: User, onCompletion: () -> Unit){
-        realtimeRepository.setFeedbackOwnerOnEssay(essay, user, onCompletion)
+    fun setFeedbackOwnerOnEssay(essay: Essay, user: User, status: StatusEssay, onCompletion: () -> Unit){
+        realtimeRepository.setFeedbackOwnerOnEssay(essay, user, status, onCompletion)
     }
 }

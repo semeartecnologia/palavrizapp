@@ -121,13 +121,24 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
-    fun setFeedbackOwnerOnEssay(essay: Essay, user: User, onCompletion: () -> Unit){
+    fun setFeedbackOwnerOnEssay(essay: Essay, user: User, status: StatusEssay, onCompletion: () -> Unit){
         val childUpdates = HashMap<String, Any?>()
-        childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}/feedback"] = essay.feedback
-        childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}/status"] = StatusEssay.CORRECTING
-        childUpdates["/essays/${user.userId}/${essay.essayId}/feedback"] = essay.feedback
-        childUpdates["/essays/${user.userId}/${essay.essayId}/status"] = StatusEssay.CORRECTING
 
+
+        // NAO TA REMOVENDO DIREITO
+        if (status == StatusEssay.FEEDBACK_READY){
+            essay.status = status
+            childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}"] = null
+            childUpdates["/essaysDone/Tema Teste/${essay.essayId}"] = essay
+            childUpdates["/essays/${user.userId}/${essay.essayId}/feedback"] = essay.feedback
+            childUpdates["/essays/${user.userId}/${essay.essayId}/status"] = status
+
+        }else {
+            childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}/feedback"] = essay.feedback
+            childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}/status"] = status
+            childUpdates["/essays/${user.userId}/${essay.essayId}/feedback"] = essay.feedback
+            childUpdates["/essays/${user.userId}/${essay.essayId}/status"] = status
+        }
         mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
             onCompletion.invoke()
         }

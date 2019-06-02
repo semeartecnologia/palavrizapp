@@ -74,7 +74,11 @@ class EssayReviewFragment() : Fragment() {
         })
         viewmodel?.enableCorrectButton?.observe(this, Observer {
             btn_correct?.isEnabled = it == true
-            btn_correct?.setText(R.string.btn_correct_in_progress)
+            if (it == true) {
+                btn_correct?.setText(R.string.btn_correct_this_essay)
+            }else{
+                btn_correct?.setText(R.string.btn_correct_in_progress)
+            }
         })
     }
 

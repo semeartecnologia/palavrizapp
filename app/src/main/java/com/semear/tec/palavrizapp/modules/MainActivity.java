@@ -34,7 +34,7 @@ import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_SUBTITL
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_PATH;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements DashboardFragment.OnFragmentInteractionListener {
 
     @BindView(R.id.frameContent)
     FrameLayout frameContent;
@@ -212,6 +212,16 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }
+
+    }
+
+    @Override
+    public void OnPlansClicked() {
+
+    }
+
+    @Override
+    public void OnThemesClicked() {
 
     }
 }

@@ -79,6 +79,14 @@
     <string name="card_see_more_essay_list">Corrigir ></string>
     <string name="author" tools:ignore="Typos">Autor: %s</string>
     <string name="post_date">Enviada em: %s</string>
+    <string name="card_title_create_essay_theme">Criar Tema</string>
+    <string name="card_text_create_essay">Crie um tema de redação para os alunos</string>
+    <string name="card_see_more_create_essay">Criar ></string>
+    <string name="create_theme_label">Criar Tema</string>
+    <string name="create_theme_title">Título</string>
+    <string name="pdf_attachment">Anexar Pdf</string>
+    <string name="create_theme_create_option">Criar</string>
+    <string name="create_theme_cancel_option">Cancelar</string>
 
     <!-- Essay -->
     <string name="card_title_essay">Minhas Redações</string>
@@ -111,6 +119,9 @@
     <string name="dialog_essay_feedback_already_taken_title">Oops</string>
     <string name="dialog_essay_feedback_already_taken_content">Parece que alguém já pegou essa redação para corrigir</string>
     <string name="btn_correct_in_progress">Correção em Andamento</string>
+    <string name="tv_hint_feedback">Escreva seu feedback!</string>
+    <string name="upload_video_feedback">Anexar vídeo</string>
+    <string name="btn_send_feedback">Enviar correção</string>
 
 
     <!-- Curso -->
