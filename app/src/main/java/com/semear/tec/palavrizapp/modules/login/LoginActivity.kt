@@ -114,16 +114,19 @@ class LoginActivity : BaseActivity() {
 
     fun showProgressBar(show: Boolean){
         if (show){
-            btn_facebook_login.visibility = View.GONE
-            btn_email_login.visibility = View.INVISIBLE
-            btn_google_login.visibility = View.INVISIBLE
+//            btn_facebook_login.visibility = View.GONE
+//            btn_email_login.visibility = View.INVISIBLE
+//            btn_google_login.visibility = View.INVISIBLE
+            btn_email_login.setText("")
+
             progress_login.visibility = View.VISIBLE
             et_email.isEnabled = false
             et_password.isEnabled = false
         }else{
-            btn_facebook_login.visibility = View.VISIBLE
-            btn_email_login.visibility = View.VISIBLE
-            btn_google_login.visibility = View.VISIBLE
+//            btn_facebook_login.visibility = View.VISIBLE
+//            btn_email_login.visibility = View.VISIBLE
+//            btn_google_login.visibility = View.VISIBLE
+            btn_email_login.setText(R.string.action_sign_in)
             progress_login.visibility = View.GONE
             et_email.isEnabled = true
             et_password.isEnabled = true
