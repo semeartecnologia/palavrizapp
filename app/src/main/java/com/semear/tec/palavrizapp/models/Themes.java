@@ -7,6 +7,8 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.TABLE_THEMES;
 
@@ -16,11 +18,12 @@ public class Themes {
 
     private int themeId;
 
-
     private int groupId; // Foreign Key
     private String themeName;
     private String subgroup;
     private String urlPdf;
+
+    public Themes(){}
 
     public Themes(String themeName, String urlPdf){
         this.themeName = themeName;

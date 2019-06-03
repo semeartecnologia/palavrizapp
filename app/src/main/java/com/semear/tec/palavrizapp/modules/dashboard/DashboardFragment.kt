@@ -84,7 +84,6 @@ class DashboardFragment : Fragment() {
             mainActivity?.setActionBarTitle("Sala de Correção")
         }
         card_layout_create_essay_theme?.setOnClickListener { v ->
-            Log.d("teste","clicado")
             Commons.createThemeDialog(activity as Activity
                     ,
                     {

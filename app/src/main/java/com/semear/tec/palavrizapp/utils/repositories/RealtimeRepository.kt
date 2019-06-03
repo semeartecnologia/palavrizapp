@@ -39,6 +39,23 @@ class RealtimeRepository(val context: Context) {
         mDatabaseReference.child(reference).child("$key/").setValue(theme)
     }
 
+    fun getThemes(onCompletion: (ArrayList<Themes>) -> Unit){
+        val reference = "themes/"
+        var themeList = arrayListOf<Themes>()
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                themeList.clear()
+                dataSnapshot.children.mapNotNullTo(themeList) { it.getValue<Themes>(Themes::class.java) }
+                onCompletion(themeList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(themeList)
+            }
+        })
+    }
+
     private fun saveEssayWaitingForFeedback(essay: Essay){
         var reference = "essaysWaiting/${essay.theme}/${essay.essayId}/"
         mDatabaseReference.child(reference).setValue(essay)

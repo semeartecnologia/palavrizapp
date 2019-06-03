@@ -22,6 +22,7 @@
         <activity android:name=".modules.essay.essay_view_professor.EssayViewActivity" />
         <activity android:name=".modules.essay.MyEssayActivity" />
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".modules.essay.image_check.EssayCheckActivity"
             android:noHistory="true" />
         <activity

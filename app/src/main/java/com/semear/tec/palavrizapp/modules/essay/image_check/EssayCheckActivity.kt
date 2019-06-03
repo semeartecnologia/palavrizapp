@@ -16,8 +16,13 @@ import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 import com.semear.tec.palavrizapp.utils.repositories.EssayRepository
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager
+import com.semear.tec.palavrizapp.utils.repositories.ThemesRepository
 import kotlinx.android.synthetic.main.activity_check_image.*
 import java.util.concurrent.TimeUnit
+import com.google.android.youtube.player.internal.s
+import android.widget.ArrayAdapter
+
+
 
 
 class EssayCheckActivity : AppCompatActivity() {
@@ -25,6 +30,7 @@ class EssayCheckActivity : AppCompatActivity() {
     var bmpImageEssay: Bitmap? = null
     var essayRepository: EssayRepository? = null
     var sessionManager: SessionManager? = null
+    var themesRepository: ThemesRepository? = null
 
     private val RESULT_NEGATIVE = 404
 
@@ -40,6 +46,7 @@ class EssayCheckActivity : AppCompatActivity() {
     private fun initRepository() {
         essayRepository = EssayRepository(applicationContext)
         sessionManager = SessionManager(applicationContext)
+        themesRepository = ThemesRepository(applicationContext)
     }
 
     fun setupExtras(){
@@ -49,14 +56,59 @@ class EssayCheckActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadThemes(){
+        themesRepository?.getTheme {
+            val themeArray = arrayListOf<String>()
+            it.forEach {
+                themeArray.add(it.themeName)
+            }
+            showLoadingProgress(false)
+            showFieldsDialogInserTitleAndTheme(true)
+
+            val adapter = ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, themeArray)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            theme_spinner.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }
+
+
+    }
+
+    private fun showLoadingProgress(show: Boolean){
+        if (show){
+            progress_loading_themes?.visibility = View.VISIBLE
+        }else{
+            progress_loading_themes?.visibility = View.GONE
+        }
+    }
+
+    private fun showFieldsDialogInserTitleAndTheme(show: Boolean){
+        if (show){
+            dialog_title_theme_label?.visibility = View.VISIBLE
+            theme_spinner?.visibility = View.VISIBLE
+            et_title_essay?.visibility = View.VISIBLE
+            btn_send_essay?.visibility = View.VISIBLE
+        }else{
+            dialog_title_theme_label?.visibility = View.GONE
+            theme_spinner?.visibility = View.GONE
+            et_title_essay?.visibility = View.GONE
+            btn_send_essay?.visibility = View.GONE
+        }
+    }
+
     private fun setupView(){
         btn_negative.setOnClickListener {
             setResult(RESULT_NEGATIVE)
             finish()
         }
+
         btn_positive.setOnClickListener {
             dialog_is_readable.visibility = View.GONE
             dialog_title_essay.visibility = View.VISIBLE
+            loadThemes()
+            showLoadingProgress(true)
+            showFieldsDialogInserTitleAndTheme(false)
         }
         et_title_essay.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
@@ -74,7 +126,7 @@ class EssayCheckActivity : AppCompatActivity() {
             layout_sendind_progress.visibility = View.VISIBLE
             val title = et_title_essay?.text.toString()
             val user = sessionManager?.userLogged
-            val essay = Essay(title, "Tema Teste", user, Commons.currentTimeDate,StatusEssay.UPLOADED, "")
+            val essay = Essay(title, theme_spinner?.selectedItem.toString(), user, Commons.currentTimeDate,StatusEssay.UPLOADED, "")
 
             essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
 

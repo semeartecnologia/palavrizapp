@@ -96,7 +96,7 @@
     <string name="positive_answer">Sim</string>
     <string name="negative_answer">Não</string>
     <string name="hint_essay_title">Título</string>
-    <string name="essay_title_field">Informe o título da redação</string>
+    <string name="essay_title_field">Informe o tema e título da redação</string>
     <string name="essay_send">Enviar</string>
     <string name="upload_essay_title">Oops</string>
     <string name="upload_essay_error">Erro ao enviar sua redação, tente novamente mais tarde</string>

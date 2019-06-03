@@ -13,10 +13,11 @@ class ThemesRepository(context: Context) {
 
     private val realtimeRepository = RealtimeRepository(context)
 
-
-
-
     fun saveTheme(themes: Themes) {
         return realtimeRepository.saveTheme(themes)
+    }
+
+    fun getTheme(onCompletion: (ArrayList<Themes>) -> Unit){
+        return realtimeRepository.getThemes(onCompletion)
     }
 }

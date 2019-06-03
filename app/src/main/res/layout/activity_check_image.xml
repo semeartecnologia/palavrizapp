@@ -89,9 +89,18 @@
         android:layout_marginBottom="32dp"
         android:orientation="vertical"
         android:layout_width="240dp"
-        android:layout_height="220dp">
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_margin="24dp"
+            android:id="@+id/progress_loading_themes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@+id/dialog_title_theme_label"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:gravity="center"
@@ -99,6 +108,14 @@
             android:elevation="8dp"
             android:text="@string/essay_title_field"
             android:textColor="@color/transparentWhite60" />
+
+        <Spinner
+            android:id="@+id/theme_spinner"
+            android:layout_margin="8dp"
+            android:elevation="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
 
         <android.support.design.widget.TextInputLayout
