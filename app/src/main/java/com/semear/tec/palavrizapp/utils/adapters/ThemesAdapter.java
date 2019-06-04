@@ -20,6 +20,7 @@ import java.util.List;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO;
+import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_KEY;
 
 public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder> {
 
@@ -81,6 +82,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         viewHolder.description.setText(video.getDescription());
 
         viewHolder.videoPath = video.getPath();
+        viewHolder.videoKey = video.getVideoKey();
 
 
     }
@@ -96,6 +98,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         public TextView title;
         public TextView description;
         public String videoPath;
+        public String videoKey;
         ImageView videoThumb;
 
 
@@ -106,13 +109,13 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
             description = itemView.findViewById(R.id.video_description);
             videoThumb = itemView.findViewById(R.id.video_thumbnail);
 
-
             itemView.setOnClickListener(v -> {
                 Intent it = new Intent(ctx, ClassroomActivity.class);
                 it.putExtra(EXTRA_COD_VIDEO, videoPath);
                 it.putExtra(EXTRA_TITLE_VIDEO, title.getText().toString());
                 //it.putExtra(EXTRA_SUBTITLE_VIDEO, description.getText().toString());
                 it.putExtra(EXTRA_DESCRPTION_VIDEO, description.getText());
+                it.putExtra(EXTRA_VIDEO_KEY, videoKey);
                 ctx.startActivity(it);
             });
 

@@ -2,19 +2,24 @@ package com.semear.tec.palavrizapp.modules.classroom
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
+import com.semear.tec.palavrizapp.modules.classroom.input_comment.AddCommentActivity
 import com.semear.tec.palavrizapp.modules.classroom.video_view.VideoFragment
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_KEY
 import kotlinx.android.synthetic.main.activity_classroom.*
+import kotlinx.android.synthetic.main.item_add_question.*
 
 
 class ClassroomActivity : BaseActivity() {
 
     private var videoUrl = ""
+    private var videoKey = ""
     private var classroomViewModel: ClassroomViewModel? = null
 
 
@@ -51,6 +56,7 @@ class ClassroomActivity : BaseActivity() {
             videoUrl = intent?.getStringExtra(EXTRA_COD_VIDEO) ?: ""
             video_title?.text = intent?.getStringExtra(EXTRA_TITLE_VIDEO)
             video_description?.text = intent?.getStringExtra(EXTRA_DESCRPTION_VIDEO)
+            videoKey = intent?.getStringExtra(EXTRA_VIDEO_KEY) ?: ""
         }
     }
 
@@ -63,6 +69,12 @@ class ClassroomActivity : BaseActivity() {
                 //  next_lesson?.setOnClickListener { }
             }
         })
+
+        layout_question?.setOnClickListener {
+            val intent = Intent(this, AddCommentActivity::class.java)
+            intent.putExtra(EXTRA_VIDEO_KEY, videoKey)
+            startActivity(intent)
+        }
 
     }
 

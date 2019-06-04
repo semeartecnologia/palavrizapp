@@ -10,18 +10,20 @@ class RealtimeRepository(val context: Context) {
     val mDatabaseReference: DatabaseReference  = FirebaseDatabase.getInstance().reference
 
     fun saveVideo(video: Video){
-        var reference = "videos/"
-        var key = mDatabaseReference.child("videos/").push().key
+        val reference = "videos/"
+        var key = mDatabaseReference.child(reference).push().key
         if (key == null){
             key = "-" + System.currentTimeMillis().toString()
         }
+
+        video.videoKey = key
 
         mDatabaseReference.child(reference).child(video.category+"/").child("$key/").setValue(video)
     }
 
     fun saveEssay(essay: Essay, userId: String){
-        var reference = "essays/"
-        var key = mDatabaseReference.child("essays/").push().key
+        val reference = "essays/"
+        var key = mDatabaseReference.child(reference).push().key
         if (key == null){
             key = "-" + System.currentTimeMillis().toString()
         }
@@ -30,9 +32,18 @@ class RealtimeRepository(val context: Context) {
         saveEssayWaitingForFeedback(essay)
     }
 
+    fun saveComment(comment: Comment, videoKey: String, onCompletion: () -> Unit){
+        val reference = "comments/"
+        var commentKey = mDatabaseReference.child(reference).push().key
+        comment.id = commentKey
+        mDatabaseReference.child(reference).child("$videoKey/$commentKey/").setValue(comment).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
     fun saveTheme(theme: Themes){
-        var reference = "themes/"
-        var key = mDatabaseReference.child("themes/").push().key
+        val reference = "themes/"
+        var key = mDatabaseReference.child(reference).push().key
         if (key == null){
             key = "-" + System.currentTimeMillis().toString()
         }
