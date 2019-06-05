@@ -105,6 +105,7 @@ class EssayReviewFragment() : Fragment() {
         setupImageEssay()
         setupAuthorDetails()
         setupCorrectButton()
+        setupCancelButton()
     }
 
     private fun setupTitleAndTheme(){
@@ -120,6 +121,14 @@ class EssayReviewFragment() : Fragment() {
                 dialogProgres = Commons.createDialogProgress(activity, "", false)
                 setCorrectOwner()
             }
+        }
+    }
+
+    private fun setupCancelButton(){
+        val activity = activity as Activity
+
+        btn_cancel.setOnClickListener {
+            activity.finish()
         }
     }
 
