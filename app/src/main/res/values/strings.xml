@@ -77,7 +77,7 @@
     <!-- Essay List Admin -->
     <string name="card_title_essay_list">Corrigir Redações</string>
     <string name="card_text_essay_list">Envie um feedback para os alunos</string>
-    <string name="card_see_more_essay_list">Corrigir ></string>
+    <string name="card_see_more_essay_list">Corrigir</string>
     <string name="author" tools:ignore="Typos">Autor: %s</string>
     <string name="post_date">Enviada em: %s</string>
     <string name="card_title_create_essay_theme">Criar Tema</string>
