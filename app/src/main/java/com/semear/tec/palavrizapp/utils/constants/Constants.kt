@@ -22,6 +22,7 @@ object Constants {
     const val EXTRA_SUBTITLE_VIDEO = "subtitle_video"
     const val EXTRA_DESCRPTION_VIDEO = "description_video"
     const val EXTRA_VIDEO_KEY = "key_video"
+    const val EXTRA_VIDEO_COMMENT = "key_comments"
 
     //Dialog
     const val POSITIVE = 1

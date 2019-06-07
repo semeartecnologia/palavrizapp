@@ -34,11 +34,56 @@ class RealtimeRepository(val context: Context) {
 
     fun saveComment(comment: Comment, videoKey: String, onCompletion: () -> Unit){
         val reference = "comments/"
+        comment.time = System.currentTimeMillis()
         var commentKey = mDatabaseReference.child(reference).push().key
         comment.id = commentKey
         mDatabaseReference.child(reference).child("$videoKey/$commentKey/").setValue(comment).addOnCompleteListener {
             onCompletion.invoke()
         }
+    }
+
+    fun saveReply(reply: Reply, commentId: String, videoKey: String, onCompletion: () -> Unit){
+        val reference = "reply/$commentId/"
+        var commentKey = mDatabaseReference.child(reference).push().key
+        mDatabaseReference.child(reference).child("$commentKey/").setValue(reply).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun loadReply(commentId: String,  onCompletion: (ArrayList<Reply>) -> Unit ){
+        val reference = "reply/$commentId/"
+        var replyList = arrayListOf<Reply>()
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                replyList.clear()
+                dataSnapshot.children.mapNotNullTo(replyList) { it.getValue<Reply>(Reply::class.java) }
+                onCompletion(replyList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(replyList)
+            }
+        })
+    }
+
+    fun loadComments(videoKey: String, onCompletion: (ArrayList<Comment>) -> Unit){
+        val reference = "comments/"
+        var commentList = arrayListOf<Comment>()
+        val queryReference = mDatabaseReference.child(reference).child("$videoKey/")
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                commentList.clear()
+
+
+                dataSnapshot.children.mapNotNullTo(commentList) { it.getValue<Comment>(Comment::class.java) }
+                onCompletion(commentList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(commentList)
+            }
+        })
     }
 
     fun saveTheme(theme: Themes){

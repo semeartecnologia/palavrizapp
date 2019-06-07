@@ -70,8 +70,9 @@
     <string name="card_title_aulas">Aulas</string>
     <string name="card_text_aulas">Assista aqui nossas aulas de diversos temas</string>
     <string name="card_see_more_aulas">Ver aulas ></string>
-    <string name="questions_label">Perguntas (0)</string>
+    <string name="questions_label">Perguntas (%d)</string>
     <string name="ask_a_question">Fazer uma pergunta!</string>
+    <string name="reply_a_question">Escreva sua reposta!</string>
 
     <!-- Essay List Admin -->
     <string name="card_title_essay_list">Corrigir Redações</string>
@@ -125,6 +126,12 @@
 
     <!-- Comments -->
     <string name="progress_sending_comment_text">Enviando…</string>
+    <string name="comment_time_now">Agora</string>
+    <string name="comment_time_minutes">%dm</string>
+    <string name="comment_time_hours">%h</string>
+    <string name="comment_time_days">%dd</string>
+    <string name="comment_time_months">%dm</string>
+    <string name="comment_time_years">%da</string>
 
 
     <!-- Curso -->
@@ -166,7 +173,8 @@
     <string name="first_class_title">Aula 01 - Bem-vindo ao Palavrizapp</string>
     <string name="first_class_subtitle">Conheça nossa plataforma de ensino</string>
     <string name="first_class_description">Esse vídeo ensina como utilizar devidamente nosso aplicativo, vea os detalhes de todas suas funções. </string>
-    <string name="view_replies"><u>Ver respostas (%d)</u></string>
+    <string name="view_replies"><u>Mais respostas (%d)</u></string>
+    <string name="reply"><u>Responder</u></string>
     <!-- Add Video -->
     <string name="add_video">Adicionar vídeo</string>
     <string name="video_title">Título do vídeo</string>

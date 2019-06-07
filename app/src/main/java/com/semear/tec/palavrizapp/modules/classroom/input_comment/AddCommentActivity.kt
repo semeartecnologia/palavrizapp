@@ -16,6 +16,7 @@ class AddCommentActivity : AppCompatActivity() {
 
     private var addCommentViewModel: AddCommentViewmodel? = null
     private var videoKey: String = ""
+    private var commentId: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +30,21 @@ class AddCommentActivity : AppCompatActivity() {
     private fun setupView() {
         action_send_question?.setOnClickListener {
             progress_comment_layout?.visibility = View.VISIBLE
-            addCommentViewModel?.addComment(et_question?.text.toString(), videoKey){
-                progress_comment_layout?.visibility = View.GONE
-                finish()
+
+            if (commentId.isNullOrBlank()) {
+                //é pergunta
+                addCommentViewModel?.addComment(et_question?.text.toString(), videoKey) {
+                    progress_comment_layout?.visibility = View.GONE
+                    finish()
+                }
+            }else{
+                //é resposta
+                if ( commentId != null){
+                    addCommentViewModel?.addReply(et_question?.text.toString(), commentId!!, videoKey) {
+                        progress_comment_layout?.visibility = View.GONE
+                        finish()
+                    }
+                }
             }
         }
 
@@ -55,6 +68,11 @@ class AddCommentActivity : AppCompatActivity() {
 
     private fun setExtra(intent: Intent){
         videoKey = intent.getStringExtra(Constants.EXTRA_VIDEO_KEY)
+        commentId = intent.getStringExtra(Constants.EXTRA_VIDEO_COMMENT)
+
+        if (commentId != null){
+            et_question?.hint = getString(R.string.reply_a_question)
+        }
     }
 
     private fun initViewModel(){
