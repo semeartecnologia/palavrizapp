@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/lightest_grey"
+    android:layout_height="100dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_margin="4dp"
+        android:elevation="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:weightSum="100"
+            android:layout_height="match_parent">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/avatar_man_256"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/photo_user"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="20"
+                app:civ_border_width="1dp"
+                app:civ_border_color="#ffffff"/>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical"
+                android:layout_weight="80"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="João Gomes da Silva Pereira Almeira"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    tools:text="arthurmazer@hotmai.com"
+                    android:id="@+id/tv_user_email"
+                    android:textStyle="italic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                    <TextView
+                        android:id="@+id/tv_user_plan"
+                        android:textSize="12sp"
+                        tools:text="Plano Free"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+
+                <TextView
+                    android:id="@+id/tv_user_type"
+                    tools:text="Tipo: ESTUDANTE"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>

@@ -7,7 +7,39 @@ import com.semear.tec.palavrizapp.models.*
 
 class RealtimeRepository(val context: Context) {
 
-    val mDatabaseReference: DatabaseReference  = FirebaseDatabase.getInstance().reference
+    private val mDatabaseReference: DatabaseReference  = FirebaseDatabase.getInstance().reference
+
+    fun setUserType(userId: String, userType: UserType, onCompletion: () -> Unit){
+        val reference = "users/"
+        mDatabaseReference.child(reference).child("$userId/")
+                .child("userType").setValue(userType).addOnCompleteListener {
+                    onCompletion()
+                }.addOnFailureListener {
+                }
+    }
+
+    fun getUserList(lastVisible: String? = null, onCompletion: (ArrayList<User>) -> Unit){
+        val reference = "users/"
+
+        val userList = arrayListOf<User>()
+        val queryReference = mDatabaseReference.child(reference)
+                .orderByChild("fullname")
+                .limitToFirst(15)
+        if(lastVisible != null){
+            queryReference.startAt(lastVisible)
+        }
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                userList.clear()
+                dataSnapshot.children.mapNotNullTo(userList) { it.getValue<User>(User::class.java) }
+                onCompletion(userList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(userList)
+            }
+        })
+    }
 
     fun saveVideo(video: Video){
         val reference = "videos/"
@@ -32,6 +64,38 @@ class RealtimeRepository(val context: Context) {
         saveEssayWaitingForFeedback(essay)
     }
 
+    fun setEssayUnreadableStatus(essay: Essay, userId: String, onCompletion: () -> Unit){
+        val childUpdates = HashMap<String, Any?>()
+
+        essay.status = StatusEssay.NOT_READABLE
+
+        childUpdates["/essaysWaiting/${essay.themeId}/${essay.essayId}"] = null
+        childUpdates["/essaysDone/${essay.themeId}/${essay.feedback?.user?.userId}/${essay.essayId}"] = essay
+        childUpdates["/essays/$userId/${essay.essayId}/status"] = essay.status
+        mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
+            onCompletion.invoke()
+        }.addOnFailureListener {
+        }
+    }
+
+    fun getEssayDoneList(themeId: String, author: User, onCompletion: (ArrayList<Essay>) -> Unit){
+        val reference = "essaysDone/"
+        var essayList = arrayListOf<Essay>()
+        val queryReference = mDatabaseReference.child(reference).child("$themeId/")
+                .child("${author.userId}/")
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                essayList.clear()
+                dataSnapshot.children.mapNotNullTo(essayList) { it.getValue<Essay>(Essay::class.java) }
+                onCompletion(essayList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(essayList)
+            }
+        })
+    }
+
     fun saveComment(comment: Comment, videoKey: String, onCompletion: () -> Unit){
         val reference = "comments/"
         comment.time = System.currentTimeMillis()
@@ -49,6 +113,7 @@ class RealtimeRepository(val context: Context) {
             onCompletion.invoke()
         }
     }
+
 
     fun loadReply(commentId: String,  onCompletion: (ArrayList<Reply>) -> Unit ){
         val reference = "reply/$commentId/"
@@ -93,6 +158,11 @@ class RealtimeRepository(val context: Context) {
             key = "-" + System.currentTimeMillis().toString()
         }
         mDatabaseReference.child(reference).child("$key/").setValue(theme)
+    }
+
+    fun deleteTheme(themeId: String){
+        val reference = "themes/"
+        mDatabaseReference.child(reference).child(themeId).removeValue()
     }
 
     fun getThemes(onCompletion: (ArrayList<Themes>) -> Unit){
@@ -205,19 +275,15 @@ class RealtimeRepository(val context: Context) {
 
     fun setFeedbackOwnerOnEssay(essay: Essay, user: User, status: StatusEssay, onCompletion: () -> Unit){
         val childUpdates = HashMap<String, Any?>()
-
-
-        // NAO TA REMOVENDO DIREITO
         if (status == StatusEssay.FEEDBACK_READY){
             essay.status = status
-            childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}"] = null
-            childUpdates["/essaysDone/Tema Teste/${essay.essayId}"] = essay
+            childUpdates["/essaysWaiting/${essay.themeId}/${essay.essayId}"] = null
+            childUpdates["/essaysDone/${essay.themeId}/${essay.feedback?.user?.userId}/${essay.essayId}"] = essay
             childUpdates["/essays/${user.userId}/${essay.essayId}/feedback"] = essay.feedback
             childUpdates["/essays/${user.userId}/${essay.essayId}/status"] = status
-
         }else {
-            childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}/feedback"] = essay.feedback
-            childUpdates["/essaysWaiting/Tema Teste/${essay.essayId}/status"] = status
+            childUpdates["/essaysWaiting/${essay.themeId}/${essay.essayId}/feedback"] = essay.feedback
+            childUpdates["/essaysWaiting/${essay.themeId}/${essay.essayId}/status"] = status
             childUpdates["/essays/${user.userId}/${essay.essayId}/feedback"] = essay.feedback
             childUpdates["/essays/${user.userId}/${essay.essayId}/status"] = status
         }
@@ -226,7 +292,9 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
-    fun getVideosList(category: String, onCompletion: ((ArrayList<Video>) -> Unit)){
+    fun getVideosList(plans: Plans, category: String, onCompletion: ((ArrayList<Video>) -> Unit)){
+
+        //TODO FILTER BY PLAN
         val reference = "videos/"
         var videoList = arrayListOf<Video>()
         val queryReference = mDatabaseReference.child(reference).child("$category/")
@@ -253,7 +321,6 @@ class RealtimeRepository(val context: Context) {
                 dataSnapshot.children.mapNotNullTo(categoryList) { it.getValue<VideoCategory>(VideoCategory::class.java) }
                 onCompletion(categoryList)
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
                 onCompletion(categoryList)
             }

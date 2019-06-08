@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.semear.tec.palavrizapp.R;
 
+import java.util.Arrays;
+
 public enum Plans {
 
     FREE_PLAN(0),
@@ -15,6 +17,12 @@ public enum Plans {
     Plans(int plan) {
         this.plan = plan;
     }
+
+    public static String[] names() {
+        return Arrays.toString(Plans.values()).replaceAll("^.|.$", "").split(", ");
+    }
+
+
 
     public int getUserPlan(){
         return plan;

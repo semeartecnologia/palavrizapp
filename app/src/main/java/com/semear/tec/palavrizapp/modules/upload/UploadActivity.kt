@@ -19,6 +19,7 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import com.semear.tec.palavrizapp.BuildConfig
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
 import com.semear.tec.palavrizapp.utils.constants.Constants
@@ -35,6 +36,7 @@ class UploadActivity : BaseActivity() {
     private var videoUrl = ""
     private var filename = ""
     private lateinit var uploadViewModel: UploadViewModel
+    //TODO Temas padroes hardcoded
     val arraySpinner = arrayOf("Categoria", "Língua Portuguesa", "Dicas Enem")
     var videoThumbUri: Uri? = null
 
@@ -88,8 +90,6 @@ class UploadActivity : BaseActivity() {
     }
 
     fun setProgress(intent: Intent?){
-        Log.d("progrec", "RECEIBED")
-        Log.d("progrc", "ALA: " + intent?.getIntExtra(Constants.BROADCAST_UPLOAD_PROGRESS, 0))
         var progress = intent?.getIntExtra(Constants.BROADCAST_UPLOAD_PROGRESS, 0) ?: 0
         progress_upload.progress = progress
     }
@@ -127,7 +127,7 @@ class UploadActivity : BaseActivity() {
                 val title = video_title.text.toString()
                 val description = video_description.text.toString()
                 val category = arraySpinner[category_spinner.selectedItemPosition]
-                val video = Video(title,description,category,videoUrl)
+                val video = Video(0, Plans.FREE_PLAN, title,description,category,videoUrl)
                 toggleButtonUpload()
                 getThumbnailAndUpload(video)
 

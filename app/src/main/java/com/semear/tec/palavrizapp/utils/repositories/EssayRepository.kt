@@ -44,4 +44,16 @@ class EssayRepository(val context: Context) {
     fun setFeedbackOwnerOnEssay(essay: Essay, user: User, status: StatusEssay, onCompletion: () -> Unit){
         realtimeRepository.setFeedbackOwnerOnEssay(essay, user, status, onCompletion)
     }
+
+    fun setEssayUnreadablaStatus(essay: Essay, userId: String, onCompletion: () -> Unit){
+        realtimeRepository.setEssayUnreadableStatus(essay, userId, onCompletion)
+    }
+
+    fun getEssayDoneList(themeId: String, author: User, onCompletion: (ArrayList<Essay>) -> Unit){
+        realtimeRepository.getEssayDoneList(themeId, author, onCompletion)
+    }
+
+    fun uploadVideoFeedback(urlVideo: String, onCompletion: (String?) -> Unit){
+        storageRepository.uploadVideoFeedback(urlVideo, onCompletion)
+    }
 }

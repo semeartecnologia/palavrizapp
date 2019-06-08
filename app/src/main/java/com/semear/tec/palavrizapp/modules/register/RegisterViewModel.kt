@@ -79,9 +79,10 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
         if (user.photoUri == null)
             user.photoUri = ""
         //tipo e plano padrao, depois tem que trocar isso
-        user.userType = UserType.STUDENT
+        user.userType = UserType.ESTUDANTE
         user.plan = Plans.FREE_PLAN
         //Salva Login no cache Shared Preferences
+        user.registerDate = System.currentTimeMillis()
         sessionManager.setUserOnline(user, true)
         //registra usuario pelo repositorio
         userRepository.registerUser(user)

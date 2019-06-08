@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_layout_create_essay_theme"
+    android:id="@+id/card_layout_admin_area"
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:visibility="gone"
@@ -12,12 +12,12 @@
 
     <RelativeLayout
         android:background="@color/colorPrimary"
-        android:id="@+id/layout_card_create_theme"
+        android:id="@+id/layout_admin_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:text="@string/card_title_create_essay_theme"
+            android:text="Admin"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:textColor="@android:color/white"
@@ -33,11 +33,11 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:textSize="16sp"
-            android:text="@string/card_text_create_essay" />
+            android:text="Admin" />
 
         <TextView
             android:id="@+id/btn_see_more_essay_list"
-            android:text="@string/card_see_more_create_essay"
+            android:text="Admin Area >>"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

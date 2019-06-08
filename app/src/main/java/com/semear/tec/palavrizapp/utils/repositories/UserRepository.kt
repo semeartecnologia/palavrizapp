@@ -3,6 +3,7 @@ package com.semear.tec.palavrizapp.utils.repositories
 import android.content.Context
 import com.google.firebase.database.FirebaseDatabase
 import com.semear.tec.palavrizapp.models.User
+import com.semear.tec.palavrizapp.models.UserType
 
 class UserRepository(val context: Context) {
 
@@ -22,61 +23,11 @@ class UserRepository(val context: Context) {
         realtimeRepository.getUser(userId, onCompletion, onFail )
     }
 
-    /*public void registerUser(User user){
-        //novo usuario cadastrando email na mao
-        if (user.getUserId() == null || user.getUserId().isEmpty()){
-            user.setUserId(fDatabase.getReference("users/").push().getKey());
-        }
-        myRef = fDatabase.getReference("users/" + user.getUserId());
-        myRef.setValue(user);
-    }*/
-
-/*
-
-package com.semear.tec.palavrizapp.utils.repositories;
-
-import android.content.Context;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.semear.tec.palavrizapp.models.User;
-import com.semear.tec.palavrizapp.utils.interfaces.OnGetUser;
-
-*/
-/**
- * Repositorio para o Banco de Dados de Usuarios
- *//*
-
-public class UserRepository {
-
-    private FirebaseDatabase fDatabase;
-    private DatabaseReference myRef;
-    private RealtimeRepository  realtimeRepository;
-
-    public UserRepository(Context context){
-
-        fDatabase = FirebaseDatabase.getInstance();
-        realtimeRepository = new RealtimeRepository(context);
+    fun setUserType(userId: String, userType: UserType, onCompletion: () -> Unit){
+        realtimeRepository.setUserType(userId, userType, onCompletion)
     }
 
-    */
-/**
-     * Registra usuario no firebase
-     * @param user
-     *//*
-
-    public void registerUser(User user){
-        //novo usuario cadastrando email na mao
-        if (user.getUserId() == null || user.getUserId().isEmpty()){
-            user.setUserId(fDatabase.getReference("users/").push().getKey());
-        }
-        myRef = fDatabase.getReference("users/" + user.getUserId());
-        myRef.setValue(user);
+    fun getUserList(lastVisible: String? = null, onCompletion: (ArrayList<User>) -> Unit){
+        realtimeRepository.getUserList(lastVisible, onCompletion)
     }
-
-    public void getUser(String userId, OnGetUser onGetUser){
-        realtimeRepository.getUser(userId, onGetUser);
-    }
-*/
-
 }

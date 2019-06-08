@@ -14,11 +14,13 @@ import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Themes
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.modules.MainActivity
+import com.semear.tec.palavrizapp.modules.admin.AdminActivity
 import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity
 import com.semear.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFragment
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment
 import com.semear.tec.palavrizapp.modules.themes.ThemesFragment
 import com.semear.tec.palavrizapp.utils.Commons
+import kotlinx.android.synthetic.main.card_admin_area.*
 import kotlinx.android.synthetic.main.card_aulas.*
 import kotlinx.android.synthetic.main.card_create_themes_essay.*
 import kotlinx.android.synthetic.main.card_create_themes_essay.view.*
@@ -83,6 +85,10 @@ class DashboardFragment : Fragment() {
             mainActivity?.changeFragment(EssayMarkListFragment(), "Sala de Correção")
             mainActivity?.setActionBarTitle("Sala de Correção")
         }
+        card_layout_admin_area?.setOnClickListener {
+            startMyAdminActivity()
+        }
+
         card_layout_create_essay_theme?.setOnClickListener { v ->
             Commons.createThemeDialog(activity as Activity
                     ,
@@ -121,6 +127,10 @@ class DashboardFragment : Fragment() {
         fun OnThemesClicked()
     }
 
+    private fun startMyAdminActivity() {
+        val it = Intent(activity, AdminActivity::class.java)
+        startActivity(it)
+    }
 
     private fun startMyEssayActivity() {
         val it = Intent(activity, MyEssayActivity::class.java)
@@ -135,7 +145,11 @@ class DashboardFragment : Fragment() {
             card_layout_essay_list?.visibility = View.GONE
         }
         if (user?.userType == UserType.ADMINISTRADOR){
-
+            card_layout_create_essay_theme?.visibility = View.VISIBLE
+            card_layout_admin_area?.visibility = View.VISIBLE
+        }else{
+            card_layout_create_essay_theme?.visibility = View.GONE
+            card_layout_admin_area?.visibility = View.GONE
         }
     }
 

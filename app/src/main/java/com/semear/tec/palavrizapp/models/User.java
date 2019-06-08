@@ -13,27 +13,9 @@ public class User implements Parcelable {
     private UserType userType;
     private Plans plan;
     private String photoUri;
-
+    private Long registerDate;
 
     public User(){}
-
-    public User(String fullname, String email, String password, String location, UserType userType) {
-        this.fullname = fullname;
-        this.email = email;
-        this.password = password;
-        this.location = location;
-        this.userType = userType;
-    }
-
-
-    public User(String fullname, String email, String password, String location, UserType userType, Plans plan) {
-        this.fullname = fullname;
-        this.email = email;
-        this.password = password;
-        this.location = location;
-        this.userType = userType;
-        this.plan = plan;
-    }
 
     public String getFullname() {
         return fullname;
@@ -99,6 +81,14 @@ public class User implements Parcelable {
         this.photoUri = photoUri;
     }
 
+    public Long getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Long registerDate) {
+        this.registerDate = registerDate;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -114,6 +104,7 @@ public class User implements Parcelable {
         dest.writeInt(this.userType == null ? -1 : this.userType.ordinal());
         dest.writeInt(this.plan == null ? -1 : this.plan.ordinal());
         dest.writeString(this.photoUri);
+        dest.writeValue(this.registerDate);
     }
 
     protected User(Parcel in) {
@@ -127,9 +118,10 @@ public class User implements Parcelable {
         int tmpPlan = in.readInt();
         this.plan = tmpPlan == -1 ? null : Plans.values()[tmpPlan];
         this.photoUri = in.readString();
+        this.registerDate = (Long) in.readValue(Long.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
             return new User(source);

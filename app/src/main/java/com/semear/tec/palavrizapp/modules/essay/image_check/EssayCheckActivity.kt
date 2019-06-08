@@ -32,6 +32,8 @@ class EssayCheckActivity : AppCompatActivity() {
     var sessionManager: SessionManager? = null
     var themesRepository: ThemesRepository? = null
 
+    private var themeHash = hashMapOf<String,String>()
+
     private val RESULT_NEGATIVE = 404
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,16 +59,17 @@ class EssayCheckActivity : AppCompatActivity() {
     }
 
     private fun loadThemes(){
+        themeHash.clear()
         themesRepository?.getTheme {
-            val themeArray = arrayListOf<String>()
-            it.forEach {
-                themeArray.add(it.themeName)
+            it.forEach { theme ->
+                themeHash[theme.themeName] = theme.themeId
             }
             showLoadingProgress(false)
             showFieldsDialogInserTitleAndTheme(true)
 
+            val listThemes = ArrayList<String>(themeHash.keys)
             val adapter = ArrayAdapter<String>(this,
-                    android.R.layout.simple_spinner_item, themeArray)
+                    android.R.layout.simple_spinner_item, listThemes)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             theme_spinner.adapter = adapter
             adapter.notifyDataSetChanged()
@@ -126,7 +129,10 @@ class EssayCheckActivity : AppCompatActivity() {
             layout_sendind_progress.visibility = View.VISIBLE
             val title = et_title_essay?.text.toString()
             val user = sessionManager?.userLogged
-            val essay = Essay(title, theme_spinner?.selectedItem.toString(), user, Commons.currentTimeDate,StatusEssay.UPLOADED, "")
+
+            //TODO parece meio gambiarra, dps ver isso direito
+            val themeId = themeHash[theme_spinner?.selectedItem.toString().trim()]
+            val essay = Essay(title, theme_spinner?.selectedItem.toString(), themeId!!, user, Commons.currentTimeDate,StatusEssay.UPLOADED, "")
 
             essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
 

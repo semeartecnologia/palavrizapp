@@ -1,5 +1,7 @@
 package com.semear.tec.palavrizapp.models;
 
+import java.util.Arrays;
+
 /**
  * Tipos de usuário do sistema
  */
@@ -8,7 +10,7 @@ public enum UserType {
     /**
      * Todos estudantes
      */
-    STUDENT(0),
+    ESTUDANTE(0),
     /**
      * Corretores
      */
@@ -26,6 +28,10 @@ public enum UserType {
 
     public int getUserType(){
         return userType;
+    }
+
+    public static String[] names() {
+        return Arrays.toString(UserType.values()).replaceAll("^.|.$", "").split(", ");
     }
 
 }

@@ -18,10 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modules.classroom.input_comment.AddCommentActivity"
-            android:theme="@style/Theme.Transparent"
+        <activity android:name=".modules.admin.AdminActivity"></activity>
+        <activity
+            android:name=".modules.classroom.input_comment.AddCommentActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"/>
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".modules.essay.photo_zoom.ImageZoomActivity" />
         <activity android:name=".modules.essay.essay_view_professor.EssayViewActivity" />
         <activity android:name=".modules.essay.MyEssayActivity" />

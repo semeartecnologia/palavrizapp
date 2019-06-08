@@ -8,10 +8,18 @@ import android.os.Build
 import android.provider.MediaStore
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.Plans
+import com.semear.tec.palavrizapp.models.User
+import com.semear.tec.palavrizapp.models.UserType
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.dialog_create_theme.view.*
+import kotlinx.android.synthetic.main.dialog_edit_user.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,6 +29,11 @@ object Commons {
     val currentTimeDate: String
         @SuppressLint("SimpleDateFormat")
         get() = SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().time)
+
+    fun stringDate(timestamp: Long): String {
+        val date = Date(timestamp)
+        return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+    }
 
 
     fun formatTimeComment(context: Context?, timeMillis: Long?): String{
@@ -131,6 +144,64 @@ object Commons {
         view.btn_create_theme  .setOnClickListener {
             createCallback.invoke(titleEditText.text.toString(), "")
             createThemeDialog.dismiss()
+        }
+
+        createThemeDialog.show()
+        return createThemeDialog
+    }
+
+    fun createEditUserAdminDialog(activity: Activity, user: User, onSaveClicked:  ((User) -> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_edit_user, null, true)
+
+        val tvUserName = view.findViewById<TextView>(R.id.tv_user_name)
+        val tvUserEmail = view.findViewById<TextView>(R.id.tv_user_email)
+        val spUserPlans = view.findViewById<Spinner>(R.id.spinner_plans)
+        val spUserUserType = view.findViewById<Spinner>(R.id.spinner_user_type)
+        val ivPhotoUser = view.findViewById<CircleImageView>(R.id.photo_user_dialog)
+
+
+        tvUserName.text = user.fullname
+        tvUserEmail.text = user.email
+
+
+        if (!user.photoUri.isNullOrBlank()) {
+            Picasso.get().load(user.photoUri).into(ivPhotoUser)
+        }
+
+
+        val listUserTypes = UserType.names()
+        val adapter = ArrayAdapter<String>(activity,
+                android.R.layout.simple_spinner_item, listUserTypes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spUserUserType.adapter = adapter
+        adapter.notifyDataSetChanged()
+        spUserUserType.setSelection(user.userType.userType)
+
+        val listPlans = Plans.names()
+        val adapterPlans = ArrayAdapter<String>(activity,
+                android.R.layout.simple_spinner_item, listPlans)
+
+        adapterPlans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spUserPlans.adapter = adapterPlans
+        adapterPlans.notifyDataSetChanged()
+        spUserPlans.setSelection(user.plan.userPlan)
+
+
+
+        val createThemeDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .create()
+
+        view.btn_cancel.setOnClickListener {
+            createThemeDialog.dismiss()
+        }
+
+        view.btn_save.setOnClickListener {
+            createThemeDialog.dismiss()
+            user.plan = Plans.values()[spUserPlans.selectedItemPosition]
+            user.userType = UserType.values()[spUserUserType.selectedItemPosition]
+            onSaveClicked.invoke(user)
         }
 
         createThemeDialog.show()

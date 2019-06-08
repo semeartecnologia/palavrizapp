@@ -3,9 +3,9 @@ package com.semear.tec.palavrizapp.models
 import android.os.Parcel
 import android.os.Parcelable
 
-class Essay(var title: String = "", var theme: String = "", var author: User? = null, var postDate: String = "", var status: StatusEssay = StatusEssay.UPLOADED, var url: String = "", var essayId: String = "", var feedback: Feedback? = null) : Parcelable {
-
+class Essay(var title: String = "", var theme: String = "", var themeId: String = "", var author: User? = null, var postDate: String = "", var status: StatusEssay = StatusEssay.UPLOADED, var url: String = "", var essayId: String = "", var feedback: Feedback? = null) : Parcelable {
     constructor(source: Parcel) : this(
+            source.readString(),
             source.readString(),
             source.readString(),
             source.readParcelable<User>(User::class.java.classLoader),
@@ -21,6 +21,7 @@ class Essay(var title: String = "", var theme: String = "", var author: User? = 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(title)
         writeString(theme)
+        writeString(themeId)
         writeParcelable(author, 0)
         writeString(postDate)
         writeInt(status.ordinal)

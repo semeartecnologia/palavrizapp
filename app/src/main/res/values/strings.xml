@@ -32,7 +32,7 @@
     <string name="error_title">Erro</string>
     <string name="email_fail_login_text">Login e/ou senha incorretos, tente novamente</string>
     <string name="forgot_password">Esqueceu a senha?</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">Senha incorreta</string>
@@ -132,6 +132,17 @@
     <string name="comment_time_days">%dd</string>
     <string name="comment_time_months">%dm</string>
     <string name="comment_time_years">%da</string>
+
+    <!-- Admin -->
+    <string name="toolbar_admin">Administrador</string>
+    <string name="tab_user">Usuários</string>
+    <string name="tab_themes">Temas</string>
+    <string name="tab_videos">Videos</string>
+    <string name="sucess_edit_user_title">Sucesso</string>
+    <string name="sucess_edit_user_text">Usuário editado com sucesso</string>
+    <!-- List User -->
+    <string name="user_type_label">Tipo: %s</string>
+    <string name="btn_save">Salvar</string>
 
 
     <!-- Curso -->
