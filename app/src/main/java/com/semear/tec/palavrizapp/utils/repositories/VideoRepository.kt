@@ -15,6 +15,10 @@ class VideoRepository(val context: Context) {
         realtimeRepository.getVideosList(sessionManager.userPlan, onCompletion)
     }
 
+    fun getAllVideos(onCompletion: ((ArrayList<Video>) -> Unit)){
+        realtimeRepository.getVideosList(Plans.NO_PLAN, onCompletion)
+    }
+
     fun getCategoryList(onCompletion: ((ArrayList<VideoCategory>) -> Unit)){
         realtimeRepository.getVideosCategoryList(onCompletion)
     }

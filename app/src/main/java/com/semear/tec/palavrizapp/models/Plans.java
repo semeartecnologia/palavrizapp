@@ -10,7 +10,8 @@ public enum Plans {
 
     FREE_PLAN(0),
     BASIC_PLAN(1),
-    ADVANCED_PLAN(2);
+    ADVANCED_PLAN(2),
+    NO_PLAN(3);
 
     private final int plan;
 
