@@ -11,6 +11,7 @@
     <TextView
         android:textSize="24sp"
         android:textStyle="bold"
+        android:id="@+id/tv_theme_label"
         android:background="@color/transparentGrey30"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
@@ -48,6 +49,33 @@
         android:drawableStart="@drawable/ic_picture_as_pdf_black_24dp"
         android:drawablePadding="8dp"
         android:text="@string/pdf_attachment"/>
+
+    <LinearLayout
+        android:layout_gravity="center_horizontal"
+
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_filename_pdf"
+            tools:text="filename.pdf"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_remove_pdf"
+            android:visibility="gone"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_delete_forever_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:orientation="horizontal"

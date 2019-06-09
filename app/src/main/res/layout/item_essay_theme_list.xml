@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/lightest_grey"
+    android:layout_height="100dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_margin="4dp"
+        android:elevation="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:weightSum="100"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/tv_theme_name"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_weight="80"
+                tools:text="João Gomes da Silva Pereira Almeira"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/pdf_button"
+                android:layout_gravity="center_vertical"
+                android:text="PDF"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="20"
+                android:layout_width="0dp"
+                android:layout_height="48dp" />
+
+
+
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>

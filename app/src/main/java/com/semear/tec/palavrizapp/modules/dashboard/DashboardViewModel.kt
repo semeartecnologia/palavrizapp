@@ -16,9 +16,4 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     val currentUser: User?
         get() = sessionManager.userLogged
 
-    fun saveTheme(themes: Themes){
-        themesRepository.saveTheme(themes)
-    }
-
-
 }

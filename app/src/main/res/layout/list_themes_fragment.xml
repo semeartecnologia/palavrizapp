@@ -5,9 +5,24 @@
     android:layout_height="match_parent"
     tools:context="com.semear.tec.palavrizapp.modules.admin.themes.ListThemesFragment">
 
-    <TextView
+    <ProgressBar
+        android:id="@+id/progress_loading_themes"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_themes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello Themes" />
+        android:layout_height="match_parent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_theme"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="32dp"
+        android:src="@drawable/ic_add_white_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

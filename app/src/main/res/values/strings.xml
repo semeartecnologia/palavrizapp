@@ -81,12 +81,14 @@
     <string name="author" tools:ignore="Typos">Autor: %s</string>
     <string name="post_date">Enviada em: %s</string>
     <string name="card_title_create_essay_theme">Criar Tema</string>
+    <string name="edit_essay_theme">Editar Tema</string>
     <string name="card_text_create_essay">Crie um tema de redação para os alunos</string>
     <string name="card_see_more_create_essay">Criar ></string>
     <string name="create_theme_label">Criar Tema</string>
     <string name="create_theme_title">Título</string>
     <string name="pdf_attachment">Anexar Pdf</string>
     <string name="create_theme_create_option">Criar</string>
+    <string name="create_theme_edit_option">Editar</string>
     <string name="create_theme_cancel_option">Cancelar</string>
 
     <!-- Essay -->

@@ -1,17 +1,14 @@
 package com.semear.tec.palavrizapp.modules.dashboard
 
-import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.models.Themes
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.modules.MainActivity
 import com.semear.tec.palavrizapp.modules.admin.AdminActivity
@@ -19,11 +16,8 @@ import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity
 import com.semear.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFragment
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment
 import com.semear.tec.palavrizapp.modules.themes.ThemesFragment
-import com.semear.tec.palavrizapp.utils.Commons
 import kotlinx.android.synthetic.main.card_admin_area.*
 import kotlinx.android.synthetic.main.card_aulas.*
-import kotlinx.android.synthetic.main.card_create_themes_essay.*
-import kotlinx.android.synthetic.main.card_create_themes_essay.view.*
 import kotlinx.android.synthetic.main.card_list_essay.*
 import kotlinx.android.synthetic.main.card_send_essay.*
 import kotlinx.android.synthetic.main.card_user_planos.*
@@ -89,21 +83,6 @@ class DashboardFragment : Fragment() {
             startMyAdminActivity()
         }
 
-        card_layout_create_essay_theme?.setOnClickListener { v ->
-            Commons.createThemeDialog(activity as Activity
-                    ,
-                    {
-                        val i = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-                        startActivityForResult(i, 231)
-
-                    },{ themeTitle, urlVideo ->
-                    val theme = Themes(themeTitle, urlVideo)
-                    dashboardViewModel?.saveTheme(theme)
-
-            },{
-
-            })
-        }
 
     }
 
@@ -145,10 +124,8 @@ class DashboardFragment : Fragment() {
             card_layout_essay_list?.visibility = View.GONE
         }
         if (user?.userType == UserType.ADMINISTRADOR){
-            card_layout_create_essay_theme?.visibility = View.VISIBLE
             card_layout_admin_area?.visibility = View.VISIBLE
         }else{
-            card_layout_create_essay_theme?.visibility = View.GONE
             card_layout_admin_area?.visibility = View.GONE
         }
     }

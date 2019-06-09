@@ -99,7 +99,7 @@ class StorageRepository(val context: Context) {
         }
     }
 
-    fun uploadPdf(theme: Themes, onCompletion: (Boolean) -> Unit){
+    fun uploadPdf(theme: Themes, onCompletion: (Themes?) -> Unit){
 
         val filename = theme.urlPdf?.split("/")?.lastOrNull() ?: ""
 
@@ -108,7 +108,7 @@ class StorageRepository(val context: Context) {
 
         uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
             if (!task.isSuccessful) {
-                onCompletion(false)
+                onCompletion(null)
                 task.exception?.let {
                     throw it
                 }
@@ -118,10 +118,11 @@ class StorageRepository(val context: Context) {
             if (task.isSuccessful) {
                 ref.downloadUrl.addOnSuccessListener {
                     theme.urlPdf = it.path ?: ""
-                    onCompletion(true)
+                    Log.d("teste", "testao = ${theme.urlPdf}")
+                    onCompletion(theme)
                 }
             }else{
-                onCompletion(false)
+                onCompletion(null)
             }
         }
         uploadTask.addOnProgressListener {

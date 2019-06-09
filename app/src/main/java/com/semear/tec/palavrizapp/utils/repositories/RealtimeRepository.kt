@@ -151,13 +151,23 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
-    fun saveTheme(theme: Themes){
+    fun saveTheme(theme: Themes, onCompletion: () -> Unit){
         val reference = "themes/"
         var key = mDatabaseReference.child(reference).push().key
         if (key == null){
             key = "-" + System.currentTimeMillis().toString()
         }
-        mDatabaseReference.child(reference).child("$key/").setValue(theme)
+        theme.themeId = key
+        mDatabaseReference.child(reference).child("$key/").setValue(theme).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun editTheme(theme: Themes, onCompletion: () -> Unit){
+        val reference = "themes/"
+        mDatabaseReference.child(reference).child("${theme.themeId}/").setValue(theme).addOnCompleteListener {
+            onCompletion.invoke()
+        }
     }
 
     fun deleteTheme(themeId: String){
@@ -183,7 +193,7 @@ class RealtimeRepository(val context: Context) {
     }
 
     private fun saveEssayWaitingForFeedback(essay: Essay){
-        var reference = "essaysWaiting/${essay.theme}/${essay.essayId}/"
+        var reference = "essaysWaiting/${essay.essayId}/"
         mDatabaseReference.child(reference).setValue(essay)
     }
 
@@ -205,10 +215,11 @@ class RealtimeRepository(val context: Context) {
     }
 
     fun getEssayList(onCompletion: ((ArrayList<Essay>) -> Unit)){
-        val reference = "essaysWaiting/Tema Teste/"
+        val reference = "essaysWaiting/"
 
         var essayList = arrayListOf<Essay>()
         val queryReference = mDatabaseReference.child(reference)
+                .orderByKey()
         queryReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 essayList.clear()
@@ -242,7 +253,7 @@ class RealtimeRepository(val context: Context) {
     }
 
     fun getEssayWaitingById(essayId: String,  onCompletion: (Essay?) -> Unit, onFail: () -> Unit){
-        var reference = "essaysWaiting/Tema Teste/"
+        var reference = "essaysWaiting/"
         val queryReference = mDatabaseReference.child(reference).child(essayId)
         queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -258,7 +269,7 @@ class RealtimeRepository(val context: Context) {
     }
 
     fun getEssayWaitingListenerChange(essayId: String, onChange: (Essay?) -> Unit, onFail: () -> Unit){
-        var reference = "essaysWaiting/Tema Teste/"
+        var reference = "essaysWaiting/"
         val queryReference = mDatabaseReference.child(reference).child(essayId)
         queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -277,13 +288,13 @@ class RealtimeRepository(val context: Context) {
         val childUpdates = HashMap<String, Any?>()
         if (status == StatusEssay.FEEDBACK_READY){
             essay.status = status
-            childUpdates["/essaysWaiting/${essay.themeId}/${essay.essayId}"] = null
-            childUpdates["/essaysDone/${essay.themeId}/${essay.feedback?.user?.userId}/${essay.essayId}"] = essay
+            childUpdates["/essaysWaiting/${essay.essayId}"] = null
+            childUpdates["/essaysDone/${essay.feedback?.user?.userId}/${essay.essayId}"] = essay
             childUpdates["/essays/${user.userId}/${essay.essayId}/feedback"] = essay.feedback
             childUpdates["/essays/${user.userId}/${essay.essayId}/status"] = status
         }else {
-            childUpdates["/essaysWaiting/${essay.themeId}/${essay.essayId}/feedback"] = essay.feedback
-            childUpdates["/essaysWaiting/${essay.themeId}/${essay.essayId}/status"] = status
+            childUpdates["/essaysWaiting/${essay.essayId}/feedback"] = essay.feedback
+            childUpdates["/essaysWaiting/${essay.essayId}/status"] = status
             childUpdates["/essays/${user.userId}/${essay.essayId}/feedback"] = essay.feedback
             childUpdates["/essays/${user.userId}/${essay.essayId}/status"] = status
         }

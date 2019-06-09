@@ -41,27 +41,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         this.listVideos.clear();
     }
 
-/*
-    public void addThemes(List<GroupThemes> listThemes){
-        this.listGroupThemes.clear();
-
-        //adiciona na lista e notifica
-        int currentId = -1;
-        for (GroupThemes groupThemes : listThemes){
-
-            if (currentId == -1) {
-                currentId = groupThemes.getId();
-                this.listGroupThemes.add(groupThemes);
-            }else{
-                if ( groupThemes.getId() != currentId){
-                    this.listGroupThemes.add(groupThemes);
-                }
-                currentId = groupThemes.getId();
-            }
-        }
-
-        this.notifyDataSetChanged();
-    }*/
 
     @NonNull
     @Override

@@ -134,7 +134,9 @@ class EssayReviewFragment() : Fragment() {
 
     private fun setupAuthorDetails(){
         tv_profile_name_author?.text = actualEssay?.author?.fullname
-        Picasso.get().load(actualEssay?.author?.photoUri).into(tv_profile_image_author)
+        if (!actualEssay?.author?.photoUri.isNullOrBlank()) {
+            Picasso.get().load(actualEssay?.author?.photoUri).into(tv_profile_image_author)
+        }
     }
 
     private fun setupImageEssay(){
