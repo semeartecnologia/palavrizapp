@@ -8,13 +8,23 @@ import com.semear.tec.palavrizapp.models.VideoCategory
 class VideoRepository(val context: Context) {
 
     private var realtimeRepository: RealtimeRepository = RealtimeRepository(context)
+    private var storageRepository = StorageRepository(context)
+    private var sessionManager: SessionManager = SessionManager(context)
 
-    fun getVideoList(category: String, onCompletion: ((ArrayList<Video>) -> Unit)){
-        //TODO plans hardcoded
-        realtimeRepository.getVideosList(Plans.FREE_PLAN, category, onCompletion)
+    fun getVideoList(onCompletion: ((ArrayList<Video>) -> Unit)){
+        realtimeRepository.getVideosList(sessionManager.userPlan, onCompletion)
     }
 
     fun getCategoryList(onCompletion: ((ArrayList<VideoCategory>) -> Unit)){
         realtimeRepository.getVideosCategoryList(onCompletion)
     }
+
+    fun getVideoDownloadUrl(path: String, onCompletion: ((String) -> Unit)){
+        storageRepository.getVideoDownloadUrl(path,onCompletion)
+    }
+
+    fun getThumnailDownloadUrl(path: String, onCompletion: ((String) -> Unit)){
+        storageRepository.getThumbUrl(path, onCompletion)
+    }
+
 }

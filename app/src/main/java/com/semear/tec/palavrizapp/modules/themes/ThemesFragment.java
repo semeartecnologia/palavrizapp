@@ -72,7 +72,7 @@ public class ThemesFragment extends Fragment {
                 mAdapter.clearVideoList();
                 progressBar.setVisibility(View.VISIBLE);
                 recyclerTheme1.setVisibility(View.GONE);
-                getVideoList(category);
+                getVideoList();
             }
 
             @Override
@@ -103,14 +103,14 @@ public class ThemesFragment extends Fragment {
                     );
 
             categorySpinner.setAdapter(adapter);
-            getVideoList(categorySearch);
+            getVideoList();
             return null;
         });
     }
 
-    public void getVideoList(String category){
+    public void getVideoList(){
         if (getActivity() == null) return;
-        videoRepository.getVideoList(category, videoList ->{
+        videoRepository.getVideoList(videoList ->{
             mAdapter.addAllVideo(videoList);
             progressBar.setVisibility(View.GONE);
             recyclerTheme1.setVisibility(View.VISIBLE);

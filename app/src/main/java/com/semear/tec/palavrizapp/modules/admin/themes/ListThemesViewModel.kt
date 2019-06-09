@@ -4,16 +4,25 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import com.semear.tec.palavrizapp.models.Themes
+import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.repositories.ThemesRepository
+import java.io.File
 
 class ListThemesViewModel(application: Application) : AndroidViewModel(application) {
 
     var listThemes = MutableLiveData<ArrayList<Themes>>()
+    var filePathLiveData = MutableLiveData<String>()
     private val themesRepository = ThemesRepository(application)
 
     fun fetchThemes(){
         themesRepository.getTheme {
             listThemes.postValue(it)
+        }
+    }
+
+    fun downloadPdf(path: String){
+        themesRepository.downloadPdf(path){
+            filePathLiveData.postValue(it)
         }
     }
 

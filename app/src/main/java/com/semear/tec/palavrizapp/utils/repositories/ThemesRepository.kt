@@ -51,8 +51,8 @@ class ThemesRepository(context: Context) {
         return storageRepository.uploadPdf(theme, onCompletion)
     }*/
 
-    fun downloadPdf(filename: String, onCompletion: ((String) -> Unit)){
-        return storageRepository.getPdf(filename,onCompletion)
+    fun downloadPdf(path: String, onCompletion: ((String) -> Unit)){
+        return storageRepository.getPdf(path,onCompletion)
     }
 
     fun deleteTheme(themeId: String){

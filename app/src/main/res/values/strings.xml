@@ -125,6 +125,8 @@
     <string name="tv_hint_feedback">Escreva seu feedback!</string>
     <string name="upload_video_feedback">Anexar vídeo</string>
     <string name="btn_send_feedback">Enviar</string>
+    <string name="open_pdf_theme">Abrir tema</string>
+    <string name="folder_reports">Palavrizapp/Temas</string>
 
     <!-- Comments -->
     <string name="progress_sending_comment_text">Enviando…</string>

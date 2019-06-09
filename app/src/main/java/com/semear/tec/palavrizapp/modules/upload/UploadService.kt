@@ -48,7 +48,7 @@ class UploadService : Service() {
         val videoThumb = intent?.getStringExtra(EXTRA_FILE_THUMBNAIL) ?: ""
         Log.d("teste", videoThumb)
         //Log.d("palavrizapp-service", "extras: $fileUri $fileName")
-        storageRepository.uploadVideo(Video(0, Plans.FREE_PLAN, fileTitle,fileDescription,fileCategory,fileUri, videoThumb))
+        storageRepository.uploadVideo(Video(0, Plans.FREE_PLAN, "", fileTitle,fileDescription,fileCategory,fileUri, videoThumb))
         return super.onStartCommand(intent, flags, startId)
     }
 

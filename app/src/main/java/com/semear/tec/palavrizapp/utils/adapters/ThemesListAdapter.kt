@@ -47,6 +47,10 @@ class ThemesListAdapter(val listener: OnThemeClicked) : RecyclerView.Adapter<The
             listener.onThemeClicked(theme)
         }
 
+        holder.view.pdf_button.setOnClickListener {
+            listener.onDownloadPdfClicked(theme.urlPdf ?: "")
+        }
+
     }
 
     class ViewHolder(var view: View): RecyclerView.ViewHolder(view) {

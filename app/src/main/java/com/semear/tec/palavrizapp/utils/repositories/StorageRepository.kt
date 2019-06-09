@@ -17,6 +17,7 @@ import com.semear.tec.palavrizapp.utils.constants.Constants
 import java.io.File
 import android.R.attr.bitmap
 import com.semear.tec.palavrizapp.models.Themes
+import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 import java.io.ByteArrayOutputStream
 
@@ -136,10 +137,35 @@ class StorageRepository(val context: Context) {
         }
     }
 
-    fun getPdf(filename: String, onCompletion: ((String) -> Unit)){
-        val refThumb = essaysParentRef.child("themes/").child(filename)
+    fun getVideoDownloadUrl(path: String, onCompletion: ((String) -> Unit)){
+        val filename = path.split("/").lastOrNull() ?: ""
+        val refVideos = videosParentRef.child(filename)
+        refVideos.downloadUrl.addOnSuccessListener {
+            onCompletion(it.toString())
+        }.addOnFailureListener {
+            onCompletion("")
+        }
+    }
+
+    fun getThumbUrl(path: String, onCompletion: ((String) -> Unit)){
+        val filename = path.split("/").lastOrNull() ?: ""
+        val refThumb = videosParentRef.child("thumbs/").child(filename)
         refThumb.downloadUrl.addOnSuccessListener {
             onCompletion(it.toString())
+        }.addOnFailureListener {
+            onCompletion("")
+        }
+    }
+
+    fun getPdf(path: String, onCompletion: ((String) -> Unit)){
+        val filename = path.split("/").lastOrNull() ?: ""
+        val refThumb = essaysParentRef.child("themes/").child(filename)
+        refThumb.downloadUrl.addOnSuccessListener {
+
+            val splitedFilename = filename.split(".")
+            if (splitedFilename.size > 1) {
+                FileHelper.downloadFile(context, splitedFilename[0], splitedFilename[1], "/Palavrizapp/Temas", it.toString())
+            }
         }.addOnFailureListener {
             onCompletion("")
         }

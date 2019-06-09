@@ -50,7 +50,7 @@ class RealtimeRepository(val context: Context) {
 
         video.videoKey = key
 
-        mDatabaseReference.child(reference).child(video.category+"/").child("$key/").setValue(video)
+        mDatabaseReference.child(reference).child(video.videoPlan?.name ?: "NO_PLAN").child("$key/").setValue(video)
     }
 
     fun saveEssay(essay: Essay, userId: String){
@@ -303,12 +303,13 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
-    fun getVideosList(plans: Plans, category: String, onCompletion: ((ArrayList<Video>) -> Unit)){
+    fun getVideosList(plan: Plans, onCompletion: ((ArrayList<Video>) -> Unit)){
 
         //TODO FILTER BY PLAN
         val reference = "videos/"
         var videoList = arrayListOf<Video>()
-        val queryReference = mDatabaseReference.child(reference).child("$category/")
+        val queryReference = mDatabaseReference.child(reference).child(plan.name)
+                .orderByChild("category")
         queryReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 videoList.clear()

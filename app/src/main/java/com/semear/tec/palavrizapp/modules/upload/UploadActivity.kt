@@ -22,6 +22,8 @@ import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
+import com.semear.tec.palavrizapp.utils.Commons
+import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.constants.Constants.BROADCAST_UPLOAD_DONE
 import com.semear.tec.palavrizapp.utils.constants.Constants.BROADCAST_UPLOAD_PROGRESS
@@ -127,7 +129,7 @@ class UploadActivity : BaseActivity() {
                 val title = video_title.text.toString()
                 val description = video_description.text.toString()
                 val category = arraySpinner[category_spinner.selectedItemPosition]
-                val video = Video(0, Plans.FREE_PLAN, title,description,category,videoUrl)
+                val video = Video(0, Plans.FREE_PLAN, "", title,description,category,videoUrl)
                 toggleButtonUpload()
                 getThumbnailAndUpload(video)
 
@@ -205,10 +207,14 @@ class UploadActivity : BaseActivity() {
         val videoThumb = ThumbnailUtils.createVideoThumbnail(file.absolutePath,
                 MediaStore.Images.Thumbnails.MINI_KIND)
 
+        FileHelper.saveBitmpao("bmpw1e1234", videoThumb)
 
-        videoThumbUri = getImageUri(this, videoThumb)
+
+/*
+        videoThumbUri = */
+        val a = videoThumbUri
         //videoThumbUri = getImageUri(this, videoThumb)
-        video.videoThumb = videoThumbUri?.path
+        video.videoThumb = Commons.getRealPathFromURI(this, getImageUri(this, videoThumb) )
 
         Log.d("teste", "Thumb created!!! " + video.videoThumb)
         uploadViewModel.uploadVideo(this, video)

@@ -7,6 +7,7 @@ import com.semear.tec.palavrizapp.models.Comment
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.utils.repositories.CommentsRepository
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager
+import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.onComplete
 
@@ -16,6 +17,8 @@ class ClassroomViewModel(application: Application): AndroidViewModel(application
     var isUserFirstTime = MutableLiveData<Boolean>()
     var commentsLiveData = MutableLiveData<List<Comment>>()
     private var commentsRepository = CommentsRepository(application)
+    private var videoRepository = VideoRepository(application)
+    var videoDownloadUrl = MutableLiveData<String>()
 
     fun userCanReply(): Boolean{
         return sessionManager.userLogged.userType == UserType.CORRETOR || sessionManager.userLogged.userType == UserType.ADMINISTRADOR
@@ -26,6 +29,12 @@ class ClassroomViewModel(application: Application): AndroidViewModel(application
         if (sessionManager.isUserFirstTime){
             sessionManager.isUserFirstTime = false
             isUserFirstTime.postValue(true)
+        }
+    }
+
+    fun getVideoUrlDownload(path: String){
+        videoRepository.getVideoDownloadUrl(path){
+            videoDownloadUrl.postValue(it)
         }
     }
 

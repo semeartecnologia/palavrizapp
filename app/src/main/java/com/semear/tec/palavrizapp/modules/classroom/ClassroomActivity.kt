@@ -45,9 +45,13 @@ class ClassroomActivity : BaseActivity(), OnReplyClicked {
         setupActionBar()
         setupExtras()
         setupViewObservers()
-        setupVideoFragment()
         setupCommentsRecycler()
         loadComments()
+        getVideoUrlDownload()
+    }
+
+    private fun getVideoUrlDownload() {
+        classroomViewModel?.getVideoUrlDownload(videoUrl)
     }
 
     private fun setupCommentsRecycler() {
@@ -60,8 +64,8 @@ class ClassroomActivity : BaseActivity(), OnReplyClicked {
         classroomViewModel?.loadComments(videoKey)
     }
 
-    private fun setupVideoFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoUrl)).commit()
+    private fun setupVideoFragment(videoPath: String) {
+        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoPath)).commit()
     }
 
     fun initViewModel(){
@@ -91,6 +95,12 @@ class ClassroomActivity : BaseActivity(), OnReplyClicked {
     }
 
     private fun setupViewObservers(){
+        classroomViewModel?.videoDownloadUrl?.observe(this, Observer {
+            if (it != null) {
+                setupVideoFragment(it)
+            }
+        })
+
         classroomViewModel?.commentsLiveData?.observe(this, Observer {
             progress_loading_comments?.visibility = View.GONE
             if (it != null && it.isNotEmpty()){
