@@ -16,6 +16,8 @@ import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import java.io.File
 import android.R.attr.bitmap
+import com.semear.tec.palavrizapp.models.Themes
+import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 import java.io.ByteArrayOutputStream
 
@@ -63,6 +65,113 @@ class StorageRepository(val context: Context) {
         }
     }
 
+    fun uploadVideoFeedback(urlVideo: String, onCompletion: (String?) -> Unit){
+
+        var filename = urlVideo.split("/").lastOrNull() ?: ""
+
+        val ref = videosParentRef.child("feedbacks/").child(filename)
+        val uploadTask = ref.putFile(Uri.fromFile(File(urlVideo)))
+
+        uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                onCompletion("")
+                task.exception?.let {
+                    throw it
+                }
+            }
+            return@Continuation ref.downloadUrl
+        }).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                ref.downloadUrl.addOnSuccessListener {
+                    onCompletion(it.path)
+                }
+            }else{
+                onCompletion("")
+            }
+        }
+        uploadTask.addOnProgressListener {
+            val progress = 100.0 * it.bytesTransferred / it.totalByteCount
+
+            val intent = Intent()
+            intent.action = Constants.BROADCAST_UPLOAD_PROGRESS
+            intent.putExtra(Constants.BROADCAST_UPLOAD_PROGRESS, progress.toInt())
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+
+        }
+    }
+
+    fun uploadPdf(theme: Themes, onCompletion: (Themes?) -> Unit){
+
+        val filename = theme.urlPdf?.split("/")?.lastOrNull() ?: ""
+
+        val ref = essaysParentRef.child("themes/").child(filename)
+        val uploadTask = ref.putFile(Uri.fromFile(File(theme.urlPdf)))
+
+        uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                onCompletion(null)
+                task.exception?.let {
+                    throw it
+                }
+            }
+            return@Continuation ref.downloadUrl
+        }).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                ref.downloadUrl.addOnSuccessListener {
+                    theme.urlPdf = it.path ?: ""
+                    Log.d("teste", "testao = ${theme.urlPdf}")
+                    onCompletion(theme)
+                }
+            }else{
+                onCompletion(null)
+            }
+        }
+        uploadTask.addOnProgressListener {
+            val progress = 100.0 * it.bytesTransferred / it.totalByteCount
+
+            val intent = Intent()
+            intent.action = Constants.BROADCAST_UPLOAD_PROGRESS
+            intent.putExtra(Constants.BROADCAST_UPLOAD_PROGRESS, progress.toInt())
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+
+        }
+    }
+
+    fun getVideoDownloadUrl(path: String, onCompletion: ((String) -> Unit)){
+        val filename = path.split("/").lastOrNull() ?: ""
+        val refVideos = videosParentRef.child(filename)
+        refVideos.downloadUrl.addOnSuccessListener {
+            onCompletion(it.toString())
+        }.addOnFailureListener {
+            onCompletion("")
+        }
+    }
+
+    fun getThumbUrl(path: String, onCompletion: ((String) -> Unit)){
+        val filename = path.split("/").lastOrNull() ?: ""
+        val refThumb = videosParentRef.child("thumbs/").child(filename)
+        refThumb.downloadUrl.addOnSuccessListener {
+            onCompletion(it.toString())
+        }.addOnFailureListener {
+            onCompletion("")
+        }
+    }
+
+    fun getPdf(path: String, onCompletion: ((String) -> Unit)){
+        val filename = path.split("/").lastOrNull() ?: ""
+        val refThumb = essaysParentRef.child("themes/").child(filename)
+        refThumb.downloadUrl.addOnSuccessListener {
+
+            val splitedFilename = filename.split(".")
+            if (splitedFilename.size > 1) {
+                FileHelper.downloadFile(context, splitedFilename[0], splitedFilename[1], "/Palavrizapp/Temas", it.toString())
+            }
+        }.addOnFailureListener {
+            onCompletion("")
+        }
+
+    }
+
     private fun uploadThumb(video: Video) {
         val refThumb = videosParentRef.child("thumbs/").child("thumb-"+System.currentTimeMillis())
 
@@ -93,15 +202,9 @@ class StorageRepository(val context: Context) {
     }
 
     fun getEssay(filename: String, onCompletion: ((String) -> Unit)){
-        val refThumb = essaysParentRef.child("$filename")
-
-        Log.d("carajo", filename + ".jpeg")
-
+        val refThumb = essaysParentRef.child(filename)
         refThumb.downloadUrl.addOnSuccessListener {
-            val pathStr = it.toString()
-            val path = it.path
-            var b = ""
-            onCompletion(pathStr)
+            onCompletion(it.toString())
         }.addOnFailureListener {
             onCompletion("")
         }

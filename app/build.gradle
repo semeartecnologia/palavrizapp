@@ -24,13 +24,13 @@ android {
         applicationId "com.semear.tec.palavrizapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 16
-        versionName "v0.75"
+        versionCode 17
+        versionName "v0.85"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         release {
-            storeFile file('/home/guilherme/Projetos/palavrizapp/app/palavrizappKey.jks')
+            storeFile file('C:/Users/arthur/Documents/Projects/palavrizapp/app/palavrizappKey.jks')
             keyAlias "palavrizapp"
             storePassword "palavrizapp1212"
             keyPassword "palavrizapp1313"
@@ -71,6 +71,7 @@ ext {
     playServicesVersion = '16.0.1'
     picassoVersion = '2.71828'
     exoplayerVersion = '2.9.6'
+    anko_version = '0.10.8'
 }
 
 
@@ -135,6 +136,9 @@ dependencies {
 
     //pitch-zoom
     implementation 'com.ablanco.zoomy:zoomy:1.1.0'
+
+    //Anko
+    implementation "org.jetbrains.anko:anko-common:0.9"
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:layout_height="120dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/question_username"
@@ -29,34 +29,60 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:layout_marginTop="4dp"
+        android:id="@+id/question_text"
         android:layout_below="@id/question_username"
         tools:text="Mussum Ipsum, cacilds vidis litro abertis. Si num tem leite então bota uma Si num tem leite então bota uma Si num tem leite então bota uma Si num tem leite então bota uma "
-        android:id="@+id/question_text"
         android:fontFamily="@font/titillium_semibold"
         android:layout_marginStart="16dp"
         android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        tools:text="@string/view_replies"
-        android:id="@+id/view_replies"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@id/question_divider"
-        android:fontFamily="@font/titillium_bold"
-        android:textSize="12sp"
+    <LinearLayout
+        android:id="@+id/layout_reply"
+        android:layout_marginStart="32dp"
+        android:visibility="gone"
+        android:layout_below="@id/question_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-    <View
-        android:id="@+id/question_divider"
-        android:layout_alignParentBottom="true"
-        android:background="@color/light_gray"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        <include layout="@layout/item_reply"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_buttons"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@+id/layout_reply"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/reply"
+            android:id="@+id/btn_reply"
+            android:visibility="gone"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/holo_red_light"
+            android:fontFamily="@font/titillium_bold"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:text="@string/view_replies"
+            android:id="@+id/view_replies"
+            android:fontFamily="@font/titillium_bold"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

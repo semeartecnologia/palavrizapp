@@ -52,6 +52,7 @@ class VideoFragment: Fragment() {
         initViewModel()
         getExtras()
         setupView()
+        initPlayer()
     }
 
     private fun initViewModel(){
@@ -146,7 +147,7 @@ class VideoFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        initPlayer()
+
     }
 
 

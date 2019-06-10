@@ -53,7 +53,10 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
         ft.commit()
     }
 
-
+    override fun onBackPressed() {
+        finish()
+        super.onBackPressed()
+    }
 
     private fun setupView() {
 

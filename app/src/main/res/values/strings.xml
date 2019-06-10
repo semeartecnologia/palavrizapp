@@ -32,7 +32,7 @@
     <string name="error_title">Erro</string>
     <string name="email_fail_login_text">Login e/ou senha incorretos, tente novamente</string>
     <string name="forgot_password">Esqueceu a senha?</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">Senha incorreta</string>
@@ -70,8 +70,9 @@
     <string name="card_title_aulas">Aulas</string>
     <string name="card_text_aulas">Assista aqui nossas aulas de diversos temas</string>
     <string name="card_see_more_aulas">Ver aulas ></string>
-    <string name="questions_label">Perguntas (0)</string>
+    <string name="questions_label">Perguntas (%d)</string>
     <string name="ask_a_question">Fazer uma pergunta!</string>
+    <string name="reply_a_question">Escreva sua reposta!</string>
 
     <!-- Essay List Admin -->
     <string name="card_title_essay_list">Corrigir Redações</string>
@@ -80,12 +81,14 @@
     <string name="author" tools:ignore="Typos">Autor: %s</string>
     <string name="post_date">Enviada em: %s</string>
     <string name="card_title_create_essay_theme">Criar Tema</string>
+    <string name="edit_essay_theme">Editar Tema</string>
     <string name="card_text_create_essay">Crie um tema de redação para os alunos</string>
     <string name="card_see_more_create_essay">Criar ></string>
     <string name="create_theme_label">Criar Tema</string>
     <string name="create_theme_title">Título</string>
     <string name="pdf_attachment">Anexar Pdf</string>
     <string name="create_theme_create_option">Criar</string>
+    <string name="create_theme_edit_option">Editar</string>
     <string name="create_theme_cancel_option">Cancelar</string>
 
     <!-- Essay -->
@@ -96,7 +99,7 @@
     <string name="positive_answer">Sim</string>
     <string name="negative_answer">Não</string>
     <string name="hint_essay_title">Título</string>
-    <string name="essay_title_field">Informe o título da redação</string>
+    <string name="essay_title_field">Informe o tema e título da redação</string>
     <string name="essay_send">Enviar</string>
     <string name="upload_essay_title">Oops</string>
     <string name="upload_essay_error">Erro ao enviar sua redação, tente novamente mais tarde</string>
@@ -122,6 +125,28 @@
     <string name="tv_hint_feedback">Escreva seu feedback!</string>
     <string name="upload_video_feedback">Anexar vídeo</string>
     <string name="btn_send_feedback">Enviar</string>
+    <string name="open_pdf_theme">Abrir tema</string>
+    <string name="folder_reports">Palavrizapp/Temas</string>
+
+    <!-- Comments -->
+    <string name="progress_sending_comment_text">Enviando…</string>
+    <string name="comment_time_now">Agora</string>
+    <string name="comment_time_minutes">%dm</string>
+    <string name="comment_time_hours">%h</string>
+    <string name="comment_time_days">%dd</string>
+    <string name="comment_time_months">%dm</string>
+    <string name="comment_time_years">%da</string>
+
+    <!-- Admin -->
+    <string name="toolbar_admin">Administrador</string>
+    <string name="tab_user">Usuários</string>
+    <string name="tab_themes">Temas</string>
+    <string name="tab_videos">Videos</string>
+    <string name="sucess_edit_user_title">Sucesso</string>
+    <string name="sucess_edit_user_text">Usuário editado com sucesso</string>
+    <!-- List User -->
+    <string name="user_type_label">Tipo: %s</string>
+    <string name="btn_save">Salvar</string>
 
 
     <!-- Curso -->
@@ -163,7 +188,8 @@
     <string name="first_class_title">Aula 01 - Bem-vindo ao Palavrizapp</string>
     <string name="first_class_subtitle">Conheça nossa plataforma de ensino</string>
     <string name="first_class_description">Esse vídeo ensina como utilizar devidamente nosso aplicativo, vea os detalhes de todas suas funções. </string>
-    <string name="view_replies"><u>Ver respostas (%d)</u></string>
+    <string name="view_replies"><u>Mais respostas (%d)</u></string>
+    <string name="reply"><u>Responder</u></string>
     <!-- Add Video -->
     <string name="add_video">Adicionar vídeo</string>
     <string name="video_title">Título do vídeo</string>

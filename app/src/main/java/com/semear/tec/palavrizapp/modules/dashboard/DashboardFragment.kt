@@ -6,21 +6,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.modules.MainActivity
+import com.semear.tec.palavrizapp.modules.admin.AdminActivity
 import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity
 import com.semear.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFragment
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment
 import com.semear.tec.palavrizapp.modules.themes.ThemesFragment
-import com.semear.tec.palavrizapp.utils.Commons
+import kotlinx.android.synthetic.main.card_admin_area.*
 import kotlinx.android.synthetic.main.card_aulas.*
-import kotlinx.android.synthetic.main.card_create_themes_essay.*
-import kotlinx.android.synthetic.main.card_create_themes_essay.view.*
 import kotlinx.android.synthetic.main.card_list_essay.*
 import kotlinx.android.synthetic.main.card_send_essay.*
 import kotlinx.android.synthetic.main.card_user_planos.*
@@ -36,7 +34,6 @@ class DashboardFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
-        dashboardViewModel?.init()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +49,8 @@ class DashboardFragment : Fragment() {
 
     private fun initView() {
 
-        val user = dashboardViewModel!!.currentUser
-        user_greetings?.text = String.format(getString(R.string.salute_you), user.fullname)
+        val user = dashboardViewModel?.currentUser
+        user_greetings?.text = String.format(getString(R.string.salute_you), user?.fullname)
 
         val mainActivity = activity as MainActivity?
 
@@ -75,20 +72,10 @@ class DashboardFragment : Fragment() {
             mainActivity?.changeFragment(EssayMarkListFragment(), "Sala de Correção")
             mainActivity?.setActionBarTitle("Sala de Correção")
         }
-        card_layout_create_essay_theme?.setOnClickListener { v ->
-            Log.d("teste","clicado")
-            Commons.createThemeDialog(activity as Activity
-                    ,
-                    {
-                        val i = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-                        startActivityForResult(i, 231)
-
-                    },{ themeTitle, urlVideo ->
-
-            },{
-
-            })
+        card_layout_admin_area?.setOnClickListener {
+            startMyAdminActivity()
         }
+
 
     }
 
@@ -112,6 +99,10 @@ class DashboardFragment : Fragment() {
         fun OnThemesClicked()
     }
 
+    private fun startMyAdminActivity() {
+        val it = Intent(activity, AdminActivity::class.java)
+        startActivity(it)
+    }
 
     private fun startMyEssayActivity() {
         val it = Intent(activity, MyEssayActivity::class.java)
@@ -126,9 +117,9 @@ class DashboardFragment : Fragment() {
             user_correcoes?.visibility = View.GONE
         }
         if (user?.userType == UserType.ADMINISTRADOR){
-            card_layout_create_essay_theme.visibility = View.VISIBLE
-        } else {
-            card_layout_create_essay_theme.visibility = View.GONE
+            card_layout_admin_area?.visibility = View.VISIBLE
+        }else{
+            card_layout_admin_area?.visibility = View.GONE
         }
     }
 

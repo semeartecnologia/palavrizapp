@@ -215,8 +215,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     //NEW USER, REGISTER HIM
                     if (it == null){
                         //poe a padrãozada
-                        user.userType = UserType.STUDENT
+                        user.userType = UserType.ESTUDANTE
                         user.plan = Plans.FREE_PLAN
+                        user.registerDate = System.currentTimeMillis()
 
                         //registra usuario pelo repositorio
                         userRepository!!.registerUser(user)

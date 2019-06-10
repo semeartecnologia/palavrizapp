@@ -15,6 +15,7 @@ import static com.semear.tec.palavrizapp.utils.constants.Constants.TABLE_THEMES;
 @Dao
 public interface ThemesDao {
 
+/*
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTheme(Themes theme);
@@ -24,5 +25,6 @@ public interface ThemesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllThemes(Themes... themes);
+*/
 
 }

@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/layout_question"
     android:orientation="horizontal"
     android:layout_height="80dp">
 
@@ -33,11 +34,11 @@
 
     <View
         android:layout_alignParentBottom="true"
-        android:background="@color/light_gray"
+        android:background="@color/colorPrimaryLight"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="3dp"/>
 
 
 
