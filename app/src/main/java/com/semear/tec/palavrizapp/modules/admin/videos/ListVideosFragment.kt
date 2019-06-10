@@ -17,14 +17,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.upload.UploadActivity
 import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.adapters.ThemesAdapter
 import com.semear.tec.palavrizapp.utils.constants.Constants
+import com.semear.tec.palavrizapp.utils.interfaces.OnVideoClicked
 import kotlinx.android.synthetic.main.list_videos_fragment.*
 
 
-class ListVideosFragment : Fragment() {
+class ListVideosFragment : Fragment(), OnVideoClicked {
+
 
     private lateinit var adapter: ThemesAdapter
 
@@ -48,11 +51,21 @@ class ListVideosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(ListVideosViewModel::class.java)
-        adapter = ThemesAdapter()
+        adapter = ThemesAdapter(this)
         setupRecyclerVideos()
         registerObservers()
         viewModel.fetchVideos()
         setupFab()
+    }
+
+
+    override fun onVideoClicked(v: Video) {
+        val it = Intent(activity as Activity, UploadActivity::class.java)
+        it.putExtra(Constants.EXTRA_VIDEO_PATH, v.path)
+        it.putExtra(Constants.EXTRA_IS_EDIT, true)
+        it.putExtra(Constants.EXTRA_VIDEO_TITLE, v.title)
+        it.putExtra(Constants.EXTRA_VIDEO_DESCRIPTION, v.description)
+        startActivity(it)
     }
 
     private fun setupFab() {
