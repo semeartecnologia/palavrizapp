@@ -42,9 +42,6 @@ public class MainActivity extends BaseActivity implements DashboardFragment.OnFr
     SessionManager sessionManager;
     private MainViewModel mainViewModel;
 
-    private static int SELECT_VIDEO = 300;
-    private static int REQUEST_READ_STORAGE = 400;
-    private static int REQUEST_WRITE_STORAGE = 401;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,113 +103,19 @@ public class MainActivity extends BaseActivity implements DashboardFragment.OnFr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        if (sessionManager.getUserLogged().getUserType() == UserType.ADMINISTRADOR) {
-            menu.getItem(1).setVisible(true);
-        }else{
-            menu.getItem(1).setVisible(false);
-        }
         return true;
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_logout:
                 mainViewModel.logout();
                 return true;
-            case R.id.upload_video:
-                openPickVideoGllery();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void openPickVideoGllery() {
-        requestStoragePermission();
-    }
-
-    public void requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_READ_STORAGE);
-
-        } else {
-            requestWriteStoragePermission();
-        }
-    }
-
-    public void requestWriteStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_WRITE_STORAGE);
-
-        } else {
-            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, SELECT_VIDEO);
-        }
-    }
-
-
-    private void startUploadActivity(String videoPath) {
-        Intent it = new Intent(this, UploadActivity.class);
-        it.putExtra(EXTRA_VIDEO_PATH, videoPath);
-        startActivity(it);
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-
-        if (requestCode == REQUEST_READ_STORAGE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                requestWriteStoragePermission();
-
-            }
-        } else if (requestCode == REQUEST_WRITE_STORAGE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, SELECT_VIDEO);
-
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_VIDEO) {
-                String selectedVideoPath = Commons.INSTANCE.getRealPathFromURI(this, data.getData());
-                try {
-                    if (selectedVideoPath == null) {
-                        finish();
-                    } else {
-                        startUploadActivity(selectedVideoPath);
-                        //mainViewModel.uploadVideo(this, selectedVideoPath, "nome.mp4");
-                    }
-                } catch (Exception e) {
-
-                    Log.d("videao", "error");
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
 
     @Override

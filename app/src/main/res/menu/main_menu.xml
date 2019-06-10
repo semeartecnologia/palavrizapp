@@ -7,11 +7,7 @@
         android:title="@string/logout"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/upload_video"
-        android:title="@string/add_video"
-        android:icon="@drawable/ic_video_call_white_24dp"
-        app:showAsAction="ifRoom"/>
+
 
 
 

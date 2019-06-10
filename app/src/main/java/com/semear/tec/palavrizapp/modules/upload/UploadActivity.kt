@@ -13,21 +13,28 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import com.semear.tec.palavrizapp.BuildConfig
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.PlanSwitch
 import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
 import com.semear.tec.palavrizapp.utils.Commons
+import com.semear.tec.palavrizapp.utils.adapters.PlanListAdapter
 import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.constants.Constants.BROADCAST_UPLOAD_DONE
 import com.semear.tec.palavrizapp.utils.constants.Constants.BROADCAST_UPLOAD_PROGRESS
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_IS_EDIT
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_DESCRIPTION
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_PATH
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_TITLE
 import kotlinx.android.synthetic.main.fragment_add_video.*
 import java.io.*
 import java.util.concurrent.TimeUnit
@@ -37,15 +44,24 @@ class UploadActivity : BaseActivity() {
 
     private var videoUrl = ""
     private var filename = ""
+
+    private var videoTitle = ""
+    private var videoDescription = ""
+    private var isEdit = false
     private lateinit var uploadViewModel: UploadViewModel
-    //TODO Temas padroes hardcoded
+
+
     val arraySpinner = arrayOf("Categoria", "Língua Portuguesa", "Dicas Enem")
     var videoThumbUri: Uri? = null
+
+    private var adapter: PlanListAdapter = PlanListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_add_video)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         uploadViewModel = ViewModelProviders.of(this).get(UploadViewModel::class.java)
+
         setupExtras()
         setupView()
     }
@@ -56,6 +72,31 @@ class UploadActivity : BaseActivity() {
         setupVideo(videoUrl)
         setupUploadButton()
         setupDebugInfo()
+        setupRecyclerPlans()
+        setupPlansList()
+        setupDeleteButton()
+    }
+
+    private fun setupDeleteButton() {
+        if (isEdit){
+            btn_delete?.visibility = View.VISIBLE
+        }else{
+            btn_delete?.visibility = View.GONE
+        }
+    }
+
+    private fun setupPlansList() {
+        var arrayPlans = arrayListOf<PlanSwitch>()
+        Plans.values().forEach {
+            arrayPlans.add(PlanSwitch(it, false))
+        }
+        adapter.planList = arrayPlans
+
+    }
+
+    private fun setupRecyclerPlans() {
+        rv_plans?.layoutManager = LinearLayoutManager(applicationContext)
+        rv_plans?.adapter = adapter
     }
 
     private fun registerBroadcastReceiver(){
@@ -116,20 +157,35 @@ class UploadActivity : BaseActivity() {
         super.onPause()
     }
 
-    fun setupExtras(){
+    private fun setupExtras(){
         if (intent != null) {
             videoUrl = intent?.getStringExtra(EXTRA_VIDEO_PATH) ?: ""
             filename = videoUrl.split("/").lastOrNull() ?: ""
+            isEdit = intent?.getBooleanExtra(EXTRA_IS_EDIT,false) ?: false
+            videoTitle = intent?.getStringExtra(EXTRA_VIDEO_TITLE) ?: ""
+            videoDescription = intent?.getStringExtra(EXTRA_VIDEO_DESCRIPTION) ?: ""
         }
     }
 
     private fun setupUploadButton(){
+        if (isEdit){
+            btn_upload?.text = getString(R.string.create_theme_edit_option)
+        }
+
         btn_upload.setOnClickListener {
             if (checkFields()){
                 val title = video_title.text.toString()
                 val description = video_description.text.toString()
                 val category = arraySpinner[category_spinner.selectedItemPosition]
-                val video = Video(0, Plans.NO_PLAN, "", title,description,category,videoUrl)
+                var listOfPlans = ""
+                adapter.planList.forEach {
+                    if (it.enabled){
+                        if (it.plan != null) {
+                            listOfPlans += it.plan!!.name + "/"
+                        }
+                    }
+                }
+                val video = Video(0, listOfPlans, "", title,description,category,videoUrl)
                 toggleButtonUpload()
                 getThumbnailAndUpload(video)
 
@@ -139,7 +195,7 @@ class UploadActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setupDebugInfo(){
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG && !isEdit){
             video_title.setText("Teste video 1")
             video_description.setText("Esse é um video teste, estamos subindo somente com o intuito de testar, se você está vendo" +
                     "isso então algo deu muito errdo, obrigado")
@@ -161,6 +217,16 @@ class UploadActivity : BaseActivity() {
     }
 
     private fun setupFields(){
+
+        if (isEdit){
+            if (videoTitle.isNotBlank()){
+                video_title?.setText(videoTitle)
+            }
+            if (videoDescription.isNotBlank()){
+                video_description?.setText(videoTitle)
+            }
+        }
+
         video_title.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
                 var size = s?.length ?: 0
@@ -197,7 +263,6 @@ class UploadActivity : BaseActivity() {
     private fun setupVideo(videoUri: String){
         preview_video.setVideoURI(Uri.parse(videoUri))
         preview_video.start()
-        //getImagePreview(videoUri)
     }
 
     private fun getThumbnailAndUpload(video: Video){
@@ -207,13 +272,6 @@ class UploadActivity : BaseActivity() {
         val videoThumb = ThumbnailUtils.createVideoThumbnail(file.absolutePath,
                 MediaStore.Images.Thumbnails.MINI_KIND)
 
-        FileHelper.saveBitmpao("bmpw1e1234", videoThumb)
-
-
-/*
-        videoThumbUri = */
-        val a = videoThumbUri
-        //videoThumbUri = getImageUri(this, videoThumb)
         video.videoThumb = Commons.getRealPathFromURI(this, getImageUri(this, videoThumb) )
 
         Log.d("teste", "Thumb created!!! " + video.videoThumb)
@@ -227,24 +285,6 @@ class UploadActivity : BaseActivity() {
         return Uri.parse(path)
     }
 
-
-    private fun saveFile(context: Context, b: Bitmap, picName: String): Uri {
-        var fos: FileOutputStream? = null
-        try {
-            fos = context.openFileOutput(picName, Context.MODE_PRIVATE)
-            b.compress(Bitmap.CompressFormat.PNG, 100, fos)
-        } catch (e: FileNotFoundException) {
-            Log.d("teste", "file not found")
-            e.printStackTrace()
-        } catch (e: IOException) {
-            Log.d("teste", "io exception")
-            e.printStackTrace()
-        } finally {
-            fos?.close()
-            val path = MediaStore.Images.Media.insertImage(context.contentResolver, b, picName, null)
-            return Uri.parse(path)
-        }
-    }
 
 
 

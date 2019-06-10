@@ -12,6 +12,9 @@
     <color name="colorSecondaryText">#8C000000</color>
     <color name="lightRed">#FF7777</color>
 
+    <color name="check_box_item_1">#ededed</color>
+    <color name="check_box_item_2">#c4c4c4</color>
+
     <color name="facebook_blue">#4E54C8</color>
     <color name="google_red">#ED213A</color>
 
