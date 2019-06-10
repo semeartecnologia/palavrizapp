@@ -23,7 +23,7 @@ import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_KEY
 import com.semear.tec.palavrizapp.utils.interfaces.OnVideoClicked
 
-class ThemesAdapter(var listener: OnVideoClicked) : RecyclerView.Adapter<ThemesAdapter.ViewHolder>() {
+class ThemesAdapter() : RecyclerView.Adapter<ThemesAdapter.ViewHolder>() {
 
     var listVideos: ArrayList<Video> = ArrayList()
     private lateinit var ctx: Context
@@ -86,14 +86,14 @@ class ThemesAdapter(var listener: OnVideoClicked) : RecyclerView.Adapter<ThemesA
             videoThumb = itemView.findViewById(R.id.video_thumbnail)
 
             itemView.setOnClickListener { v ->
-                listener.onVideoClicked()
-                /*val it = Intent(ctx, ClassroomActivity::class.java)
+
+                val it = Intent(ctx, ClassroomActivity::class.java)
                 it.putExtra(EXTRA_COD_VIDEO, videoPath)
                 it.putExtra(EXTRA_TITLE_VIDEO, title.text.toString())
                 //it.putExtra(EXTRA_SUBTITLE_VIDEO, description.getText().toString());
                 it.putExtra(EXTRA_DESCRPTION_VIDEO, description.text)
                 it.putExtra(EXTRA_VIDEO_KEY, videoKey)
-                ctx?.startActivity(it)*/
+                ctx?.startActivity(it)
             }
 
 
