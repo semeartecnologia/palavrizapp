@@ -223,6 +223,8 @@
     <string name="theme_label">Tema:</string>
     <string name="just_admin">(Somente Administradores)</string>
     <string name="just_corrector">(Somente Corretores)</string>
+    <string name="admin_area">Área Administrativa</string>
+    <string name="open">Abrir</string>
 
 
 </resources>

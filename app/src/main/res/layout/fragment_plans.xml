@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/primary_button"
             android:fontFamily="@font/titillium_regular"
-            android:text="@string/btn_correct_this_essay"
+            android:text="@string/btn_update"
             android:textColor="@color/colorPrimaryText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvPlans"
