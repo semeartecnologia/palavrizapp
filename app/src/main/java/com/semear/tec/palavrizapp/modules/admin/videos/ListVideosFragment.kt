@@ -48,7 +48,7 @@ class ListVideosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(ListVideosViewModel::class.java)
-        adapter = ThemesAdapter(true)
+        adapter = ThemesAdapter()
         setupRecyclerVideos()
         registerObservers()
         viewModel.fetchVideos()
