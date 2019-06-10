@@ -1,5 +1,6 @@
 package com.semear.tec.palavrizapp.modules.dashboard
 
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.card_list_essay.*
 import kotlinx.android.synthetic.main.card_send_essay.*
 import kotlinx.android.synthetic.main.card_user_planos.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.item_essay_list.*
 
 
 class DashboardFragment : Fragment() {
@@ -49,33 +51,24 @@ class DashboardFragment : Fragment() {
 
         val user = dashboardViewModel?.currentUser
         user_greetings?.text = String.format(getString(R.string.salute_you), user?.fullname)
-        user_plan?.text = user?.plan?.getPlanTitle(context)
 
         val mainActivity = activity as MainActivity?
 
         mainActivity?.setActionBarTitle("Dashboard")
 
-        btn_see_more_plans?.setOnClickListener { v ->
+        user_plan?.setOnClickListener { v ->
             mainActivity?.changeFragment(PlansFragment(), "Planos")
             mainActivity?.setActionBarTitle("Planos")
+        }
+        user_aula?.setOnClickListener { v ->
+            mainActivity?.changeFragment(ThemesFragment(), "Aulas")
+            mainActivity?.setActionBarTitle("Aulas")
+        }
 
-        }
-        layout_card_plans?.setOnClickListener { v ->
-            mainActivity?.changeFragment(PlansFragment(), "Planos")
-            mainActivity?.setActionBarTitle("Planos")
-        }
-        btn_see_more_aulas?.setOnClickListener { v ->
-            mainActivity?.changeFragment(ThemesFragment(), "Aulas")
-            mainActivity?.setActionBarTitle("Aulas")
-        }
-        layout_card_aulas?.setOnClickListener { v ->
-            mainActivity?.changeFragment(ThemesFragment(), "Aulas")
-            mainActivity?.setActionBarTitle("Aulas")
-        }
-        layout_card_essay?.setOnClickListener { v ->
+        user_redacoes?.setOnClickListener { v ->
             startMyEssayActivity()
         }
-        layout_card_essay_list?.setOnClickListener { v ->
+        user_correcoes?.setOnClickListener { v ->
             mainActivity?.changeFragment(EssayMarkListFragment(), "Sala de Correção")
             mainActivity?.setActionBarTitle("Sala de Correção")
         }
@@ -119,9 +112,9 @@ class DashboardFragment : Fragment() {
     private fun checkUserTypeView() {
         val user = dashboardViewModel?.currentUser
         if (user?.userType == UserType.CORRETOR || user?.userType == UserType.ADMINISTRADOR) {
-            card_layout_essay_list?.visibility = View.VISIBLE
+            user_correcoes?.visibility = View.VISIBLE
         } else {
-            card_layout_essay_list?.visibility = View.GONE
+            user_correcoes?.visibility = View.GONE
         }
         if (user?.userType == UserType.ADMINISTRADOR){
             card_layout_admin_area?.visibility = View.VISIBLE

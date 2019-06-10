@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/lightest_grey"
-    android:layout_height="100dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="8dp"
+    android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
-        android:layout_margin="4dp"
-        android:elevation="8dp"
+    <android.support.constraint.ConstraintLayout
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:weightSum="100"
-            android:layout_height="match_parent">
-
 
             <TextView
                 android:id="@+id/tv_theme_name"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:layout_weight="80"
                 tools:text="João Gomes da Silva Pereira Almeira"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/pdf_button"
+                android:layout_marginRight="16dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/pdf_button"
-                android:layout_gravity="center_vertical"
-                android:text="PDF"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="20"
-                android:layout_width="0dp"
-                android:layout_height="48dp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:drawableStart="@drawable/ic_picture_as_pdf_white"
+                android:drawablePadding="8dp"
+                android:text="@string/open"
+                android:background="@drawable/primary_button"
+                android:fontFamily="@font/titillium_regular"
+                android:textColor="@color/colorPrimaryText"
+                android:layout_margin="16dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/create_theme_title_label"
+                app:layout_constraintBottom_toTopOf="@id/create_theme_title_input" />
 
+    </android.support.constraint.ConstraintLayout>
 
-
-
-        </LinearLayout>
-
-
-    </android.support.v7.widget.CardView>
-
-</android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

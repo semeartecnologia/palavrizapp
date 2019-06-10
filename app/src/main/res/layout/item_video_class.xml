@@ -1,85 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:weightSum="100">
-
-
-    <FrameLayout
-        android:background="@drawable/thumbnail_background"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="12dp"
-        android:layout_weight="55"
-        android:layout_width="0dp"
-        android:layout_height="128dp">
-
-        <ImageView
-            tools:src="@drawable/thumb_aula_subs_pais"
-            android:id="@+id/video_thumbnail"
-            android:scaleType="centerCrop"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-        <ImageView
-            android:id="@+id/thumb_play"
-            android:layout_gravity="center"
-            android:elevation="8dp"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/video_placeholder"
-            />
-
-    </FrameLayout>
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:layout_marginTop="8dp"
-        android:id="@+id/linearLayout2"
-        android:layout_weight="45"
-        android:layout_width="0dp"
-        android:layout_height="112dp"
-        android:orientation="vertical">
+        android:weightSum="100"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <FrameLayout
+            android:background="@drawable/thumbnail_background"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="50"
+            android:elevation="8dp"
+            android:layout_width="0dp"
+            android:layout_height="128dp">
+
+            <ImageView
+                tools:src="@drawable/thumb_aula_subs_pais"
+                android:id="@+id/video_thumbnail"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+            <ImageView
+                android:id="@+id/thumb_play"
+                android:layout_gravity="center"
+                android:elevation="8dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/video_placeholder" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:id="@+id/linearLayout2"
+            android:layout_weight="50"
+            android:layout_width="0dp"
+            android:layout_marginRight="8dp"
+            android:layout_height="128dp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/video_title"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                tools:text="Aula 01 - Introdução a língua portuguesa " />
+
+            <TextView
+                android:id="@+id/video_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="12sp"
+                tools:text="Vídeo de introdução a língua portugues uahsuahsuahsu auhsauhsuahsuah uahsua hush asasasas Vídeo de  a língua portugues uahsuahsuahsu auhsauhsuahsuah uahsua hush asasasas" />
+
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/video_title"
+            android:id="@+id/seen_already"
             android:textStyle="bold"
-            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            tools:text="Aula 01 - Introdução a língua portuguesa " />
-
-        <TextView
-            android:id="@+id/video_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="12sp"
-            tools:text="Vídeo de introdução a língua portugues" />
-
+            android:text="@string/seen_already" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/seen_already"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:textColor="@color/colorPrimary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/seen_already" />
-
-
-
-
-</LinearLayout>
+</android.support.v7.widget.CardView>

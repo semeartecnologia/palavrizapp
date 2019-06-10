@@ -1,21 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".modules.plans.PlansFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvPlans"
-        android:layout_above="@id/btn_update_plan"
-        android:layoutAnimation="@anim/layout_fall_down_animation"
+    <android.support.constraint.ConstraintLayout
+        android:background="@drawable/background_login_shape"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/btn_update_plan"
-        android:text="@string/btn_update"
-        android:enabled="false"
-        android:layout_alignParentBottom="true"
-        style="@style/BtnUpdatePlan"/>
-</RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvPlans"
+            android:layoutAnimation="@anim/layout_fall_down_animation"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btn_update_plan"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <Button
+            android:id="@+id/btn_update_plan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/primary_button"
+            android:fontFamily="@font/titillium_regular"
+            android:text="@string/btn_update"
+            android:textColor="@color/colorPrimaryText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvPlans"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

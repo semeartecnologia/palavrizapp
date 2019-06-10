@@ -1,58 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minWidth="200dp"
-    android:minHeight="200dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="16dp"
+    android:elevation="8dp"
+    android:background="@drawable/background_dialog"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/create_theme_title_label"
         android:textSize="24sp"
+        android:padding="16dp"
         android:textStyle="bold"
-        android:id="@+id/tv_theme_label"
-        android:background="@color/transparentGrey30"
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryText"
+        android:background="@color/colorPrimary"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:text="@string/create_theme_label" />
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputTitle"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/tv_theme_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:maxLines="1"
-            android:gravity="center_horizontal"
-            android:maxLength="50"
-            android:imeOptions="actionNext"
-            android:fontFamily="@font/titillium_regular"
-            android:hint="@string/create_theme_title"/>
-
-    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/btn_attachment_pdf_theme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:drawableStart="@drawable/ic_picture_as_pdf_black_24dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:drawableStart="@drawable/ic_picture_as_pdf_white"
         android:drawablePadding="8dp"
-        android:text="@string/pdf_attachment"/>
+        android:background="@drawable/primary_button"
+        android:fontFamily="@font/titillium_regular"
+        android:textColor="@color/colorPrimaryText"
+        android:text="@string/pdf_attachment"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_theme_title_label"
+        app:layout_constraintBottom_toTopOf="@id/create_theme_title_input" />
 
     <LinearLayout
         android:layout_gravity="center_horizontal"
-
+        android:id="@+id/layout_pdf_filename"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -75,42 +67,91 @@
 
     </LinearLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/create_theme_title_input"
+        android:layout_margin="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_attachment_pdf_theme"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:maxLines="1">
 
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/tv_theme_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:maxLength="50"
+            android:imeOptions="actionNext"
+            android:fontFamily="@font/titillium_regular"
+            android:hint="@string/create_theme_title"/>
+
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:weightSum="2"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/create_theme_title_input"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:weightSum="100"
         android:layout_height="wrap_content">
 
-
-        <TextView
+        <Button
             android:id="@+id/btn_cancel_theme"
-            android:text="@string/create_theme_cancel_option"
-            android:layout_weight="50"
             android:layout_width="0dp"
-            android:paddingStart="16dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/lightRed"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            tools:ignore="RtlSymmetry" />
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/secondary_button"
+            android:fontFamily="@font/titillium_regular"
+            android:text="@string/cancel"
+            android:textColor="@color/colorPrimary" />
 
-        <TextView
-            android:id="@+id/btn_create_theme"
-            android:textSize="16sp"
-            android:gravity="end"
-            android:paddingEnd="16dp"
-            android:textStyle="bold"
-            android:textColor="@color/lightRed"
-            android:text="@string/create_theme_create_option"
-            android:layout_weight="50"
+        <android.support.constraint.ConstraintLayout
+            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:ignore="RtlSymmetry" />
+            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_create_theme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/primary_button"
+                android:fontFamily="@font/titillium_regular"
+                android:text="@string/register_now_btn"
+                android:textColor="@color/colorPrimaryText"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progress_register"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                android:elevation="8dp"
+                app:layout_constraintBottom_toBottomOf="@id/btn_register"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_register" />
+
+        </android.support.constraint.ConstraintLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

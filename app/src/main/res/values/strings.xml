@@ -47,7 +47,7 @@
     <string name="alert_gplay_btn_accept">Ok</string>
 
     <!-- Dashboard -->
-    <string name="card_title_plan">Seu Plano</string>
+    <string name="card_title_plan">Meu Plano</string>
     <string name="card_see_more_plans">Veja mais planos ></string>
     <string name="salute_you">Olá %s</string>
     <string name="title_activity_main">Dashboard</string>
@@ -221,6 +221,10 @@
     <string name="cancel">Cancelar</string>
     <string name="title_label">Título:</string>
     <string name="theme_label">Tema:</string>
+    <string name="just_admin">(Somente Administradores)</string>
+    <string name="just_corrector">(Somente Corretores)</string>
+    <string name="admin_area">Área Administrativa</string>
+    <string name="open">Abrir</string>
 
 
 </resources>

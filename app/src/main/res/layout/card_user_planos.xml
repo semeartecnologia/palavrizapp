@@ -1,46 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginTop="8dp"
-    android:elevation="8dp">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_plan"
+    android:padding="16dp"
+    android:clickable="true"
+    android:focusable="true">
 
-    <RelativeLayout
-        android:id="@+id/layout_card_plans"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/icon"
+        android:src="@drawable/ic_star_border_black"
+        android:alpha="0.87"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
         <TextView
             android:text="@string/card_title_plan"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
             android:textSize="16sp"
-            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/icon"
+            app:layout_constraintLeft_toRightOf="@id/icon"
+            app:layout_constraintBottom_toBottomOf="@id/icon"
+            android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/user_plan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/btn_see_more_plans"
-            android:text="@string/card_see_more_plans"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:textColor="@color/colorPrimary"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"/>
-
-    </RelativeLayout>
-
-
-</android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>
