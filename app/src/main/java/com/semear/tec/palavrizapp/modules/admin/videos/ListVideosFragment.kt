@@ -63,8 +63,7 @@ class ListVideosFragment : Fragment(), OnVideoClicked {
         val it = Intent(activity as Activity, UploadActivity::class.java)
         it.putExtra(Constants.EXTRA_VIDEO_PATH, v.path)
         it.putExtra(Constants.EXTRA_IS_EDIT, true)
-        it.putExtra(Constants.EXTRA_VIDEO_TITLE, v.title)
-        it.putExtra(Constants.EXTRA_VIDEO_DESCRIPTION, v.description)
+        it.putExtra(Constants.EXTRA_VIDEO, v)
         startActivity(it)
     }
 

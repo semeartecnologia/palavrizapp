@@ -147,6 +147,16 @@ class StorageRepository(val context: Context) {
         }
     }
 
+    fun deleteVideoFromStorage(path: String, onCompletion: ((Boolean) -> Unit)){
+        val filename = path.split("/").lastOrNull() ?: ""
+        videosParentRef.child(filename).delete().addOnSuccessListener {
+            onCompletion(true)
+        }.addOnFailureListener {
+            onCompletion(false)
+        }
+
+    }
+
     fun getThumbUrl(path: String, onCompletion: ((String) -> Unit)){
         val filename = path.split("/").lastOrNull() ?: ""
         val refThumb = videosParentRef.child("thumbs/").child(filename)

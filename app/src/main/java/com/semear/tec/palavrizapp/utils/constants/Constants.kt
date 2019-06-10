@@ -32,7 +32,7 @@ object Constants {
     //Video Upload
     const val EXTRA_VIDEO_PATH = "video_path"
     const val EXTRA_IS_EDIT = "is_edit"
-    const val EXTRA_VIDEO_TITLE = "extra_video_title"
+    const val EXTRA_VIDEO = "extra_video"
     const val EXTRA_VIDEO_DESCRIPTION = "extra_video_description"
 
     const val NOTIFICATION_ID = 1

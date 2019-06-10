@@ -198,6 +198,7 @@
     <string name="video_category">Categoria</string>
     <string name="video_size_title">%d/50</string>
     <string name="video_size_desc">%d/200</string>
+    <string name="delete_video_dialog_text">Deseja excluir esse vídeo do aplicativo?</string>
 
     <!-- List Video -->
     <string name="seen_already">Já visto</string>
@@ -206,7 +207,7 @@
 
 
     <!-- Contextual Menu -->
-    <string name="logout">Logout</string>
+    <string name="logout">Sair</string>
 
     <!-- Upload Service -->
     <string name="notification_title">Subindo vídeo</string>

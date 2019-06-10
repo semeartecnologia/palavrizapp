@@ -49,8 +49,28 @@ class RealtimeRepository(val context: Context) {
         }
 
         video.videoKey = key
+        val childUpdates = HashMap<String, Any?>()
+        childUpdates["/videos/${Plans.NO_PLAN.name}/$key/"] = video
+        video.videoPlan?.split("/")?.forEach {
+            if (it.isNotBlank()) {
+                childUpdates["/videos/$it/$key/"] = video
+            }
+        }
+        mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
+        }.addOnFailureListener {
+        }
+    }
 
-        mDatabaseReference.child(reference).child(Plans.NO_PLAN.name).child("$key/").setValue(video)
+    fun deleteVideo(videoKey: String, onCompletion: (Boolean) -> Unit){
+        val childUpdates = HashMap<String, Any?>()
+        Plans.values().forEach {
+            childUpdates["/videos/${it.name}/$videoKey/"] = null
+        }
+        mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
+            onCompletion.invoke(true)
+        }.addOnFailureListener {
+        }
+
     }
 
     fun saveEssay(essay: Essay, userId: String){

@@ -1,6 +1,7 @@
 package com.semear.tec.palavrizapp.modules.upload
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -10,7 +11,6 @@ import android.graphics.Bitmap
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
@@ -27,16 +27,15 @@ import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
 import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.adapters.PlanListAdapter
-import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.constants.Constants.BROADCAST_UPLOAD_DONE
 import com.semear.tec.palavrizapp.utils.constants.Constants.BROADCAST_UPLOAD_PROGRESS
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_IS_EDIT
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_DESCRIPTION
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_PATH
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_TITLE
 import kotlinx.android.synthetic.main.fragment_add_video.*
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 
@@ -45,14 +44,12 @@ class UploadActivity : BaseActivity() {
     private var videoUrl = ""
     private var filename = ""
 
-    private var videoTitle = ""
-    private var videoDescription = ""
+    private var video: Video? = null
     private var isEdit = false
     private lateinit var uploadViewModel: UploadViewModel
 
 
     val arraySpinner = arrayOf("Categoria", "Língua Portuguesa", "Dicas Enem")
-    var videoThumbUri: Uri? = null
 
     private var adapter: PlanListAdapter = PlanListAdapter()
 
@@ -75,6 +72,7 @@ class UploadActivity : BaseActivity() {
         setupRecyclerPlans()
         setupPlansList()
         setupDeleteButton()
+        registerObservers()
     }
 
     private fun setupDeleteButton() {
@@ -83,6 +81,22 @@ class UploadActivity : BaseActivity() {
         }else{
             btn_delete?.visibility = View.GONE
         }
+
+        btn_delete?.setOnClickListener {
+            Commons.showYesNoMessage(this, "", getString(R.string.delete_video_dialog_text)){
+                if (video != null) {
+                    uploadViewModel.deleteVideo(video!!)
+                }
+            }
+        }
+    }
+
+    fun registerObservers(){
+        uploadViewModel.deleteVideoLiveData.observe(this, Observer {
+            if ( it == true){
+                finish()
+            }
+        })
     }
 
     private fun setupPlansList() {
@@ -162,8 +176,7 @@ class UploadActivity : BaseActivity() {
             videoUrl = intent?.getStringExtra(EXTRA_VIDEO_PATH) ?: ""
             filename = videoUrl.split("/").lastOrNull() ?: ""
             isEdit = intent?.getBooleanExtra(EXTRA_IS_EDIT,false) ?: false
-            videoTitle = intent?.getStringExtra(EXTRA_VIDEO_TITLE) ?: ""
-            videoDescription = intent?.getStringExtra(EXTRA_VIDEO_DESCRIPTION) ?: ""
+            video = intent?.getParcelableExtra(EXTRA_VIDEO)
         }
     }
 
@@ -219,11 +232,11 @@ class UploadActivity : BaseActivity() {
     private fun setupFields(){
 
         if (isEdit){
-            if (videoTitle.isNotBlank()){
-                video_title?.setText(videoTitle)
+            if (!video?.title.isNullOrBlank()){
+                video_title?.setText(video?.title)
             }
-            if (videoDescription.isNotBlank()){
-                video_description?.setText(videoTitle)
+            if (!video?.description.isNullOrBlank()){
+                video_description?.setText(video?.description)
             }
         }
 
