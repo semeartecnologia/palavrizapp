@@ -7,10 +7,12 @@ import android.os.IBinder
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.PlanSwitch
 import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_CATEGORY
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_DESCRIPTION
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_PLANS
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_THUMBNAIL
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_TITLE
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_URI
@@ -46,9 +48,9 @@ class UploadService : Service() {
         val fileDescription = intent?.getStringExtra(EXTRA_FILE_DESCRIPTION) ?: ""
         val fileCategory = intent?.getStringExtra(EXTRA_FILE_CATEGORY) ?: ""
         val videoThumb = intent?.getStringExtra(EXTRA_FILE_THUMBNAIL) ?: ""
-        Log.d("teste", videoThumb)
-        //Log.d("palavrizapp-service", "extras: $fileUri $fileName")
-        storageRepository.uploadVideo(Video(0, Plans.NO_PLAN, "", fileTitle,fileDescription,fileCategory,fileUri, videoThumb))
+        val plans = intent?.getStringExtra(EXTRA_FILE_PLANS) ?: ""
+
+        storageRepository.uploadVideo(Video(0, plans, "", fileTitle,fileDescription,fileCategory,fileUri, videoThumb))
         return super.onStartCommand(intent, flags, startId)
     }
 

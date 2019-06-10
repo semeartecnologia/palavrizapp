@@ -90,6 +90,7 @@
     <string name="create_theme_create_option">Criar</string>
     <string name="create_theme_edit_option">Editar</string>
     <string name="create_theme_cancel_option">Cancelar</string>
+    <string name="delete">Excluir</string>
 
     <!-- Essay -->
     <string name="card_title_essay">Minhas Redações</string>

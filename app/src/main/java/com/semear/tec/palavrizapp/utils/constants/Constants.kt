@@ -31,6 +31,9 @@ object Constants {
 
     //Video Upload
     const val EXTRA_VIDEO_PATH = "video_path"
+    const val EXTRA_IS_EDIT = "is_edit"
+    const val EXTRA_VIDEO_TITLE = "extra_video_title"
+    const val EXTRA_VIDEO_DESCRIPTION = "extra_video_description"
 
     const val NOTIFICATION_ID = 1
     const val EXTRA_FILE_URI = "extra_file_uri"
@@ -38,6 +41,7 @@ object Constants {
     const val EXTRA_FILE_DESCRIPTION= "extra_file_description"
     const val EXTRA_FILE_CATEGORY = "extra_file_cateogory"
     const val EXTRA_FILE_THUMBNAIL = "extra_file_thumbnail"
+    const val EXTRA_FILE_PLANS = "extra_file_plans"
 
     //Broadcast
     const val BROADCAST_UPLOAD_DONE = "upload_done"

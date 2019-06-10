@@ -50,7 +50,7 @@ class RealtimeRepository(val context: Context) {
 
         video.videoKey = key
 
-        mDatabaseReference.child(reference).child(video.videoPlan?.name ?: "NO_PLAN").child("$key/").setValue(video)
+        mDatabaseReference.child(reference).child(Plans.NO_PLAN.name).child("$key/").setValue(video)
     }
 
     fun saveEssay(essay: Essay, userId: String){
