@@ -130,7 +130,7 @@ object Commons {
         if (theme != null){
             titleEditText.setText(theme.themeName)
             if (isEdit == true) {
-                view.tv_theme_label.text = activity.getString(R.string.edit_essay_theme)
+                view.create_theme_title_label.text = activity.getString(R.string.edit_essay_theme)
                 view.btn_create_theme.text = activity.getString(R.string.create_theme_edit_option)
             }
 
