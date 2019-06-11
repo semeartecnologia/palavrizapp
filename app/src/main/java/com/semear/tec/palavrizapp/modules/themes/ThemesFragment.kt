@@ -2,6 +2,7 @@ package com.semear.tec.palavrizapp.modules.themes
 
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.semear.tec.palavrizapp.utils.adapters.ThemesAdapter
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.interfaces.OnVideoClicked
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
+import kotlinx.android.synthetic.main.fragment_themes.*
 
 import java.util.ArrayList
 
@@ -53,11 +55,13 @@ class ThemesFragment : Fragment(), OnVideoClicked {
         val v = inflater.inflate(R.layout.fragment_themes, container, false)
 
         setupView(v)
+        registerObservers()
         getCategoryList()
         return v
     }
 
     private fun setupView(v: View) {
+        themesViewModel?.getPlanName()
         mAdapter = ThemesAdapter(this)
         recyclerTheme1 = v.findViewById(R.id.rv_themes)
         recyclerTheme1?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -68,7 +72,7 @@ class ThemesFragment : Fragment(), OnVideoClicked {
 
         categorySpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                val category = categorySpinner!!.getItemAtPosition(position) as String
+                val category = categorySpinner?.getItemAtPosition(position) as String
                 mAdapter?.clearVideoList()
                 progressBar?.visibility = View.VISIBLE
                 recyclerTheme1?.visibility = View.GONE
@@ -79,6 +83,16 @@ class ThemesFragment : Fragment(), OnVideoClicked {
 
             }
         }
+    }
+
+    fun registerObservers(){
+        themesViewModel?.namePlanLiveData?.observe(this, Observer {
+            if (!it.isNullOrBlank()){
+                tv_plan_name?.text = it
+            }else{
+                tv_plan_name?.visibility = View.GONE
+            }
+        })
     }
 
 
@@ -101,7 +115,7 @@ class ThemesFragment : Fragment(), OnVideoClicked {
                     categoryArray
             )
 
-            categorySpinner!!.adapter = adapter
+            categorySpinner?.adapter = adapter
             getVideoList()
             null
         }

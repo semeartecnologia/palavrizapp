@@ -31,6 +31,10 @@ class VideoRepository(val context: Context) {
         storageRepository.getThumbUrl(path, onCompletion)
     }
 
+    fun editVideo(video: Video, onCompletion: () -> Unit){
+        realtimeRepository.editVideo(video, onCompletion)
+    }
+
     fun deleteVideo(video: Video, onCompletion: (() -> Unit)){
         realtimeRepository.deleteVideo(video.videoKey) {
             if (it){

@@ -158,12 +158,16 @@ class StorageRepository(val context: Context) {
     }
 
     fun getThumbUrl(path: String, onCompletion: ((String) -> Unit)){
-        val filename = path.split("/").lastOrNull() ?: ""
-        val refThumb = videosParentRef.child("thumbs/").child(filename)
-        refThumb.downloadUrl.addOnSuccessListener {
-            onCompletion(it.toString())
-        }.addOnFailureListener {
+        if (path.isEmpty()){
             onCompletion("")
+        }else {
+            val filename = path.split("/").lastOrNull() ?: ""
+            val refThumb = videosParentRef.child("thumbs/").child(filename)
+            refThumb.downloadUrl.addOnSuccessListener {
+                onCompletion(it.toString())
+            }.addOnFailureListener {
+                onCompletion("")
+            }
         }
     }
 

@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.PlanSwitch
+import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.utils.extensions.inflate
 import kotlinx.android.synthetic.main.item_plan_list.view.*
 
-class PlanListAdapter : RecyclerView.Adapter<PlanListAdapter.ViewHolder>() {
+class PlanListAdapter(var listPlans: ArrayList<Plans>? = null) : RecyclerView.Adapter<PlanListAdapter.ViewHolder>() {
 
     var context: Context? = null
     var planList: ArrayList<PlanSwitch> = arrayListOf()
@@ -37,9 +38,7 @@ class PlanListAdapter : RecyclerView.Adapter<PlanListAdapter.ViewHolder>() {
         holder.view.check_plan.isChecked = plan.enabled
 
         holder.view.check_plan.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-                planList[index].enabled = true
-            }
+            planList[index].enabled = isChecked
         }
 
         if ( context != null) {

@@ -2,8 +2,13 @@ package com.semear.tec.palavrizapp.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.database.Exclude
 
 class Video(var orderVideo: Int = 0, var videoPlan: String? = "", var videoKey: String = "", var title: String = "", var description: String = "", var category: String = "", var path: String = "", var videoThumb: String? = null) : Parcelable {
+
+    @get:Exclude
+    var listOfPlans: ArrayList<Plans>? = arrayListOf()
+
     constructor(source: Parcel) : this(
             source.readInt(),
             source.readString(),

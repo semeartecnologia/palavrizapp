@@ -41,6 +41,51 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
+    fun editVideo(video: Video, onCompletion: () -> Unit){
+                val childUpdates = HashMap<String, Any?>()
+        childUpdates["/videos/${Plans.NO_PLAN.name}/${video.videoKey}/"] = video
+
+        video.videoPlan?.split("/")?.forEach {
+            if (it.isNotBlank()){
+                when (it) {
+                    Plans.FREE_PLAN.name -> {
+                        video.listOfPlans?.add(Plans.FREE_PLAN)
+                    }
+                    Plans.BASIC_PLAN.name -> {
+                        video.listOfPlans?.add(Plans.BASIC_PLAN)
+                    }
+                    Plans.ADVANCED_PLAN.name -> {
+                        video.listOfPlans?.add(Plans.ADVANCED_PLAN)
+                    }
+                }
+            }
+        }
+
+
+        if (video.listOfPlans?.contains(Plans.FREE_PLAN) == true){
+            childUpdates["/videos/${Plans.FREE_PLAN.name}/${video.videoKey}/"] = video
+        }else{
+            childUpdates["/videos/${Plans.FREE_PLAN.name}/${video.videoKey}/"] = null
+        }
+
+        if (video.listOfPlans?.contains(Plans.BASIC_PLAN) == true){
+            childUpdates["/videos/${Plans.BASIC_PLAN.name}/${video.videoKey}/"] = video
+        }else{
+            childUpdates["/videos/${Plans.BASIC_PLAN.name}/${video.videoKey}/"] = null
+        }
+
+        if (video.listOfPlans?.contains(Plans.ADVANCED_PLAN) == true){
+            childUpdates["/videos/${Plans.ADVANCED_PLAN.name}/${video.videoKey}/"] = video
+        }else{
+            childUpdates["/videos/${Plans.ADVANCED_PLAN.name}/${video.videoKey}/"] = null
+        }
+
+        mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
+            onCompletion.invoke()
+        }.addOnFailureListener {
+        }
+    }
+
     fun saveVideo(video: Video){
         val reference = "videos/"
         var key = mDatabaseReference.child(reference).push().key

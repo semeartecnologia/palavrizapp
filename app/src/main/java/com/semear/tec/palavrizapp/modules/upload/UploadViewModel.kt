@@ -13,6 +13,7 @@ class UploadViewModel(application: Application): AndroidViewModel(application) {
 
     var deleteVideoLiveData = MutableLiveData<Boolean>()
     var videoRepository = VideoRepository(application)
+    var editVideoSuccessLiveData = MutableLiveData<Boolean>()
 
     fun uploadVideo(context: Context, video: Video){
         val intent = Intent(context, UploadService::class.java)
@@ -23,6 +24,14 @@ class UploadViewModel(application: Application): AndroidViewModel(application) {
         intent.putExtra(Constants.EXTRA_FILE_THUMBNAIL, video.videoThumb)
         intent.putExtra(Constants.EXTRA_FILE_PLANS, video.videoPlan)
         context.startService(intent)
+    }
+
+    fun editVideo(video: Video?){
+        if (video != null) {
+            videoRepository.editVideo(video) {
+                editVideoSuccessLiveData.postValue(true)
+            }
+        }
     }
 
     fun deleteVideo(video: Video){

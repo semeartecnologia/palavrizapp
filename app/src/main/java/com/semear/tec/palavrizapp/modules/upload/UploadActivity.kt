@@ -97,12 +97,42 @@ class UploadActivity : BaseActivity() {
                 finish()
             }
         })
+        uploadViewModel.editVideoSuccessLiveData.observe(this, Observer {
+            if (it == true){
+                finish()
+            }
+        })
     }
 
     private fun setupPlansList() {
         var arrayPlans = arrayListOf<PlanSwitch>()
+
+        video?.videoPlan?.split("/")?.forEach {
+            if (it.isNotBlank()){
+                when (it) {
+                    Plans.FREE_PLAN.name -> {
+                        video?.listOfPlans?.add(Plans.FREE_PLAN)
+                    }
+                    Plans.BASIC_PLAN.name -> {
+                        video?.listOfPlans?.add(Plans.BASIC_PLAN)
+                    }
+                    Plans.ADVANCED_PLAN.name -> {
+                        video?.listOfPlans?.add(Plans.ADVANCED_PLAN)
+                    }
+                }
+            }
+        }
+
+
         Plans.values().forEach {
-            arrayPlans.add(PlanSwitch(it, false))
+            if (it != Plans.NO_PLAN) {
+                if (video?.listOfPlans?.contains(it) == true){
+                    arrayPlans.add(PlanSwitch(it, true))
+                }else{
+                    arrayPlans.add(PlanSwitch(it, false))
+                }
+
+            }
         }
         adapter.planList = arrayPlans
 
@@ -186,23 +216,33 @@ class UploadActivity : BaseActivity() {
         }
 
         btn_upload.setOnClickListener {
-            if (checkFields()){
-                val title = video_title.text.toString()
-                val description = video_description.text.toString()
-                val category = arraySpinner[category_spinner.selectedItemPosition]
-                var listOfPlans = ""
-                adapter.planList.forEach {
-                    if (it.enabled){
-                        if (it.plan != null) {
-                            listOfPlans += it.plan!!.name + "/"
+
+
+                if (checkFields()) {
+                    val title = video_title.text.toString()
+                    val description = video_description.text.toString()
+                    val category = arraySpinner[category_spinner.selectedItemPosition]
+                    var listOfPlans = ""
+                    adapter.planList.forEach {
+                        if (it.enabled) {
+                            if (it.plan != null) {
+                                listOfPlans += it.plan!!.name + "/"
+                            }
                         }
                     }
-                }
-                val video = Video(0, listOfPlans, "", title,description,category,videoUrl)
-                toggleButtonUpload()
-                getThumbnailAndUpload(video)
 
-            }
+                    if (isEdit){
+                        val video = Video(0, listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, category, videoUrl, video?.videoThumb)
+                        uploadViewModel.editVideo(video)
+                    }else {
+
+                        val video = Video(0, listOfPlans, "", title, description, category, videoUrl)
+                        toggleButtonUpload()
+                        getThumbnailAndUpload(video)
+                    }
+
+                }
+
         }
     }
 
@@ -223,6 +263,7 @@ class UploadActivity : BaseActivity() {
 
     private fun checkFields(): Boolean{
         if (video_title.text.isNullOrBlank() || video_description.text.isNullOrBlank()){
+
             showToast(getString(R.string.fill_all_fields), true)
             return false
         }

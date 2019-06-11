@@ -39,7 +39,11 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
         Plans[] myPlans = Plans.class.getEnumConstants();
 
         //adiciona na lista e notifica
-        this.listPlans.addAll(Arrays.asList(myPlans));
+        for (Plans plan: myPlans){
+            if (plan != Plans.NO_PLAN){
+                this.listPlans.add(plan);
+            }
+        }
         this.lastCheckedPos = currentPlan.getUserPlan();
         this.notifyDataSetChanged();
     }
