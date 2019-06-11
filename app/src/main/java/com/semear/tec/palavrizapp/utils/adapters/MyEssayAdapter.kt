@@ -1,12 +1,15 @@
 package com.semear.tec.palavrizapp.utils.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.models.StatusEssay
+import com.semear.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity
+import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.extensions.inflate
 import kotlinx.android.synthetic.main.item_my_essay.view.*
 
@@ -42,14 +45,14 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
             StatusEssay.CORRECTING -> holder.essayStatus = context?.getString(R.string.upload_status_correcting)
             StatusEssay.FEEDBACK_READY -> holder.essayStatus = context?.getString(R.string.upload_status_done)
         }
+
+        holder.view.setOnClickListener {
+            startEssayActivity(essayList[index])
+        }
     }
 
     class ViewHolder(var view: View): RecyclerView.ViewHolder(view) {
-        init {
-            view.setOnClickListener {
 
-            }
-        }
 
         var essayTitle: String? = null
             set(value) {
@@ -68,5 +71,12 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
                 field = value
                 view.tv_essay_status.text = value
             }
+    }
+
+    fun startEssayActivity(essay: Essay){
+        val it = Intent(context, EssayViewActivity::class.java)
+        it.putExtra(Constants.EXTRA_ESSAY, essay)
+        it.putExtra(Constants.EXTRA_ESSAY_READ_MODE, true)
+        context?.startActivity(it)
     }
 }

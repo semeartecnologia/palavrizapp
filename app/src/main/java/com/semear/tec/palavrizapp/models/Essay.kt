@@ -2,8 +2,12 @@ package com.semear.tec.palavrizapp.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.database.Exclude
 
 class Essay(var title: String = "", var theme: String = "", var themeId: String = "", var author: User? = null, var postDate: String = "", var status: StatusEssay = StatusEssay.UPLOADED, var url: String = "", var essayId: String = "", var feedback: Feedback? = null) : Parcelable {
+    @get:Exclude
+    var isReadMode: Boolean? = false
+
     constructor(source: Parcel) : this(
             source.readString(),
             source.readString(),

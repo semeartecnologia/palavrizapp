@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Essay
+import com.semear.tec.palavrizapp.models.Feedback
 import com.semear.tec.palavrizapp.modules.essay.essay_view_professor.essay_correct_room.EssayCorrectFragment
 import com.semear.tec.palavrizapp.modules.essay.essay_view_professor.essay_review.EssayReviewFragment
 import com.semear.tec.palavrizapp.utils.constants.Constants
@@ -21,6 +22,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
 
 
     private lateinit var actualEssay: Essay
+    private var isReadMode: Boolean = false
     private var viewModel: EssayViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +34,11 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
         setupView()
         registerObservers()
 
-        checkEssayHasOwner()
+        if (isReadMode){
+            startReadMode()
+        }else {
+            checkEssayHasOwner()
+        }
 
     }
 
@@ -56,6 +62,10 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
     override fun onBackPressed() {
         finish()
         super.onBackPressed()
+    }
+
+    fun startReadMode(){
+        changeFragment(EssayCorrectFragment.newInstance(actualEssay, true), "EssayCorrect")
     }
 
     private fun setupView() {
@@ -84,7 +94,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
     }
 
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 
@@ -92,6 +102,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
     private fun setExtras(intent: Intent?){
         if (intent != null) {
             actualEssay = intent.getParcelableExtra(Constants.EXTRA_ESSAY)
+            isReadMode = intent.getBooleanExtra(Constants.EXTRA_ESSAY_READ_MODE, false)
         }
     }
 }

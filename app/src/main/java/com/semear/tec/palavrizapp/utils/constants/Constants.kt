@@ -51,5 +51,7 @@ object Constants {
     const val EXTRA_IMAGE_CHECK = "extra_image_check"
     const val RESULT_NEGATIVE = 404;
     const val EXTRA_ESSAY = "extra_essay"
+    const val EXTRA_ESSAY_READ_MODE = "extra_essay_read"
+    const val EXTRA_ESSAY_FEEDBACK = "extra_essay_feedback"
     const val EXTRA_IMAGE_FULL_SCREEN = "extra_image_full"
 }

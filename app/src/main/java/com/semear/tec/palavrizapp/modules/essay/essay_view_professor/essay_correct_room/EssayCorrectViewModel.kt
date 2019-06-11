@@ -29,8 +29,12 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
 
     fun setExtras(bundle: Bundle){
         val essay: Essay? = bundle.getParcelable(Constants.EXTRA_ESSAY)
+        val isReadMode: Boolean = bundle.getBoolean(Constants.EXTRA_ESSAY_READ_MODE)
         if (essay != null) {
             checkOwnerEssay(essay.essayId)
+            if (isReadMode){
+                essay.isReadMode = true
+            }
             actualEssay.postValue(essay)
         }
     }

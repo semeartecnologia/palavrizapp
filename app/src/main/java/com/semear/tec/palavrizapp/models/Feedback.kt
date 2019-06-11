@@ -4,9 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 
 class Feedback(var user: User? = null, var urlVideo: String? = "", var text: String? = "") : Parcelable {
-
-
-
     constructor(source: Parcel) : this(
             source.readParcelable<User>(User::class.java.classLoader),
             source.readString(),
@@ -18,7 +15,7 @@ class Feedback(var user: User? = null, var urlVideo: String? = "", var text: Str
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeParcelable(user, 0)
         writeString(urlVideo)
-        writeValue(text)
+        writeString(text)
     }
 
     companion object {

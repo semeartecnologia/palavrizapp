@@ -72,12 +72,24 @@ class EssayCorrectFragment : Fragment() {
         })
     }
 
+    private fun setupReadMode(essay: Essay){
+        btn_send_feedback?.visibility = View.GONE
+        btn_cancel?.text = "Voltar"
+        btn_attachment_video_feedback?.visibility = View.GONE
+        et_feedback_text?.visibility = View.INVISIBLE
+        tv_feedback_text?.visibility = View.VISIBLE
+        tv_feedback_text?.text = essay.feedback?.text
+    }
+
     private fun setupView(essay: Essay){
         setupImageEssay(essay.url)
         setupTitleAndTheme(essay)
         setupVideoAttachmentButton()
         setupSendFeedbackButton(essay)
         setupCancelButton(essay)
+        if (essay.isReadMode == true){
+            setupReadMode(essay)
+        }
     }
 
     private fun setupSendFeedbackButton(essay: Essay) {
@@ -187,10 +199,11 @@ class EssayCorrectFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(essay: Essay) =
+        fun newInstance(essay: Essay, isReadMode: Boolean = false) =
                 EssayCorrectFragment().apply {
                     arguments = Bundle().apply {
                         putParcelable(Constants.EXTRA_ESSAY, essay)
+                        putBoolean(Constants.EXTRA_ESSAY_READ_MODE, isReadMode)
                     }
                 }
     }
