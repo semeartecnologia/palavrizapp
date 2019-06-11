@@ -147,13 +147,27 @@ class StorageRepository(val context: Context) {
         }
     }
 
-    fun getThumbUrl(path: String, onCompletion: ((String) -> Unit)){
+    fun deleteVideoFromStorage(path: String, onCompletion: ((Boolean) -> Unit)){
         val filename = path.split("/").lastOrNull() ?: ""
-        val refThumb = videosParentRef.child("thumbs/").child(filename)
-        refThumb.downloadUrl.addOnSuccessListener {
-            onCompletion(it.toString())
+        videosParentRef.child(filename).delete().addOnSuccessListener {
+            onCompletion(true)
         }.addOnFailureListener {
+            onCompletion(false)
+        }
+
+    }
+
+    fun getThumbUrl(path: String, onCompletion: ((String) -> Unit)){
+        if (path.isEmpty()){
             onCompletion("")
+        }else {
+            val filename = path.split("/").lastOrNull() ?: ""
+            val refThumb = videosParentRef.child("thumbs/").child(filename)
+            refThumb.downloadUrl.addOnSuccessListener {
+                onCompletion(it.toString())
+            }.addOnFailureListener {
+                onCompletion("")
+            }
         }
     }
 
