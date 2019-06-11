@@ -139,7 +139,7 @@ class EssayCheckActivity : AppCompatActivity() {
                 override fun onSuccess() {
                     layout_sendind_progress.visibility = View.GONE
                     Commons.showAlert(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success), "Ok")
-                    val subscribe = io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
+                    io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
                             .subscribe { _ ->
                                 finish()
                             }

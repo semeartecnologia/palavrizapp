@@ -180,7 +180,7 @@
 
     <!-- Tela Essay -->
     <string name="no_essay_yet">Você ainda não enviou uma redação para corrigirmos</string>
-    <string name="btn_first_send">Envie sua primeira!</string>
+    <string name="btn_first_send">Envie sua primeira redação</string>
     <string name="title">Minhas redações</string>
 
     <!-- Classroom -->

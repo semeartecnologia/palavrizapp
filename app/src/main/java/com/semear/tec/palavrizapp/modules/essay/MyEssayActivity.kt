@@ -85,10 +85,10 @@ class MyEssayActivity : AppCompatActivity() {
             rv_my_essays.visibility = View.VISIBLE
             progress_bar_loading?.visibility = View.GONE
             if (it.isEmpty()){
-                layout_my_essays?.visibility = View.GONE
+                rv_my_essays?.visibility = View.GONE
                 layout_no_essay?.visibility = View.VISIBLE
             }else{
-                layout_my_essays?.visibility = View.VISIBLE
+                rv_my_essays?.visibility = View.VISIBLE
                 layout_no_essay?.visibility = View.GONE
                 adapter.essayList = it
             }
