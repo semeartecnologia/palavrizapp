@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/gray"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
 
     <ImageView
@@ -33,49 +34,81 @@
 
     <LinearLayout
         android:id="@+id/dialog_is_readable"
-        android:background="@color/transparentGrey30"
+        android:background="@drawable/background_dialog"
         android:visibility="visible"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="32dp"
+        android:layout_margin="16dp"
         android:orientation="vertical"
-        android:layout_width="240dp"
-        android:layout_height="120dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="16sp"
             android:layout_gravity="center_horizontal"
-            android:elevation="8dp"
-            android:text="@string/is_readable"
-            android:textColor="@color/transparentWhite60" />
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/is_readable" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:id="@+id/button_container"
+            android:layout_margin="8dp"
             android:weightSum="2"
-            android:layout_height="40dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
+            <Button
                 android:id="@+id/btn_negative"
-                android:text="@string/negative_answer"
-                android:layout_weight="1"
-                android:textColor="@color/transparentWhite60"
                 android:layout_width="0dp"
-                android:gravity="center"
-                android:background="@drawable/btn_shape_dialog"
-                android:layout_height="match_parent" />
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/secondary_button"
+                android:fontFamily="@font/titillium_regular"
+                android:text="@string/no"
+                android:textColor="@color/colorPrimary" />
 
-            <TextView
-                android:id="@+id/btn_positive"
-                android:gravity="center"
-                android:textColor="@color/transparentWhite60"
-                android:text="@string/positive_answer"
-                android:background="@drawable/btn_shape_dialog"
+            <android.support.constraint.ConstraintLayout
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" />
+                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_positive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/primary_button"
+                    android:fontFamily="@font/titillium_regular"
+                    android:text="@string/yes"
+                    android:textColor="@color/colorPrimaryText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progress_register"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"
+                    android:elevation="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_register"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/btn_register" />
+
+            </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
 
@@ -84,11 +117,11 @@
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/dialog_title_essay"
-        android:background="@color/transparentGrey30"
+        android:background="@drawable/background_dialog"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="32dp"
+        android:layout_margin="16dp"
         android:orientation="vertical"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ProgressBar
@@ -102,31 +135,31 @@
         <TextView
             android:id="@+id/dialog_title_theme_label"
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:elevation="8dp"
-            android:text="@string/essay_title_field"
-            android:textColor="@color/transparentWhite60" />
+            android:text="@string/essay_title_field" />
 
         <Spinner
             android:id="@+id/theme_spinner"
-            android:layout_margin="8dp"
+            android:layout_margin="16dp"
             android:elevation="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
+            android:layout_height="36dp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/et_title_essay"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/transparentWhite"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,13 +168,14 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:id="@+id/btn_send_essay"
-            android:enabled="false"
-            android:text="@string/essay_send"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/primary_button"
+            android:fontFamily="@font/titillium_regular"
+            android:text="@string/essay_send"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorPrimaryText" />
 
     </LinearLayout>
 

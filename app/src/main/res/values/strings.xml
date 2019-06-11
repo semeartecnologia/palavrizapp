@@ -225,6 +225,8 @@
     <string name="just_corrector">(Somente Corretores)</string>
     <string name="admin_area">Área Administrativa</string>
     <string name="open">Abrir</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 
 
 </resources>
