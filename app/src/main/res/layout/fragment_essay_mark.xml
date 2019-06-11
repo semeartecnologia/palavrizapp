@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     tools:context="com.semear.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFragment">
 
     <android.support.v7.widget.RecyclerView

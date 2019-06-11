@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/mauve"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:id="@+id/root_layout"
     android:weightSum="100">
@@ -16,17 +16,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp" />
 
-    <android.support.v7.widget.CardView
-        android:background="@color/colorPrimaryText"
-        app:cardCornerRadius="5dp"
+    <android.support.v4.widget.NestedScrollView
+        android:background="@drawable/background_login_shape"
+        app:cardCornerRadius="8dp"
         android:layout_weight="65"
+        android:layout_margin="16dp"
+        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="0dp">
-
-        <android.support.v4.widget.NestedScrollView
-            android:elevation="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <LinearLayout
                 android:elevation="8dp"
@@ -40,14 +37,12 @@
                     android:fontFamily="@font/titillium_light"
                     android:textSize="16sp"
                     android:textColor="@color/colorSecondaryText"
-                    android:layout_margin="16dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 
                 <TextView
                     android:id="@+id/video_description"
-                    android:layout_marginStart="16sp"
-                    android:layout_marginEnd="16sp"
                     android:maxLength="220"
                     tools:text="Mussum Ipsum, cacilds vidis litro abertis. Copo furadis é disculpa de bebadis, arcu quam euismod magna. Nullam volutpat risus nec leo commodo, ut interdum diam laoreet. Sed non consequat odio. Mauris nec dolor in eros "
                     android:layout_width="wrap_content"
@@ -56,7 +51,8 @@
 
                 <View
                     android:layout_margin="16dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/colorSecondaryText"
+                    android:alpha="0.7"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"/>
 
@@ -65,8 +61,8 @@
                     android:text="@string/questions_label"
                     android:fontFamily="@font/titillium_light"
                     android:textSize="16sp"
+                    android:layout_marginBottom="16dp"
                     android:textColor="@color/colorSecondaryText"
-                    android:layout_marginStart="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -88,14 +84,6 @@
 
             </LinearLayout>
 
-
-
-        </android.support.v4.widget.NestedScrollView>
-
-
-
-    </android.support.v7.widget.CardView>
-
-
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

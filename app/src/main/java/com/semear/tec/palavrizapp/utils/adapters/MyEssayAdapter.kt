@@ -8,7 +8,7 @@ import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.models.StatusEssay
 import com.semear.tec.palavrizapp.utils.extensions.inflate
-import kotlinx.android.synthetic.main.item_my_esay.view.*
+import kotlinx.android.synthetic.main.item_my_essay.view.*
 
 class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
 
@@ -21,7 +21,7 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
         }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyEssayAdapter.ViewHolder {
-        val view = inflate(R.layout.item_my_esay, p0)
+        val view = inflate(R.layout.item_my_essay, p0)
         context = p0.context
         return ViewHolder(view)
     }

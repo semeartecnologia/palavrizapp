@@ -1,45 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:id="@+id/layout_question"
     android:orientation="horizontal"
-    android:layout_height="80dp">
-
-
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/profile_image"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/avatar_man_256"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:civ_border_color="#90ffffff"
-        app:civ_border_width="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.353"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="wrap_content">
 
     <TextView
-        android:text="@string/ask_a_question"
-        android:layout_toEndOf="@id/profile_image"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="24dp"
-        android:fontFamily="@font/titillium_light"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <View
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryLight"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_width="match_parent"
-        android:layout_height="3dp"/>
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textAlignment="center"
+        android:background="@drawable/secondary_button"
+        android:fontFamily="@font/titillium_regular"
+        android:text="@string/ask_a_question"
+        android:textAllCaps="true" />
 
-
-
-</RelativeLayout>
+</LinearLayout>

@@ -71,7 +71,7 @@
     <string name="card_text_aulas">Assista aqui nossas aulas de diversos temas</string>
     <string name="card_see_more_aulas">Ver aulas ></string>
     <string name="questions_label">Perguntas (%d)</string>
-    <string name="ask_a_question">Fazer uma pergunta!</string>
+    <string name="ask_a_question">Fazer uma pergunta</string>
     <string name="reply_a_question">Escreva sua reposta!</string>
 
     <!-- Essay List Admin -->
@@ -228,6 +228,7 @@
     <string name="open">Abrir</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
+    <string name="status_label">Status:</string>
 
 
 </resources>
