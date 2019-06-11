@@ -135,9 +135,9 @@ object Commons {
             }
 
             if (!theme.urlPdf.isNullOrBlank()){
-                view.tv_filename_pdf.text = theme.urlPdf?.split("/")?.lastOrNull() ?: ""
-                view.iv_remove_pdf.visibility = View.VISIBLE
-                view.tv_filename_pdf.visibility = View.VISIBLE
+                view.layout_pdf_filename.text = theme.urlPdf?.split("/")?.lastOrNull() ?: ""
+                view.layout_pdf_filename.visibility = View.VISIBLE
+                view.layout_pdf_filename.visibility = View.VISIBLE
                 view.btn_attachment_pdf_theme.isEnabled = false
             }
         }
@@ -160,10 +160,9 @@ object Commons {
 
         }
 
-        view.iv_remove_pdf.setOnClickListener {
+        view.layout_pdf_filename.setOnClickListener {
             theme?.urlPdf = ""
-            view.iv_remove_pdf.visibility = View.GONE
-            view.tv_filename_pdf.visibility = View.GONE
+            view.layout_pdf_filename.visibility = View.GONE
             view.btn_attachment_pdf_theme.isEnabled = true
         }
 
