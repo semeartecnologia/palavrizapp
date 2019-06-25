@@ -24,7 +24,6 @@ class RealtimeRepository(val context: Context) {
         val userList = arrayListOf<User>()
         val queryReference = mDatabaseReference.child(reference)
                 .orderByChild("fullname")
-                .limitToFirst(15)
         if(lastVisible != null){
             queryReference.startAt(lastVisible)
         }

@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.User
-import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.extensions.inflate
 import com.semear.tec.palavrizapp.utils.interfaces.OnUserClicked
+import com.semear.tec.palavrizapp.utils.interfaces.OnUserSearch
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_user_admin_list.view.*
 
 class ListUserAdapter(val listener: OnUserClicked) : RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
 
     var context: Context? = null
+    var userListCopy: ArrayList<User>? = arrayListOf()
     var userList: ArrayList<User> = arrayListOf()
         set(value) {
             field = value
@@ -34,12 +35,14 @@ class ListUserAdapter(val listener: OnUserClicked) : RecyclerView.Adapter<ListUs
     }
 
     override fun onBindViewHolder(holder: ListUserAdapter.ViewHolder, index: Int) {
-        val user = userList[index]
+        val user = userList[holder.adapterPosition]
 
         holder.userName = user.fullname
         holder.userEmail = user.email
         if (!user.photoUri.isNullOrBlank()) {
             Picasso.get().load(user.photoUri).into(holder.view.photo_user)
+        }else{
+            Picasso.get().load(R.drawable.avatar_man_512).into(holder.view.photo_user)
         }
 
         holder.userType = String.format(context?.getString(R.string.user_type_label) ?: "Tipo: %s", user.userType.name)
@@ -50,6 +53,45 @@ class ListUserAdapter(val listener: OnUserClicked) : RecyclerView.Adapter<ListUs
         holder.view.setOnClickListener {
             listener.onUserClicked(user)
         }
+
+    }
+
+    private fun copyUserList() {
+        this.userListCopy = arrayListOf()
+        this.userListCopy?.clear()
+        this.userListCopy?.addAll(userList)
+
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+
+    fun filter(text: String, onUserSearch: OnUserSearch) {
+        val arrayUsers = arrayListOf<User>()
+
+        if (this.userListCopy?.isEmpty() == true)
+            copyUserList()
+
+        if (text.isEmpty()) {
+            arrayUsers.addAll(userListCopy!!)
+        } else {
+            val mText = text.toLowerCase()
+            for (user in userListCopy!!) {
+
+                    if (user.fullname.contains(mText) || user.email.contains(mText)) {
+                        arrayUsers.add(user)
+                    }
+
+            }
+        }
+        onUserSearch.onUsersSearch(arrayUsers)
+
 
     }
 

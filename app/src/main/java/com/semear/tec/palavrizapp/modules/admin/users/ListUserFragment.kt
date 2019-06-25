@@ -9,15 +9,18 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.User
 import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.adapters.ListUserAdapter
 import com.semear.tec.palavrizapp.utils.interfaces.OnUserClicked
+import com.semear.tec.palavrizapp.utils.interfaces.OnUserSearch
 import kotlinx.android.synthetic.main.list_user_fragment.*
 
 
-class ListUserFragment : Fragment(), OnUserClicked {
+class ListUserFragment : Fragment(), OnUserClicked, OnUserSearch {
+
 
     private lateinit var adapter: ListUserAdapter
 
@@ -40,6 +43,32 @@ class ListUserFragment : Fragment(), OnUserClicked {
         setupRecyclerUsers()
         registerObservers()
         viewModel.fetchUserList()
+        setupSearchView()
+    }
+
+    override fun onUsersSearch(userList: ArrayList<User>) {
+        adapter.userList = userList
+    }
+
+    fun setupSearchView(){
+        val myContext = this
+        sv_users?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    adapter.filter(query, myContext)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    adapter.filter(newText, myContext)
+                }
+                return true
+            }
+
+        })
     }
 
     private fun registerObservers() {
