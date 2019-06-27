@@ -1,6 +1,6 @@
 package com.semear.tec.palavrizapp.modules.essay.image_check
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -10,8 +10,6 @@ import android.view.View
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.models.StatusEssay
-import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity
-import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 import com.semear.tec.palavrizapp.utils.repositories.EssayRepository
@@ -19,10 +17,9 @@ import com.semear.tec.palavrizapp.utils.repositories.SessionManager
 import com.semear.tec.palavrizapp.utils.repositories.ThemesRepository
 import kotlinx.android.synthetic.main.activity_check_image.*
 import java.util.concurrent.TimeUnit
-import com.google.android.youtube.player.internal.s
 import android.widget.ArrayAdapter
-
-
+import com.semear.tec.palavrizapp.utils.commons.DateFormatHelper
+import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 
 
 class EssayCheckActivity : AppCompatActivity() {
@@ -132,13 +129,14 @@ class EssayCheckActivity : AppCompatActivity() {
 
             //TODO parece meio gambiarra, dps ver isso direito
             val themeId = themeHash[theme_spinner?.selectedItem.toString().trim()]
-            val essay = Essay(title, theme_spinner?.selectedItem.toString(), themeId!!, user, Commons.currentTimeDate,StatusEssay.UPLOADED, "")
+            val essay = Essay(title, theme_spinner?.selectedItem.toString(), themeId!!, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
 
             essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
 
+                @SuppressLint("CheckResult")
                 override fun onSuccess() {
                     layout_sendind_progress.visibility = View.GONE
-                    Commons.showAlert(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success), "Ok")
+                    DialogHelper.showAlert(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success), "Ok")
                     io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
                             .subscribe { _ ->
                                 finish()
@@ -147,7 +145,7 @@ class EssayCheckActivity : AppCompatActivity() {
 
                 override fun onFail() {
                     layout_sendind_progress.visibility = View.GONE
-                    Commons.showAlert(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error), "Ok")
+                    DialogHelper.showAlert(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error), "Ok")
                 }
 
                 override fun onProgress(progress: Int) {

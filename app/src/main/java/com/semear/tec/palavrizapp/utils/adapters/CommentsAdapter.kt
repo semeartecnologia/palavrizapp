@@ -4,10 +4,9 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Comment
-import com.semear.tec.palavrizapp.utils.Commons
+import com.semear.tec.palavrizapp.utils.commons.DateFormatHelper
 import com.semear.tec.palavrizapp.utils.extensions.inflate
 import com.semear.tec.palavrizapp.utils.interfaces.OnReplyClicked
 import kotlinx.android.synthetic.main.item_question.view.*
@@ -69,7 +68,7 @@ class CommentsAdapter(val canReply: Boolean, val listener: OnReplyClicked) :  Re
         val timePost = comments.time
         if (timePost != null) {
             val timePostAgo = System.currentTimeMillis() - timePost
-            holder.timeComment = "- ${Commons.formatTimeComment(context, timePostAgo)}"
+            holder.timeComment = "- ${DateFormatHelper.formatTimeComment(context, timePostAgo)}"
         }
 
         holder.btnReply = canReply

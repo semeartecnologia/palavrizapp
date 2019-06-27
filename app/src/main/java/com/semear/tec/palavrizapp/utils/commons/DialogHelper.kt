@@ -1,11 +1,7 @@
-package com.semear.tec.palavrizapp.utils
+package com.semear.tec.palavrizapp.utils.commons
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
-import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
 import android.view.View
@@ -21,76 +17,9 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.dialog_create_theme.view.*
 import kotlinx.android.synthetic.main.dialog_edit_user.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 
+object DialogHelper {
 
-object Commons {
-
-    val currentTimeDate: String
-        @SuppressLint("SimpleDateFormat")
-        get() = SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().time)
-
-    fun stringDate(timestamp: Long): String {
-        val date = Date(timestamp)
-        return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
-    }
-
-
-    fun formatTimeComment(context: Context?, timeMillis: Long?): String{
-        if (timeMillis == null) return ""
-        val secs = timeMillis/1000
-        return when{
-            secs < 120 -> context?.getString(R.string.comment_time_now) ?: ""
-            secs < 3600 -> context?.getString(R.string.comment_time_minutes, secs/60) ?: ""
-            secs < 86400 -> context?.getString(R.string.comment_time_hours, secs/3600) ?: ""
-            secs < 30*86400 -> formatDays(context, secs) //< 1 mes
-            secs < 30*86400*12 -> formatMonths(context, secs) // < 1 ano
-            else -> formatYears(context,secs)
-        }
-    }
-
-    private fun formatYears(context: Context?, secs: Long): String {
-        var timeFormat = ""
-        val years = secs/30*86400*12
-        val months = secs%30*86400*12
-
-        timeFormat += context?.getString(R.string.comment_time_years, years.toInt())
-        if (months > 30*86400) {
-            timeFormat += ", "
-            timeFormat +=  context?.getString(R.string.comment_time_months, months.toInt())
-        }
-        return timeFormat
-    }
-
-    private fun formatMonths(context: Context?, secs: Long): String{
-        var timeFormat = ""
-        val months = secs/30*86400
-        val days = secs%30*86400
-
-        timeFormat += context?.getString(R.string.comment_time_months, months.toInt())
-
-        if (days > 86400){
-            timeFormat += ", "
-            timeFormat += context?.getString(R.string.comment_time_days, days.toInt())
-        }
-
-        return timeFormat
-    }
-
-    private fun formatDays(context: Context?, secs: Long): String{
-        var timeFormat = ""
-        val days = secs/86400
-        val hours = secs%86400
-
-        timeFormat += context?.getString(R.string.comment_time_days, days.toInt())
-
-        if (hours > 3600){
-            timeFormat += ", "
-            timeFormat += context?.getString(R.string.comment_time_hours, hours.toInt())
-        }
-        return timeFormat
-    }
 
     fun showAlert(activity: Activity, titleAlert: String, textAlert: String, btnAlert: String) {
 
@@ -189,7 +118,7 @@ object Commons {
         return createThemeDialog
     }
 
-    fun createEditUserAdminDialog(activity: Activity, user: User, onSaveClicked:  ((User) -> Unit)): AlertDialog {
+    fun createEditUserAdminDialog(activity: Activity, user: User, onSaveClicked:  ((User) -> Unit), onDeleteClicked: (() -> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_edit_user, null, true)
 
         val tvUserName = view.findViewById<TextView>(R.id.tv_user_name)
@@ -236,6 +165,11 @@ object Commons {
             createThemeDialog.dismiss()
         }
 
+        view.btn_delete.setOnClickListener {
+            createThemeDialog.dismiss()
+            onDeleteClicked.invoke()
+        }
+
         view.btn_save.setOnClickListener {
             createThemeDialog.dismiss()
             user.plan = Plans.values()[spUserPlans.selectedItemPosition]
@@ -279,19 +213,5 @@ object Commons {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show()
     }
-
-    fun getRealPathFromURI(context: Context, contentUri: Uri): String? {
-        var res: String? = null
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = context.contentResolver.query(contentUri, proj, null, null, null)
-        if (cursor != null && cursor.moveToFirst()) {
-            val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            res = cursor.getString(column_index)
-            cursor.close()
-        }
-        return res
-    }
-
-
 
 }

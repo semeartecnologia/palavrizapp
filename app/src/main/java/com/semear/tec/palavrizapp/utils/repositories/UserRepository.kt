@@ -30,4 +30,8 @@ class UserRepository(val context: Context) {
     fun getUserList(lastVisible: String? = null, onCompletion: (ArrayList<User>) -> Unit){
         realtimeRepository.getUserList(lastVisible, onCompletion)
     }
+
+    fun deleteUser(userId: String){
+        realtimeRepository.deleteUser(userId)
+    }
 }

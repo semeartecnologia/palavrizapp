@@ -13,7 +13,7 @@ import com.google.android.gms.common.api.ApiException
 import com.semear.tec.palavrizapp.BuildConfig
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
-import com.semear.tec.palavrizapp.utils.Commons
+import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -151,7 +151,7 @@ class LoginActivity : BaseActivity() {
                 val titleAlert = getString(R.string.alert_gplay_title)
                 val textAlert = getString(R.string.alert_gplay_text)
                 val btnAlert = getString(R.string.alert_gplay_btn_accept)
-                Commons.showAlert(this@LoginActivity, titleAlert, textAlert, btnAlert)
+                DialogHelper.showAlert(this@LoginActivity, titleAlert, textAlert, btnAlert)
                 e.printStackTrace()
             }
 

@@ -25,8 +25,9 @@ import com.semear.tec.palavrizapp.models.PlanSwitch
 import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
-import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.adapters.PlanListAdapter
+import com.semear.tec.palavrizapp.utils.commons.DialogHelper
+import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.constants.Constants.BROADCAST_UPLOAD_DONE
 import com.semear.tec.palavrizapp.utils.constants.Constants.BROADCAST_UPLOAD_PROGRESS
@@ -83,7 +84,7 @@ class UploadActivity : BaseActivity() {
         }
 
         btn_delete?.setOnClickListener {
-            Commons.showYesNoMessage(this, "", getString(R.string.delete_video_dialog_text)){
+            DialogHelper.showYesNoMessage(this, "", getString(R.string.delete_video_dialog_text)){
                 if (video != null) {
                     uploadViewModel.deleteVideo(video!!)
                 }
@@ -326,7 +327,7 @@ class UploadActivity : BaseActivity() {
         val videoThumb = ThumbnailUtils.createVideoThumbnail(file.absolutePath,
                 MediaStore.Images.Thumbnails.MINI_KIND)
 
-        video.videoThumb = Commons.getRealPathFromURI(this, getImageUri(this, videoThumb) )
+        video.videoThumb = FileHelper.getRealPathFromURI(this, getImageUri(this, videoThumb) )
 
         Log.d("teste", "Thumb created!!! " + video.videoThumb)
         uploadViewModel.uploadVideo(this, video)

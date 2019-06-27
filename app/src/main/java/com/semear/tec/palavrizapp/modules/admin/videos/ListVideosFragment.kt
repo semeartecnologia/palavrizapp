@@ -17,11 +17,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.upload.UploadActivity
-import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.adapters.ThemesAdapter
+import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.interfaces.OnVideoClicked
 import kotlinx.android.synthetic.main.list_videos_fragment.*
@@ -142,7 +141,7 @@ class ListVideosFragment : Fragment(), OnVideoClicked {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_VIDEO) {
-                val selectedVideoPath = Commons.getRealPathFromURI(activity as Activity, data!!.data!!)
+                val selectedVideoPath = FileHelper.getRealPathFromURI(activity as Activity, data!!.data!!)
                 try {
                     if (selectedVideoPath == null) {
                         activity?.finish()

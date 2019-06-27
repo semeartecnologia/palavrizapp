@@ -12,10 +12,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.models.Video
-import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import java.io.File
-import android.R.attr.bitmap
 import com.semear.tec.palavrizapp.models.Themes
 import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.interfaces.EssayUploadCallback

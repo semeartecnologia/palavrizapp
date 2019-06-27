@@ -19,7 +19,7 @@ import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.modules.essay.photo_zoom.ImageZoomActivity
-import com.semear.tec.palavrizapp.utils.Commons
+import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_essay_correct.*
@@ -159,7 +159,7 @@ class EssayCorrectFragment : Fragment() {
         val activity = activity as Activity
         Picasso.get().load(urlImage).into(iv_essay, object: com.squareup.picasso.Callback {
             override fun onError(e: Exception?) {
-                Commons.showAlert(activity, "Erro", "Erro ao abrir imagem, contate nossos administradores" )
+                DialogHelper.showAlert(activity, "Erro", "Erro ao abrir imagem, contate nossos administradores" )
             }
 
             override fun onSuccess() {

@@ -1,28 +1,19 @@
 package com.semear.tec.palavrizapp.modules;
 
-import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.semear.tec.palavrizapp.R;
-import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.modules.base.BaseActivity;
 import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity;
 import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment;
-import com.semear.tec.palavrizapp.modules.upload.UploadActivity;
-import com.semear.tec.palavrizapp.utils.Commons;
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager;
 
 import butterknife.BindView;
@@ -32,7 +23,6 @@ import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VID
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_SUBTITLE_VIDEO;
 import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO;
-import static com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_PATH;
 
 public class MainActivity extends BaseActivity implements DashboardFragment.OnFragmentInteractionListener {
 

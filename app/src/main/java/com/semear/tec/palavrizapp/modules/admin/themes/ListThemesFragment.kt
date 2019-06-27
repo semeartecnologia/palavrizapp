@@ -17,12 +17,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Themes
-import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.adapters.ThemesListAdapter
+import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 import com.semear.tec.palavrizapp.utils.constants.Helper
 import com.semear.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import kotlinx.android.synthetic.main.list_themes_fragment.*
-import java.io.File
 
 
 class ListThemesFragment : Fragment(), OnThemeClicked {
@@ -62,7 +61,7 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
     }
 
     private fun showCreateThemeDialog(theme: Themes? = null) {
-        Commons.createThemeDialog(activity as Activity
+        DialogHelper.createThemeDialog(activity as Activity
                 ,false,
                 theme,
                 {
@@ -176,7 +175,7 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
     }
 
     private fun showEditThemeDialog(theme: Themes? = null, newDocument: Boolean = false){
-        Commons.createThemeDialog(activity as Activity
+        DialogHelper.createThemeDialog(activity as Activity
                 , true,
                 theme,
                 {

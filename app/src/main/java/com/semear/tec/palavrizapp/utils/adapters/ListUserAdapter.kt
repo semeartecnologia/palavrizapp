@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.User
+import com.semear.tec.palavrizapp.utils.commons.DateFormatHelper
 import com.semear.tec.palavrizapp.utils.extensions.inflate
 import com.semear.tec.palavrizapp.utils.interfaces.OnUserClicked
 import com.semear.tec.palavrizapp.utils.interfaces.OnUserSearch
@@ -47,6 +48,11 @@ class ListUserAdapter(val listener: OnUserClicked) : RecyclerView.Adapter<ListUs
 
         holder.userType = String.format(context?.getString(R.string.user_type_label) ?: "Tipo: %s", user.userType.name)
 
+        if (user.registerDate != null){
+            holder.userRegisterDate = String.format(context?.getString(R.string.register_date_label) ?: "", DateFormatHelper.stringDate(user.registerDate))
+        }else{
+            holder.userRegisterDate = ""
+        }
 
         holder.userPlan = user.plan.getPlanTitle(context)
 
@@ -119,6 +125,12 @@ class ListUserAdapter(val listener: OnUserClicked) : RecyclerView.Adapter<ListUs
             set(value) {
                 field = value
                 view.tv_user_plan?.text = value
+            }
+
+        var userRegisterDate: String? = null
+            set(value) {
+                field = value
+                view.tv_user_register_date?.text = value
             }
     }
 }

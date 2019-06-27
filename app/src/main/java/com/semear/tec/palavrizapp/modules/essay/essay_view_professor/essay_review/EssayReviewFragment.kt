@@ -15,7 +15,7 @@ import android.view.ViewGroup
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.modules.essay.photo_zoom.ImageZoomActivity
-import com.semear.tec.palavrizapp.utils.Commons
+import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_essay_review.*
@@ -83,14 +83,14 @@ class EssayReviewFragment() : Fragment() {
     }
 
     private fun showFailDialog() {
-        Commons.showAlert(activity as Activity, getString(R.string.dialog_essay_feedback_already_taken_title), getString(R.string.dialog_essay_feedback_already_taken_content), "Ok")
+        DialogHelper.showAlert(activity as Activity, getString(R.string.dialog_essay_feedback_already_taken_title), getString(R.string.dialog_essay_feedback_already_taken_content), "Ok")
     }
 
     private fun showImageEssay(urlImage: String?){
         val activity = activity as Activity
         Picasso.get().load(urlImage).into(image_essay, object: com.squareup.picasso.Callback {
             override fun onError(e: Exception?) {
-                Commons.showAlert(activity, "Erro", "Erro ao abrir imagem, contate nossos administradores" )
+                DialogHelper.showAlert(activity, "Erro", "Erro ao abrir imagem, contate nossos administradores" )
             }
 
             override fun onSuccess() {
@@ -117,8 +117,8 @@ class EssayReviewFragment() : Fragment() {
         val activity = activity as Activity
 
         btn_correct.setOnClickListener {
-            Commons.showYesNoMessage(activity, getString(R.string.dialog_confirmation_correct_title), getString(R.string.dialog_confirmation_correct_content)) {
-                dialogProgres = Commons.createDialogProgress(activity, "", false)
+            DialogHelper.showYesNoMessage(activity, getString(R.string.dialog_confirmation_correct_title), getString(R.string.dialog_confirmation_correct_content)) {
+                dialogProgres = DialogHelper.createDialogProgress(activity, "", false)
                 setCorrectOwner()
             }
         }

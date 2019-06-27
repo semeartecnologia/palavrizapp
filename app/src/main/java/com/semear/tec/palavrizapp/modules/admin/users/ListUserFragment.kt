@@ -12,8 +12,8 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.User
-import com.semear.tec.palavrizapp.utils.Commons
 import com.semear.tec.palavrizapp.utils.adapters.ListUserAdapter
+import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 import com.semear.tec.palavrizapp.utils.interfaces.OnUserClicked
 import com.semear.tec.palavrizapp.utils.interfaces.OnUserSearch
 import kotlinx.android.synthetic.main.list_user_fragment.*
@@ -81,14 +81,18 @@ class ListUserFragment : Fragment(), OnUserClicked, OnUserSearch {
     }
 
     override fun onUserClicked(user: User) {
-        Commons.createEditUserAdminDialog(activity as Activity
+        DialogHelper.createEditUserAdminDialog(activity as Activity
                 ,
-                user
-        ) { newUser ->
+                user,
+         { newUser ->
             viewModel.setUserType(newUser.userId, newUser.userType){
-                Commons.showAlert(activity as Activity, getString(R.string.sucess_edit_user_title), getString(R.string.sucess_edit_user_text), "OK")
+                DialogHelper.showAlert(activity as Activity, getString(R.string.sucess_edit_user_title), getString(R.string.sucess_edit_user_text), "OK")
             }
-        }
+        },{
+            DialogHelper.showYesNoMessage(activity as Activity, getString(R.string.dialog_delete_user_title), getString(R.string.dialog_delete_user_text)){
+                viewModel.deleteUser(user.userId)
+            }
+        })
     }
 
     private fun setupRecyclerUsers() {

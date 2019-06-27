@@ -239,6 +239,11 @@ class RealtimeRepository(val context: Context) {
         mDatabaseReference.child(reference).child(themeId).removeValue()
     }
 
+    fun deleteUser(userId: String){
+        val reference = "users/"
+        mDatabaseReference.child(reference).child(userId).removeValue()
+    }
+
     fun getThemes(onCompletion: (ArrayList<Themes>) -> Unit){
         val reference = "themes/"
         var themeList = arrayListOf<Themes>()

@@ -22,4 +22,8 @@ class ListUserViewModel(application: Application) : AndroidViewModel(application
         userRepository.setUserType(userId, userType, onCompletion)
     }
 
+    fun deleteUser(userId: String){
+        userRepository.deleteUser(userId)
+    }
+
 }

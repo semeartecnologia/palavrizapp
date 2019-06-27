@@ -62,6 +62,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
+                <TextView
+                    android:id="@+id/tv_user_register_date"
+                    tools:text="Registrado em:"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
             </LinearLayout>
 
         </LinearLayout>

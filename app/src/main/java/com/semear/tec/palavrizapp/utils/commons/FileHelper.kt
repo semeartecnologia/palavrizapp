@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import com.semear.tec.palavrizapp.R
 import java.io.File
@@ -42,6 +43,20 @@ object FileHelper {
         }
 
     }
+
+    fun getRealPathFromURI(context: Context, contentUri: Uri): String? {
+        var res: String? = null
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = context.contentResolver.query(contentUri, proj, null, null, null)
+        if (cursor != null && cursor.moveToFirst()) {
+            val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            res = cursor.getString(column_index)
+            cursor.close()
+        }
+        return res
+    }
+
+
 
     fun downloadFile(context: Context, fileName: String, fileExtension: String, destinationDirectory: String, url: String): Long {
 
