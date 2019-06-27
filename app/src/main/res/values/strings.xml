@@ -150,6 +150,8 @@
     <string name="btn_save">Salvar</string>
     <string name="dialog_delete_user_title">Excluir usuário</string>
     <string name="dialog_delete_user_text">Você tem certeza que deseja excluir esse usuário?</string>
+    <string name="dialog_delete_theme_title">Excluir Tema</string>
+    <string name="dialog_delete_theme_text">Você tem certeza que deseja excluir esse tema?</string>
     <string name="register_date_label">Registrado em: %s</string>
 
 

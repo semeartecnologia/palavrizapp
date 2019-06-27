@@ -19,6 +19,7 @@ import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Themes
 import com.semear.tec.palavrizapp.utils.adapters.ThemesListAdapter
 import com.semear.tec.palavrizapp.utils.commons.DialogHelper
+import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Helper
 import com.semear.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import kotlinx.android.synthetic.main.list_themes_fragment.*
@@ -75,6 +76,8 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
 
                 },{
 
+        },{
+
         })
     }
 
@@ -83,9 +86,9 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
         intentPDF.type = "application/pdf"
         intentPDF.addCategory(Intent.CATEGORY_OPENABLE)
         if (isEdit){
-            startActivityForResult(Intent.createChooser(intentPDF, "Select Picture"), 232)
+            startActivityForResult(Intent.createChooser(intentPDF, "Select PDF"), 232)
         }else {
-            startActivityForResult(Intent.createChooser(intentPDF, "Select Picture"), 231)
+            startActivityForResult(Intent.createChooser(intentPDF, "Select PDF"), 231)
         }
     }
 
@@ -95,12 +98,12 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 231) {
                 if (data != null) {
-                    editedTheme?.urlPdf = Helper.getPathFromUri(activity as Activity, data.data!!)
+                    editedTheme?.urlPdf = FileHelper.getPathPdf(activity as Activity, data.data!!)
                     showCreateThemeDialog(editedTheme)
                 }
             }else if(requestCode == 232){
                 if (data != null) {
-                    editedTheme?.urlPdf = Helper.getPathFromUri(activity as Activity, data.data!!)
+                    editedTheme?.urlPdf = FileHelper.getPathPdf(activity as Activity, data.data!!)
                     showEditThemeDialog(editedTheme, true)
                 }
             }
@@ -189,6 +192,10 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
 
                 },{
 
+        }, {
+            DialogHelper.showYesNoMessage(activity as Activity, getString(R.string.dialog_delete_theme_title), getString(R.string.dialog_delete_theme_text)){
+                viewModel.deleteTheme(theme?.themeId ?: "")
+            }
         })
     }
 

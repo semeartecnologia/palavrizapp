@@ -53,7 +53,7 @@ object DialogHelper {
         return progressDialog!!
     }
 
-    fun createThemeDialog(activity: Activity, isEdit: Boolean? = false, theme: Themes? = null, onClickAttachment:  ((Themes?) -> Unit), createCallback: ((Themes) -> Unit), cancelCallback: (() -> Unit)): AlertDialog {
+    fun createThemeDialog(activity: Activity, isEdit: Boolean? = false, theme: Themes? = null, onClickAttachment:  ((Themes?) -> Unit), createCallback: ((Themes) -> Unit), cancelCallback: (() -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_create_theme, null, true)
 
         val titleEditText = view.findViewById<TextInputEditText>(R.id.tv_theme_title)
@@ -104,10 +104,18 @@ object DialogHelper {
 
         }
 
-        view.layout_pdf_filename.setOnClickListener {
-            theme?.urlPdf = ""
-            view.layout_pdf_filename.visibility = View.GONE
-            view.btn_attachment_pdf_theme.isEnabled = true
+        if (isEdit == false || isEdit == null) {
+            view.btn_delete_theme.visibility = View.GONE
+            view.layout_pdf_filename.setOnClickListener {
+                theme?.urlPdf = ""
+                view.layout_pdf_filename.visibility = View.GONE
+                view.btn_attachment_pdf_theme.isEnabled = true
+            }
+        }
+
+        view.btn_delete_theme.setOnClickListener {
+            createThemeDialog.dismiss()
+            onDeleteCallback.invoke()
         }
 
         view.btn_cancel_theme.setOnClickListener {

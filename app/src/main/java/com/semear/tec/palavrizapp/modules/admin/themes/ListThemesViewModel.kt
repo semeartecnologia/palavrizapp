@@ -31,4 +31,9 @@ class ListThemesViewModel(application: Application) : AndroidViewModel(applicati
     fun editTheme(newDocument: Boolean, themes: Themes,  onCompletion: () -> Unit){
         themesRepository.editTheme(newDocument, themes, onCompletion)
     }
+
+    fun deleteTheme(themeId: String){
+        if (themeId.isEmpty()) return
+        themesRepository.deleteTheme(themeId)
+    }
 }
