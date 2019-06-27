@@ -4,6 +4,8 @@ import android.app.Activity
 import android.os.Build
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -70,6 +72,19 @@ object DialogHelper {
                 view.btn_attachment_pdf_theme.isEnabled = false
             }
         }
+        titleEditText?.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                view.btn_create_theme.isEnabled = s?.isEmpty() != true
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                view.btn_create_theme.isEnabled = s?.isEmpty() != true
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+        })
 
         val createThemeDialog  = AlertDialog.Builder(activity)
                 .setView(view)
