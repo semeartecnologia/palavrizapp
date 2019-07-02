@@ -84,11 +84,11 @@ class UploadActivity : BaseActivity() {
         }
 
         btn_delete?.setOnClickListener {
-            DialogHelper.showYesNoMessage(this, "", getString(R.string.delete_video_dialog_text)){
+            DialogHelper.showYesNoMessage(this, "", getString(R.string.delete_video_dialog_text),{
                 if (video != null) {
                     uploadViewModel.deleteVideo(video!!)
                 }
-            }
+            },{})
         }
     }
 

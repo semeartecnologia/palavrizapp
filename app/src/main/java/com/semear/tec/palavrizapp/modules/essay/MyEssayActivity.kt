@@ -70,7 +70,7 @@ class MyEssayActivity : AppCompatActivity() {
     private fun startImageCheckActivity(bmp: Bitmap) {
         val it = Intent(this, EssayCheckActivity::class.java)
         it.putExtra(EXTRA_IMAGE_CHECK, bmp)
-        startActivity(it)
+        startActivityForResult(it, REQUEST_IMAGE_CHECK)
     }
 
 

@@ -235,6 +235,7 @@
     <string name="no">Não</string>
     <string name="status_label">Status:</string>
     <string name="download"><u>Baixar Imagem</u></string>
+    <string name="dialog_try_again_text">Deseja tentar novamente?</string>
 
 
 </resources>

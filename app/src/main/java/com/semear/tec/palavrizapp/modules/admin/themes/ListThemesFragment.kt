@@ -193,9 +193,9 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
                 },{
 
         }, {
-            DialogHelper.showYesNoMessage(activity as Activity, getString(R.string.dialog_delete_theme_title), getString(R.string.dialog_delete_theme_text)){
+            DialogHelper.showYesNoMessage(activity as Activity, getString(R.string.dialog_delete_theme_title), getString(R.string.dialog_delete_theme_text),{
                 viewModel.deleteTheme(theme?.themeId ?: "")
-            }
+            },{})
         })
     }
 

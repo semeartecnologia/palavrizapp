@@ -117,10 +117,10 @@ class EssayReviewFragment() : Fragment() {
         val activity = activity as Activity
 
         btn_correct.setOnClickListener {
-            DialogHelper.showYesNoMessage(activity, getString(R.string.dialog_confirmation_correct_title), getString(R.string.dialog_confirmation_correct_content)) {
+            DialogHelper.showYesNoMessage(activity, getString(R.string.dialog_confirmation_correct_title), getString(R.string.dialog_confirmation_correct_content), {
                 dialogProgres = DialogHelper.createDialogProgress(activity, "", false)
                 setCorrectOwner()
-            }
+            },{})
         }
     }
 

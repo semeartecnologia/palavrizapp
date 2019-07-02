@@ -89,9 +89,9 @@ class ListUserFragment : Fragment(), OnUserClicked, OnUserSearch {
                 DialogHelper.showAlert(activity as Activity, getString(R.string.sucess_edit_user_title), getString(R.string.sucess_edit_user_text), "OK")
             }
         },{
-            DialogHelper.showYesNoMessage(activity as Activity, getString(R.string.dialog_delete_user_title), getString(R.string.dialog_delete_user_text)){
+            DialogHelper.showYesNoMessage(activity as Activity, getString(R.string.dialog_delete_user_title), getString(R.string.dialog_delete_user_text),{
                 viewModel.deleteUser(user.userId)
-            }
+            },{})
         })
     }
 

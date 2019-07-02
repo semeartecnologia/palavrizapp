@@ -204,7 +204,7 @@ object DialogHelper {
         return createThemeDialog
     }
 
-    fun showYesNoMessage(activity: Activity, title: String, message: String, positiveCallback: (() -> Unit)){
+    fun showYesNoMessage(activity: Activity, title: String, message: String, positiveCallback: (() -> Unit), negativeCallback: (() -> Unit)? = null){
         val builder = AlertDialog.Builder(activity)
 
         builder.setTitle(title)
@@ -214,6 +214,7 @@ object DialogHelper {
             dialog.dismiss()
         }
         builder.setNeutralButton("NÃO"){dialog,_ ->
+            negativeCallback?.invoke()
             dialog.dismiss()
         }
 

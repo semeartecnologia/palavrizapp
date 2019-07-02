@@ -99,8 +99,15 @@ class EssayCheckActivity : AppCompatActivity() {
 
     private fun setupView(){
         btn_negative.setOnClickListener {
-            setResult(RESULT_NEGATIVE)
-            finish()
+            /*setResult(RESULT_NEGATIVE)
+            finish()*/
+            DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_try_again_text),{
+                setResult(RESULT_NEGATIVE)
+                finish()
+            },{
+                finish()
+            }
+            )
         }
 
         btn_positive.setOnClickListener {
