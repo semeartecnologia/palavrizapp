@@ -57,6 +57,7 @@
                     android:layout_height="1dp"/>
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/question_label"
                     android:text="@string/questions_label"
                     android:fontFamily="@font/titillium_light"
@@ -66,9 +67,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <include layout="@layout/item_add_question"/>
+                <!--<include layout="@layout/item_add_question"/>-->
 
                 <ProgressBar
+                    android:visibility="gone"
                     android:layout_marginTop="16dp"
                     android:id="@+id/progress_loading_comments"
                     android:layout_gravity="center_horizontal"

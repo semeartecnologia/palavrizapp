@@ -46,7 +46,7 @@ class ClassroomActivity : BaseActivity(), OnReplyClicked {
         setupExtras()
         setupViewObservers()
         setupCommentsRecycler()
-        loadComments()
+        //loadComments()
         getVideoUrlDownload()
     }
 
