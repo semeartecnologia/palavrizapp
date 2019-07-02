@@ -35,10 +35,14 @@ class PlanListAdapter(var listPlans: ArrayList<Plans>? = null) : RecyclerView.Ad
 
         holder.planName = plan.plan?.name
 
-        holder.view.check_plan.isChecked = plan.enabled
+        holder.view.check_plan.isChecked = plan.isChecked
 
         holder.view.check_plan.setOnCheckedChangeListener { buttonView, isChecked ->
-            planList[index].enabled = isChecked
+            planList[index].isChecked = isChecked
+        }
+
+        if (!plan.isEnabled){
+            holder.view.check_plan.isEnabled = false
         }
 
         if ( context != null) {
@@ -47,6 +51,13 @@ class PlanListAdapter(var listPlans: ArrayList<Plans>? = null) : RecyclerView.Ad
             }else{
                 holder.view.layout_plan_item?.setBackgroundColor(ContextCompat.getColor(context!!, R.color.check_box_item_2))
             }
+        }
+    }
+
+    fun disableAllCheckboxes(){
+        planList.forEach {
+            it.isEnabled = false
+            notifyDataSetChanged()
         }
     }
 

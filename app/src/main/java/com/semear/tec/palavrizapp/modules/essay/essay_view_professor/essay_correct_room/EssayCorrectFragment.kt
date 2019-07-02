@@ -6,13 +6,18 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +28,7 @@ import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_essay_correct.*
+import java.io.File
 
 
 class EssayCorrectFragment : Fragment() {
@@ -87,6 +93,7 @@ class EssayCorrectFragment : Fragment() {
         setupVideoAttachmentButton()
         setupSendFeedbackButton(essay)
         setupCancelButton(essay)
+        setupDownloadImageLink(essay.url)
         if (essay.isReadMode == true){
             setupReadMode(essay)
         }
@@ -102,6 +109,30 @@ class EssayCorrectFragment : Fragment() {
         btn_cancel?.setOnClickListener {
             activity?.finish()
         }
+    }
+
+    private fun setupDownloadImageLink(filename: String){
+        tv_download_image?.setOnClickListener {
+            viewmodel?.downloadEssayImage(filename){
+                val fhirPath = Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                val file = File(fhirPath, "$it.png")
+                if(Build.VERSION.SDK_INT>=24) {
+                    val uri = FileProvider.getUriForFile(context ?: return@downloadEssayImage, "com.semear.tec.palavrizapp.provider", file)
+                    showPhoto(uri)
+                }else{
+                    showPhoto(Uri.fromFile(file))
+                }
+            }
+        }
+    }
+
+    private fun showPhoto(photoUri: Uri) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.setDataAndType(photoUri, "image/*")
+        startActivity(intent)
     }
 
     private fun setupTitleAndTheme(actualEssay: Essay){
@@ -140,19 +171,19 @@ class EssayCorrectFragment : Fragment() {
         }
     }
 
-        private fun requestWriteStoragePermission() {
-            if (ContextCompat.checkSelfPermission(activity as Activity,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+    private fun requestWriteStoragePermission() {
+        if (ContextCompat.checkSelfPermission(activity as Activity,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(activity as Activity,
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        REQUEST_WRITE_STORAGE)
+            ActivityCompat.requestPermissions(activity as Activity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQUEST_WRITE_STORAGE)
 
-            } else {
-                val i = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-                startActivityForResult(i, SELECT_VIDEO)
-            }
+        } else {
+            val i = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(i, SELECT_VIDEO)
         }
+    }
 
 
     private fun showImageEssay(urlImage: String?){

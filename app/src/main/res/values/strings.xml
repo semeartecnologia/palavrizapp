@@ -223,8 +223,7 @@
     <string name="upload_sucess_text">O vídeo estará disponível em breve</string>
     <string name="upload_started">Seu vídeo está sendo carregado em segundo plano</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="cancel">Cancelar</string>
     <string name="title_label">Título:</string>
     <string name="theme_label">Tema:</string>
@@ -235,6 +234,7 @@
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="status_label">Status:</string>
+    <string name="download"><u>Baixar Imagem</u></string>
 
 
 </resources>

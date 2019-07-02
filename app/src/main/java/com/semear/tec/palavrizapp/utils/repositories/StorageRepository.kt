@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Environment
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.google.android.gms.tasks.Continuation
@@ -221,6 +222,21 @@ class StorageRepository(val context: Context) {
             onCompletion("")
         }
 
+    }
+
+    fun downloadEssay(filename: String, onCompletion: (Boolean) -> Unit){
+        val fhirPath = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val file = File(fhirPath, "$filename.png")
+        file.parentFile.mkdirs()
+        file.createNewFile()
+
+        val refThumb = essaysParentRef.child(filename)
+        refThumb.getFile(file).addOnSuccessListener {
+            onCompletion(true)
+        }.addOnFailureListener {
+            onCompletion(false)
+        }
     }
 
     fun uploadEssay(essay: Essay, userId: String, bmp: Bitmap, callback: EssayUploadCallback) {

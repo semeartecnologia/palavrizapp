@@ -218,19 +218,26 @@ class UploadActivity : BaseActivity() {
 
         btn_upload.setOnClickListener {
 
-
                 if (checkFields()) {
                     val title = video_title.text.toString()
                     val description = video_description.text.toString()
                     val category = arraySpinner[category_spinner.selectedItemPosition]
                     var listOfPlans = ""
                     adapter.planList.forEach {
-                        if (it.enabled) {
+                        if (it.isChecked) {
                             if (it.plan != null) {
                                 listOfPlans += it.plan!!.name + "/"
                             }
                         }
                     }
+
+                    if (title.isBlank() || category_spinner.selectedItemPosition == 0)
+                        return@setOnClickListener
+
+                    btn_upload.isEnabled = false
+                    video_title?.isEnabled = false
+                    video_description?.isEnabled = false
+                    adapter.disableAllCheckboxes()
 
                     if (isEdit){
                         val video = Video(0, listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, category, videoUrl, video?.videoThumb)
@@ -321,8 +328,6 @@ class UploadActivity : BaseActivity() {
     }
 
     private fun getThumbnailAndUpload(video: Video){
-        val duration = preview_video.duration
-        preview_video.seekTo(duration/2) //seek to half of the video
         var file = File(videoUrl)
         val videoThumb = ThumbnailUtils.createVideoThumbnail(file.absolutePath,
                 MediaStore.Images.Thumbnails.MINI_KIND)

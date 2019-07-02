@@ -45,6 +45,14 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
         }
     }
 
+    fun downloadEssayImage(filename: String?, onCompletion: ((String) -> Unit)){
+        essayRepository.downloadEssayImage(filename ?: "") {
+            if (it) {
+                onCompletion.invoke(filename ?: "")
+            }
+        }
+    }
+
     fun onSendEssayFeedback(actualEssay: Essay, feedbackText: String, urlVideo: String = ""){
         actualEssay.feedback = Feedback(sessionManager.userLogged, urlVideo, feedbackText)
         essayRepository.setFeedbackOwnerOnEssay(actualEssay, sessionManager.userLogged, StatusEssay.FEEDBACK_READY) {

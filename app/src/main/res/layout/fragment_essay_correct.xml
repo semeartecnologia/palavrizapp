@@ -19,6 +19,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_download_image"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorPrimaryText"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/download"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_essay" />
+
     <LinearLayout
         android:id="@+id/theme_essay_container"
         android:layout_width="wrap_content"
@@ -27,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/title_essay_container"
-        app:layout_constraintTop_toBottomOf="@+id/iv_essay">
+        app:layout_constraintTop_toBottomOf="@+id/tv_download_image">
 
         <TextView
             android:id="@+id/tv_theme_essay_label"

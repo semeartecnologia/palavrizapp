@@ -123,11 +123,12 @@ class EssayCheckActivity : AppCompatActivity() {
 
         })
         btn_send_essay.setOnClickListener {
+            btn_send_essay.isEnabled = false
             layout_sendind_progress.visibility = View.VISIBLE
+            et_title_essay?.visibility = View.GONE
             val title = et_title_essay?.text.toString()
             val user = sessionManager?.userLogged
 
-            //TODO parece meio gambiarra, dps ver isso direito
             val themeId = themeHash[theme_spinner?.selectedItem.toString().trim()]
             val essay = Essay(title, theme_spinner?.selectedItem.toString(), themeId!!, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
 

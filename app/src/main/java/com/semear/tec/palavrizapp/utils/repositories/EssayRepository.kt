@@ -29,6 +29,10 @@ class EssayRepository(val context: Context) {
         storageRepository.getEssay(filename, onCompletion)
     }
 
+    fun downloadEssayImage(filename: String, onCompletion: ((Boolean) -> Unit)){
+        storageRepository.downloadEssay(filename, onCompletion)
+    }
+
     fun getEssayList(onCompletion: ((ArrayList<Essay>) -> Unit)){
         realtimeRepository.getEssayList(onCompletion)
     }

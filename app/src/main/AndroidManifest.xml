@@ -21,7 +21,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.com.semear.tec.palavrizapp"
+            android:authorities="com.semear.tec.palavrizapp.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -30,7 +30,7 @@
         </provider>
 
 
-        <activity android:name=".modules.admin.AdminActivity"></activity>
+        <activity android:name=".modules.admin.AdminActivity" />
         <activity
             android:name=".modules.classroom.input_comment.AddCommentActivity"
             android:launchMode="singleTask"
