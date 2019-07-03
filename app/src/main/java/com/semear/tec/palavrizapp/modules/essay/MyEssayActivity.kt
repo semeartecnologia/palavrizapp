@@ -76,8 +76,19 @@ class MyEssayActivity : AppCompatActivity() {
                 DialogHelper.createThemePickerDialog(this,it,
                         {
                             //theme picked
-                            themeSelected = it
-                            checkCameraPermission()
+                            val alreadySent = adapter.essayList.any { essay -> essay.themeId == it.themeId }
+
+                            if (alreadySent){
+                                DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
+                                    themeSelected = it
+                                    checkCameraPermission()
+                                }, {
+
+                                })
+                            }else{
+                                themeSelected = it
+                                checkCameraPermission()
+                            }
                         },{ url ->
                             //pdf clicked
                     viewmodel?.downloadPdf(url){filename ->

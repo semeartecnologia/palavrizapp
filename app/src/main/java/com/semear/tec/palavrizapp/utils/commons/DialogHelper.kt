@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.dialog_create_theme.view.*
 import kotlinx.android.synthetic.main.dialog_edit_user.view.*
+import kotlinx.android.synthetic.main.dialog_theme_picker.view.*
 
 object DialogHelper {
 
@@ -166,9 +167,15 @@ object DialogHelper {
             }
 
         })
+
+        view.iv_close_dialog.setOnClickListener {
+            themePickerDialog.dismiss()
+        }
         adapter.themesList = listThemes
         rvThemePicker.adapter = adapter
-        themePickerDialog.show()
+        if (!activity.isFinishing) {
+            themePickerDialog.show()
+        }
         return themePickerDialog
     }
 

@@ -24,6 +24,17 @@
         app:layout_constraintRight_toRightOf="parent"
         android:text="@string/choose_theme_label" />
 
+    <ImageView
+        android:id="@+id/iv_close_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_close_yellow_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_theme_picker"
         android:layout_width="0dp"
