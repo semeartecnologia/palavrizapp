@@ -8,8 +8,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.Fragment
+import android.support.v4.content.FileProvider
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -23,6 +27,7 @@ import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Helper
 import com.semear.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import kotlinx.android.synthetic.main.list_themes_fragment.*
+import java.io.File
 
 
 class ListThemesFragment : Fragment(), OnThemeClicked {
@@ -120,7 +125,6 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
 
             when (intent?.action) {
                 DownloadManager.ACTION_DOWNLOAD_COMPLETE -> {
-                    val a ="acabou o dauload"
                 }
             }
         }
@@ -157,8 +161,10 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
     private fun registerObservers() {
         viewModel.filePathLiveData.observe(this, Observer {
             if (!it.isNullOrBlank()){
-                val a = ""
-                // Commons.openPdf(activity as Activity, File(context?.filesDir,it))
+                val fhirPath = Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                val file = File(fhirPath, "$it.pdf")
+                FileHelper.openPdf(context ?: return@Observer, file)
             }
         })
         viewModel.listThemes.observe(this, Observer {

@@ -146,7 +146,7 @@ object FileHelper {
 
         //Use file provider on versions > 24
         if(Build.VERSION.SDK_INT>=24){
-            val uri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".com.semear.tec.palavrizapp.provider", file)
+            val uri = FileProvider.getUriForFile(context, "com.semear.tec.palavrizapp.provider", file)
             intent.setDataAndType(uri,"application/pdf")
         }else {
             intent.setDataAndType(Uri.fromFile(file), "application/pdf")

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -15,19 +16,27 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.Themes
 import com.semear.tec.palavrizapp.modules.essay.image_check.EssayCheckActivity
 import com.semear.tec.palavrizapp.utils.adapters.MyEssayAdapter
+import com.semear.tec.palavrizapp.utils.commons.DialogHelper
+import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY_THEME
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY_THEME_ID
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_IMAGE_CHECK
 import com.semear.tec.palavrizapp.utils.repositories.EssayRepository
 import kotlinx.android.synthetic.main.activity_my_essay.*
 import kotlinx.android.synthetic.main.layout_no_essay.*
+import java.io.File
 
 class MyEssayActivity : AppCompatActivity() {
 
     private var viewmodel: MyEssayViewModel? = null
     private val adapter = MyEssayAdapter()
     private var essayRepository: EssayRepository? = null
+
+    private var themeSelected: Themes? = null
 
     private val REQUEST_CAMERA = 333
     private val REQUEST_IMAGE_CAPTURE = 345
@@ -63,13 +72,34 @@ class MyEssayActivity : AppCompatActivity() {
             checkCameraPermission()
         }
         btn_send_essay.setOnClickListener{
-            checkCameraPermission()
+            viewmodel?.fetchThemes {
+                DialogHelper.createThemePickerDialog(this,it,
+                        {
+                            //theme picked
+                            themeSelected = it
+                            checkCameraPermission()
+                        },{ url ->
+                            //pdf clicked
+                    viewmodel?.downloadPdf(url){filename ->
+                        val fhirPath = Environment
+                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                        val file = File(fhirPath, "$filename.pdf")
+                        FileHelper.openPdf(this, file)
+
+                    }
+
+                })
+            }
+            //DialogHelper.createThemePickerDialog(this,)
+            //
         }
     }
 
     private fun startImageCheckActivity(bmp: Bitmap) {
         val it = Intent(this, EssayCheckActivity::class.java)
         it.putExtra(EXTRA_IMAGE_CHECK, bmp)
+        it.putExtra(EXTRA_ESSAY_THEME_ID, themeSelected?.themeId)
+        it.putExtra(EXTRA_ESSAY_THEME, themeSelected?.themeName)
         startActivityForResult(it, REQUEST_IMAGE_CHECK)
     }
 

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.os.Build
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,6 +17,8 @@ import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.Themes
 import com.semear.tec.palavrizapp.models.User
 import com.semear.tec.palavrizapp.models.UserType
+import com.semear.tec.palavrizapp.utils.adapters.ThemesListAdapter
+import com.semear.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.dialog_create_theme.view.*
@@ -140,6 +144,34 @@ object DialogHelper {
         createThemeDialog.show()
         return createThemeDialog
     }
+
+    fun createThemePickerDialog(activity: Activity, listThemes: ArrayList<Themes>, onThemePicked: ((Themes)-> Unit), onPdfClicked: ((String)-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_theme_picker, null, true)
+
+        val rvThemePicker = view.findViewById<RecyclerView>(R.id.rv_theme_picker)
+        rvThemePicker.layoutManager = LinearLayoutManager(activity)
+        val themePickerDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .create()
+
+        val adapter = ThemesListAdapter(object: OnThemeClicked{
+            override fun onThemeClicked(theme: Themes) {
+                themePickerDialog.dismiss()
+                onThemePicked.invoke(theme)
+            }
+
+            override fun onDownloadPdfClicked(uri: String) {
+                onPdfClicked.invoke(uri)
+            }
+
+        })
+        adapter.themesList = listThemes
+        rvThemePicker.adapter = adapter
+        themePickerDialog.show()
+        return themePickerDialog
+    }
+
 
     fun createEditUserAdminDialog(activity: Activity, user: User, onSaveClicked:  ((User) -> Unit), onDeleteClicked: (() -> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_edit_user, null, true)

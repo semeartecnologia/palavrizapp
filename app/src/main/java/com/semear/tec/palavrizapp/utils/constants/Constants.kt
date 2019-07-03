@@ -11,8 +11,6 @@ object Constants {
     const val  SESSION_USER = "session_user"
 
     //Database Local
-    const val   DB_VERSION = 2
-    const val DB_NAME = "palavrizapp_db"
     const val TABLE_THEMES = "themes"
     const val TABLE_GROUPS = "groups"
 
@@ -24,18 +22,11 @@ object Constants {
     const val EXTRA_VIDEO_KEY = "key_video"
     const val EXTRA_VIDEO_COMMENT = "key_comments"
 
-    //Dialog
-    const val POSITIVE = 1
-    const val NEGATIVE = 2
-    const val NEUTRAL = 0
 
     //Video Upload
     const val EXTRA_VIDEO_PATH = "video_path"
     const val EXTRA_IS_EDIT = "is_edit"
     const val EXTRA_VIDEO = "extra_video"
-    const val EXTRA_VIDEO_DESCRIPTION = "extra_video_description"
-
-    const val NOTIFICATION_ID = 1
     const val EXTRA_FILE_URI = "extra_file_uri"
     const val EXTRA_FILE_TITLE= "extra_file_title"
     const val EXTRA_FILE_DESCRIPTION= "extra_file_description"
@@ -49,9 +40,10 @@ object Constants {
 
     //Essay
     const val EXTRA_IMAGE_CHECK = "extra_image_check"
-    const val RESULT_NEGATIVE = 404;
+    const val RESULT_NEGATIVE = 404
     const val EXTRA_ESSAY = "extra_essay"
     const val EXTRA_ESSAY_READ_MODE = "extra_essay_read"
-    const val EXTRA_ESSAY_FEEDBACK = "extra_essay_feedback"
     const val EXTRA_IMAGE_FULL_SCREEN = "extra_image_full"
+    const val EXTRA_ESSAY_THEME = "extra_essay_theme"
+    const val EXTRA_ESSAY_THEME_ID = "extra_essay_theme_id"
 }

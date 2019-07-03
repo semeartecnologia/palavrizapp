@@ -118,7 +118,6 @@ class StorageRepository(val context: Context) {
             if (task.isSuccessful) {
                 ref.downloadUrl.addOnSuccessListener {
                     theme.urlPdf = it.path ?: ""
-                    Log.d("teste", "testao = ${theme.urlPdf}")
                     onCompletion(theme)
                 }
             }else{
@@ -172,17 +171,19 @@ class StorageRepository(val context: Context) {
 
     fun getPdf(path: String, onCompletion: ((String) -> Unit)){
         val filename = path.split("/").lastOrNull() ?: ""
-        val refThumb = essaysParentRef.child("themes/").child(filename)
-        refThumb.downloadUrl.addOnSuccessListener {
 
-            val splitedFilename = filename.split(".")
-            if (splitedFilename.size > 1) {
-                FileHelper.downloadFile(context, splitedFilename[0], splitedFilename[1], "/Palavrizapp/Temas", it.toString())
-            }
+        val pdfPath = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val file = File(pdfPath, "$filename.pdf")
+        file.parentFile.mkdirs()
+        file.createNewFile()
+
+        val refThumb = essaysParentRef.child("themes/").child(filename)
+        refThumb.getFile(file).addOnSuccessListener {
+            onCompletion(filename)
         }.addOnFailureListener {
             onCompletion("")
         }
-
     }
 
     private fun uploadThumb(video: Video) {

@@ -1,14 +1,9 @@
 package com.semear.tec.palavrizapp.modules.upload
 
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
 import android.util.Log
-import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.models.PlanSwitch
-import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_CATEGORY
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_DESCRIPTION
@@ -16,7 +11,6 @@ import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_PLANS
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_THUMBNAIL
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_TITLE
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_URI
-import com.semear.tec.palavrizapp.utils.constants.Constants.NOTIFICATION_ID
 import com.semear.tec.palavrizapp.utils.repositories.RealtimeRepository
 import com.semear.tec.palavrizapp.utils.repositories.StorageRepository
 

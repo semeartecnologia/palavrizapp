@@ -29,7 +29,8 @@ class EssayCheckActivity : AppCompatActivity() {
     var sessionManager: SessionManager? = null
     var themesRepository: ThemesRepository? = null
 
-    private var themeHash = hashMapOf<String,String>()
+    var themeId: String? = ""
+    var themeName: String? = ""
 
     private val RESULT_NEGATIVE = 404
 
@@ -51,29 +52,12 @@ class EssayCheckActivity : AppCompatActivity() {
     fun setupExtras(){
         if (intent != null) {
             bmpImageEssay = intent?.getParcelableExtra(Constants.EXTRA_IMAGE_CHECK)
+            themeId = intent?.getStringExtra(Constants.EXTRA_ESSAY_THEME_ID)
+            themeName = intent?.getStringExtra(Constants.EXTRA_ESSAY_THEME)
             iv_essay_preview.setImageBitmap(bmpImageEssay)
         }
     }
 
-    private fun loadThemes(){
-        themeHash.clear()
-        themesRepository?.getTheme {
-            it.forEach { theme ->
-                themeHash[theme.themeName] = theme.themeId
-            }
-            showLoadingProgress(false)
-            showFieldsDialogInserTitleAndTheme(true)
-
-            val listThemes = ArrayList<String>(themeHash.keys)
-            val adapter = ArrayAdapter<String>(this,
-                    android.R.layout.simple_spinner_item, listThemes)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            theme_spinner.adapter = adapter
-            adapter.notifyDataSetChanged()
-        }
-
-
-    }
 
     private fun showLoadingProgress(show: Boolean){
         if (show){
@@ -86,12 +70,10 @@ class EssayCheckActivity : AppCompatActivity() {
     private fun showFieldsDialogInserTitleAndTheme(show: Boolean){
         if (show){
             dialog_title_theme_label?.visibility = View.VISIBLE
-            theme_spinner?.visibility = View.VISIBLE
             et_title_essay?.visibility = View.VISIBLE
             btn_send_essay?.visibility = View.VISIBLE
         }else{
             dialog_title_theme_label?.visibility = View.GONE
-            theme_spinner?.visibility = View.GONE
             et_title_essay?.visibility = View.GONE
             btn_send_essay?.visibility = View.GONE
         }
@@ -113,7 +95,6 @@ class EssayCheckActivity : AppCompatActivity() {
         btn_positive.setOnClickListener {
             dialog_is_readable.visibility = View.GONE
             dialog_title_essay.visibility = View.VISIBLE
-            loadThemes()
             showLoadingProgress(true)
             showFieldsDialogInserTitleAndTheme(false)
         }
@@ -136,8 +117,8 @@ class EssayCheckActivity : AppCompatActivity() {
             val title = et_title_essay?.text.toString()
             val user = sessionManager?.userLogged
 
-            val themeId = themeHash[theme_spinner?.selectedItem.toString().trim()]
-            val essay = Essay(title, theme_spinner?.selectedItem.toString(), themeId!!, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
+            /*val themeId = themeHash[theme_spinner?.selectedItem.toString().trim()]*/
+            val essay = Essay(title, themeName ?: return@setOnClickListener, themeId ?: return@setOnClickListener, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
 
             essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
 
