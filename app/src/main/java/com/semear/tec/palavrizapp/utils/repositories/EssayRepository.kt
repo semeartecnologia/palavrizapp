@@ -60,4 +60,8 @@ class EssayRepository(val context: Context) {
     fun uploadVideoFeedback(urlVideo: String, onCompletion: (String?) -> Unit){
         storageRepository.uploadVideoFeedback(urlVideo, onCompletion)
     }
+
+    fun downloadVideoFeedback(urlVideo: String, onCompletion: (String?) -> Unit){
+        storageRepository.downloadVideoFeedback(urlVideo, onCompletion)
+    }
 }

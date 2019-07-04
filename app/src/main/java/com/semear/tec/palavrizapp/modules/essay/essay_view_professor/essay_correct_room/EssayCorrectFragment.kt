@@ -25,6 +25,7 @@ import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Essay
 import com.semear.tec.palavrizapp.modules.essay.photo_zoom.ImageZoomActivity
 import com.semear.tec.palavrizapp.utils.commons.DialogHelper
+import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_essay_correct.*
@@ -35,6 +36,9 @@ class EssayCorrectFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     private var viewmodel: EssayCorrectViewModel? = null
+    private var isReadMode: Boolean? = null
+
+    private var videoUrl: String? = null
 
     private val SELECT_VIDEO = 300
     private val REQUEST_READ_STORAGE = 400
@@ -64,6 +68,11 @@ class EssayCorrectFragment : Fragment() {
                 setupView(it)
             }
         })
+        viewmodel?.showProgress?.observe(this, Observer {
+            if (it == true) {
+                showProgress(true)
+            }
+        })
         viewmodel?.essayImageUrlLiveData?.observe(this, Observer {
             showImageEssay(it)
         })
@@ -78,13 +87,71 @@ class EssayCorrectFragment : Fragment() {
         })
     }
 
+    private fun hideProgress(){
+        layout_filename?.visibility = View.GONE
+        progress_download_video_feedback?.visibility = View.GONE
+    }
+
+    private fun showProgress(blockButtons: Boolean){
+        layout_filename?.visibility = View.VISIBLE
+        progress_download_video_feedback?.visibility = View.VISIBLE
+        tv_video_filename?.visibility = View.GONE
+        open_it?.visibility = View.GONE
+        delete_it?.visibility = View.GONE
+        download_it?.visibility = View.GONE
+
+        btn_send_feedback?.isEnabled = !blockButtons
+        btn_cancel?.isEnabled = !blockButtons
+        et_feedback_text?.isEnabled = !blockButtons
+        btn_attachment_video_feedback?.isEnabled = !blockButtons
+    }
+
     private fun setupReadMode(essay: Essay){
         btn_send_feedback?.visibility = View.GONE
+        tv_download_image?.visibility = View.GONE
         btn_cancel?.text = "Voltar"
         btn_attachment_video_feedback?.visibility = View.GONE
         et_feedback_text?.visibility = View.INVISIBLE
         tv_feedback_text?.visibility = View.VISIBLE
         tv_feedback_text?.text = essay.feedback?.text
+
+        if (essay.feedback?.urlVideo != null){
+            val url = essay.feedback?.urlVideo
+            btn_watch_video?.visibility = View.VISIBLE
+
+            val urlSplit = url?.split("/")
+            val filename = urlSplit?.get(urlSplit.size-1)
+
+            btn_watch_video?.setOnClickListener {
+                val path = Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                val file = File(path, "Palavrizapp/$filename.mp4")
+
+                if (file.exists()){
+                    if(Build.VERSION.SDK_INT>=24) {
+                        val uri = FileProvider.getUriForFile(context ?: return@setOnClickListener, "com.semear.tec.palavrizapp.provider", file)
+                        showVideo(uri)
+                    }else{
+                        showVideo(Uri.fromFile(file))
+                    }
+                }else {
+                    showProgress(false)
+                    viewmodel?.downloadVideoFeedback(url!!) {
+                        hideProgress()
+                        val path = Environment
+                                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                        val file = File(path, "Palavrizapp/$it.mp4")
+                        if (Build.VERSION.SDK_INT >= 24) {
+                            val uri = FileProvider.getUriForFile(context
+                                    ?: return@downloadVideoFeedback, "com.semear.tec.palavrizapp.provider", file)
+                            showVideo(uri)
+                        } else {
+                            showVideo(Uri.fromFile(file))
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupView(essay: Essay){
@@ -95,13 +162,14 @@ class EssayCorrectFragment : Fragment() {
         setupCancelButton(essay)
         setupDownloadImageLink(essay.url)
         if (essay.isReadMode == true){
+            isReadMode = true
             setupReadMode(essay)
         }
     }
 
     private fun setupSendFeedbackButton(essay: Essay) {
         btn_send_feedback?.setOnClickListener {
-            viewmodel?.onSendEssayFeedback(essay,  et_feedback_text?.text.toString(), "")
+            viewmodel?.onSendEssayFeedback(essay,  et_feedback_text?.text.toString(), videoUrl ?: "")
         }
     }
 
@@ -125,6 +193,14 @@ class EssayCorrectFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showVideo(videoUri: Uri){
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.setDataAndType(videoUri, "video/*")
+        startActivity(intent)
     }
 
     private fun showPhoto(photoUri: Uri) {
@@ -185,6 +261,52 @@ class EssayCorrectFragment : Fragment() {
         }
     }
 
+    private fun setupFilename(filename: String, uploaded: Boolean){
+
+        layout_filename?.visibility = View.VISIBLE
+        tv_video_filename?.text = filename
+        tv_video_filename?.visibility = View.VISIBLE
+        btn_attachment_video_feedback?.isEnabled = false
+        checkFileAlreadyDownloaded(filename, uploaded)
+
+    }
+
+    private fun deleteVideo(){
+        layout_filename?.visibility = View.GONE
+        tv_video_filename?.visibility = View.GONE
+        open_it?.visibility = View.GONE
+        delete_it?.visibility = View.GONE
+        download_it?.visibility = View.GONE
+        btn_attachment_video_feedback?.isEnabled = true
+        videoUrl = ""
+    }
+
+    private fun checkFileAlreadyDownloaded(filename: String, uploaded: Boolean){
+        val path = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val file = File(path, "Palavrizapp/$filename")
+
+        if (isReadMode != true){
+            delete_it?.visibility = View.VISIBLE
+
+            delete_it?.setOnClickListener {
+                deleteVideo()
+            }
+        }
+
+        if (uploaded) {
+            if (file.exists()) {
+                open_it?.visibility = View.VISIBLE
+                download_it?.visibility = View.GONE
+            } else {
+                open_it?.visibility = View.GONE
+                download_it?.visibility = View.VISIBLE
+            }
+        }
+    }
+
+
+
 
     private fun showImageEssay(urlImage: String?){
         val activity = activity as Activity
@@ -216,6 +338,17 @@ class EssayCorrectFragment : Fragment() {
             listener = context
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == SELECT_VIDEO){
+            videoUrl = FileHelper.getPathPdf(activity as Activity, data?.data ?: return)
+            val splittedPath = videoUrl?.split("/")
+            if (splittedPath != null) {
+                setupFilename(splittedPath[splittedPath.size-1], false)
+            }
         }
     }
 

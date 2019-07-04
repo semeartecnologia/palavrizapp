@@ -24,6 +24,7 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
     var actualEssay = MutableLiveData<Essay>()
     var userPermitionAccessRoom = MutableLiveData<Boolean>()
     var essayImageUrlLiveData = MutableLiveData<String>()
+    var showProgress = MutableLiveData<Boolean>()
     var viewEvent = MutableLiveData<ViewEvent>()
 
 
@@ -53,12 +54,26 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
         }
     }
 
+    fun downloadVideoFeedback(urlVideo: String, onCompletion: (String?) -> Unit){
+        essayRepository.downloadVideoFeedback(urlVideo, onCompletion)
+    }
+
     fun onSendEssayFeedback(actualEssay: Essay, feedbackText: String, urlVideo: String = ""){
-        actualEssay.feedback = Feedback(sessionManager.userLogged, urlVideo, feedbackText)
-        essayRepository.setFeedbackOwnerOnEssay(actualEssay, sessionManager.userLogged, StatusEssay.FEEDBACK_READY) {
-            //sucesso!! agora vc ta corrigindo
-            viewEvent.postValue(ViewEvent.FeedBackSent(true))
+        showProgress.postValue(true)
+        if (urlVideo.isNotBlank()){
+            essayRepository.uploadVideoFeedback(urlVideo){
+                actualEssay.feedback = Feedback(sessionManager.userLogged, it, feedbackText)
+                essayRepository.setFeedbackOwnerOnEssay(actualEssay, sessionManager.userLogged, StatusEssay.FEEDBACK_READY) {
+                    viewEvent.postValue(ViewEvent.FeedBackSent(true))
+                }
+            }
+        }else{
+            actualEssay.feedback = Feedback(sessionManager.userLogged, urlVideo, feedbackText)
+            essayRepository.setFeedbackOwnerOnEssay(actualEssay, sessionManager.userLogged, StatusEssay.FEEDBACK_READY) {
+                viewEvent.postValue(ViewEvent.FeedBackSent(true))
+            }
         }
+
     }
 
     private fun checkOwnerEssay(essayId: String){

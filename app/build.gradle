@@ -24,7 +24,7 @@ android {
         applicationId "com.semear.tec.palavrizapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 18
+        versionCode 19
         versionName "v1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -138,7 +138,7 @@ dependencies {
     implementation 'com.ablanco.zoomy:zoomy:1.1.0'
 
     //Anko
-    implementation "org.jetbrains.anko:anko-common:0.9"
+    implementation "org.jetbrains.anko:anko:0.10.8"
 }
 
 apply plugin: 'com.google.gms.google-services'

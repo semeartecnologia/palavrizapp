@@ -1,34 +1,35 @@
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.semear.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:padding="16dp"
-    android:background="@color/colorPrimary">
+    tools:context="com.semear.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity">
 
     <ImageView
         android:id="@+id/iv_essay"
         android:layout_width="128dp"
         android:layout_height="128dp"
-        android:src="@drawable/ic_videocam_black"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/theme_essay_container"
+        android:src="@drawable/ic_videocam_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_download_image"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:textColor="@color/colorPrimaryText"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:text="@string/download"
+        android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_essay" />
@@ -38,19 +39,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/title_essay_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_download_image">
 
         <TextView
             android:id="@+id/tv_theme_essay_label"
-            android:textColor="@color/colorPrimaryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginEnd="8dp"
             tools:text="@string/theme_label" />
 
         <TextView
@@ -58,11 +60,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryText"
-            tools:text="Tema da Redacao"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_essay" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_essay"
+            tools:text="Tema da Redacao" />
 
     </LinearLayout>
 
@@ -70,27 +72,27 @@
         android:id="@+id/title_essay_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/theme_essay_container">
 
         <TextView
             android:id="@+id/tv_title_essay_label"
-            android:textColor="@color/colorPrimaryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginEnd="8dp"
             tools:text="@string/title_label" />
 
         <TextView
             android:id="@+id/tv_title_essay"
-            android:textColor="@color/colorPrimaryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="20sp"
             tools:text="Titulo da Redacao" />
 
@@ -100,95 +102,178 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:background="@drawable/background_login_shape"
+        android:elevation="8dp"
         android:orientation="vertical"
         android:padding="16dp"
-        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_essay_container">
 
         <Button
             android:id="@+id/btn_attachment_video_feedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
+            android:background="@drawable/roudend_primary_button"
             android:drawableStart="@drawable/ic_videocam_white"
             android:drawablePadding="8dp"
-            android:background="@drawable/primary_button"
             android:fontFamily="@font/titillium_regular"
-            android:textColor="@color/colorPrimaryText"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:text="@string/upload_video_feedback"
+            android:textColor="@color/colorPrimaryText"
+            app:layout_constraintBottom_toTopOf="@+id/layout_filename"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/et_feedback_text" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_watch_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@drawable/roudend_primary_button"
+            android:drawableStart="@drawable/ic_videocam_white"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/titillium_regular"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/open_video_feedback"
+            android:textColor="@color/colorPrimaryText"
+            app:layout_constraintBottom_toTopOf="@+id/layout_filename"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layout_filename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_attachment_video_feedback">
+
+            <TextView
+                android:id="@+id/tv_video_filename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="150sp"
+                android:maxLines="1"
+                tools:text="Nome do Arquivo.mp4" />
+
+            <ProgressBar
+                android:id="@+id/progress_download_video_feedback"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/open_it"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/open_it"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/download_it"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/download_it"
+                android:textColor="@color/facebook_blue"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/delete_it"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/delete_it"
+                android:textColor="@color/google_red"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_feedback_text"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="164dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background"
             android:ems="10"
             android:gravity="top"
             android:padding="8dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/edit_text_background"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/button_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_attachment_video_feedback"
-            app:layout_constraintBottom_toTopOf="@id/button_container" />
+            app:layout_constraintTop_toBottomOf="@id/btn_attachment_video_feedback" />
 
         <EditText
             android:id="@+id/et_feedback_text"
             android:layout_width="match_parent"
             android:layout_height="164dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background"
             android:ems="10"
             android:gravity="top"
-            android:padding="8dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
             android:hint="@string/tv_hint_feedback"
             android:inputType="textMultiLine"
-            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
+            app:layout_constraintBottom_toTopOf="@id/button_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_attachment_video_feedback"
-            app:layout_constraintBottom_toTopOf="@id/button_container" />
+            app:layout_constraintTop_toBottomOf="@id/layout_filename" />
 
         <LinearLayout
             android:id="@+id/button_container"
-            android:layout_marginTop="8dp"
-            android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_weight="1"
                 android:background="@drawable/secondary_button"
                 android:fontFamily="@font/titillium_regular"
                 android:text="@string/cancel"
                 android:textColor="@color/colorPrimary" />
 
             <android.support.constraint.ConstraintLayout
-                android:layout_weight="1"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_height="wrap_content">
+                android:layout_weight="1">
 
                 <Button
                     android:id="@+id/btn_send_feedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/primary_button"
+                    android:background="@drawable/roudend_primary_button"
                     android:fontFamily="@font/titillium_regular"
                     android:text="@string/btn_send_feedback"
                     android:textColor="@color/colorPrimaryText"
@@ -206,8 +291,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:visibility="gone"
                     android:elevation="8dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/btn_register"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

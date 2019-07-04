@@ -238,6 +238,10 @@
     <string name="download"><u>Baixar Imagem</u></string>
     <string name="dialog_try_again_text">Deseja tentar novamente?</string>
     <string name="dialog_essay_already_sent_text">Você jé enviou uma redação para este tema, deseja enviar novamente?</string>
+    <string name="download_it"><u>Download</u></string>
+    <string name="open_it"><u>Abrir</u></string>
+    <string name="delete_it"><u>Deletar</u></string>
+    <string name="open_video_feedback">Abrir Correção</string>
 
 
 </resources>

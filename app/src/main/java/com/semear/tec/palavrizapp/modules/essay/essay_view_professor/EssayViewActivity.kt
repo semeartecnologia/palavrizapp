@@ -22,6 +22,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
 
 
     private lateinit var actualEssay: Essay
+    private lateinit var actualFragment: Fragment
     private var isReadMode: Boolean = false
     private var viewModel: EssayViewModel? = null
 
@@ -51,6 +52,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
     }
 
     fun changeFragment(fragment: Fragment, fragName: String) {
+        actualFragment = fragment
         frameContent?.visibility = View.VISIBLE
         layout_load_essay?.visibility = View.GONE
         val fm = supportFragmentManager
@@ -69,6 +71,12 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
     }
 
     private fun setupView() {
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        actualFragment.onActivityResult(requestCode, resultCode, data)
 
     }
 
