@@ -19,11 +19,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.semear.tec.palavrizapp.BuildConfig
 import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.models.PlanSwitch
-import com.semear.tec.palavrizapp.models.Plans
-import com.semear.tec.palavrizapp.models.Video
+import com.semear.tec.palavrizapp.models.*
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
 import com.semear.tec.palavrizapp.utils.adapters.PlanListAdapter
 import com.semear.tec.palavrizapp.utils.commons.DialogHelper
@@ -50,9 +49,15 @@ class UploadActivity : BaseActivity() {
     private lateinit var uploadViewModel: UploadViewModel
 
 
-    val arraySpinner = arrayOf("Categoria", "Língua Portuguesa", "Dicas Enem")
-
     private var adapter: PlanListAdapter = PlanListAdapter()
+    private var adapterStructure: ArrayAdapter<String>? = null
+    private var adapterConcept: ArrayAdapter<String>? = null
+
+    private var conceptListString = arrayListOf<String>()
+    private var structureListString = arrayListOf<String>()
+    private var themeListString = arrayListOf<String>()
+
+    private var listOfThemes = arrayListOf<Themes>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +79,31 @@ class UploadActivity : BaseActivity() {
         setupPlansList()
         setupDeleteButton()
         registerObservers()
+        setupAddButtonSpinners()
+        loadThemes()
+        loadStructures()
+        loadConcepts()
+    }
+
+    private fun setupAddButtonSpinners() {
+        btn_add_structure?.setOnClickListener {
+            DialogHelper.createStructureDialog(this, false, null,
+                    {
+                        uploadViewModel.saveStructure(it)
+                        adapterStructure?.add(it.structure)
+                        spinner_structure?.setSelection(structureListString.size-1)
+                    },
+                    {}, {})
+        }
+        btn_add_concept?.setOnClickListener {
+            DialogHelper.createConceptDialog(this, false, null,
+                    {
+                        uploadViewModel.saveConcept(it)
+                        adapterConcept?.add(it.concept)
+                        spinner_concept?.setSelection(conceptListString.size-1)
+                    }
+                    , {}, {})
+        }
     }
 
     private fun setupDeleteButton() {
@@ -93,6 +123,69 @@ class UploadActivity : BaseActivity() {
     }
 
     fun registerObservers(){
+        uploadViewModel.conceptsListLiveData.observe(this, Observer {
+            if (it != null) {
+                val defaultValue = getString(R.string.choose_conceito)
+                conceptListString = arrayListOf<String>()
+                conceptListString.add(defaultValue)
+                it.forEach { concept ->
+                    conceptListString.add(concept.concept)
+                }
+
+                adapterConcept = ArrayAdapter(this,
+                        android.R.layout.simple_spinner_item, conceptListString)
+                adapterConcept?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner_concept?.adapter = adapterConcept
+
+                if (isEdit){
+                    if (!video?.concept.isNullOrBlank()){
+                        spinner_concept.setSelection ( conceptListString.indexOf(video?.concept))
+                    }
+                }
+            }
+        })
+        uploadViewModel.structuresListLiveData.observe(this, Observer {
+            if (it != null) {
+                val defaultValue = getString(R.string.choose_structure)
+                structureListString = arrayListOf<String>()
+                structureListString.add(defaultValue)
+                it.forEach { structure ->
+                    structureListString.add(structure.structure)
+                }
+
+                 adapterStructure = ArrayAdapter(this,
+                        android.R.layout.simple_spinner_item, structureListString)
+
+                adapterStructure?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner_structure?.adapter = adapterStructure
+
+                if (isEdit){
+                    if (!video?.structure.isNullOrBlank()){
+                         spinner_structure.setSelection ( structureListString.indexOf(video?.structure))
+                     }
+                }
+            }
+        })
+        uploadViewModel.themeListLiveData.observe(this, Observer {
+            if (it != null) {
+                listOfThemes = it
+                val defaultValue = getString(R.string.choose_theme)
+                themeListString = arrayListOf<String>()
+                themeListString.add(defaultValue)
+                it.forEach { theme ->
+                    themeListString.add(theme.themeName)
+                }
+
+                val adapter = ArrayAdapter(this,
+                        android.R.layout.simple_spinner_item, themeListString)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner_theme?.adapter = adapter
+
+                if (!video?.themeName.isNullOrBlank()){
+                    spinner_theme.setSelection ( themeListString.indexOf(video?.themeName))
+                }
+            }
+        })
         uploadViewModel.deleteVideoLiveData.observe(this, Observer {
             if ( it == true){
                 finish()
@@ -103,6 +196,18 @@ class UploadActivity : BaseActivity() {
                 finish()
             }
         })
+    }
+
+    private fun loadThemes(){
+        uploadViewModel.getVideoThemeList()
+    }
+
+    private fun loadConcepts(){
+        uploadViewModel.getVideoConceptList()
+    }
+
+    private fun loadStructures(){
+        uploadViewModel.getVideoStructureList()
     }
 
     private fun setupPlansList() {
@@ -161,10 +266,10 @@ class UploadActivity : BaseActivity() {
 
     private fun setupSpinner() {
 
-        val adapter = ArrayAdapter(this,
+        /*val adapter = ArrayAdapter(this,
                 android.R.layout.simple_spinner_item, arraySpinner)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        category_spinner.adapter = adapter
+        category_spinner.adapter = adapter*/
     }
 
     fun uploadDone(){
@@ -206,8 +311,8 @@ class UploadActivity : BaseActivity() {
         if (intent != null) {
             videoUrl = intent?.getStringExtra(EXTRA_VIDEO_PATH) ?: ""
             filename = videoUrl.split("/").lastOrNull() ?: ""
-            isEdit = intent?.getBooleanExtra(EXTRA_IS_EDIT,false) ?: false
             video = intent?.getParcelableExtra(EXTRA_VIDEO)
+            isEdit = intent?.getBooleanExtra(EXTRA_IS_EDIT,false) ?: false
         }
     }
 
@@ -218,38 +323,49 @@ class UploadActivity : BaseActivity() {
 
         btn_upload.setOnClickListener {
 
-                if (checkFields()) {
-                    val title = video_title.text.toString()
-                    val description = video_description.text.toString()
-                    val category = arraySpinner[category_spinner.selectedItemPosition]
-                    var listOfPlans = ""
-                    adapter.planList.forEach {
-                        if (it.isChecked) {
-                            if (it.plan != null) {
-                                listOfPlans += it.plan!!.name + "/"
-                            }
+            if (checkFields()) {
+                val title = video_title.text.toString()
+                val description = video_description.text.toString()
+                //val category = arraySpinner[category_spinner.selectedItemPosition]
+
+
+                var listOfPlans = ""
+                adapter.planList.forEach {
+                    if (it.isChecked) {
+                        if (it.plan != null) {
+                            listOfPlans += it.plan!!.name + "/"
                         }
                     }
-
-                    if (title.isBlank() || category_spinner.selectedItemPosition == 0)
-                        return@setOnClickListener
-
-                    btn_upload.isEnabled = false
-                    video_title?.isEnabled = false
-                    video_description?.isEnabled = false
-                    adapter.disableAllCheckboxes()
-
-                    if (isEdit){
-                        val video = Video(0, listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, category, videoUrl, video?.videoThumb)
-                        uploadViewModel.editVideo(video)
-                    }else {
-
-                        val video = Video(0, listOfPlans, "", title, description, category, videoUrl)
-                        toggleButtonUpload()
-                        getThumbnailAndUpload(video)
-                    }
-
                 }
+
+                if (title.isBlank() || spinner_concept?.selectedItemPosition == 0 || spinner_structure?.selectedItemPosition == 0 || spinner_theme?.selectedItemPosition == 0) {
+                    Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val structure = spinner_structure?.selectedItem.toString()
+                val concept = spinner_concept?.selectedItem.toString()
+                Log.d("aki", "$structure - $concept")
+                val themeName = spinner_theme?.selectedItem.toString()
+
+                val selectedTheme = listOfThemes.filter { it.themeName == themeName }.single()
+
+                btn_upload.isEnabled = false
+                video_title?.isEnabled = false
+                video_description?.isEnabled = false
+                adapter.disableAllCheckboxes()
+
+                if (isEdit){
+                    val video = Video(0, listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme.urlPdf, selectedTheme.themeName, concept, structure )
+                    uploadViewModel.editVideo(video)
+                }else {
+
+                    val video = Video(0, listOfPlans, "", title, description, "", videoUrl, null, selectedTheme.urlPdf, selectedTheme.themeName, concept, structure)
+                    toggleButtonUpload()
+                    getThumbnailAndUpload(video)
+                }
+
+            }
 
         }
     }
@@ -260,7 +376,6 @@ class UploadActivity : BaseActivity() {
             video_title.setText("Teste video 1")
             video_description.setText("Esse é um video teste, estamos subindo somente com o intuito de testar, se você está vendo" +
                     "isso então algo deu muito errdo, obrigado")
-            category_spinner.setSelection(1)
 
         }
     }
@@ -287,6 +402,8 @@ class UploadActivity : BaseActivity() {
             if (!video?.description.isNullOrBlank()){
                 video_description?.setText(video?.description)
             }
+
+
         }
 
         video_title.addTextChangedListener(object: TextWatcher{

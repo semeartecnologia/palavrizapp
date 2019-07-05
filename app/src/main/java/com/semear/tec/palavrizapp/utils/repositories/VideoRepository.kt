@@ -1,9 +1,7 @@
 package com.semear.tec.palavrizapp.utils.repositories
 
 import android.content.Context
-import com.semear.tec.palavrizapp.models.Plans
-import com.semear.tec.palavrizapp.models.Video
-import com.semear.tec.palavrizapp.models.VideoCategory
+import com.semear.tec.palavrizapp.models.*
 
 class VideoRepository(val context: Context) {
 
@@ -19,10 +17,6 @@ class VideoRepository(val context: Context) {
         realtimeRepository.getVideosList(Plans.NO_PLAN, onCompletion)
     }
 
-    fun getCategoryList(onCompletion: ((ArrayList<VideoCategory>) -> Unit)){
-        realtimeRepository.getVideosCategoryList(onCompletion)
-    }
-
     fun getVideoDownloadUrl(path: String, onCompletion: ((String) -> Unit)){
         storageRepository.getVideoDownloadUrl(path,onCompletion)
     }
@@ -35,6 +29,10 @@ class VideoRepository(val context: Context) {
         realtimeRepository.editVideo(video, onCompletion)
     }
 
+    fun editVideoOrder(videoList: ArrayList<Video>, onCompletion: (Boolean) -> Unit){
+        realtimeRepository.editVideoOrder(videoList, onCompletion)
+    }
+
     fun deleteVideo(video: Video, onCompletion: (() -> Unit)){
         realtimeRepository.deleteVideo(video.videoKey) {
             if (it){
@@ -43,6 +41,26 @@ class VideoRepository(val context: Context) {
                 }
             }
         }
+    }
+
+    fun getThemes(onCompletion: (ArrayList<Themes>) -> Unit){
+        realtimeRepository.getThemes(onCompletion)
+    }
+
+    fun getVideosStructureList(onCompletion: ((ArrayList<Structure>) -> Unit)){
+        realtimeRepository.getVideosStructureList(onCompletion)
+    }
+
+    fun saveStructure(structure: Structure, onCompletion: () -> Unit){
+        realtimeRepository.saveStructure(structure, onCompletion)
+    }
+
+    fun saveConcept(concept: Concept, onCompletion: () -> Unit){
+        realtimeRepository.saveConcept(concept, onCompletion)
+    }
+
+    fun getVideosConceptList(onCompletion: ((ArrayList<Concept>) -> Unit)){
+        realtimeRepository.getVideosConceptList(onCompletion)
     }
 
 }

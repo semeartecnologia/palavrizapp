@@ -41,7 +41,7 @@ class RealtimeRepository(val context: Context) {
     }
 
     fun editVideo(video: Video, onCompletion: () -> Unit){
-                val childUpdates = HashMap<String, Any?>()
+        val childUpdates = HashMap<String, Any?>()
         childUpdates["/videos/${Plans.NO_PLAN.name}/${video.videoKey}/"] = video
 
         video.videoPlan?.split("/")?.forEach {
@@ -82,6 +82,48 @@ class RealtimeRepository(val context: Context) {
         mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
             onCompletion.invoke()
         }.addOnFailureListener {
+        }
+    }
+
+    fun editVideoOrder(videoList: ArrayList<Video>, onCompletion: (Boolean) -> Unit){
+        val childUpdates = HashMap<String, Any?>()
+        videoList.forEach {video ->
+            childUpdates["/videos/${Plans.NO_PLAN.name}/${video.videoKey}/orderVideo/"] = video.orderVideo
+
+            video.videoPlan?.split("/")?.forEach {
+                if (it.isNotBlank()) {
+                    when (it) {
+                        Plans.FREE_PLAN.name -> {
+                            video.listOfPlans?.add(Plans.FREE_PLAN)
+                        }
+                        Plans.BASIC_PLAN.name -> {
+                            video.listOfPlans?.add(Plans.BASIC_PLAN)
+                        }
+                        Plans.ADVANCED_PLAN.name -> {
+                            video.listOfPlans?.add(Plans.ADVANCED_PLAN)
+                        }
+                    }
+                }
+            }
+
+
+            if (video.listOfPlans?.contains(Plans.FREE_PLAN) == true) {
+                childUpdates["/videos/${Plans.FREE_PLAN.name}/${video.videoKey}/orderVideo/"] = video.orderVideo
+            }
+
+            if (video.listOfPlans?.contains(Plans.BASIC_PLAN) == true) {
+                childUpdates["/videos/${Plans.BASIC_PLAN.name}/${video.videoKey}/orderVideo/"] = video.orderVideo
+            }
+
+            if (video.listOfPlans?.contains(Plans.ADVANCED_PLAN) == true) {
+                childUpdates["/videos/${Plans.ADVANCED_PLAN.name}/${video.videoKey}/orderVideo/"] = video.orderVideo
+            }
+        }
+
+        mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
+            onCompletion.invoke(true)
+        }.addOnFailureListener {
+            onCompletion.invoke(false)
         }
     }
 
@@ -374,11 +416,11 @@ class RealtimeRepository(val context: Context) {
 
     fun getVideosList(plan: Plans, onCompletion: ((ArrayList<Video>) -> Unit)){
 
-        //TODO FILTER BY PLAN
         val reference = "videos/"
         var videoList = arrayListOf<Video>()
         val queryReference = mDatabaseReference.child(reference).child(plan.name)
-                .orderByChild("category")
+                .orderByChild("orderVideo")
+
         queryReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 videoList.clear()
@@ -392,18 +434,58 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
-    fun getVideosCategoryList(onCompletion: ((ArrayList<VideoCategory>) -> Unit)){
-        val reference = "videoCategory/"
-        var categoryList = arrayListOf<VideoCategory>()
+    fun saveStructure(structure: Structure, onCompletion: () -> Unit){
+        val reference = "videoStructures/"
+        var key = mDatabaseReference.child(reference).push().key
+        if (key == null){
+            key = "-" + System.currentTimeMillis().toString()
+        }
+        mDatabaseReference.child(reference).child("$key/").setValue(structure).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+
+    fun getVideosStructureList(onCompletion: ((ArrayList<Structure>) -> Unit)){
+        val reference = "videoStructures/"
+        var structureList = arrayListOf<Structure>()
         val queryReference = mDatabaseReference.child(reference)
         queryReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                categoryList.clear()
-                dataSnapshot.children.mapNotNullTo(categoryList) { it.getValue<VideoCategory>(VideoCategory::class.java) }
-                onCompletion(categoryList)
+                structureList.clear()
+                dataSnapshot.children.mapNotNullTo(structureList) { it.getValue<Structure>(Structure::class.java) }
+                onCompletion(structureList)
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                onCompletion(categoryList)
+                onCompletion(structureList)
+            }
+        })
+    }
+
+    fun saveConcept(concept: Concept, onCompletion: () -> Unit){
+        val reference = "videoConcepts/"
+        var key = mDatabaseReference.child(reference).push().key
+        if (key == null){
+            key = "-" + System.currentTimeMillis().toString()
+        }
+        mDatabaseReference.child(reference).child("$key/").setValue(concept).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+
+    fun getVideosConceptList(onCompletion: ((ArrayList<Concept>) -> Unit)){
+        val reference = "videoConcepts/"
+        var conceptList = arrayListOf<Concept>()
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                conceptList.clear()
+                dataSnapshot.children.mapNotNullTo(conceptList) { it.getValue<Concept>(Concept::class.java) }
+                onCompletion(conceptList)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(conceptList)
             }
         })
     }

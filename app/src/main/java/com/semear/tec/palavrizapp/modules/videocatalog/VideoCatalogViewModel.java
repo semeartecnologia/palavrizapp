@@ -1,4 +1,4 @@
-package com.semear.tec.palavrizapp.modules.themes;
+package com.semear.tec.palavrizapp.modules.videocatalog;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -8,14 +8,14 @@ import android.support.annotation.NonNull;
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager;
 import com.semear.tec.palavrizapp.utils.repositories.ThemesRepository;
 
-public class ThemesViewModel extends AndroidViewModel {
+public class VideoCatalogViewModel extends AndroidViewModel {
 
     private ThemesRepository themesRepository;
     private SessionManager sessionManager = new SessionManager(getApplication());
 
     public MutableLiveData<String> namePlanLiveData = new MutableLiveData<>();
 
-    public ThemesViewModel(@NonNull Application application) {
+    public VideoCatalogViewModel(@NonNull Application application) {
         super(application);
         themesRepository = new ThemesRepository(application);
     }

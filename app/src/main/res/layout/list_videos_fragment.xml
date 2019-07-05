@@ -35,4 +35,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+
+    <LinearLayout
+        android:id="@+id/layout_move_order"
+        android:orientation="horizontal"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:layout_gravity="start|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_save_order"
+            android:background="@drawable/roudend_primary_button"
+            android:textColor="@color/colorPrimaryText"
+            android:padding="16dp"
+            android:text="@string/btn_save_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <ImageView
+            android:id="@+id/btn_undo_order"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_undo_white_24dp"
+            android:background="@drawable/roudend_primary_button"
+            android:backgroundTint="@color/just_grey"
+            android:padding="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+
 </FrameLayout>

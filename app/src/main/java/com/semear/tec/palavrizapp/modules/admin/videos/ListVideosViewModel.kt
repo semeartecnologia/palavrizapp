@@ -10,10 +10,20 @@ class ListVideosViewModel(application: Application) : AndroidViewModel(applicati
 
     private var videoRepository = VideoRepository(application)
     var videoListLiveData = MutableLiveData<ArrayList<Video>>()
+    var showProgressLiveData = MutableLiveData<Boolean>()
+    var successEditOrderLiveData = MutableLiveData<Boolean>()
 
     fun fetchVideos(){
         videoRepository.getAllVideos {
             videoListLiveData.postValue(it)
+        }
+    }
+
+    fun editVideoOrder(videoList: ArrayList<Video>){
+        showProgressLiveData.postValue(true)
+        videoRepository.editVideoOrder(videoList){
+            showProgressLiveData.postValue(false)
+            successEditOrderLiveData.postValue(it)
         }
     }
 }

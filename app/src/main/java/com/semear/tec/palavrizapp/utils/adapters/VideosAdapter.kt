@@ -1,7 +1,6 @@
 package com.semear.tec.palavrizapp.utils.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,25 +9,29 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Video
-import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_KEY
-import com.semear.tec.palavrizapp.utils.interfaces.OnVideoClicked
+import com.semear.tec.palavrizapp.utils.commons.ItemDragCallback
+import com.semear.tec.palavrizapp.utils.interfaces.OnVideoEvent
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
 import com.squareup.picasso.Picasso
 import java.util.*
+import kotlin.collections.ArrayList
 
-class ThemesAdapter(var listener: OnVideoClicked) : RecyclerView.Adapter<ThemesAdapter.ViewHolder>() {
+class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAdapter.ViewHolder>(), ItemDragCallback.ItemTouchHelperContract {
 
     var listVideos: ArrayList<Video> = ArrayList()
+    var listVideosBackup: ArrayList<Video> = ArrayList()
     private lateinit var ctx: Context
     private var videoRepository: VideoRepository? = null
 
     fun addAllVideo(v: ArrayList<Video>) {
         this.listVideos.clear()
-        this.listVideos.addAll(v)
+        v.forEach {
+            it.orderVideo = this.listVideos.size
+            this.listVideos.add(it)
+        }
+        this.listVideosBackup.clear()
+        this.listVideosBackup.addAll(listVideos)
+
         this.notifyDataSetChanged()
     }
 
@@ -43,6 +46,33 @@ class ThemesAdapter(var listener: OnVideoClicked) : RecyclerView.Adapter<ThemesA
                 .inflate(R.layout.item_video_class, viewGroup, false)
         videoRepository = VideoRepository(ctx)
         return ViewHolder(v)
+    }
+
+    fun refreshOrder(onCompletion: () -> Unit){
+        var i = 0
+        listVideos.forEach {
+            it.orderVideo = i++
+
+        }
+        listVideosBackup.clear()
+        listVideosBackup.addAll(listVideos)
+        onCompletion()
+
+    }
+
+
+    override fun onRowMoved(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(listVideos, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(listVideos, i, i - 1)
+            }
+        }
+        listener.onVideoMoved()
+        notifyItemMoved(fromPosition, toPosition)
     }
 
 

@@ -1,6 +1,5 @@
 package com.semear.tec.palavrizapp.modules.dashboard
 
-import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -16,14 +15,13 @@ import com.semear.tec.palavrizapp.modules.admin.AdminActivity
 import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity
 import com.semear.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFragment
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment
-import com.semear.tec.palavrizapp.modules.themes.ThemesFragment
+import com.semear.tec.palavrizapp.modules.videocatalog.VideoCatalogFragment
 import kotlinx.android.synthetic.main.card_admin_area.*
 import kotlinx.android.synthetic.main.card_aulas.*
 import kotlinx.android.synthetic.main.card_list_essay.*
 import kotlinx.android.synthetic.main.card_send_essay.*
 import kotlinx.android.synthetic.main.card_user_planos.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
-import kotlinx.android.synthetic.main.item_essay_list.*
 
 
 class DashboardFragment : Fragment() {
@@ -61,7 +59,7 @@ class DashboardFragment : Fragment() {
             mainActivity?.setActionBarTitle("Planos")
         }
         user_aula?.setOnClickListener { v ->
-            mainActivity?.changeFragment(ThemesFragment(), "Aulas")
+            mainActivity?.changeFragment(VideoCatalogFragment(), "Aulas")
             mainActivity?.setActionBarTitle("Aulas")
         }
 

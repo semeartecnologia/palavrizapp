@@ -13,14 +13,13 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.models.Plans
-import com.semear.tec.palavrizapp.models.Themes
-import com.semear.tec.palavrizapp.models.User
-import com.semear.tec.palavrizapp.models.UserType
+import com.semear.tec.palavrizapp.models.*
 import com.semear.tec.palavrizapp.utils.adapters.ThemesListAdapter
 import com.semear.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.dialog_create_concept.view.*
+import kotlinx.android.synthetic.main.dialog_create_structure.view.*
 import kotlinx.android.synthetic.main.dialog_create_theme.view.*
 import kotlinx.android.synthetic.main.dialog_edit_user.view.*
 import kotlinx.android.synthetic.main.dialog_theme_picker.view.*
@@ -144,6 +143,126 @@ object DialogHelper {
 
         createThemeDialog.show()
         return createThemeDialog
+    }
+
+    fun createStructureDialog(activity: Activity, isEdit: Boolean? = false, structure: Structure? = null,  createCallback: ((Structure) -> Unit), cancelCallback: (() -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_create_structure, null, true)
+        val titleEditText = view.findViewById<TextInputEditText>(R.id.tv_structure)
+
+        if (structure != null){
+            titleEditText.setText(structure.structure)
+            if (isEdit == true) {
+                view.create_structure_title_label.text = activity.getString(R.string.edit_structure_label)
+                view.btn_create_structure.text = activity.getString(R.string.create_theme_edit_option)
+            }
+        }
+
+        titleEditText?.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                view.btn_create_structure.isEnabled = s?.isEmpty() != true
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                view.btn_create_structure.isEnabled = s?.isEmpty() != true
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
+        val createStructureDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .setOnDismissListener {cancelCallback.invoke() }
+                .create()
+
+        if (isEdit == false || isEdit == null) {
+            view.btn_delete_structure.visibility = View.GONE
+        }
+
+        view.btn_delete_structure.setOnClickListener {
+            createStructureDialog.dismiss()
+            onDeleteCallback.invoke()
+        }
+
+        view.btn_cancel_structure.setOnClickListener {
+            createStructureDialog.dismiss()
+            cancelCallback.invoke()
+        }
+
+        view.btn_create_structure.setOnClickListener {
+            if (isEdit == false){
+                createCallback.invoke(Structure(titleEditText.text.toString()))
+                createStructureDialog.dismiss()
+            }else{
+                if (structure != null) {
+                    structure.structure= titleEditText?.text.toString()
+                    createCallback.invoke(structure)
+                    createStructureDialog.dismiss()
+                }
+            }
+
+        }
+        createStructureDialog.show()
+        return createStructureDialog
+    }
+
+    fun createConceptDialog(activity: Activity, isEdit: Boolean? = false, concept: Concept? = null,  createCallback: ((Concept) -> Unit), cancelCallback: (() -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_create_concept, null, true)
+        val titleEditText = view.findViewById<TextInputEditText>(R.id.tv_concept_title)
+
+        if (concept != null){
+            titleEditText.setText(concept.concept)
+            if (isEdit == true) {
+                view.create_concept_title_label.text = activity.getString(R.string.edit_concept_label)
+                view.btn_create_concept.text = activity.getString(R.string.create_theme_edit_option)
+            }
+        }
+
+        titleEditText?.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                view.btn_create_concept.isEnabled = s?.isEmpty() != true
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                view.btn_create_concept.isEnabled = s?.isEmpty() != true
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
+        val createConceptDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .setOnDismissListener {cancelCallback.invoke() }
+                .create()
+
+        if (isEdit == false || isEdit == null) {
+            view.btn_delete_concept.visibility = View.GONE
+        }
+
+        view.btn_delete_concept.setOnClickListener {
+            createConceptDialog.dismiss()
+            onDeleteCallback.invoke()
+        }
+
+        view.btn_cancel_concept.setOnClickListener {
+            createConceptDialog.dismiss()
+            cancelCallback.invoke()
+        }
+
+        view.btn_create_concept.setOnClickListener {
+            if (isEdit == false){
+                createCallback.invoke(Concept(titleEditText.text.toString()))
+                createConceptDialog.dismiss()
+            }else{
+                if (concept != null) {
+                    concept.concept = titleEditText?.text.toString()
+                    createCallback.invoke(concept)
+                    createConceptDialog.dismiss()
+                }
+            }
+
+        }
+        createConceptDialog.show()
+        return createConceptDialog
     }
 
     fun createThemePickerDialog(activity: Activity, listThemes: ArrayList<Themes>, onThemePicked: ((Themes)-> Unit), onPdfClicked: ((String)-> Unit)): AlertDialog {

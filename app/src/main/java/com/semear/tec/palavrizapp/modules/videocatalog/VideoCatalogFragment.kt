@@ -1,4 +1,4 @@
-package com.semear.tec.palavrizapp.modules.themes
+package com.semear.tec.palavrizapp.modules.videocatalog
 
 
 import android.app.Activity
@@ -13,37 +13,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Spinner
-
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity
-import com.semear.tec.palavrizapp.utils.adapters.ThemesAdapter
+import com.semear.tec.palavrizapp.utils.adapters.VideosAdapter
 import com.semear.tec.palavrizapp.utils.constants.Constants
-import com.semear.tec.palavrizapp.utils.interfaces.OnVideoClicked
+import com.semear.tec.palavrizapp.utils.interfaces.OnVideoEvent
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
 import kotlinx.android.synthetic.main.fragment_themes.*
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Fragmento de seleção de Temas
  */
-class ThemesFragment : Fragment(), OnVideoClicked {
+class VideoCatalogFragment : Fragment(), OnVideoEvent {
 
 
-    private var themesViewModel: ThemesViewModel? = null
+
+    private var videoCatalogViewModel: VideoCatalogViewModel? = null
     private var recyclerTheme1: RecyclerView? = null
-    private var mAdapter: ThemesAdapter? = null
+    private var mAdapter: VideosAdapter? = null
     private var videoRepository: VideoRepository? = null
     private var categorySpinner: Spinner? = null
     private var progressBar: ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        themesViewModel = ViewModelProviders.of(this).get(ThemesViewModel::class.java)
+        videoCatalogViewModel = ViewModelProviders.of(this).get(VideoCatalogViewModel::class.java)
         if (activity != null) {
             videoRepository = VideoRepository(activity!!)
         }
@@ -56,23 +54,20 @@ class ThemesFragment : Fragment(), OnVideoClicked {
 
         setupView(v)
         registerObservers()
-        getCategoryList()
         return v
     }
 
     private fun setupView(v: View) {
-        themesViewModel?.getPlanName()
-        mAdapter = ThemesAdapter(this)
+        videoCatalogViewModel?.getPlanName()
+        mAdapter = VideosAdapter(this)
         recyclerTheme1 = v.findViewById(R.id.rv_themes)
         recyclerTheme1?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerTheme1?.adapter = mAdapter
 
-        categorySpinner = v.findViewById(R.id.category_spinner)
         progressBar = v.findViewById(R.id.progress_loading_videos)
 
         categorySpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                val category = categorySpinner?.getItemAtPosition(position) as String
                 mAdapter?.clearVideoList()
                 progressBar?.visibility = View.VISIBLE
                 recyclerTheme1?.visibility = View.GONE
@@ -86,7 +81,7 @@ class ThemesFragment : Fragment(), OnVideoClicked {
     }
 
     fun registerObservers(){
-        themesViewModel?.namePlanLiveData?.observe(this, Observer {
+        videoCatalogViewModel?.namePlanLiveData?.observe(this, Observer {
             if (!it.isNullOrBlank()){
                 tv_plan_name?.text = it
             }else{
@@ -96,30 +91,6 @@ class ThemesFragment : Fragment(), OnVideoClicked {
     }
 
 
-    fun getCategoryList() {
-        if (activity == null) return
-        val categoryArray = ArrayList<String>()
-
-        videoRepository!!.getCategoryList { categories ->
-            var categorySearch = ""
-            for (i in categories.indices) {
-                if (i == 0) {
-                    categorySearch = categories[i].category
-                }
-                categoryArray.add(categories[i].category)
-            }
-
-            val adapter = ArrayAdapter(
-                    activity!!,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    categoryArray
-            )
-
-            categorySpinner?.adapter = adapter
-            getVideoList()
-            null
-        }
-    }
 
     fun getVideoList() {
         if (activity == null) return
@@ -129,6 +100,9 @@ class ThemesFragment : Fragment(), OnVideoClicked {
             recyclerTheme1?.visibility = View.VISIBLE
             null
         }
+    }
+
+    override fun onVideoMoved() {
     }
 
     override fun onVideoClicked(v: Video) {

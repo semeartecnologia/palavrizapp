@@ -11,6 +11,7 @@ import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_PLANS
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_THUMBNAIL
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_TITLE
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_FILE_URI
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO
 import com.semear.tec.palavrizapp.utils.repositories.RealtimeRepository
 import com.semear.tec.palavrizapp.utils.repositories.StorageRepository
 
@@ -37,14 +38,10 @@ class UploadService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("palavrizapp-service", "uploaded service binded")
-        val fileUri = intent?.getStringExtra(EXTRA_FILE_URI) ?: ""
-        val fileTitle = intent?.getStringExtra(EXTRA_FILE_TITLE) ?: ""
-        val fileDescription = intent?.getStringExtra(EXTRA_FILE_DESCRIPTION) ?: ""
-        val fileCategory = intent?.getStringExtra(EXTRA_FILE_CATEGORY) ?: ""
-        val videoThumb = intent?.getStringExtra(EXTRA_FILE_THUMBNAIL) ?: ""
-        val plans = intent?.getStringExtra(EXTRA_FILE_PLANS) ?: ""
-
-        storageRepository.uploadVideo(Video(0, plans, "", fileTitle,fileDescription,fileCategory,fileUri, videoThumb))
+        val video = intent?.getParcelableExtra<Video>(EXTRA_VIDEO)
+        if (video != null) {
+            storageRepository.uploadVideo(video)
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 

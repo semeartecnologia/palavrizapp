@@ -242,6 +242,16 @@
     <string name="open_it"><u>Abrir</u></string>
     <string name="delete_it"><u>Deletar</u></string>
     <string name="open_video_feedback">Abrir Correção</string>
+    <string name="btn_save_order">Salvar Ordem</string>
+    <string name="btn_upload_pdf"><u>Importar Pdf</u></string>
+    <string name="choose_theme">Escolha um tema</string>
+    <string name="choose_conceito">Escolha um conceito</string>
+    <string name="choose_structure">Escolha um estrutura</string>
+
+    <string name="create_structure_label">Criar Estrutura</string>
+    <string name="create_concept_label">Criar Conceito</string>
+    <string name="edit_structure_label">Editar Estrutura</string>
+    <string name="edit_concept_label">Editar Conceito</string>
 
 
 </resources>

@@ -20,7 +20,7 @@
 
     <color name="almostTransparent">#902A2A2A</color>
 
-
+    <color name="just_grey">#ababab</color>
     <color name="lightest_grey">#e5e5e5</color>
     <color name="transparentWhite">#90ffffff</color>
     <color name="transparentGrey30">#90727272</color>

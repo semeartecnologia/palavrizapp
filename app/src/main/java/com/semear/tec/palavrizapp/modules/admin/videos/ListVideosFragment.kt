@@ -12,24 +12,29 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Video
+import com.semear.tec.palavrizapp.modules.base.BaseActivity
 import com.semear.tec.palavrizapp.modules.upload.UploadActivity
-import com.semear.tec.palavrizapp.utils.adapters.ThemesAdapter
+import com.semear.tec.palavrizapp.utils.adapters.VideosAdapter
 import com.semear.tec.palavrizapp.utils.commons.FileHelper
+import com.semear.tec.palavrizapp.utils.commons.ItemDragCallback
 import com.semear.tec.palavrizapp.utils.constants.Constants
-import com.semear.tec.palavrizapp.utils.interfaces.OnVideoClicked
+import com.semear.tec.palavrizapp.utils.interfaces.OnVideoEvent
 import kotlinx.android.synthetic.main.list_videos_fragment.*
 
 
-class ListVideosFragment : Fragment(), OnVideoClicked {
+class ListVideosFragment : Fragment(), OnVideoEvent {
 
 
-    private lateinit var adapter: ThemesAdapter
+
+    private lateinit var adapter: VideosAdapter
 
     private val SELECT_VIDEO = 300
     private val REQUEST_READ_STORAGE = 400
@@ -51,11 +56,12 @@ class ListVideosFragment : Fragment(), OnVideoClicked {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(ListVideosViewModel::class.java)
-        adapter = ThemesAdapter(this)
+        adapter = VideosAdapter(this)
         setupRecyclerVideos()
         registerObservers()
         viewModel.fetchVideos()
         setupFab()
+        setupView()
     }
 
 
@@ -80,10 +86,41 @@ class ListVideosFragment : Fragment(), OnVideoClicked {
                 adapter.addAllVideo(it)
             }
         })
+        viewModel.showProgressLiveData.observe(this, Observer {
+            if (it == true) progress_loading_videos?.visibility = View.VISIBLE else progress_loading_videos?.visibility = View.GONE
+        })
+        viewModel.successEditOrderLiveData.observe(this, Observer {
+            if (it == true){
+                Toast.makeText(activity as Activity, "Sucesso", Toast.LENGTH_SHORT).show()
+            }else if (it == false){
+                Toast.makeText(activity as Activity, "Erro ao re-ordenar lista", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    override fun onVideoMoved() {
+        layout_move_order?.visibility = View.VISIBLE
+    }
+
+    private fun setupView(){
+        btn_undo_order?.setOnClickListener {
+            adapter.addAllVideo(adapter.listVideosBackup)
+            layout_move_order?.visibility = View.GONE
+        }
+        btn_save_order?.setOnClickListener {
+            layout_move_order?.visibility = View.GONE
+            adapter.refreshOrder {
+                viewModel.editVideoOrder(adapter.listVideos)
+            }
+        }
     }
 
     private fun setupRecyclerVideos() {
         rv_videos?.layoutManager = LinearLayoutManager(context)
+        val callback : ItemTouchHelper.Callback =
+                ItemDragCallback(adapter)
+        val touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(rv_videos)
         rv_videos?.adapter = adapter
     }
 
