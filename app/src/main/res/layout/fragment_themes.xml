@@ -17,6 +17,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Spinner
+        android:layout_marginTop="4dp"
+        android:id="@+id/theme_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+        <Spinner
+            android:id="@+id/structure_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <Spinner
+            android:id="@+id/concept_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progress_loading_videos"
         android:visibility="gone"

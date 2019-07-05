@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Spinner
 import com.semear.tec.palavrizapp.R
@@ -23,14 +24,8 @@ import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.interfaces.OnVideoEvent
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
 import kotlinx.android.synthetic.main.fragment_themes.*
-import java.util.*
 
-/**
- * Fragmento de seleção de Temas
- */
 class VideoCatalogFragment : Fragment(), OnVideoEvent {
-
-
 
     private var videoCatalogViewModel: VideoCatalogViewModel? = null
     private var recyclerTheme1: RecyclerView? = null
@@ -57,6 +52,18 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         return v
     }
 
+    private fun loadThemes(){
+        videoCatalogViewModel?.getVideoThemeList()
+    }
+
+    private fun loadConcepts(){
+        videoCatalogViewModel?.getVideoConceptList()
+    }
+
+    private fun loadStructures(){
+        videoCatalogViewModel?.getVideoStructureList()
+    }
+
     private fun setupView(v: View) {
         videoCatalogViewModel?.getPlanName()
         mAdapter = VideosAdapter(this)
@@ -78,9 +85,64 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
 
             }
         }
+
+        loadFilters()
+    }
+
+    private fun loadFilters() {
+        loadThemes()
+        loadConcepts()
+        loadStructures()
     }
 
     fun registerObservers(){
+        videoCatalogViewModel?.structuresListLiveData?.observe(this, Observer {
+            if (it != null) {
+                val defaultValue = getString(R.string.choose_structure)
+                val structureListString = arrayListOf<String>()
+                structureListString.add(defaultValue)
+                it.forEach { structure ->
+                    structureListString.add(structure.structure)
+                }
+
+                val adapterStructure = ArrayAdapter(activity as Activity,
+                        android.R.layout.simple_spinner_item, structureListString)
+
+                adapterStructure.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                structure_spinner?.adapter = adapterStructure
+
+            }
+        })
+        videoCatalogViewModel?.conceptsListLiveData?.observe(this, Observer {
+            if (it != null) {
+                val defaultValue = getString(R.string.choose_conceito)
+                val conceptListString = arrayListOf<String>()
+                conceptListString.add(defaultValue)
+                it.forEach { concept ->
+                    conceptListString.add(concept.concept)
+                }
+
+                val adapterConcept = ArrayAdapter(activity as Activity,
+                        android.R.layout.simple_spinner_item, conceptListString)
+                adapterConcept.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                concept_spinner?.adapter = adapterConcept
+            }
+        })
+        videoCatalogViewModel?.themeListLiveData?.observe(this, Observer {
+            if (it != null) {
+                val defaultValue = getString(R.string.choose_theme)
+                val themeListString = arrayListOf<String>()
+                themeListString.add(defaultValue)
+                it.forEach { theme ->
+                    themeListString.add(theme.themeName)
+                }
+
+                val adapter = ArrayAdapter(activity as Activity,
+                        android.R.layout.simple_spinner_item, themeListString)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                theme_spinner?.adapter = adapter
+            }
+        })
         videoCatalogViewModel?.namePlanLiveData?.observe(this, Observer {
             if (!it.isNullOrBlank()){
                 tv_plan_name?.text = it
