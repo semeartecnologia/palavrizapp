@@ -24,13 +24,7 @@ class UploadViewModel(application: Application): AndroidViewModel(application) {
 
     fun uploadVideo(context: Context, video: Video){
         val intent = Intent(context, UploadService::class.java)
-        intent.putExtra(Constants.EXTRA_VIDEO, video)/*
-        intent.putExtra(Constants.EXTRA_FILE_URI, video.path)
-        intent.putExtra(Constants.EXTRA_FILE_TITLE, video.title)
-        intent.putExtra(Constants.EXTRA_FILE_DESCRIPTION, video.description)
-        intent.putExtra(Constants.EXTRA_FILE_CATEGORY, video.category)
-        intent.putExtra(Constants.EXTRA_FILE_THUMBNAIL, video.videoThumb)
-        intent.putExtra(Constants.EXTRA_FILE_PLANS, video.videoPlan)*/
+        intent.putExtra(Constants.EXTRA_VIDEO, video)
         context.startService(intent)
     }
 

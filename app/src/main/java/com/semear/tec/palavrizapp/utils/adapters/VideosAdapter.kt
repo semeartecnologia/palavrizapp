@@ -26,7 +26,7 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
     fun addAllVideo(v: ArrayList<Video>) {
         this.listVideos.clear()
         v.forEach {
-            it.orderVideo = this.listVideos.size
+            it.orderVideo = this.listVideos.size.toString()
             this.listVideos.add(it)
         }
         this.listVideosBackup.clear()
@@ -51,8 +51,8 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
     fun refreshOrder(onCompletion: () -> Unit){
         var i = 0
         listVideos.forEach {
-            it.orderVideo = i++
-
+            it.orderVideo = i.toString()
+            i++
         }
         listVideosBackup.clear()
         listVideosBackup.addAll(listVideos)
@@ -81,9 +81,11 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
 
         viewHolder.title.text = video.title
         viewHolder.description.text = video.description
-
         viewHolder.videoPath = video.path
         viewHolder.videoKey = video.videoKey
+        viewHolder.structure.text = video.structure
+        viewHolder.concept.text = video.concept
+        viewHolder.theme.text = video.themeName
 
         videoRepository?.getThumnailDownloadUrl(video.videoThumb ?: "") {
             if (!it.isBlank()) {
@@ -107,17 +109,18 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         var description: TextView
         var videoPath: String? = null
         var videoKey: String? = null
+        var structure: TextView
+        var concept: TextView
+        var theme: TextView
         internal var videoThumb: ImageView
 
-
         init {
-
             title = itemView.findViewById(R.id.video_title)
             description = itemView.findViewById(R.id.video_description)
             videoThumb = itemView.findViewById(R.id.video_thumbnail)
-
+            structure = itemView.findViewById(R.id.tv_structure_video)
+            concept = itemView.findViewById(R.id.tv_concept_video)
+            theme = itemView.findViewById(R.id.tv_theme_video)
         }
-
-
     }
 }

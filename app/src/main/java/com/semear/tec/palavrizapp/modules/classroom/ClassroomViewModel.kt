@@ -5,8 +5,10 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import com.semear.tec.palavrizapp.models.Comment
 import com.semear.tec.palavrizapp.models.UserType
+import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.utils.repositories.CommentsRepository
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager
+import com.semear.tec.palavrizapp.utils.repositories.ThemesRepository
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.onComplete
@@ -18,7 +20,10 @@ class ClassroomViewModel(application: Application): AndroidViewModel(application
     var commentsLiveData = MutableLiveData<List<Comment>>()
     private var commentsRepository = CommentsRepository(application)
     private var videoRepository = VideoRepository(application)
+    private var themesRepository= ThemesRepository(application)
     var videoDownloadUrl = MutableLiveData<String>()
+
+    var showNextClassButton = MutableLiveData<Video?>()
 
     fun userCanReply(): Boolean{
         return sessionManager.userLogged.userType == UserType.CORRETOR || sessionManager.userLogged.userType == UserType.ADMINISTRADOR
@@ -35,6 +40,18 @@ class ClassroomViewModel(application: Application): AndroidViewModel(application
     fun getVideoUrlDownload(path: String){
         videoRepository.getVideoDownloadUrl(path){
             videoDownloadUrl.postValue(it)
+        }
+    }
+
+    fun downloadPdf(path: String, onDownloaded: ((String)-> Unit)){
+        themesRepository.downloadPdf(path){
+            onDownloaded(it)
+        }
+    }
+
+    fun getNextVideo(actualOrder: String){
+        videoRepository.getNextVideo(actualOrder){
+            showNextClassButton.postValue(it)
         }
     }
 

@@ -356,11 +356,11 @@ class UploadActivity : BaseActivity() {
                 adapter.disableAllCheckboxes()
 
                 if (isEdit){
-                    val video = Video(0, listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme.urlPdf, selectedTheme.themeName, concept, structure )
+                    val video = Video("0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme.urlPdf, selectedTheme.themeName, concept, structure )
                     uploadViewModel.editVideo(video)
                 }else {
 
-                    val video = Video(0, listOfPlans, "", title, description, "", videoUrl, null, selectedTheme.urlPdf, selectedTheme.themeName, concept, structure)
+                    val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme.urlPdf, selectedTheme.themeName, concept, structure)
                     toggleButtonUpload()
                     getThumbnailAndUpload(video)
                 }

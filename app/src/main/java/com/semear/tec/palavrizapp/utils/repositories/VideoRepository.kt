@@ -9,12 +9,16 @@ class VideoRepository(val context: Context) {
     private var storageRepository = StorageRepository(context)
     private var sessionManager: SessionManager = SessionManager(context)
 
-    fun getVideoList(onCompletion: ((ArrayList<Video>) -> Unit)){
-        realtimeRepository.getVideosList(sessionManager.userPlan, onCompletion)
+    fun getVideoList( videoFilter: VideoFilter? = null, onCompletion: ((ArrayList<Video>) -> Unit)){
+        realtimeRepository.getVideosList(sessionManager.userPlan, onCompletion, videoFilter)
     }
 
     fun getAllVideos(onCompletion: ((ArrayList<Video>) -> Unit)){
         realtimeRepository.getVideosList(Plans.NO_PLAN, onCompletion)
+    }
+
+    fun getNextVideo(actualOrder: String, onCompletion: ((Video?) -> Unit)){
+        realtimeRepository.getNextVideo(sessionManager.userPlan, actualOrder, onCompletion)
     }
 
     fun getVideoDownloadUrl(path: String, onCompletion: ((String) -> Unit)){

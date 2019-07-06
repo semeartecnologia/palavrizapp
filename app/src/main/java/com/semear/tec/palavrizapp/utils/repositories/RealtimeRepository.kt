@@ -414,7 +414,35 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
-    fun getVideosList(plan: Plans, onCompletion: ((ArrayList<Video>) -> Unit)){
+    fun getNextVideo(plan: Plans, actualOrder: String, onCompletion: ((Video?) -> Unit)){
+        val reference = "videos/"
+        var videoList = arrayListOf<Video>()
+        val queryReference = mDatabaseReference.child(reference).child(plan.name)
+                .orderByChild("orderVideo")
+                .startAt(actualOrder)
+
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                videoList.clear()
+                try {
+                    dataSnapshot.children.mapNotNullTo(videoList) { it.getValue<Video>(Video::class.java) }
+                    if (videoList.size > 1){
+                        onCompletion(videoList[1])
+                    }else{
+                        onCompletion(null)
+                    }
+                }catch(e: Exception){
+                    onCompletion(null)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(null)
+            }
+        })
+    }
+
+    fun getVideosList(plan: Plans, onCompletion: ((ArrayList<Video>) -> Unit), videoFilter: VideoFilter? = null){
 
         val reference = "videos/"
         var videoList = arrayListOf<Video>()
@@ -424,7 +452,45 @@ class RealtimeRepository(val context: Context) {
         queryReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 videoList.clear()
-                dataSnapshot.children.mapNotNullTo(videoList) { it.getValue<Video>(Video::class.java) }
+                dataSnapshot.children.forEach {
+                    val video = it.getValue(Video::class.java)
+                    var isVideoRemoved = false
+                    if (video != null) {
+                        videoList.add(video)
+
+                        if (!videoFilter?.themeName.isNullOrBlank() && videoFilter?.themeName != video.themeName){
+                            videoList.removeAt(videoList.size-1)
+                            isVideoRemoved = true
+                        }
+
+                        if (!isVideoRemoved && !videoFilter?.structure.isNullOrBlank() && videoFilter?.structure != video.structure){
+                            videoList.removeAt(videoList.size-1)
+                            isVideoRemoved = true
+                        }
+
+                        if (!isVideoRemoved && !videoFilter?.concept.isNullOrBlank() && videoFilter?.concept != video.concept){
+                            videoList.removeAt(videoList.size-1)
+                        }
+
+/*
+                        if (!videoFilter?.concept.isNullOrBlank() && !videoFilter?.structure.isNullOrBlank()) {
+                            if (video.structure == videoFilter?.structure && video.concept == videoFilter.concept) {
+                                videoList.add(video)
+                            }
+                        }else if(!videoFilter?.concept.isNullOrBlank() && video.concept == videoFilter?.concept){
+                            videoList.add(video)
+                        }else if(!videoFilter?.structure.isNullOrBlank() && video.structure == videoFilter?.structure){
+                            videoList.add(video)
+                        }else{
+                            if (videoFilter?.structure.isNullOrBlank() && videoFilter?.concept.isNullOrBlank()) {
+                                videoList.add(video)
+                            }
+                        }
+
+                        videoList.removeAt(video)*/
+
+                    }
+                }
                 onCompletion(videoList)
             }
 

@@ -119,6 +119,7 @@
     <string name="btn_correct_this_essay">Corrigir</string>
     <string name="btn_issue_essay">Relatar Problema</string>
     <string name="tv_theme_placeholder">Tema: %s</string>
+
     <string name="dialog_confirmation_correct_title">Confirmação</string>
     <string name="dialog_confirmation_correct_content">A redação está totalmente legível?</string>
     <string name="dialog_essay_feedback_already_taken_title">Oops</string>
@@ -253,5 +254,16 @@
     <string name="edit_structure_label">Editar Estrutura</string>
     <string name="edit_concept_label">Editar Conceito</string>
 
+    <string name="all_themes">Todos os temas</string>
+    <string name="all_conceito">Todos os conceitos</string>
+    <string name="all_structure">Todas as estruturas</string>
+
+    <string name="tv_theme_placeholder_item_video">Tema:</string>
+    <string name="tv_structure_placeholder_item_video">Estrutura:</string>
+    <string name="tv_concept_placeholder_item_video">Conceito:</string>
+
+    <string name="open_pdf">Abrir PDF</string>
+    <string name="next_class">Próxima Aula</string>
+    <string name="no_next_class">Este é o último vídeo cadastrado em seu plano</string>
 
 </resources>
