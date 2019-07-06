@@ -1,11 +1,7 @@
 package com.semear.tec.palavrizapp.utils.constants;
 
-import com.semear.tec.palavrizapp.BuildConfig;
-
 object Constants {
     const val EXTRA_LOGIN = "login_extra"
-    const val GOOGLE_API_SECRET = BuildConfig.GOOGLE_API_SECRET
-    const val YOUTUBE_API_KEY = BuildConfig.YOUTUBE_API_SECRET
 
     //Shared Preferences
     const val  SESSION_USER = "session_user"
@@ -15,10 +11,6 @@ object Constants {
     const val TABLE_GROUPS = "groups"
 
     //Activity Classroom
-    const val EXTRA_COD_VIDEO = "cod_video"
-    const val EXTRA_TITLE_VIDEO = "title_video"
-    const val EXTRA_SUBTITLE_VIDEO = "subtitle_video"
-    const val EXTRA_DESCRPTION_VIDEO = "description_video"
     const val EXTRA_VIDEO_KEY = "key_video"
     const val EXTRA_VIDEO_COMMENT = "key_comments"
 
@@ -27,12 +19,6 @@ object Constants {
     const val EXTRA_VIDEO_PATH = "video_path"
     const val EXTRA_IS_EDIT = "is_edit"
     const val EXTRA_VIDEO = "extra_video"
-    const val EXTRA_FILE_URI = "extra_file_uri"
-    const val EXTRA_FILE_TITLE= "extra_file_title"
-    const val EXTRA_FILE_DESCRIPTION= "extra_file_description"
-    const val EXTRA_FILE_CATEGORY = "extra_file_cateogory"
-    const val EXTRA_FILE_THUMBNAIL = "extra_file_thumbnail"
-    const val EXTRA_FILE_PLANS = "extra_file_plans"
 
     //Broadcast
     const val BROADCAST_UPLOAD_DONE = "upload_done"

@@ -22,15 +22,12 @@ import com.semear.tec.palavrizapp.utils.adapters.VideosAdapter
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.interfaces.OnVideoEvent
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
-import kotlinx.android.synthetic.main.fragment_themes.*
-import java.util.*
+import kotlinx.android.synthetic.main.fragment_video_catalog.*
 
 /**
- * Fragmento de seleção de Temas
+ * Fragmento de catalogo de aulas
  */
 class VideoCatalogFragment : Fragment(), OnVideoEvent {
-
-
 
     private var videoCatalogViewModel: VideoCatalogViewModel? = null
     private var recyclerTheme1: RecyclerView? = null
@@ -50,7 +47,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val v = inflater.inflate(R.layout.fragment_themes, container, false)
+        val v = inflater.inflate(R.layout.fragment_video_catalog, container, false)
 
         setupView(v)
         registerObservers()
@@ -65,19 +62,8 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         recyclerTheme1?.adapter = mAdapter
 
         progressBar = v.findViewById(R.id.progress_loading_videos)
+        getVideoList()
 
-        categorySpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                mAdapter?.clearVideoList()
-                progressBar?.visibility = View.VISIBLE
-                recyclerTheme1?.visibility = View.GONE
-                getVideoList()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
-            }
-        }
     }
 
     fun registerObservers(){
@@ -98,7 +84,6 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
             mAdapter?.addAllVideo(videoList)
             progressBar?.visibility = View.GONE
             recyclerTheme1?.visibility = View.VISIBLE
-            null
         }
     }
 
@@ -107,11 +92,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
 
     override fun onVideoClicked(v: Video) {
         val it = Intent(activity as Activity, ClassroomActivity::class.java)
-        it.putExtra(Constants.EXTRA_COD_VIDEO, v.path)
-        it.putExtra(Constants.EXTRA_TITLE_VIDEO, v.title)
-        //it.putExtra(EXTRA_SUBTITLE_VIDEO, v.);
-        it.putExtra(Constants.EXTRA_DESCRPTION_VIDEO, v.description)
-        it.putExtra(Constants.EXTRA_VIDEO_KEY, v.videoKey)
+        it.putExtra(Constants.EXTRA_VIDEO, v)
         startActivity(it)
     }
 }

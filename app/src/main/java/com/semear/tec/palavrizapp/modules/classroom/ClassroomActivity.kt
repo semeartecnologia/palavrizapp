@@ -2,30 +2,21 @@ package com.semear.tec.palavrizapp.modules.classroom
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.Video
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
-import com.semear.tec.palavrizapp.modules.classroom.input_comment.AddCommentActivity
 import com.semear.tec.palavrizapp.modules.classroom.video_view.VideoFragment
 import com.semear.tec.palavrizapp.utils.adapters.CommentsAdapter
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_COMMENT
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_KEY
-import com.semear.tec.palavrizapp.utils.interfaces.OnReplyClicked
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO
 import kotlinx.android.synthetic.main.activity_classroom.*
-import kotlinx.android.synthetic.main.item_add_question.*
 
 
-class ClassroomActivity : BaseActivity(), OnReplyClicked {
+class ClassroomActivity : BaseActivity() {
 
 
-    private var videoUrl = ""
-    private var videoKey = ""
+    private var video: Video? = null
     private var classroomViewModel: ClassroomViewModel? = null
 
     private lateinit var adapter: CommentsAdapter
@@ -36,7 +27,6 @@ class ClassroomActivity : BaseActivity(), OnReplyClicked {
         setContentView(R.layout.activity_classroom)
 
         initViewModel()
-        adapter = CommentsAdapter(classroomViewModel?.userCanReply() ?: false, this)
         setupView()
 
     }
@@ -45,24 +35,30 @@ class ClassroomActivity : BaseActivity(), OnReplyClicked {
         setupActionBar()
         setupExtras()
         setupViewObservers()
-        setupCommentsRecycler()
+        //setupCommentsRecycler()
         //loadComments()
         getVideoUrlDownload()
+        setupVideoDetails()
+    }
+
+    private fun setupVideoDetails() {
+        video_title?.text = video?.title
+        video_description?.text = video?.description
     }
 
     private fun getVideoUrlDownload() {
-        classroomViewModel?.getVideoUrlDownload(videoUrl)
+        classroomViewModel?.getVideoUrlDownload(video?.path ?: return)
     }
 
-    private fun setupCommentsRecycler() {
+    /*private fun setupCommentsRecycler() {
         rv_comments?.layoutManager = LinearLayoutManager(this)
         rv_comments?.adapter = adapter
-    }
+    }*/
 
 
-    private fun loadComments() {
+   /* private fun loadComments() {
         classroomViewModel?.loadComments(videoKey)
-    }
+    }*/
 
     private fun setupVideoFragment(videoPath: String) {
         supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoPath)).commit()
@@ -78,19 +74,16 @@ class ClassroomActivity : BaseActivity(), OnReplyClicked {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onReplyClicked(commentId: String?) {
+ /*   override fun onReplyClicked(commentId: String?) {
         val intent = Intent(this, AddCommentActivity::class.java)
         intent.putExtra(EXTRA_VIDEO_KEY, videoKey)
         intent.putExtra(EXTRA_VIDEO_COMMENT, commentId)
         startActivity(intent)
-    }
+    }*/
 
     private fun setupExtras(){
         if (intent != null) {
-            videoUrl = intent?.getStringExtra(EXTRA_COD_VIDEO) ?: ""
-            video_title?.text = intent?.getStringExtra(EXTRA_TITLE_VIDEO)
-            video_description?.text = intent?.getStringExtra(EXTRA_DESCRPTION_VIDEO)
-            videoKey = intent?.getStringExtra(EXTRA_VIDEO_KEY) ?: ""
+            video = intent?.getParcelableExtra(EXTRA_VIDEO)
         }
     }
 
@@ -115,20 +108,13 @@ class ClassroomActivity : BaseActivity(), OnReplyClicked {
             }
         })
 
-        classroomViewModel?.isUserFirstTime?.observe(this, Observer { it ->
-            if (it == true){
-                //  next_lesson?.text = getString(R.string.btn_concluir)
-                //  next_lesson?.setOnClickListener { finish() }
-            }else{
-                //  next_lesson?.setOnClickListener { }
-            }
-        })
 
-        layout_question?.setOnClickListener {
+
+      /*  layout_question?.setOnClickListener {
             val intent = Intent(this, AddCommentActivity::class.java)
             intent.putExtra(EXTRA_VIDEO_KEY, videoKey)
             startActivity(intent)
-        }
+        }*/
 
     }
 

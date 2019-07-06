@@ -2,28 +2,15 @@ package com.semear.tec.palavrizapp.modules
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.FrameLayout
-
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
-import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity
 import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager
 
-import butterknife.BindView
-import butterknife.ButterKnife
-
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_COD_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_DESCRPTION_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_SUBTITLE_VIDEO
-import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_TITLE_VIDEO
 
 class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionListener {
 
@@ -33,7 +20,6 @@ class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this)
         initViewModel()
         registerObservers()
         sessionManager = SessionManager(applicationContext)
