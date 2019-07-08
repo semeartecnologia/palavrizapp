@@ -31,10 +31,6 @@ class ClassroomViewModel(application: Application): AndroidViewModel(application
 
     fun initViewModel(){
         sessionManager = SessionManager(getApplication())
-        if (sessionManager.isUserFirstTime){
-            sessionManager.isUserFirstTime = false
-            isUserFirstTime.postValue(true)
-        }
     }
 
     fun getVideoUrlDownload(path: String){

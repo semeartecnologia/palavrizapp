@@ -16,4 +16,9 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     val currentUser: User?
         get() = sessionManager.userLogged
 
+    fun setFirstTimeFalse(){
+        sessionManager.isUserFirstTime = false
+
+    }
+
 }

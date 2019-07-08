@@ -56,10 +56,9 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <FrameLayout
             android:layout_weight="83"
-            android:id="@+id/rvPlans"
-            android:layoutAnimation="@anim/layout_fall_down_animation"
+            android:id="@+id/framePlans"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

@@ -14,7 +14,7 @@ class PagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     override fun getItem(p0: Int): Fragment {
         return when(p0){
             0 -> ListUserFragment()
-            1 -> ListPlansFragment()
+            1 -> ListPlansFragment.newInstance(true)
             2 -> ListThemesFragment()
             3 -> ListVideosFragment()
             else -> ListUserFragment()

@@ -19,7 +19,6 @@
             android:textSize="16sp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/radio_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -27,10 +26,10 @@
             tools:text="Acompanhe algumas aulas demonstrativas e envia até 2 redações"
             android:id="@+id/tv_plan_description"
             android:layout_width="wrap_content"
+            android:layout_below="@id/tv_plan_title"
             android:textSize="12sp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:layout_toEndOf="@id/radio_plan"
+            android:layout_marginTop="4dp"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -40,7 +39,7 @@
             android:textSize="12sp"
             android:layout_marginBottom="16dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_below="@id/tv_plan_description"
             android:layout_height="wrap_content" />
 

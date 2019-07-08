@@ -12,8 +12,10 @@ import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.modules.MainActivity
 import com.semear.tec.palavrizapp.modules.admin.AdminActivity
+import com.semear.tec.palavrizapp.modules.admin.plans.ListPlansFragment
 import com.semear.tec.palavrizapp.modules.essay.MyEssayActivity
 import com.semear.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFragment
+import com.semear.tec.palavrizapp.modules.plans.MyPlansActivity
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment
 import com.semear.tec.palavrizapp.modules.videocatalog.VideoCatalogFragment
 import kotlinx.android.synthetic.main.card_admin_area.*
@@ -43,6 +45,8 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         checkUserTypeView()
+
+        dashboardViewModel?.setFirstTimeFalse()
     }
 
     private fun initView() {
@@ -55,8 +59,7 @@ class DashboardFragment : Fragment() {
         mainActivity?.setActionBarTitle("Dashboard")
 
         user_plan?.setOnClickListener { v ->
-            mainActivity?.changeFragment(PlansFragment(), "Planos")
-            mainActivity?.setActionBarTitle("Planos")
+            startMyPlansActivity()
         }
         user_aula?.setOnClickListener { v ->
             mainActivity?.changeFragment(VideoCatalogFragment(), "Aulas")
@@ -104,6 +107,11 @@ class DashboardFragment : Fragment() {
 
     private fun startMyEssayActivity() {
         val it = Intent(activity, MyEssayActivity::class.java)
+        startActivity(it)
+    }
+
+    private fun startMyPlansActivity(){
+        val it = Intent(activity, MyPlansActivity::class.java)
         startActivity(it)
     }
 

@@ -15,21 +15,32 @@ import android.view.ViewGroup
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.SkuDetails
 import com.semear.tec.palavrizapp.R
+import com.semear.tec.palavrizapp.models.PlanDetails
 import com.semear.tec.palavrizapp.models.PlansBilling
 import com.semear.tec.palavrizapp.utils.adapters.ListPlansAdapter
 import com.semear.tec.palavrizapp.utils.commons.DialogHelper
+import com.semear.tec.palavrizapp.utils.interfaces.OnPlanClicked
 import kotlinx.android.synthetic.main.list_plans_fragment.*
 
-class ListPlansFragment : Fragment(){
+class ListPlansFragment : Fragment(), OnPlanClicked{
+
 
     private lateinit var adapter: ListPlansAdapter
-    private var mBillingClient: BillingClient? = null
+
 
     companion object {
-        fun newInstance() = ListPlansFragment()
+        fun newInstance(isAdmin: Boolean):ListPlansFragment {
+            val fragment = ListPlansFragment()
+            val args = Bundle()
+            args.putBoolean("isAdmin", isAdmin)
+            fragment.arguments = args
+            return fragment
+        }
     }
 
+    private var isAdmin = false
     private lateinit var viewModel: ListPlansViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -41,20 +52,31 @@ class ListPlansFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(ListPlansViewModel::class.java)
-        adapter = ListPlansAdapter()
+        adapter = ListPlansAdapter(this)
         setupRecyclerPlans()
         registerObservers()
         setupView()
 
+        getExtras()
         viewModel.initBillingClient(activity as Activity)
         viewModel.fetchPlanList()
     }
 
+    private fun getExtras() {
+        isAdmin = arguments?.getBoolean("isAdmin") ?: false
+        setupAdmin()
+    }
 
 
     private fun setupView() {
         fab_add_plan?.setOnClickListener {
             showCreateThemeDialog()
+        }
+    }
+
+    private fun setupAdmin() {
+        if(isAdmin){
+            fab_add_plan?.visibility = View.VISIBLE
         }
     }
 
@@ -71,6 +93,9 @@ class ListPlansFragment : Fragment(){
         })
     }
 
+    override fun onPlanClicked(skuDetails: SkuDetails) {
+        viewModel.startBillingFlow(activity as Activity, skuDetails)
+    }
 
     private fun registerObservers() {
         viewModel.listPlansLiveData.observe(this, Observer {

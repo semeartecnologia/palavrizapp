@@ -278,6 +278,8 @@
     <string name="active_it">Ativar limite de envio redação</string>
     <string name="edit_plan_label">Editar Plano</string>
 
+    <string name="your_plan_label">Seu Plano:</string>
+    <string name="your_plan_expiration_date">Expira em:</string>
 
 
 </resources>

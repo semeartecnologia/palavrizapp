@@ -4,15 +4,17 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.android.billingclient.api.SkuDetails
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.PlanDetails
 import com.semear.tec.palavrizapp.utils.extensions.inflate
+import com.semear.tec.palavrizapp.utils.interfaces.OnPlanClicked
 import kotlinx.android.synthetic.main.item_plan_billing.view.*
 
-class ListPlansAdapter  : RecyclerView.Adapter<ListPlansAdapter.ViewHolder>()  {
+class ListPlansAdapter(var listener: OnPlanClicked)  : RecyclerView.Adapter<ListPlansAdapter.ViewHolder>()  {
 
     var context: Context? = null
-    var plansList: ArrayList<PlanDetails> = arrayListOf()
+    var plansList: ArrayList<SkuDetails> = arrayListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -33,29 +35,12 @@ class ListPlansAdapter  : RecyclerView.Adapter<ListPlansAdapter.ViewHolder>()  {
 
         holder.planTitle = plan.title
         holder.planDescription = plan.description
-        holder.planId = plan.plan_id
         holder.planPrice = plan.price
-     /*   holder.userName = user.fullname
-        holder.userEmail = user.email
-        if (!user.photoUri.isNullOrBlank()) {
-            Picasso.get().load(user.photoUri).into(holder.view.photo_user)
-        }else{
-            Picasso.get().load(R.drawable.avatar_man_512).into(holder.view.photo_user)
-        }
 
-        holder.userType = String.format(context?.getString(R.string.user_type_label) ?: "Tipo: %s", user.userType.name)
-
-        if (user.registerDate != null){
-            holder.userRegisterDate = String.format(context?.getString(R.string.register_date_label) ?: "", DateFormatHelper.stringDate(user.registerDate))
-        }else{
-            holder.userRegisterDate = ""
-        }
-
-        holder.userPlan = user.plan.getPlanTitle(context)
 
         holder.view.setOnClickListener {
-            listener.onUserClicked(user)
-        }*/
+            listener.onPlanClicked(plan)
+        }
 
     }
 
