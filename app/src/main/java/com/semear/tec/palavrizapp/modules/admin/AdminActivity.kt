@@ -25,6 +25,7 @@ class AdminActivity : BaseActivity() {
         pager?.adapter = pagerAdapter
         pager?.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout?.newTab()?.setText(R.string.tab_user)?.let { tabLayout?.addTab(it) }
+        tabLayout?.newTab()?.setText(R.string.tab_plans)?.let { tabLayout?.addTab(it) }
         tabLayout?.newTab()?.setText(R.string.tab_themes)?.let { tabLayout?.addTab(it) }
         tabLayout?.newTab()?.setText(R.string.tab_videos)?.let { tabLayout?.addTab(it) }
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{

@@ -143,6 +143,7 @@
     <!-- Admin -->
     <string name="toolbar_admin">Administrador</string>
     <string name="tab_user">Usuários</string>
+    <string name="tab_plans">Planos</string>
     <string name="tab_themes">Temas</string>
     <string name="tab_videos">Videos</string>
     <string name="sucess_edit_user_title">Sucesso</string>
@@ -265,5 +266,18 @@
     <string name="open_pdf">Abrir PDF</string>
     <string name="next_class">Próxima Aula</string>
     <string name="no_next_class">Este é o último vídeo cadastrado em seu plano</string>
+
+    <string name="add_plan">Adicionar plano</string>
+    <string name="plan_id_hint">ID do produto cadastrado na Google Play</string>
+    <string name="plan_id_label">ID</string>
+    <string name="limit_envio_redacao">Quantidade de envios </string>
+    <string name="por">redações por:</string>
+    <string name="diario">Diário</string>
+    <string name="mensal">Mensal</string>
+    <string name="semanal">Semanal</string>
+    <string name="active_it">Ativar limite de envio redação</string>
+    <string name="edit_plan_label">Editar Plano</string>
+
+
 
 </resources>

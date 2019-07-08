@@ -9,15 +9,14 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.*
 import com.semear.tec.palavrizapp.utils.adapters.ThemesListAdapter
 import com.semear.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.dialog_add_plan.view.*
 import kotlinx.android.synthetic.main.dialog_create_concept.view.*
 import kotlinx.android.synthetic.main.dialog_create_structure.view.*
 import kotlinx.android.synthetic.main.dialog_create_theme.view.*
@@ -157,6 +156,9 @@ object DialogHelper {
             }
         }
 
+        if (!titleEditText?.text.isNullOrBlank()){
+            view.btn_create_structure.isEnabled = true
+        }
         titleEditText?.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 view.btn_create_structure.isEnabled = s?.isEmpty() != true
@@ -217,6 +219,9 @@ object DialogHelper {
             }
         }
 
+        if (!titleEditText?.text.isNullOrBlank()){
+            view.btn_create_concept.isEnabled = true
+        }
         titleEditText?.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 view.btn_create_concept.isEnabled = s?.isEmpty() != true
@@ -225,6 +230,7 @@ object DialogHelper {
                 view.btn_create_concept.isEnabled = s?.isEmpty() != true
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                view.btn_create_concept.isEnabled = s?.isEmpty() != true
             }
         })
 
@@ -264,6 +270,141 @@ object DialogHelper {
         createConceptDialog.show()
         return createConceptDialog
     }
+
+    fun createAddPlanDialog(activity: Activity, isEdit: Boolean? = false, plansBilling: PlansBilling? = null,  createCallback: ((PlansBilling) -> Unit), cancelCallback: (() -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_add_plan, null, true)
+
+        val idPlanEditText = view.findViewById<TextInputEditText>(R.id.et_plan_id)
+        val qntLimitEssayEditText = view.findViewById<TextInputEditText>(R.id.et_essay_limit_quant)
+        val checkboxIsActive = view.findViewById<CheckBox>(R.id.check_active_limit)
+        val radioDay = view.findViewById<RadioButton>(R.id.radio_day)
+        val radioWeek = view.findViewById<RadioButton>(R.id.radio_week)
+        val radioMonth = view.findViewById<RadioButton>(R.id.radio_month)
+
+        if (plansBilling != null){
+            idPlanEditText.setText(plansBilling.plan_id)
+            val limitEssay = plansBilling.limitEssay
+            val period = plansBilling.period
+            if (limitEssay != null){
+                checkboxIsActive.isEnabled = true
+                qntLimitEssayEditText.setText(limitEssay)
+
+                if (period != null){
+                    when {
+                        period == EnumPeriod.DIARIO -> radioDay.isChecked = true
+                        period == EnumPeriod.SEMANAL -> radioWeek.isChecked = true
+                        period == EnumPeriod.MENSAL -> radioMonth.isChecked = true
+                    }
+                }
+            }else{
+                checkboxIsActive.isEnabled = false
+            }
+
+            if (isEdit == true) {
+                view.create_structure_add_plan.text = activity.getString(R.string.edit_plan_label)
+                view.btn_create_plan.text = activity.getString(R.string.create_theme_edit_option)
+            }
+        }
+
+        if (!idPlanEditText?.text.isNullOrBlank()){
+            view.btn_create_concept.isEnabled = true
+        }
+        idPlanEditText?.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                view.btn_create_plan.isEnabled = s?.isEmpty() != true
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                view.btn_create_plan.isEnabled = s?.isEmpty() != true
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                view.btn_create_plan.isEnabled = s?.isEmpty() != true
+            }
+        })
+
+        val createConceptDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .setOnDismissListener {cancelCallback.invoke() }
+                .create()
+
+        if (isEdit == false || isEdit == null) {
+            view.btn_delete_plan.visibility = View.GONE
+        }
+
+      /*  holder.view.check_plan.setOnCheckedChangeListener { buttonView, isChecked ->
+            planList[index].isChecked = isChecked
+        }
+*/
+
+        checkboxIsActive.setOnCheckedChangeListener { buttonView, isChecked ->
+            qntLimitEssayEditText.isEnabled = isChecked
+            radioDay.isEnabled = isChecked
+            radioMonth.isEnabled = isChecked
+            radioWeek.isEnabled = isChecked
+
+        }
+
+        view.btn_delete_plan.setOnClickListener {
+            createConceptDialog.dismiss()
+            onDeleteCallback.invoke()
+        }
+
+        view.btn_cancel_plan.setOnClickListener {
+            createConceptDialog.dismiss()
+            cancelCallback.invoke()
+        }
+
+        view.btn_create_plan.setOnClickListener {
+            if (isEdit == false) {
+
+                var period = EnumPeriod.DIARIO
+
+                if (checkboxIsActive.isChecked) {
+                    if (radioDay.isChecked) {
+                        period = EnumPeriod.DIARIO
+                    } else if (radioWeek.isChecked) {
+                        period = EnumPeriod.SEMANAL
+                    } else if (radioMonth.isChecked) {
+                        period = EnumPeriod.MENSAL
+                    }
+
+                    createCallback.invoke(PlansBilling(idPlanEditText.text.toString(), qntLimitEssayEditText.text.toString().toInt(), period))
+                } else {
+                    createCallback.invoke(PlansBilling(idPlanEditText.text.toString(), null, null))
+                }
+                createConceptDialog.dismiss()
+            } else {
+                if (plansBilling != null) {
+                    plansBilling.plan_id = idPlanEditText.text.toString()
+
+                    if (checkboxIsActive.isChecked) {
+                        var period = EnumPeriod.DIARIO
+                        if (radioDay.isChecked) {
+                            period = EnumPeriod.DIARIO
+                        } else if (radioWeek.isChecked) {
+                            period = EnumPeriod.SEMANAL
+                        } else if (radioMonth.isChecked) {
+                            period = EnumPeriod.MENSAL
+                        }
+                        plansBilling.period = period
+                        plansBilling.limitEssay = qntLimitEssayEditText.text.toString().toInt()
+                    } else {
+                        plansBilling.period = null
+                        plansBilling.limitEssay = null
+                    }
+
+                    createCallback.invoke(plansBilling)
+                    createConceptDialog.dismiss()
+
+
+                }
+
+            }
+        }
+        createConceptDialog.show()
+        return createConceptDialog
+    }
+
 
     fun createThemePickerDialog(activity: Activity, listThemes: ArrayList<Themes>, onThemePicked: ((Themes)-> Unit), onPdfClicked: ((String)-> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_theme_picker, null, true)

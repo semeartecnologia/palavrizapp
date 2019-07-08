@@ -269,6 +269,34 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
+    fun savePlan(plansBilling: PlansBilling, onCompletion: () -> Unit){
+        val reference = "plans/"
+        var key = mDatabaseReference.child(reference).push().key
+        if (key == null){
+            key = "-" + System.currentTimeMillis().toString()
+        }
+        mDatabaseReference.child(reference).child("$key/").setValue(plansBilling).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun getPlans(onCompletion: (ArrayList<PlansBilling>) -> Unit){
+        val reference = "plans/"
+        var plansList = arrayListOf<PlansBilling>()
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                plansList.clear()
+                dataSnapshot.children.mapNotNullTo(plansList) { it.getValue<PlansBilling>(PlansBilling::class.java) }
+                onCompletion(plansList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(plansList)
+            }
+        })
+    }
+
     fun editTheme(theme: Themes, onCompletion: () -> Unit){
         val reference = "themes/"
         mDatabaseReference.child(reference).child("${theme.themeId}/").setValue(theme).addOnCompleteListener {
