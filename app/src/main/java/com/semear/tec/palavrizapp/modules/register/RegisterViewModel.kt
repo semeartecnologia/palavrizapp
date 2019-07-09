@@ -4,13 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.content.Intent
 import com.google.firebase.auth.FirebaseAuth
-import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.User
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.modules.welcome.WelcomeActivity
+import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager
 import com.semear.tec.palavrizapp.utils.repositories.UserRepository
 
@@ -80,7 +79,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
             user.photoUri = ""
         //tipo e plano padrao, depois tem que trocar isso
         user.userType = UserType.ESTUDANTE
-        user.plan = Plans.FREE_PLAN
+        user.plan = Constants.PLAN_FREE_ID
         //Salva Login no cache Shared Preferences
         user.registerDate = System.currentTimeMillis()
         sessionManager.setUserOnline(user, true)

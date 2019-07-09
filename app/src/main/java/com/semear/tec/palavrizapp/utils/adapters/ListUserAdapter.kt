@@ -54,7 +54,7 @@ class ListUserAdapter(val listener: OnUserClicked) : RecyclerView.Adapter<ListUs
             holder.userRegisterDate = ""
         }
 
-        holder.userPlan = user.plan.getPlanTitle(context)
+        holder.userPlan = user.plan
 
         holder.view.setOnClickListener {
             listener.onUserClicked(user)

@@ -36,16 +36,5 @@
             android:layout_height="wrap_content"
             android:text="@string/no_essay_yet" />
 
-    <Button
-        android:id="@+id/btn_first_essay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/primary_button"
-        android:fontFamily="@font/titillium_regular"
-        android:text="@string/btn_first_send"
-        android:textColor="@color/colorPrimaryText"
-        app:layout_constraintTop_toBottomOf="@id/textView2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

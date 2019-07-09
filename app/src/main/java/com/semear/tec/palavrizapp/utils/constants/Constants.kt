@@ -32,4 +32,7 @@ object Constants {
     const val EXTRA_IMAGE_FULL_SCREEN = "extra_image_full"
     const val EXTRA_ESSAY_THEME = "extra_essay_theme"
     const val EXTRA_ESSAY_THEME_ID = "extra_essay_theme_id"
+
+    const val PLAN_FREE_ID = "plano_gratis"
+    const val NO_PLAN= "NO_PLAN"
 }

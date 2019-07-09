@@ -445,7 +445,7 @@ object DialogHelper {
 
         val tvUserName = view.findViewById<TextView>(R.id.tv_user_name)
         val tvUserEmail = view.findViewById<TextView>(R.id.tv_user_email)
-        val spUserPlans = view.findViewById<Spinner>(R.id.spinner_plans)
+        val spUserPlans = view.findViewById<EditText>(R.id.et_plans)
         val spUserUserType = view.findViewById<Spinner>(R.id.spinner_user_type)
         val ivPhotoUser = view.findViewById<CircleImageView>(R.id.photo_user_dialog)
 
@@ -467,14 +467,15 @@ object DialogHelper {
         adapter.notifyDataSetChanged()
         spUserUserType.setSelection(user.userType.userType)
 
-        val listPlans = Plans.names()
-        val adapterPlans = ArrayAdapter<String>(activity,
+        spUserPlans.setText(user.plan)
+        /*val adapterPlans = ArrayAdapter<String>(activity,
                 android.R.layout.simple_spinner_item, listPlans)
 
         adapterPlans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spUserPlans.adapter = adapterPlans
         adapterPlans.notifyDataSetChanged()
-        spUserPlans.setSelection(user.plan.userPlan)
+        val position = adapterPlans.getPosition(user.plan)
+        spUserPlans.setSelection(position)*/
 
 
 
@@ -494,7 +495,7 @@ object DialogHelper {
 
         view.btn_save.setOnClickListener {
             createThemeDialog.dismiss()
-            user.plan = Plans.values()[spUserPlans.selectedItemPosition]
+            user.plan = spUserPlans.text.toString()
             user.userType = UserType.values()[spUserUserType.selectedItemPosition]
             onSaveClicked.invoke(user)
         }

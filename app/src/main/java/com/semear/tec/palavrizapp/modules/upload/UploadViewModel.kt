@@ -5,22 +5,22 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Intent
-import com.semear.tec.palavrizapp.models.Concept
-import com.semear.tec.palavrizapp.models.Structure
-import com.semear.tec.palavrizapp.models.Themes
-import com.semear.tec.palavrizapp.models.Video
+import com.semear.tec.palavrizapp.models.*
 import com.semear.tec.palavrizapp.utils.constants.Constants
+import com.semear.tec.palavrizapp.utils.repositories.PlansRepository
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
 
 class UploadViewModel(application: Application): AndroidViewModel(application) {
 
     var deleteVideoLiveData = MutableLiveData<Boolean>()
     var videoRepository = VideoRepository(application)
+    var plansRepository = PlansRepository(application)
     var editVideoSuccessLiveData = MutableLiveData<Boolean>()
 
     var structuresListLiveData = MutableLiveData<ArrayList<Structure>>()
     var conceptsListLiveData = MutableLiveData<ArrayList<Concept>>()
     var themeListLiveData = MutableLiveData<ArrayList<Themes>>()
+    var planListLiveData = MutableLiveData<ArrayList<PlansBilling>>()
 
     fun uploadVideo(context: Context, video: Video){
         val intent = Intent(context, UploadService::class.java)
@@ -66,5 +66,9 @@ class UploadViewModel(application: Application): AndroidViewModel(application) {
         videoRepository.getVideosConceptList{
             conceptsListLiveData.postValue(it)
         }
+    }
+
+    fun getSinglePlans(onCompletion: (ArrayList<PlansBilling>) -> Unit){
+        plansRepository.getSinglePlans(onCompletion)
     }
 }

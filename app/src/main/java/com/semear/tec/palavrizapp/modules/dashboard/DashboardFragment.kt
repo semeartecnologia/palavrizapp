@@ -1,5 +1,6 @@
 package com.semear.tec.palavrizapp.modules.dashboard
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.android.billingclient.api.BillingClient
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.modules.MainActivity
@@ -18,6 +20,7 @@ import com.semear.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFra
 import com.semear.tec.palavrizapp.modules.plans.MyPlansActivity
 import com.semear.tec.palavrizapp.modules.plans.PlansFragment
 import com.semear.tec.palavrizapp.modules.videocatalog.VideoCatalogFragment
+import com.semear.tec.palavrizapp.utils.constants.Constants
 import kotlinx.android.synthetic.main.card_admin_area.*
 import kotlinx.android.synthetic.main.card_aulas.*
 import kotlinx.android.synthetic.main.card_list_essay.*
@@ -45,9 +48,35 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         checkUserTypeView()
+        registerObservers()
 
         dashboardViewModel?.setFirstTimeFalse()
     }
+
+    fun registerObservers(){
+        dashboardViewModel?.purchasedPlan?.observe(this, Observer {
+            if (it != null){
+                //TEM PLANO
+                dashboardViewModel?.updateUserPlan(it.sku)
+            }else{
+                //NAO TEM PLANO
+                dashboardViewModel?.updateUserPlan(Constants.PLAN_FREE_ID)
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        dashboardViewModel?.executeRequest(activity?.applicationContext ?: return){
+            queryPurchases()
+        }
+    }
+
+    fun queryPurchases(){
+        dashboardViewModel?.queryPurchases()
+    }
+
 
     private fun initView() {
 

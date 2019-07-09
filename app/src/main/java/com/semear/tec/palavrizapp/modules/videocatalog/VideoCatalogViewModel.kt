@@ -24,7 +24,7 @@ class VideoCatalogViewModel(application: Application) : AndroidViewModel(applica
     var namePlanLiveData = MutableLiveData<String>()
 
     fun getPlanName() {
-        namePlanLiveData.postValue(sessionManager.userPlan.name)
+       namePlanLiveData.postValue(sessionManager.userPlan)
     }
 
     fun getVideoThemeList(){

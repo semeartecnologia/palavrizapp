@@ -83,6 +83,37 @@ class UploadActivity : BaseActivity() {
         loadThemes()
         loadStructures()
         loadConcepts()
+        setupRadioGroup()
+    }
+
+    private fun setupRadioGroup() {
+        radioGroupVideoInfo.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.radio_theme -> changeRadioItem(0)
+                R.id.radio_concept -> changeRadioItem(1)
+                R.id.radio_structure ->  changeRadioItem(2)
+                else -> {
+                }
+            }
+        }
+    }
+
+    private fun changeRadioItem(i: Int){
+        if ( i == 0){
+            spinner_theme?.visibility = View.VISIBLE
+            layout_picker_structure?.visibility = View.GONE
+            layout_picker_concept?.visibility = View.GONE
+        }else if (i == 1){
+            spinner_theme?.visibility = View.GONE
+            layout_picker_structure?.visibility = View.GONE
+            layout_picker_concept?.visibility =  View.VISIBLE
+
+        }else if( i == 2){
+            spinner_theme?.visibility = View.GONE
+            layout_picker_structure?.visibility = View.VISIBLE
+            layout_picker_concept?.visibility = View.GONE
+        }
+
     }
 
     private fun setupAddButtonSpinners() {
@@ -215,32 +246,28 @@ class UploadActivity : BaseActivity() {
 
         video?.videoPlan?.split("/")?.forEach {
             if (it.isNotBlank()){
-                when (it) {
-                    Plans.FREE_PLAN.name -> {
-                        video?.listOfPlans?.add(Plans.FREE_PLAN)
-                    }
-                    Plans.BASIC_PLAN.name -> {
-                        video?.listOfPlans?.add(Plans.BASIC_PLAN)
-                    }
-                    Plans.ADVANCED_PLAN.name -> {
-                        video?.listOfPlans?.add(Plans.ADVANCED_PLAN)
-                    }
-                }
+                video?.listOfPlans?.add(it)
             }
         }
 
-
-        Plans.values().forEach {
-            if (it != Plans.NO_PLAN) {
-                if (video?.listOfPlans?.contains(it) == true){
-                    arrayPlans.add(PlanSwitch(it, true))
+        uploadViewModel.getSinglePlans {
+            plansBillingList ->
+            if (video?.listOfPlans?.contains(Constants.PLAN_FREE_ID) == true){
+                arrayPlans.add(PlanSwitch(Constants.PLAN_FREE_ID, true))
+            }else{
+                arrayPlans.add(PlanSwitch(Constants.PLAN_FREE_ID, false))
+            }
+            plansBillingList.forEach {
+                if (video?.listOfPlans?.contains(it.plan_id) == true){
+                    arrayPlans.add(PlanSwitch(it.plan_id, true))
                 }else{
-                    arrayPlans.add(PlanSwitch(it, false))
+                    arrayPlans.add(PlanSwitch(it.plan_id, false))
                 }
-
             }
+
+            adapter.planList = arrayPlans
         }
-        adapter.planList = arrayPlans
+
 
     }
 
@@ -333,22 +360,32 @@ class UploadActivity : BaseActivity() {
                 adapter.planList.forEach {
                     if (it.isChecked) {
                         if (it.plan != null) {
-                            listOfPlans += it.plan!!.name + "/"
+                            listOfPlans += it.plan + "/"
                         }
                     }
                 }
 
-                if (title.isBlank() || spinner_concept?.selectedItemPosition == 0 || spinner_structure?.selectedItemPosition == 0 || spinner_theme?.selectedItemPosition == 0) {
+                if (title.isBlank() || (radio_concept.isChecked && spinner_concept?.selectedItemPosition == 0) || (radio_structure.isChecked && spinner_structure?.selectedItemPosition == 0) || (radio_theme.isChecked && spinner_theme?.selectedItemPosition == 0)) {
                     Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
-                val structure = spinner_structure?.selectedItem.toString()
-                val concept = spinner_concept?.selectedItem.toString()
-                Log.d("aki", "$structure - $concept")
-                val themeName = spinner_theme?.selectedItem.toString()
+                var structure = ""
+                if (radio_structure.isChecked){
+                    structure = spinner_structure?.selectedItem.toString()
+                }
 
-                val selectedTheme = listOfThemes.filter { it.themeName == themeName }.single()
+                var concept = ""
+                if (radio_concept.isChecked){
+                    concept = spinner_concept?.selectedItem.toString()
+                }
+
+                var themeName = ""
+                var selectedTheme: Themes? = null
+                if (radio_theme.isChecked){
+                    themeName = spinner_theme?.selectedItem.toString()
+                    selectedTheme = listOfThemes.filter { it.themeName == themeName }.single()
+                }
 
                 btn_upload.isEnabled = false
                 video_title?.isEnabled = false
@@ -356,11 +393,11 @@ class UploadActivity : BaseActivity() {
                 adapter.disableAllCheckboxes()
 
                 if (isEdit){
-                    val video = Video("0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme.urlPdf, selectedTheme.themeName, concept, structure )
+                    val video = Video("0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName ?: "", concept, structure )
                     uploadViewModel.editVideo(video)
                 }else {
 
-                    val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme.urlPdf, selectedTheme.themeName, concept, structure)
+                    val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName ?: "", concept, structure)
                     toggleButtonUpload()
                     getThumbnailAndUpload(video)
                 }
@@ -403,7 +440,25 @@ class UploadActivity : BaseActivity() {
                 video_description?.setText(video?.description)
             }
 
+            spinner_theme?.visibility = View.GONE
+            layout_picker_structure?.visibility = View.GONE
+            layout_picker_concept?.visibility = View.GONE
+            if (!video?.themeName.isNullOrBlank()){
+                spinner_theme?.visibility = View.VISIBLE
+                radio_theme.isChecked = true
+            }else if (!video?.structure.isNullOrBlank()){
+                layout_picker_structure?.visibility = View.VISIBLE
+                radio_structure.isChecked = true
+            }else if (!video?.concept.isNullOrBlank()){
+                layout_picker_concept?.visibility = View.VISIBLE
+                radio_concept.isChecked = true
+            }
 
+        }else{
+            radio_theme.isChecked = true
+            spinner_theme?.visibility = View.VISIBLE
+            layout_picker_structure?.visibility = View.GONE
+            layout_picker_concept?.visibility = View.GONE
         }
 
         video_title.addTextChangedListener(object: TextWatcher{

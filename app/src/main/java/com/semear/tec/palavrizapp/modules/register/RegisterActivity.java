@@ -85,27 +85,9 @@ public class RegisterActivity extends BaseActivity {
 
     private void toggleLoading(boolean isLoading){
         if (isLoading){
-//            email.setVisibility(View.GONE);
-//            textInputEmail.setVisibility(View.GONE);
-//            password.setVisibility(View.GONE);
-//            textInputPwd.setVisibility(View.GONE);
-//            fullname.setVisibility(View.GONE);
-//            textInputName.setVisibility(View.GONE);
-//            confirmPassword.setVisibility(View.GONE);
-//            textInputConfirmPwd.setVisibility(View.GONE);
-//            radioGender.setVisibility(View.GONE);
             btnRegister.setText("");
             progressBar.setVisibility(View.VISIBLE);
         }else {
-//            email.setVisibility(View.VISIBLE);
-//            textInputEmail.setVisibility(View.VISIBLE);
-//            password.setVisibility(View.VISIBLE);
-//            textInputPwd.setVisibility(View.VISIBLE);
-//            fullname.setVisibility(View.VISIBLE);
-//            textInputName.setVisibility(View.VISIBLE);
-//            confirmPassword.setVisibility(View.VISIBLE);
-//            textInputConfirmPwd.setVisibility(View.VISIBLE);
-//            radioGender.setVisibility(View.VISIBLE);
             btnRegister.setText(getString(R.string.register_now_btn));
             progressBar.setVisibility(View.GONE);
         }

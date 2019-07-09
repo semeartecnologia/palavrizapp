@@ -11,11 +11,8 @@ import android.widget.TextView
 import com.android.billingclient.api.SkuDetails
 
 import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager
-import com.semear.tec.palavrizapp.modules.MainActivity
 import com.semear.tec.palavrizapp.utils.adapters.ListPlansAdapter
-import com.semear.tec.palavrizapp.utils.adapters.PlansAdapter
 import com.semear.tec.palavrizapp.utils.interfaces.OnPlanClicked
 
 

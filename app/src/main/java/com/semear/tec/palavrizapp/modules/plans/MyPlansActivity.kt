@@ -15,6 +15,11 @@ class MyPlansActivity : AppCompatActivity() {
         setupView()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     private fun setupView(){
         setupPlansFragment()
     }

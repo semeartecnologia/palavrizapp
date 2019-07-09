@@ -24,7 +24,6 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.models.Plans
 import com.semear.tec.palavrizapp.models.User
 import com.semear.tec.palavrizapp.models.UserType
 import com.semear.tec.palavrizapp.modules.MainActivity
@@ -216,7 +215,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     if (it == null){
                         //poe a padrãozada
                         user.userType = UserType.ESTUDANTE
-                        user.plan = Plans.FREE_PLAN
+                        user.plan = "free_plan"
                         user.registerDate = System.currentTimeMillis()
 
                         //registra usuario pelo repositorio

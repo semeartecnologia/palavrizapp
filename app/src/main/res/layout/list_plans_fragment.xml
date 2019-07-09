@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,31 +8,95 @@
     android:background="@color/gray"
     tools:context="com.semear.tec.palavrizapp.modules.admin.plans.ListPlansFragment">
 
-    <ProgressBar
-        android:id="@+id/progress_loading_plans"
-        android:layout_marginTop="16dp"
-        android:layout_gravity="top|center"
-        android:elevation="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_plans"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_plan"
+    <RelativeLayout
+        android:id="@+id/layout_has_plan"
         android:visibility="gone"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add_white_24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layout_plan_user"
+            android:layout_margin="8dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/your_plan_label"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_user_plan_title"
+                android:layout_marginStart="8dp"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_update_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/layout_plan_user"
+            android:background="@drawable/primary_button"
+            android:fontFamily="@font/titillium_regular"
+            android:padding="16dp"
+            android:text="@string/btn_update_plan"
+            android:textColor="@color/colorPrimaryText" />
+
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_user_see_plans"
+            android:layout_marginStart="8dp"
+            android:text="@string/no_plan"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
+    <FrameLayout
+        android:id="@+id/frame_layout_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <ProgressBar
+            android:id="@+id/progress_loading_plans"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="top|center"
+            android:elevation="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_plans"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_add_plan"
+            android:visibility="gone"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add_white_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+</LinearLayout>

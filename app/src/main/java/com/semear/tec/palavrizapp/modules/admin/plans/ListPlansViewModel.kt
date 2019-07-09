@@ -7,25 +7,28 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.util.Log
 import com.android.billingclient.api.*
-import com.semear.tec.palavrizapp.models.PlanDetails
 import com.semear.tec.palavrizapp.models.PlansBilling
 import com.semear.tec.palavrizapp.utils.repositories.PlansRepository
-import com.semear.tec.palavrizapp.utils.repositories.ThemesRepository
+import com.semear.tec.palavrizapp.utils.repositories.SessionManager
 
-class ListPlansViewModel(application: Application) : AndroidViewModel(application), PurchasesUpdatedListener {
-    override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
 
-    }
+class ListPlansViewModel(application: Application) : AndroidViewModel(application), PurchasesUpdatedListener, AcknowledgePurchaseResponseListener  {
+
 
 
     private val plansRepository = PlansRepository(application)
+    private val sessionManager = SessionManager(application)
     val listPlansLiveData = MutableLiveData<ArrayList<PlansBilling>>()
-    val listPlanDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
+    val listPlanSubsDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
+    val listPurchasesLiveData = MutableLiveData<ArrayList<Purchase>>()
     private var mBillingClient: BillingClient? = null
+
+    var skuPurchased: String? = null
 
     fun savePlan(plansBilling: PlansBilling,  onCompletion: () -> Unit){
         plansRepository.savePlan(plansBilling, onCompletion)
     }
+
 
     fun fetchPlanList(){
         plansRepository.getPlans {
@@ -33,7 +36,46 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun initBillingClient(context: Context) {
+    override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {
+
+
+        if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK){
+            purchases?.forEach {
+
+
+                if (!it.isAcknowledged){
+                    val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(it.purchaseToken)
+                            .build()
+
+                    skuPurchased = it.sku
+                    mBillingClient?.acknowledgePurchase(acknowledgePurchaseParams, this)
+                }
+
+            }
+        }else{
+        }
+    }
+
+    override fun onAcknowledgePurchaseResponse(billingResult: BillingResult?) {
+        if (skuPurchased != null){
+            val sku = skuPurchased
+            sessionManager.userPlan = sku
+            plansRepository.editUserPlan(sku ?: "") {
+
+            }
+        }
+    }
+
+    fun executeRequest(context: Context, run: () -> Unit) {
+        if (mBillingClient?.isReady == true) {
+            run()
+        }else{
+            startConnection(context, run)
+        }
+    }
+
+    fun startConnection(context: Context, run: () -> Unit) {
         mBillingClient = BillingClient
                 .newBuilder(context)
                 .enablePendingPurchases()
@@ -43,26 +85,46 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
         mBillingClient?.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult?) {
                 if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK) {
-                    Log.d("billao","BILLING | startConnection | RESULT OK")
-                } else {
-                    Log.d("billao", "BILLING | startConnection | RESULT: $billingResult?.responseCode")
+                    run()
                 }
             }
 
             override fun onBillingServiceDisconnected() {
-                println("BILLING | onBillingServiceDisconnected | DISCONNECTED")
             }
         })
     }
 
 
+
+    fun queryPurchases() {
+        val purchasesResult = mBillingClient?.queryPurchases(BillingClient.SkuType.SUBS)
+        if (mBillingClient?.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS)?.responseCode ==  BillingClient.BillingResponseCode.OK) {
+            if (purchasesResult?.responseCode == BillingClient.BillingResponseCode.OK) {
+                purchasesResult.purchasesList?.addAll(
+                        purchasesResult.purchasesList)
+            }
+        }
+
+        if (purchasesResult != null && purchasesResult.purchasesList != null) {
+            if (purchasesResult.purchasesList.isEmpty()){
+                fetchPlanList()
+            }else {
+                var listPurchases = arrayListOf<Purchase>()
+                listPurchases.addAll(purchasesResult.purchasesList)
+                listPurchasesLiveData.postValue(listPurchases)
+            }
+        }else{
+            fetchPlanList()
+        }
+    }
+
     fun loadProducstCatalog(skuList: ArrayList<String>) {
-        var a = skuList
+
         if (mBillingClient?.isReady == true) {
             val params = SkuDetailsParams
                     .newBuilder()
                     .setSkusList(skuList)
-                    .setType(BillingClient.SkuType.INAPP)
+                    .setType(BillingClient.SkuType.SUBS)
                     .build()
             mBillingClient?.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
                 if (responseCode.responseCode == BillingClient.BillingResponseCode.OK ) {
@@ -72,7 +134,7 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
                         /*var planDetail = PlanDetails("", it.title, it.description, it.price)*/
                         listPlanDetails.add(it)
                     }
-                    listPlanDetailsLiveData.postValue(listPlanDetails)
+                    listPlanSubsDetailsLiveData.postValue(listPlanDetails)
                     //initProductAdapter(skuDetailsList)
                 } else {
                     println("Can't querySkuDetailsAsync, responseCode: $responseCode")

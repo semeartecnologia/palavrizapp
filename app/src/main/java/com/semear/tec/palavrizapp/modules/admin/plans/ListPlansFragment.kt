@@ -4,27 +4,25 @@ package com.semear.tec.palavrizapp.modules.admin.plans
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.SkuDetails
 import com.semear.tec.palavrizapp.R
-import com.semear.tec.palavrizapp.models.PlanDetails
 import com.semear.tec.palavrizapp.models.PlansBilling
 import com.semear.tec.palavrizapp.utils.adapters.ListPlansAdapter
 import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 import com.semear.tec.palavrizapp.utils.interfaces.OnPlanClicked
 import kotlinx.android.synthetic.main.list_plans_fragment.*
 
-class ListPlansFragment : Fragment(), OnPlanClicked{
+
+class ListPlansFragment : Fragment(), OnPlanClicked {
 
 
     private lateinit var adapter: ListPlansAdapter
@@ -58,8 +56,6 @@ class ListPlansFragment : Fragment(), OnPlanClicked{
         setupView()
 
         getExtras()
-        viewModel.initBillingClient(activity as Activity)
-        viewModel.fetchPlanList()
     }
 
     private fun getExtras() {
@@ -76,7 +72,8 @@ class ListPlansFragment : Fragment(), OnPlanClicked{
 
     private fun setupAdmin() {
         if(isAdmin){
-            fab_add_plan?.visibility = View.VISIBLE
+            fab_add_plan?.show()
+            tv_user_see_plans?.visibility = View.GONE
         }
     }
 
@@ -93,30 +90,70 @@ class ListPlansFragment : Fragment(), OnPlanClicked{
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (!isAdmin) {
+            viewModel.executeRequest(activity?.applicationContext ?: return) {
+                queryPurchases()
+            }
+        }else{
+            viewModel.executeRequest(activity?.applicationContext ?: return) {
+                viewModel.fetchPlanList()
+            }
+
+        }
+    }
+
+    fun queryPurchases(){
+        viewModel.queryPurchases()
+    }
+
     override fun onPlanClicked(skuDetails: SkuDetails) {
-        viewModel.startBillingFlow(activity as Activity, skuDetails)
+        if (!isAdmin){
+            viewModel.startBillingFlow(activity as Activity, skuDetails)
+        }
     }
 
     private fun registerObservers() {
         viewModel.listPlansLiveData.observe(this, Observer {
-            var listPlansString = arrayListOf<String>()
+            val listPlansString = arrayListOf<String>()
             it?.forEach {plans ->
-              listPlansString.add(plans.plan_id)
+                listPlansString.add(plans.plan_id)
             }
             viewModel.loadProducstCatalog(listPlansString)
         })
-
-        viewModel.listPlanDetailsLiveData.observe(this, Observer {
-            if (it != null) {
+        viewModel.listPlanSubsDetailsLiveData.observe(this, Observer {
+            if (it != null){
+                progress_loading_plans?.visibility = View.GONE
                 adapter.plansList = it
-                progress_loading_plans?.visibility = View.GONE
-            }else{
-                progress_loading_plans?.visibility = View.GONE
             }
         })
+        viewModel.listPurchasesLiveData.observe(this, Observer {
+            if (it != null){
+                setupUserHasPlan(it)
+            }
+        })
+
     }
 
+    fun setupUserHasPlan(listPurchase: ArrayList<Purchase>){
+        tv_user_see_plans?.visibility = View.GONE
+        frame_layout_recycle?.visibility = View.GONE
+        layout_has_plan?.visibility = View.VISIBLE
+        tv_user_plan_title?.text = listPurchase[0].sku
 
+        btn_update_plan?.setOnClickListener {
+            manageAccount()
+        }
+
+    }
+
+    fun manageAccount(){
+        val browserIntent = Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/account/subscriptions"))
+        startActivity(browserIntent)
+    }
 
     private fun setupRecyclerPlans() {
         recycler_plans?.layoutManager = LinearLayoutManager(context)

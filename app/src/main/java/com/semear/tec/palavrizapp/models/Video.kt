@@ -6,7 +6,7 @@ import com.google.firebase.database.Exclude
 
 class Video(var orderVideo: String = "0", var videoPlan: String? = "", var videoKey: String = "", var title: String = "", var description: String = "", var category: String = "", var path: String = "", var videoThumb: String? = null, var pdfPath: String? = null, var themeName: String = "", var concept: String = "", var structure: String = "") : Parcelable {
     @get:Exclude
-    var listOfPlans: ArrayList<Plans>? = arrayListOf()
+    var listOfPlans: ArrayList<String>? = arrayListOf()
 
     constructor(source: Parcel) : this(
             source.readString(),

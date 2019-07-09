@@ -60,6 +60,7 @@
     <string name="advanced_plan_title">Plano Avançado</string>
     <string name="advanced_plan_text">Utilize toda a nossa plataforma sem limite de acesso</string>
     <string name="btn_update">Atualizar Plano</string>
+    <string name="btn_update_plan">Gerenciar Plano</string>
 
     <!-- Temas -->
     <string name="card_title_themes">Temas</string>
@@ -280,6 +281,19 @@
 
     <string name="your_plan_label">Seu Plano:</string>
     <string name="your_plan_expiration_date">Expira em:</string>
+
+    <string name="p1w">por semana</string>
+    <string name="p1m">por mês</string>
+    <string name="p3m">por 3 meses</string>
+    <string name="p6m">por 6 meses</string>
+    <string name="p1y">por ano</string>
+
+    <string name="estrutura">Estrutura</string>
+    <string name="conceito">Conceito</string>
+    <string name="tema">Tema</string>
+
+    <string name="no_plan">Veja o melhor plano que se encaixa pra você</string>
+
 
 
 </resources>

@@ -11,7 +11,7 @@ public class User implements Parcelable {
     private String password;
     private String location;
     private UserType userType;
-    private Plans plan;
+    private String plan_id;
     private String photoUri;
     private Long registerDate;
 
@@ -65,12 +65,12 @@ public class User implements Parcelable {
         this.userType = userType;
     }
 
-    public Plans getPlan() {
-        return plan;
+    public String getPlan() {
+        return plan_id;
     }
 
-    public void setPlan(Plans plan) {
-        this.plan = plan;
+    public void setPlan(String plan) {
+        this.plan_id = plan;
     }
 
     public String getPhotoUri() {
@@ -102,7 +102,7 @@ public class User implements Parcelable {
         dest.writeString(this.password);
         dest.writeString(this.location);
         dest.writeInt(this.userType == null ? -1 : this.userType.ordinal());
-        dest.writeInt(this.plan == null ? -1 : this.plan.ordinal());
+        dest.writeString(this.plan_id);
         dest.writeString(this.photoUri);
         dest.writeValue(this.registerDate);
     }
@@ -115,8 +115,7 @@ public class User implements Parcelable {
         this.location = in.readString();
         int tmpUserType = in.readInt();
         this.userType = tmpUserType == -1 ? null : UserType.values()[tmpUserType];
-        int tmpPlan = in.readInt();
-        this.plan = tmpPlan == -1 ? null : Plans.values()[tmpPlan];
+        this.plan_id = in.readString();
         this.photoUri = in.readString();
         this.registerDate = (Long) in.readValue(Long.class.getClassLoader());
     }

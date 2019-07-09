@@ -68,9 +68,6 @@ class MyEssayActivity : AppCompatActivity() {
     }
 
     private fun setupListeners(){
-        btn_first_essay.setOnClickListener {
-            checkCameraPermission()
-        }
         btn_send_essay.setOnClickListener{
             viewmodel?.fetchThemes {
                 DialogHelper.createThemePickerDialog(this,it,

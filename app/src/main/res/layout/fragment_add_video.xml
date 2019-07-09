@@ -81,6 +81,54 @@
                 android:layout_height="wrap_content" />
 
 
+
+
+            <RadioGroup
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:id="@+id/radioGroupVideoInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+
+                <RadioButton
+                    android:id="@+id/radio_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@color/colorSecondaryText"
+                    android:fontFamily="@font/titillium_light"
+                    android:text="@string/tema"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_concept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/colorSecondaryText"
+                    android:fontFamily="@font/titillium_light"
+                    android:text="@string/conceito"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_structure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/colorSecondaryText"
+                    android:fontFamily="@font/titillium_light"
+                    android:text="@string/estrutura"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="16sp" />
+
+            </RadioGroup>
+
+
             <Spinner
                 android:id="@+id/spinner_theme"
                 android:layout_width="match_parent"
@@ -88,12 +136,15 @@
                 android:layout_height="wrap_content"/>
 
 
+
             <LinearLayout
+                android:id="@+id/layout_picker_structure"
                 android:orientation="horizontal"
                 android:layout_margin="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="100">
+
 
                 <Spinner
                     android:id="@+id/spinner_structure"
@@ -110,9 +161,11 @@
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_margin="16dp"
+                android:id="@+id/layout_picker_concept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="100">

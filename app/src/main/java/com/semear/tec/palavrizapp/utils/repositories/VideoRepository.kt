@@ -2,6 +2,7 @@ package com.semear.tec.palavrizapp.utils.repositories
 
 import android.content.Context
 import com.semear.tec.palavrizapp.models.*
+import com.semear.tec.palavrizapp.utils.constants.Constants
 
 class VideoRepository(val context: Context) {
 
@@ -14,7 +15,7 @@ class VideoRepository(val context: Context) {
     }
 
     fun getAllVideos(onCompletion: ((ArrayList<Video>) -> Unit)){
-        realtimeRepository.getVideosList(Plans.NO_PLAN, onCompletion)
+        realtimeRepository.getVideosList(Constants.NO_PLAN, onCompletion)
     }
 
     fun getNextVideo(actualOrder: String, onCompletion: ((Video?) -> Unit)){

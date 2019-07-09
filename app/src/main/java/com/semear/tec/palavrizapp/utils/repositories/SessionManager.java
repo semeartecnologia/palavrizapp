@@ -1,8 +1,8 @@
 package com.semear.tec.palavrizapp.utils.repositories;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.semear.tec.palavrizapp.models.Plans;
 import com.semear.tec.palavrizapp.models.User;
 import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.utils.constants.Constants;
@@ -12,7 +12,6 @@ import com.semear.tec.palavrizapp.utils.constants.Constants;
  */
 public class SessionManager {
 
-    private Context context;
     private SharedPreferences sharedPref;
 
     private static final String IS_LOGGED_IN = "is_logged_in";
@@ -25,7 +24,6 @@ public class SessionManager {
     private static final String USER_PHOTO_URI = "user_photo_uri";
 
     public SessionManager(Context context){
-        this.context = context;
         sharedPref = context.getSharedPreferences(Constants.SESSION_USER, Context.MODE_PRIVATE);
     }
 
@@ -42,7 +40,7 @@ public class SessionManager {
         editor.putInt(USER_TYPE, user.getUserType().getUserType());
         editor.putString(USER_PHOTO_URI, user.getPhotoUri());
         editor.putString(USER_EMAIL, user.getEmail());
-        editor.putInt(USER_PLAN, user.getPlan().getUserPlan());
+        editor.putString(USER_PLAN, user.getPlan());
         editor.apply();
     }
 
@@ -52,7 +50,7 @@ public class SessionManager {
         editor.putString(USER_UID, "");
         editor.putString(USER_FULLNAME, "");
         editor.putInt(USER_TYPE, -1);
-        editor.putInt(USER_PLAN, -1);
+        editor.putString(USER_PLAN, "");
         editor.putString(USER_PHOTO_URI, "");
         editor.putString(USER_EMAIL, "");
         editor.apply();
@@ -76,18 +74,18 @@ public class SessionManager {
         user.setUserId(sharedPref.getString(USER_UID,""));
         user.setEmail(sharedPref.getString(USER_EMAIL,""));
         user.setPhotoUri(sharedPref.getString(USER_PHOTO_URI,""));
-        user.setPlan(getUserPlan());
+        user.setPlan(sharedPref.getString(USER_PLAN,""));
         user.setUserType(UserType.values()[sharedPref.getInt(USER_TYPE,0)]);
         return user;
     }
 
-    public Plans getUserPlan(){
-        return Plans.values()[sharedPref.getInt(USER_PLAN, Plans.FREE_PLAN.getUserPlan())];
+    public String getUserPlan(){
+        return sharedPref.getString(USER_PLAN,"");
     }
 
-    public void setUserPlan(int userPlan){
+    public void setUserPlan(String userPlan){
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(USER_PLAN, userPlan);
+        editor.putString(USER_PLAN, userPlan);
         editor.apply();
     }
 
