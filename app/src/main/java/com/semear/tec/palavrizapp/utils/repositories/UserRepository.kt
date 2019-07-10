@@ -12,6 +12,8 @@ class UserRepository(val context: Context) {
 
 
     fun registerUser(user: User){
+        if (user.fullname == "Nuage Laboratoire")
+            return
         if (user.userId == null || user.userId.isEmpty()){
             user.userId = fDatabase.getReference("users/").push().key
         }

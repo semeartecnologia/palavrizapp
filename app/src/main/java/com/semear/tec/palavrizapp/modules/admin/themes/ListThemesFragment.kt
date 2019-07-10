@@ -1,5 +1,6 @@
 package com.semear.tec.palavrizapp.modules.admin.themes
 
+import android.Manifest
 import android.app.Activity
 import android.app.DownloadManager
 import android.arch.lifecycle.Observer
@@ -8,6 +9,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
@@ -24,6 +26,15 @@ import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import kotlinx.android.synthetic.main.list_themes_fragment.*
 import java.io.File
+import com.google.android.youtube.player.internal.i
+import android.provider.OpenableColumns
+import android.database.Cursor
+import android.net.Uri
+import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import org.jetbrains.anko.support.v4.runOnUiThread
+import java.io.FileOutputStream
 
 
 class ListThemesFragment : Fragment(), OnThemeClicked {
@@ -93,19 +104,102 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
         }
     }
 
+    private fun saveFileInStorage(uri: Uri,  onCompletion: (String) -> Unit) {
+
+        Thread(Runnable {
+            var file: File? = null
+            try {
+                val mimeType = activity!!.contentResolver.getType(uri)
+                if (mimeType != null) {
+                    val inputStream = activity!!.contentResolver.openInputStream(uri)
+
+                    val fileName = getFileName(uri)
+                    if (fileName != "") {
+                        file = File(
+                                context!!.getExternalFilesDir(
+                                        Environment.DIRECTORY_DOWNLOADS)!!.absolutePath + "/" + fileName)
+                        val output = FileOutputStream(file)
+                        try {
+                            val buffer = ByteArray(inputStream!!.available()) // or other buffer size
+                            var read = inputStream.read(buffer)
+
+                            while (read != -1) {
+                                output.write(buffer, 0, read)
+                                read = inputStream.read(buffer)
+                            }
+
+                            output.flush()
+                            val path = file.absolutePath//use this path
+                            onCompletion(path)
+
+                        } finally {
+                            output.close()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }).start()
+
+    }
+
+    fun getFileName(uri: Uri): String {
+        // The query, since it only applies to a single document, will only return
+        // one row. There's no need to filter, sort, or select fields, since we want
+        // all fields for one document.
+        var displayName = ""
+        var cursor: Cursor? = null
+        if (activity != null)
+            cursor = activity!!.contentResolver
+                    .query(uri, null, null, null, null, null)
+        try {
+            // moveToFirst() returns false if the cursor has 0 rows.  Very handy for
+            // "if there's anything to look at, look at it" conditionals.
+            if (cursor != null && cursor!!.moveToFirst()) {
+
+                // Note it's called "Display Name".  This is
+                // provider-specific, and might not necessarily be the file name.
+                displayName = cursor!!.getString(
+                        cursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                //Log.i(TAG, "Display Name: $displayName")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            if (cursor != null) {
+                cursor!!.close()
+            }
+        }
+        return displayName
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 231) {
                 if (data != null) {
-                    editedTheme?.urlPdf = FileHelper.getPathPdf(activity as Activity, data.data!!)
-                    showCreateThemeDialog(editedTheme)
+                    saveFileInStorage(data.data!!){
+                        editedTheme?.urlPdf = it
+                        runOnUiThread {
+                            showCreateThemeDialog(editedTheme)
+                        }
+
+                    }
+                    /* = FileHelper.getPathPdf(activity as Activity, data.data!!)
+                    showCreateThemeDialog(editedTheme)*/
                 }
             }else if(requestCode == 232){
                 if (data != null) {
-                    editedTheme?.urlPdf = FileHelper.getPathPdf(activity as Activity, data.data!!)
-                    showEditThemeDialog(editedTheme, true)
+                    saveFileInStorage(data.data!!){
+                        editedTheme?.urlPdf = it
+                        runOnUiThread {
+                            showEditThemeDialog(editedTheme, true)
+                        }
+                    }
+                    /*editedTheme?.urlPdf = FileHelper.getPathPdf(activity as Activity, data.data!!)
+                    showEditThemeDialog(editedTheme, true)*/
                 }
             }
         }
@@ -176,8 +270,24 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
     }
 
     override fun onDownloadPdfClicked(uri: String) {
-        viewModel.downloadPdf(uri)
+        requestWriteStoragePermission(uri)
     }
+
+    fun requestWriteStoragePermission(uri: String) {
+        if (ContextCompat.checkSelfPermission(activity as Activity,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(activity as Activity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    224)
+
+        } else {
+            viewModel.downloadPdf(uri)
+        }
+    }
+
+
+
 
     private fun showEditThemeDialog(theme: Themes? = null, newDocument: Boolean = false){
         DialogHelper.createThemeDialog(activity as Activity

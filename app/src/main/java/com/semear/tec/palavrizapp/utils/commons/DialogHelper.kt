@@ -75,16 +75,19 @@ object DialogHelper {
                 view.btn_attachment_pdf_theme.isEnabled = false
             }
         }
+        if (!titleEditText?.text.isNullOrBlank()){
+            view.btn_create_theme.isEnabled = true
+        }
         titleEditText?.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                view.btn_create_theme.isEnabled = s?.isEmpty() != true
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                view.btn_create_theme.isEnabled = s?.isEmpty() != true
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                view.btn_create_theme.isEnabled = s?.isEmpty() != true
             }
 
         })

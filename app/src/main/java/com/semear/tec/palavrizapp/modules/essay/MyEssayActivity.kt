@@ -87,19 +87,33 @@ class MyEssayActivity : AppCompatActivity() {
                                 checkCameraPermission()
                             }
                         },{ url ->
-                            //pdf clicked
-                    viewmodel?.downloadPdf(url){filename ->
-                        val fhirPath = Environment
-                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                        val file = File(fhirPath, "$filename.pdf")
-                        FileHelper.openPdf(this, file)
+                    //pdf clicked
+                    requestWriteStoragePermission(url)
 
-                    }
+
 
                 })
             }
             //DialogHelper.createThemePickerDialog(this,)
             //
+        }
+    }
+
+    fun requestWriteStoragePermission(uri: String) {
+        if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    224)
+
+        } else {
+            viewmodel?.downloadPdf(uri) { filename ->
+                val fhirPath = Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                val file = File(fhirPath, "$filename.pdf")
+                FileHelper.openPdf(this, file)
+            }
         }
     }
 
