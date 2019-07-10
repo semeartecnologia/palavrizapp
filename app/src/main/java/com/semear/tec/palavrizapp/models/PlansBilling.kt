@@ -4,6 +4,9 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class PlansBilling(var plan_id: String = "", var limitEssay: Int? = null, var period: EnumPeriod? = null) : Parcelable {
+
+    var planFirebaseKey: String = ""
+
     constructor(source: Parcel) : this(
             source.readString(),
             source.readValue(Int::class.java.classLoader) as Int?,

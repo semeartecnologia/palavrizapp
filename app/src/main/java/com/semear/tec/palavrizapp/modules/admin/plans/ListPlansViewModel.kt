@@ -19,6 +19,8 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
     private val plansRepository = PlansRepository(application)
     private val sessionManager = SessionManager(application)
     val listPlansLiveData = MutableLiveData<ArrayList<PlansBilling>>()
+    val planLiveData = MutableLiveData<ArrayList<PlansBilling>>()
+
     val listPlanSubsDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
     val listPurchasesLiveData = MutableLiveData<ArrayList<Purchase>>()
     private var mBillingClient: BillingClient? = null
@@ -34,6 +36,18 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
         plansRepository.getPlans {
             listPlansLiveData.postValue(it)
         }
+    }
+
+    fun deletePlan(planId: String){
+        plansRepository.deletePlan(planId)
+    }
+
+    fun getPlan(value: String, onCompletion: (ArrayList<PlansBilling>) -> Unit){
+        plansRepository.getPlansByValue(value, onCompletion)
+    }
+
+    fun editPlan(planId: String, plansBilling: PlansBilling){
+        plansRepository.editPlan(planId, plansBilling){}
     }
 
     override fun onPurchasesUpdated(billingResult: BillingResult?, purchases: MutableList<Purchase>?) {

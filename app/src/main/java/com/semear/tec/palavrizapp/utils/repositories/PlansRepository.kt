@@ -17,11 +17,23 @@ class PlansRepository(val context: Context) {
         realtimeRepository.getPlans(onCompletion)
     }
 
+    fun getPlansByValue(value: String, onCompletion: (ArrayList<PlansBilling>) -> Unit){
+        realtimeRepository.getPlansByValue(value, onCompletion)
+    }
+
     fun editUserPlan(plan: String, onCompletion: () -> Unit){
         realtimeRepository.editUserPlan(plan, sessionManager.userLogged, onCompletion)
     }
 
     fun getSinglePlans(onCompletion: (ArrayList<PlansBilling>) -> Unit){
         realtimeRepository.getSinglePlans(onCompletion)
+    }
+
+    fun deletePlan(planId: String){
+        realtimeRepository.deletePlan(planId)
+    }
+
+    fun editPlan(planId: String, plansBilling: PlansBilling, onCompletion: () -> Unit){
+        realtimeRepository.editPlan(planId, plansBilling, onCompletion)
     }
 }

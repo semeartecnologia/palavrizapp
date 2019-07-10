@@ -268,6 +268,8 @@ class RealtimeRepository(val context: Context) {
         if (key == null){
             key = "-" + System.currentTimeMillis().toString()
         }
+        plansBilling.planFirebaseKey = key
+
         mDatabaseReference.child(reference).child("$key/").setValue(plansBilling).addOnCompleteListener {
             onCompletion.invoke()
         }
@@ -278,6 +280,25 @@ class RealtimeRepository(val context: Context) {
         var plansList = arrayListOf<PlansBilling>()
         val queryReference = mDatabaseReference.child(reference)
         queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                plansList.clear()
+                dataSnapshot.children.mapNotNullTo(plansList) { it.getValue<PlansBilling>(PlansBilling::class.java) }
+                onCompletion(plansList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(plansList)
+            }
+        })
+    }
+
+    fun getPlansByValue(value: String, onCompletion: (ArrayList<PlansBilling>) -> Unit){
+        val reference = "plans/"
+        var plansList = arrayListOf<PlansBilling>()
+        val queryReference = mDatabaseReference.child(reference)
+                .orderByChild("plan_id")
+                .equalTo(value)
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 plansList.clear()
                 dataSnapshot.children.mapNotNullTo(plansList) { it.getValue<PlansBilling>(PlansBilling::class.java) }
@@ -324,6 +345,18 @@ class RealtimeRepository(val context: Context) {
     fun deleteTheme(themeId: String){
         val reference = "themes/"
         mDatabaseReference.child(reference).child(themeId).removeValue()
+    }
+
+    fun editPlan(planId: String, plansBilling: PlansBilling, onCompletion: () -> Unit){
+        val reference = "plans/"
+        mDatabaseReference.child(reference).child("$planId/").setValue(plansBilling).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun deletePlan(planId: String){
+        val reference = "plans/"
+        mDatabaseReference.child(reference).child(planId).removeValue()
     }
 
     fun deleteUser(userId: String){

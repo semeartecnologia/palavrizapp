@@ -20,6 +20,7 @@ import com.semear.tec.palavrizapp.utils.adapters.ListPlansAdapter
 import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 import com.semear.tec.palavrizapp.utils.interfaces.OnPlanClicked
 import kotlinx.android.synthetic.main.list_plans_fragment.*
+import org.jetbrains.anko.support.v4.onUiThread
 
 
 class ListPlansFragment : Fragment(), OnPlanClicked {
@@ -112,6 +113,21 @@ class ListPlansFragment : Fragment(), OnPlanClicked {
     override fun onPlanClicked(skuDetails: SkuDetails) {
         if (!isAdmin){
             viewModel.startBillingFlow(activity as Activity, skuDetails)
+        }else{
+            viewModel.getPlan(skuDetails.sku){
+                var a = it
+                DialogHelper.createAddPlanDialog(activity as Activity
+                        ,true,
+                        a[0],
+                        {pb ->
+                            viewModel.editPlan(a[0].planFirebaseKey, pb)
+                        },
+                        {
+
+                        },{
+                    viewModel.deletePlan(a[0].planFirebaseKey)
+                })
+            }
         }
     }
 

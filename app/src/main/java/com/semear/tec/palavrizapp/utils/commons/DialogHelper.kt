@@ -278,7 +278,8 @@ object DialogHelper {
         val view = activity.layoutInflater.inflate(R.layout.dialog_add_plan, null, true)
 
         val idPlanEditText = view.findViewById<TextInputEditText>(R.id.et_plan_id)
-        val qntLimitEssayEditText = view.findViewById<TextInputEditText>(R.id.et_essay_limit_quant)
+        val idPlanEditText2 = view.findViewById<TextInputEditText>(R.id.et_plan_id2)
+       // val qntLimitEssayEditText = view.findViewById<TextInputEditText>(R.id.et_essay_limit_quant)
         val checkboxIsActive = view.findViewById<CheckBox>(R.id.check_active_limit)
         val radioDay = view.findViewById<RadioButton>(R.id.radio_day)
         val radioWeek = view.findViewById<RadioButton>(R.id.radio_week)
@@ -289,8 +290,9 @@ object DialogHelper {
             val limitEssay = plansBilling.limitEssay
             val period = plansBilling.period
             if (limitEssay != null){
-                checkboxIsActive.isEnabled = true
-                qntLimitEssayEditText.setText(limitEssay)
+                idPlanEditText2.setText(plansBilling.limitEssay.toString())
+                checkboxIsActive.isChecked = true
+                //view.et_essay_limit_quant.setText(limitEssay)
 
                 if (period != null){
                     when {
@@ -300,17 +302,18 @@ object DialogHelper {
                     }
                 }
             }else{
-                checkboxIsActive.isEnabled = false
+                checkboxIsActive.isChecked = false
             }
 
             if (isEdit == true) {
+                idPlanEditText.isEnabled = false
                 view.create_structure_add_plan.text = activity.getString(R.string.edit_plan_label)
                 view.btn_create_plan.text = activity.getString(R.string.create_theme_edit_option)
             }
         }
 
         if (!idPlanEditText?.text.isNullOrBlank()){
-            view.btn_create_concept.isEnabled = true
+            view.btn_create_plan.isEnabled = true
         }
         idPlanEditText?.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -340,7 +343,7 @@ object DialogHelper {
 */
 
         checkboxIsActive.setOnCheckedChangeListener { buttonView, isChecked ->
-            qntLimitEssayEditText.isEnabled = isChecked
+            //qntLimitEssayEditText.isEnabled = isChecked
             radioDay.isEnabled = isChecked
             radioMonth.isEnabled = isChecked
             radioWeek.isEnabled = isChecked
@@ -371,7 +374,7 @@ object DialogHelper {
                         period = EnumPeriod.MENSAL
                     }
 
-                    createCallback.invoke(PlansBilling(idPlanEditText.text.toString(), qntLimitEssayEditText.text.toString().toInt(), period))
+                    createCallback.invoke(PlansBilling(idPlanEditText.text.toString(), idPlanEditText2.text.toString().toInt(), period))
                 } else {
                     createCallback.invoke(PlansBilling(idPlanEditText.text.toString(), null, null))
                 }
@@ -390,7 +393,7 @@ object DialogHelper {
                             period = EnumPeriod.MENSAL
                         }
                         plansBilling.period = period
-                        plansBilling.limitEssay = qntLimitEssayEditText.text.toString().toInt()
+                        plansBilling.limitEssay = idPlanEditText2.text.toString().toInt()
                     } else {
                         plansBilling.period = null
                         plansBilling.limitEssay = null
@@ -471,14 +474,6 @@ object DialogHelper {
         spUserUserType.setSelection(user.userType.userType)
 
         spUserPlans.setText(user.plan)
-        /*val adapterPlans = ArrayAdapter<String>(activity,
-                android.R.layout.simple_spinner_item, listPlans)
-
-        adapterPlans.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spUserPlans.adapter = adapterPlans
-        adapterPlans.notifyDataSetChanged()
-        val position = adapterPlans.getPosition(user.plan)
-        spUserPlans.setSelection(position)*/
 
 
 
