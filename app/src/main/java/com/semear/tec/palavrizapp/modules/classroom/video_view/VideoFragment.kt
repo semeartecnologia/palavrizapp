@@ -1,7 +1,6 @@
 package com.semear.tec.palavrizapp.modules.classroom.video_view
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
@@ -11,10 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -23,21 +19,22 @@ import com.google.android.exoplayer2.util.Util
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.modules.classroom.FullscreenVideoActivity
 import kotlinx.android.synthetic.main.video_view_fragment.*
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.FileDataSource.FileDataSourceException
-import com.google.android.exoplayer2.upstream.DataSpec
-import com.google.android.exoplayer2.upstream.FileDataSource
+import com.google.android.exoplayer2.ExoPlayer
+import com.semear.tec.palavrizapp.utils.repositories.SessionManager
+import org.json.JSONObject
+import java.math.BigDecimal
 
 
 class VideoFragment: Fragment() {
 
     private lateinit var player: SimpleExoPlayer
     private var videoUrl = ""
+    private var videoKey = ""
     private var position: Long = 0
     private var window = 0
     private var playWhenReady: Boolean = true
     private lateinit var videoViewModel: VideoViewModel
+    private var sessionManager: SessionManager? = null
 
 
 
@@ -50,9 +47,14 @@ class VideoFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
+        initSessionManager()
         getExtras()
         setupView()
         initPlayer()
+    }
+
+    private fun initSessionManager() {
+        sessionManager = SessionManager(activity)
     }
 
     private fun initViewModel(){
@@ -63,6 +65,17 @@ class VideoFragment: Fragment() {
         configFullscreenListener()
     }
 
+    private fun configListenerProgress() {
+        player.addListener(object: Player.EventListener{
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                    val realDurationMillis = player.getDuration()
+                Log.d("ala2", "CARAJO: $realDurationMillis")
+
+
+            }
+        })
+    }
+
     private fun configFullscreenListener(){
         val controlView = player_view.findViewById<View>(R.id.exo_controller)
         val fullscreenButton = controlView.findViewById<View>(R.id.exo_fullscreen_button)
@@ -70,6 +83,7 @@ class VideoFragment: Fragment() {
             val it = Intent(activity, FullscreenVideoActivity::class.java)
             it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             it.putExtra("urlVideo", videoUrl)
+            it.putExtra("videoKey", videoKey)
             it.putExtra("position", player.currentPosition)
             it.putExtra("window", player.currentWindowIndex)
 
@@ -81,6 +95,7 @@ class VideoFragment: Fragment() {
         videoUrl = getVideoUrl() ?: ""
         position = getPosition() ?: 0
         window = getWindow() ?: 0
+        videoKey = getVideoKey() ?: ""
     }
 
     private fun getVideoUrl(): String? {
@@ -93,11 +108,17 @@ class VideoFragment: Fragment() {
         return arguments?.getInt("window")
     }
 
+    private fun getVideoKey(): String? {
+        return arguments?.getString("videoKey")
+    }
+
+
     companion object {
-        fun newInstance(videoUrl: String): VideoFragment {
+        fun newInstance(videoUrl: String, videoKey: String? = ""): VideoFragment {
             val fragment = VideoFragment()
             val args = Bundle()
             args.putString("videoUrl", videoUrl)
+            args.putString("videoKey", videoKey)
             fragment.arguments = args
             return fragment
         }
@@ -114,6 +135,9 @@ class VideoFragment: Fragment() {
         prepareMediaSource()
         player.playWhenReady = true
         player.seekTo(window, position)
+
+
+        configListenerProgress()
 
     }
 
@@ -158,8 +182,43 @@ class VideoFragment: Fragment() {
         }
     }
 
+    private fun refreshJsonProgress(){
+        val currentPosition = player.currentPosition
+        val duration = player.duration
+        val percentWatched = (currentPosition.toFloat()/duration.toFloat())*100
+
+        val currentJson = sessionManager?.videosProgress
+
+        if (currentJson != null){
+            try{
+                val getValue = currentJson.get(videoKey)
+
+                if (getValue != null){
+                    val currentProgress = BigDecimal.valueOf(currentJson.getDouble(videoKey)).toFloat();
+                    if (currentProgress < percentWatched){
+                        currentJson.put(videoKey, percentWatched)
+                        sessionManager?.saveVideosProgess(currentJson)
+                    }
+                }else {
+                    currentJson.put(videoKey, percentWatched)
+                    sessionManager?.saveVideosProgess(currentJson)
+                }
+            }catch (e: Exception){
+                currentJson.put(videoKey, percentWatched)
+                sessionManager?.saveVideosProgess(currentJson)
+            }
+        }else{
+            val json = JSONObject()
+            json.put(videoKey,percentWatched)
+            sessionManager?.saveVideosProgess(json)
+        }
+    }
+
     override fun onStop() {
         super.onStop()
+
+        refreshJsonProgress()
+
         if (Util.SDK_INT > 23) {
             releasePlayer()
         }

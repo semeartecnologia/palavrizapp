@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.Video
@@ -13,6 +14,8 @@ import com.semear.tec.palavrizapp.utils.commons.ItemDragCallback
 import com.semear.tec.palavrizapp.utils.interfaces.OnVideoEvent
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
 import com.squareup.picasso.Picasso
+import org.json.JSONObject
+import java.math.BigDecimal
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -22,21 +25,49 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
     var listVideosBackup: ArrayList<Video> = ArrayList()
     private lateinit var ctx: Context
     private var videoRepository: VideoRepository? = null
+    private var jsonProgress: JSONObject? = null
+    var listVideosWatchedAlready: ArrayList<Video> = ArrayList()
 
-    fun addAllVideo(v: ArrayList<Video>) {
+    fun addAllVideo(v: ArrayList<Video>, jsonProgress: JSONObject? = null) {
         this.listVideos.clear()
+        listVideosWatchedAlready.clear()
         v.forEach {
             it.orderVideo = this.listVideos.size.toString()
-            this.listVideos.add(it)
+
+            if (jsonProgress != null){
+                try{
+                    val getValue = jsonProgress.get(it.videoKey)
+                    if (getValue != null){
+                        val currentProgress = BigDecimal.valueOf(jsonProgress.getDouble(it.videoKey) ?: 0.toDouble()).toFloat()
+                        it.quantVideoWached = currentProgress.toInt()
+                    }
+                }catch (e: Exception){
+
+                }
+            }
+            if (it.quantVideoWached >= 100){
+                this.listVideosWatchedAlready.add(it)
+            }else{
+                this.listVideos.add(it)
+            }
+
         }
         this.listVideosBackup.clear()
         this.listVideosBackup.addAll(listVideos)
 
+
+        this.jsonProgress = jsonProgress
+
+        this.listVideos.addAll(this.listVideosWatchedAlready)
         this.notifyDataSetChanged()
     }
 
     fun clearVideoList() {
         this.listVideos.clear()
+    }
+
+    fun associateVideoWatched(){
+
     }
 
 
@@ -87,6 +118,19 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         viewHolder.concept.text = video.concept
         viewHolder.theme.text = video.themeName
 
+        if (jsonProgress != null){
+            try{
+            val getValue = jsonProgress?.get(video.videoKey)
+                if (getValue != null){
+                    val currentProgress = BigDecimal.valueOf(jsonProgress?.getDouble(video.videoKey) ?: 0.toDouble()).toFloat()
+                    viewHolder.progress.progress = currentProgress.toInt()
+                }
+            }catch (e: Exception){
+
+            }
+
+        }
+
         videoRepository?.getThumnailDownloadUrl(video.videoThumb ?: "") {
             if (!it.isBlank()) {
                 Picasso.get().load(it).into(viewHolder.videoThumb)
@@ -112,6 +156,7 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         var structure: TextView
         var concept: TextView
         var theme: TextView
+        var progress: ProgressBar
         internal var videoThumb: ImageView
 
         init {
@@ -121,6 +166,7 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
             structure = itemView.findViewById(R.id.tv_structure_video)
             concept = itemView.findViewById(R.id.tv_concept_video)
             theme = itemView.findViewById(R.id.tv_theme_video)
+            progress = itemView.findViewById(R.id.progress_video_watched)
         }
     }
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 
 class VideoViewModel: ViewModel() {
 
+
     var currentWindow = 0
     var currentPosition: Long = 0
 

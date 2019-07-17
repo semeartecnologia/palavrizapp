@@ -7,6 +7,9 @@ import com.semear.tec.palavrizapp.models.User;
 import com.semear.tec.palavrizapp.models.UserType;
 import com.semear.tec.palavrizapp.utils.constants.Constants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Classe Cache do Usuario
  */
@@ -22,6 +25,7 @@ public class SessionManager {
     private static final String FIRST_TIME = "first_time";
     private static final String USER_EMAIL = "user_email";
     private static final String USER_PHOTO_URI = "user_photo_uri";
+    private static final String USER_VIDEO_PROGRESS = "user_video_progress";
 
     public SessionManager(Context context){
         sharedPref = context.getSharedPreferences(Constants.SESSION_USER, Context.MODE_PRIVATE);
@@ -87,6 +91,24 @@ public class SessionManager {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(USER_PLAN, userPlan);
         editor.apply();
+    }
+
+    public void saveVideosProgess(JSONObject jsonVideosProgress){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(USER_VIDEO_PROGRESS, jsonVideosProgress.toString());
+        editor.commit();
+    }
+
+    public JSONObject getVideosProgress(){
+        String strjSON = sharedPref.getString(USER_VIDEO_PROGRESS,"");
+        if (strjSON != null && !strjSON.isEmpty() ){
+            try {
+                return new JSONObject(strjSON);
+            } catch (JSONException e) {
+
+            }
+        }
+        return null;
     }
 
     /**

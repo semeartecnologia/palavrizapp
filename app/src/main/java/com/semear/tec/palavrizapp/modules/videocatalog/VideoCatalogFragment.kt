@@ -21,6 +21,7 @@ import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity
 import com.semear.tec.palavrizapp.utils.adapters.VideosAdapter
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.interfaces.OnVideoEvent
+import com.semear.tec.palavrizapp.utils.repositories.SessionManager
 import com.semear.tec.palavrizapp.utils.repositories.VideoRepository
 import kotlinx.android.synthetic.main.fragment_video_catalog.*
 
@@ -34,6 +35,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
     private var iv_filter_btn: ImageView? = null
     private var mAdapter: VideosAdapter? = null
     private var videoRepository: VideoRepository? = null
+    private var sessionManager: SessionManager? = null
     private var progressBar: ProgressBar? = null
     private var videoFilter: VideoFilter? = null
     private var theme_spinner: Spinner? = null
@@ -45,6 +47,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         videoCatalogViewModel = ViewModelProviders.of(this).get(VideoCatalogViewModel::class.java)
         if (activity != null) {
             videoRepository = VideoRepository(activity!!)
+            sessionManager = SessionManager(activity)
         }
     }
 
@@ -77,7 +80,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
                 }else{
                     videoFilter?.themeName = themeSelected
                 }
-                getVideoList(videoFilter)
+                //getVideoList(videoFilter)
             }
 
         }
@@ -103,7 +106,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
                 }else{
                     videoFilter?.concept = conceptSelected
                 }
-                getVideoList(videoFilter)
+                //getVideoList(videoFilter)
             }
 
         }
@@ -129,7 +132,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
                 }else{
                     videoFilter?.structure = structureSelected
                 }
-                getVideoList(videoFilter)
+                //getVideoList(videoFilter)
             }
 
         }
@@ -148,7 +151,6 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         theme_spinner = v.findViewById(R.id.theme_spinner)
         structure_spinner = v.findViewById(R.id.structure_spinner)
 
-        getVideoList()
         loadFilters()
         setupFilterButton()
     }
@@ -235,13 +237,20 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         }
 
 
+    override fun onResume() {
+        super.onResume()
+        getVideoList()
+    }
 
-        private fun getVideoList(videoFilter: VideoFilter? = null) {
+    private fun getVideoList(videoFilter: VideoFilter? = null) {
             if (activity == null) return
+
+            val jsonProgress = sessionManager?.videosProgress
+
             progressBar?.visibility = View.VISIBLE
             recyclerTheme1?.visibility = View.GONE
             videoRepository?.getVideoList(videoFilter) { videoList ->
-                mAdapter?.addAllVideo(videoList)
+                mAdapter?.addAllVideo(videoList, jsonProgress)
                 progressBar?.visibility = View.GONE
                 recyclerTheme1?.visibility = View.VISIBLE
             }

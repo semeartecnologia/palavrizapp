@@ -11,9 +11,9 @@ class UserRepository(val context: Context) {
     private var fDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
 
 
-    fun registerUser(user: User){
+    fun registerUser(user: User){/*
         if (user.fullname == "Nuage Laboratoire")
-            return
+            return*/
         if (user.userId == null || user.userId.isEmpty()){
             user.userId = fDatabase.getReference("users/").push().key
         }

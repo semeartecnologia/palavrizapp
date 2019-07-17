@@ -98,7 +98,7 @@ class ClassroomActivity : BaseActivity() {
     }*/
 
     private fun setupVideoFragment(videoPath: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoPath)).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoPath, video?.videoKey)).commit()
     }
 
     fun initViewModel(){
