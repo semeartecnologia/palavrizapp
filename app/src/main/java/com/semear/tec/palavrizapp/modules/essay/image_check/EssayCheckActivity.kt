@@ -24,12 +24,12 @@ import com.semear.tec.palavrizapp.utils.commons.DialogHelper
 
 class EssayCheckActivity : AppCompatActivity() {
 
-    var bmpImageEssay: Bitmap? = null
-    var essayRepository: EssayRepository? = null
+    private var bmpImageEssay: Bitmap? = null
+    private var essayRepository: EssayRepository? = null
     var sessionManager: SessionManager? = null
-    var themesRepository: ThemesRepository? = null
+    private var themesRepository: ThemesRepository? = null
 
-    var themeId: String? = ""
+    private var themeId: String? = ""
     var themeName: String? = ""
 
     private val RESULT_NEGATIVE = 404
@@ -49,7 +49,7 @@ class EssayCheckActivity : AppCompatActivity() {
         themesRepository = ThemesRepository(applicationContext)
     }
 
-    fun setupExtras(){
+    private fun setupExtras(){
         if (intent != null) {
             bmpImageEssay = intent?.getParcelableExtra(Constants.EXTRA_IMAGE_CHECK)
             themeId = intent?.getStringExtra(Constants.EXTRA_ESSAY_THEME_ID)
@@ -59,30 +59,8 @@ class EssayCheckActivity : AppCompatActivity() {
     }
 
 
-    private fun showLoadingProgress(show: Boolean){
-        if (show){
-            progress_loading_themes?.visibility = View.VISIBLE
-        }else{
-            progress_loading_themes?.visibility = View.GONE
-        }
-    }
-
-    private fun showFieldsDialogInserTitleAndTheme(show: Boolean){
-        if (show){
-            dialog_title_theme_label?.visibility = View.VISIBLE
-            et_title_essay?.visibility = View.VISIBLE
-            btn_send_essay?.visibility = View.VISIBLE
-        }else{
-            dialog_title_theme_label?.visibility = View.GONE
-            et_title_essay?.visibility = View.GONE
-            btn_send_essay?.visibility = View.GONE
-        }
-    }
-
     private fun setupView(){
         btn_negative.setOnClickListener {
-            /*setResult(RESULT_NEGATIVE)
-            finish()*/
             DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_try_again_text),{
                 setResult(RESULT_NEGATIVE)
                 finish()
@@ -94,32 +72,10 @@ class EssayCheckActivity : AppCompatActivity() {
 
         btn_positive.setOnClickListener {
             dialog_is_readable.visibility = View.GONE
-            dialog_title_essay.visibility = View.VISIBLE
-            showLoadingProgress(true)
-            showFieldsDialogInserTitleAndTheme(false)
-        }
-        et_title_essay.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                btn_send_essay.isEnabled = s != null && s.isNotBlank()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-        })
-        btn_send_essay.setOnClickListener {
-            btn_send_essay.isEnabled = false
-            layout_sendind_progress.visibility = View.VISIBLE
-            et_title_essay?.visibility = View.GONE
-            val title = et_title_essay?.text.toString()
             val user = sessionManager?.userLogged
 
-            /*val themeId = themeHash[theme_spinner?.selectedItem.toString().trim()]*/
-            val essay = Essay(title, themeName ?: return@setOnClickListener, themeId ?: return@setOnClickListener, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
-
+            val essay = Essay("", themeName ?: return@setOnClickListener, themeId ?: return@setOnClickListener, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
+            layout_sendind_progress.visibility = View.VISIBLE
             essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
 
                 @SuppressLint("CheckResult")
@@ -142,5 +98,6 @@ class EssayCheckActivity : AppCompatActivity() {
 
             })
         }
+
     }
 }
