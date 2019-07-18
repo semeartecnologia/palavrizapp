@@ -520,12 +520,16 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
-    fun getVideosList(plan: String, onCompletion: ((ArrayList<Video>) -> Unit), videoFilter: VideoFilter? = null){
+    fun getVideosList(plan: String, onCompletion: ((ArrayList<Video>) -> Unit), videoFilter: String? = null){
 
         val reference = "videos/"
         var videoList = arrayListOf<Video>()
-        val queryReference = mDatabaseReference.child(reference).child(plan)
-                .orderByChild("orderVideo")
+
+       var query= videoFilter ?: "orderVideo"
+
+        var queryReference = mDatabaseReference.child(reference).child(plan)
+                .orderByChild(query)
+
 
         queryReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -534,42 +538,21 @@ class RealtimeRepository(val context: Context) {
                     val video = it.getValue(Video::class.java)
                     var isVideoRemoved = false
                     if (video != null) {
-                        videoList.add(video)
 
-                        if (!videoFilter?.themeName.isNullOrBlank() && videoFilter?.themeName != video.themeName){
-                            videoList.removeAt(videoList.size-1)
-                            isVideoRemoved = true
-                        }
-
-                        if (!isVideoRemoved && !videoFilter?.structure.isNullOrBlank() && videoFilter?.structure != video.structure){
-                            videoList.removeAt(videoList.size-1)
-                            isVideoRemoved = true
-                        }
-
-                        if (!isVideoRemoved && !videoFilter?.concept.isNullOrBlank() && videoFilter?.concept != video.concept){
-                            videoList.removeAt(videoList.size-1)
-                        }
-
-/*
-                        if (!videoFilter?.concept.isNullOrBlank() && !videoFilter?.structure.isNullOrBlank()) {
-                            if (video.structure == videoFilter?.structure && video.concept == videoFilter.concept) {
-                                videoList.add(video)
-                            }
-                        }else if(!videoFilter?.concept.isNullOrBlank() && video.concept == videoFilter?.concept){
+                        if (videoFilter == "concept" && !video.concept.isNullOrBlank()){
                             videoList.add(video)
-                        }else if(!videoFilter?.structure.isNullOrBlank() && video.structure == videoFilter?.structure){
+                        }else if(videoFilter == "structure" && !video.structure.isNullOrBlank()){
                             videoList.add(video)
-                        }else{
-                            if (videoFilter?.structure.isNullOrBlank() && videoFilter?.concept.isNullOrBlank()) {
-                                videoList.add(video)
-                            }
+                        }else if(videoFilter == "themeName" && !video.themeName.isNullOrBlank()){
+                            videoList.add(video)
+                        }else if (videoFilter == null){
+                            videoList.add(video)
                         }
-
-                        videoList.removeAt(video)*/
-
                     }
                 }
-                onCompletion(videoList)
+                var arrayFinal = arrayListOf<Video>()
+                arrayFinal.addAll(videoList.sortedWith(compareBy { it.orderVideo }))
+                onCompletion(arrayFinal)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

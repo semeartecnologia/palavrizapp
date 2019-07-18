@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
 
-class Video(var orderVideo: String = "0", var videoPlan: String? = "", var videoKey: String = "", var title: String = "", var description: String = "", var category: String = "", var path: String = "", var videoThumb: String? = null, var pdfPath: String? = null, var themeName: String = "", var concept: String = "", var structure: String = "", var quantVideoWached: Int = 0) : Parcelable {
+class Video(var orderVideo: String = "0", var videoPlan: String? = "", var videoKey: String = "", var title: String = "", var description: String = "", var category: String = "", var path: String = "", var videoThumb: String? = null, var pdfPath: String? = null, var themeName: String? = null, var concept: String? = null, var structure: String? = null, var quantVideoWached: Int = 0) : Parcelable {
     @get:Exclude
     var listOfPlans: ArrayList<String>? = arrayListOf()
 

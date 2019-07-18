@@ -10,7 +10,7 @@ class VideoRepository(val context: Context) {
     private var storageRepository = StorageRepository(context)
     private var sessionManager: SessionManager = SessionManager(context)
 
-    fun getVideoList( videoFilter: VideoFilter? = null, onCompletion: ((ArrayList<Video>) -> Unit)){
+    fun getVideoList( videoFilter: String? = null, onCompletion: ((ArrayList<Video>) -> Unit)){
         realtimeRepository.getVideosList(sessionManager.userPlan, onCompletion, videoFilter)
     }
 

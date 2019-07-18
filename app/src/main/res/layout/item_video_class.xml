@@ -85,6 +85,7 @@
                 tools:text="Vídeo de introdução a língua portugues uahsuahsuahsu auhsauhsuahsuah uahsua hush asasasas Vídeo de  a língua portugues uahsuahsuahsu auhsauhsuahsuah uahsua hush asasasas" />
 
             <LinearLayout
+                android:id="@+id/layout_theme"
                 android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -109,6 +110,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/layout_structure"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -133,6 +135,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_concept"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">

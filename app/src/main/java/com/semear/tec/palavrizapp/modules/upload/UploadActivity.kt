@@ -370,17 +370,17 @@ class UploadActivity : BaseActivity() {
                     return@setOnClickListener
                 }
 
-                var structure = ""
+                var structure: String? = null
                 if (radio_structure.isChecked){
                     structure = spinner_structure?.selectedItem.toString()
                 }
 
-                var concept = ""
+                var concept: String? = null
                 if (radio_concept.isChecked){
                     concept = spinner_concept?.selectedItem.toString()
                 }
 
-                var themeName = ""
+                var themeName: String? = null
                 var selectedTheme: Themes? = null
                 if (radio_theme.isChecked){
                     themeName = spinner_theme?.selectedItem.toString()
@@ -393,11 +393,11 @@ class UploadActivity : BaseActivity() {
                 adapter.disableAllCheckboxes()
 
                 if (isEdit){
-                    val video = Video("0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName ?: "", concept, structure )
+                    val video = Video("0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName, concept, structure )
                     uploadViewModel.editVideo(video)
                 }else {
 
-                    val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName ?: "", concept, structure)
+                    val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName, concept, structure)
                     toggleButtonUpload()
                     getThumbnailAndUpload(video)
                 }

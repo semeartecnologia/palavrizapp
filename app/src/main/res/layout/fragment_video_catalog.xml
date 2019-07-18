@@ -32,6 +32,41 @@
     </FrameLayout>
 
 
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="wrap_content">
+
+        <ToggleButton
+            android:id="@+id/toggleTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textOn="@string/tema"
+            android:textOff="@string/tema"/>
+
+        <ToggleButton
+            android:id="@+id/toggleStructure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textOn="@string/estrutura"
+            android:textOff="@string/estrutura"/>
+
+        <ToggleButton
+            android:id="@+id/toggleConcept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textOn="@string/conceito"
+            android:textOff="@string/conceito"/>
+
+    </LinearLayout>
+
+
+
     <Spinner
         android:visibility="gone"
         android:layout_marginTop="4dp"
@@ -75,6 +110,8 @@
         android:layoutAnimation="@anim/layout_fall_down_animation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+
 
 
 </LinearLayout>

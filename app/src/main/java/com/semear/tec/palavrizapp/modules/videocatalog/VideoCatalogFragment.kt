@@ -37,10 +37,9 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
     private var videoRepository: VideoRepository? = null
     private var sessionManager: SessionManager? = null
     private var progressBar: ProgressBar? = null
-    private var videoFilter: VideoFilter? = null
-    private var theme_spinner: Spinner? = null
-    private var structure_spinner: Spinner? = null
-    private var concept_spinner: Spinner? = null
+    private var toggleConcept: ToggleButton? = null
+    private var toggleTheme: ToggleButton? = null
+    private var toggleStructure: ToggleButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,83 +59,6 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         return v
     }
 
-    private fun loadThemes(){
-        videoCatalogViewModel?.getVideoThemeList()
-
-        theme_spinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var themeSelected = parent?.getItemAtPosition(position).toString()
-                if (position == 0){
-                    themeSelected = ""
-                }
-
-                if (videoFilter == null) {
-                    videoFilter = VideoFilter()
-                    videoFilter?.themeName = themeSelected
-                }else{
-                    videoFilter?.themeName = themeSelected
-                }
-                //getVideoList(videoFilter)
-            }
-
-        }
-    }
-
-    private fun loadConcepts(){
-        videoCatalogViewModel?.getVideoConceptList()
-
-        concept_spinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var conceptSelected = parent?.getItemAtPosition(position).toString()
-                if (position == 0){
-                    conceptSelected = ""
-                }
-
-                if (videoFilter == null) {
-                    videoFilter = VideoFilter()
-                    videoFilter?.concept = conceptSelected
-                }else{
-                    videoFilter?.concept = conceptSelected
-                }
-                //getVideoList(videoFilter)
-            }
-
-        }
-    }
-
-    private fun loadStructures(){
-        videoCatalogViewModel?.getVideoStructureList()
-
-        structure_spinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var structureSelected = parent?.getItemAtPosition(position).toString()
-                if (position == 0){
-                    structureSelected = ""
-                }
-
-                if (videoFilter == null) {
-                    videoFilter = VideoFilter()
-                    videoFilter?.structure = structureSelected
-                }else{
-                    videoFilter?.structure = structureSelected
-                }
-                //getVideoList(videoFilter)
-            }
-
-        }
-    }
 
     private fun setupView(v: View) {
         videoCatalogViewModel?.getPlanName()
@@ -147,12 +69,80 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
 
         progressBar = v.findViewById(R.id.progress_loading_videos)
         iv_filter_btn = v.findViewById(R.id.iv_filter_btn)
-        concept_spinner = v.findViewById(R.id.concept_spinner)
-        theme_spinner = v.findViewById(R.id.theme_spinner)
-        structure_spinner = v.findViewById(R.id.structure_spinner)
+        toggleConcept = v.findViewById(R.id.toggleConcept)
+        toggleTheme = v.findViewById(R.id.toggleTheme)
+        toggleStructure= v.findViewById(R.id.toggleStructure)
 
-        loadFilters()
+        setupToggleButtons()
         setupFilterButton()
+    }
+
+    private fun setupToggleButtons() {
+        toggleConcept?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                toggleButtonsFilter(R.id.toggleConcept)
+                getVideoList("concept")
+                sessionManager?.videoConceptFilter = true
+            }else{
+                sessionManager?.videoConceptFilter = false
+                checkAllToogleOff()
+            }
+        }
+        toggleTheme?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                toggleButtonsFilter(R.id.toggleTheme)
+                getVideoList("themeName")
+                sessionManager?.videoThemeFilter = true
+            }else{
+                sessionManager?.videoThemeFilter = false
+                checkAllToogleOff()
+            }
+        }
+        toggleStructure?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                toggleButtonsFilter(R.id.toggleStructure)
+                getVideoList("structure")
+                sessionManager?.videoStructureFilter = true
+            }else{
+                sessionManager?.videoStructureFilter = false
+                checkAllToogleOff()
+            }
+        }
+
+        if (sessionManager?.videoStructureFilter == true){
+            toggleStructure?.isChecked = true
+        }
+        if (sessionManager?.videoThemeFilter == true){
+            toggleTheme?.isChecked = true
+        }
+        if (sessionManager?.videoConceptFilter == true){
+            toggleConcept?.isChecked = true
+        }
+    }
+
+    private fun checkAllToogleOff() {
+        if (toggleConcept?.isChecked == false && toggleTheme?.isChecked == false && toggleStructure?.isChecked == false){
+            getVideoList()
+        }
+    }
+
+    private fun toggleButtonsFilter(res: Int){
+        if (res == R.id.toggleStructure){
+            toggleTheme?.isChecked = false
+            toggleConcept?.isChecked = false
+            sessionManager?.videoConceptFilter = false
+            sessionManager?.videoThemeFilter = false
+        }else if(res == R.id.toggleTheme){
+            toggleConcept?.isChecked = false
+            toggleStructure?.isChecked = false
+            sessionManager?.videoStructureFilter = false
+            toggleConcept?.isChecked = false
+        }else if(res == R.id.toggleConcept){
+            toggleTheme?.isChecked = false
+            toggleStructure?.isChecked = false
+            sessionManager?.videoStructureFilter = false
+            sessionManager?.videoThemeFilter = false
+        }
     }
 
     private fun setupFilterButton() {
@@ -173,11 +163,11 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         iv_filter_btn?.performClick()
     }
 
-        private fun loadFilters() {
+        /*private fun loadFilters() {
             loadThemes()
             loadConcepts()
             loadStructures()
-        }
+        }*/
 
         fun registerObservers(){
             videoCatalogViewModel?.structuresListLiveData?.observe(this, Observer {
@@ -239,10 +229,18 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
 
     override fun onResume() {
         super.onResume()
-        getVideoList()
+        if (sessionManager?.videoStructureFilter == true){
+            getVideoList("structure")
+        }else if (sessionManager?.videoThemeFilter == true){
+            getVideoList("themeName")
+        }else if (sessionManager?.videoConceptFilter == true){
+            getVideoList("concept")
+        }else{
+            getVideoList()
+        }
     }
 
-    private fun getVideoList(videoFilter: VideoFilter? = null) {
+    private fun getVideoList(videoFilter: String? = null) {
             if (activity == null) return
 
             val jsonProgress = sessionManager?.videosProgress

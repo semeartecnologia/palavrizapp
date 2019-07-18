@@ -27,6 +27,10 @@ public class SessionManager {
     private static final String USER_PHOTO_URI = "user_photo_uri";
     private static final String USER_VIDEO_PROGRESS = "user_video_progress";
 
+    private static final String VIDEO_FILER_THEME = "video_filter_theme";
+    private static final String VIDEO_FILER_STRUCTURE = "video_filter_structure";
+    private static final String VIDEO_FILER_CONCEPT = "video_filter_concept";
+
     public SessionManager(Context context){
         sharedPref = context.getSharedPreferences(Constants.SESSION_USER, Context.MODE_PRIVATE);
     }
@@ -110,6 +114,46 @@ public class SessionManager {
         }
         return null;
     }
+
+    //------------------
+    public void setVideoConceptFilter(Boolean isChecked){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(VIDEO_FILER_CONCEPT, isChecked);
+        editor.apply();
+    }
+
+
+    public void setVideoStructureFilter(Boolean isChecked){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(VIDEO_FILER_STRUCTURE, isChecked);
+        editor.apply();
+    }
+
+
+    public void setVideoThemeFilter(Boolean isChecked){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(VIDEO_FILER_THEME, isChecked);
+        editor.apply();
+    }
+
+
+    public Boolean getVideoConceptFilter(){
+        return sharedPref.getBoolean(VIDEO_FILER_CONCEPT,false);
+    }
+
+
+    public Boolean getVideoStructureFilter(){
+        return sharedPref.getBoolean(VIDEO_FILER_STRUCTURE,false);
+    }
+
+
+    public Boolean getVideoThemeFilter(){
+        return sharedPref.getBoolean(VIDEO_FILER_THEME,false);
+    }
+
+
+
+    //------------------
 
     /**
      * seta primeira vez do usuario no sistema

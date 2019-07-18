@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.semear.tec.palavrizapp.R
@@ -114,9 +115,27 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         viewHolder.description.text = video.description
         viewHolder.videoPath = video.path
         viewHolder.videoKey = video.videoKey
-        viewHolder.structure.text = video.structure
-        viewHolder.concept.text = video.concept
-        viewHolder.theme.text = video.themeName
+
+        if (video.structure.isNullOrBlank()){
+            viewHolder.layoutStructure.visibility = View.GONE
+        }else{
+            viewHolder.layoutStructure.visibility = View.VISIBLE
+            viewHolder.structure.text = video.structure
+        }
+
+        if (video.concept.isNullOrBlank()){
+            viewHolder.layoutConcept.visibility = View.GONE
+        }else{
+            viewHolder.layoutConcept.visibility = View.VISIBLE
+            viewHolder.concept.text = video.concept
+        }
+
+        if (video.themeName.isNullOrBlank()){
+            viewHolder.layoutTheme.visibility = View.GONE
+        }else {
+            viewHolder.layoutTheme.visibility = View.VISIBLE
+            viewHolder.theme.text = video.themeName
+        }
 
         if (jsonProgress != null){
             try{
@@ -157,6 +176,9 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         var concept: TextView
         var theme: TextView
         var progress: ProgressBar
+        var layoutStructure: LinearLayout
+        var layoutConcept: LinearLayout
+        var layoutTheme: LinearLayout
         internal var videoThumb: ImageView
 
         init {
@@ -167,6 +189,9 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
             concept = itemView.findViewById(R.id.tv_concept_video)
             theme = itemView.findViewById(R.id.tv_theme_video)
             progress = itemView.findViewById(R.id.progress_video_watched)
+            layoutStructure = itemView.findViewById(R.id.layout_structure)
+            layoutConcept = itemView.findViewById(R.id.layout_concept)
+            layoutTheme = itemView.findViewById(R.id.layout_theme)
         }
     }
 }
