@@ -14,6 +14,7 @@ import android.widget.*
 import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.models.*
 import com.semear.tec.palavrizapp.utils.adapters.ThemesListAdapter
+import com.semear.tec.palavrizapp.utils.adapters.ThemesListPickerAdapter
 import com.semear.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -427,7 +428,7 @@ object DialogHelper {
                 .setCancelable(true)
                 .create()
 
-        val adapter = ThemesListAdapter(object: OnThemeClicked{
+        val adapter = ThemesListPickerAdapter(object: OnThemeClicked{
             override fun onThemeClicked(theme: Themes) {
                 themePickerDialog.dismiss()
                 onThemePicked.invoke(theme)
