@@ -365,7 +365,7 @@ class UploadActivity : BaseActivity() {
                     }
                 }
 
-                if (title.isBlank() || (radio_concept.isChecked && spinner_concept?.selectedItemPosition == 0) || (radio_structure.isChecked && spinner_structure?.selectedItemPosition == 0) || (radio_theme.isChecked && spinner_theme?.selectedItemPosition == 0)) {
+                if (title.isBlank()) {
                     Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -382,9 +382,11 @@ class UploadActivity : BaseActivity() {
 
                 var themeName: String? = null
                 var selectedTheme: Themes? = null
-                if (radio_theme.isChecked){
+                if (radio_theme.isChecked && spinner_theme?.selectedItemPosition != 0){
                     themeName = spinner_theme?.selectedItem.toString()
-                    selectedTheme = listOfThemes.filter { it.themeName == themeName }.single()
+                    if (listOfThemes.isNotEmpty()) {
+                        selectedTheme = listOfThemes.filter { it.themeName == themeName }.singleOrNull()
+                    }
                 }
 
                 btn_upload.isEnabled = false
