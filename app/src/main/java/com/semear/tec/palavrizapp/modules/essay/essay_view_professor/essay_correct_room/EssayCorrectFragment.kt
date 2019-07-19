@@ -184,13 +184,15 @@ class EssayCorrectFragment : Fragment() {
             viewmodel?.downloadEssayImage(filename){
                 val fhirPath = Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                val file = File(fhirPath, "$it.png")
+                val file = File(fhirPath, "Palavrizapp/$it.png")
                 if(Build.VERSION.SDK_INT>=24) {
                     val uri = FileProvider.getUriForFile(context ?: return@downloadEssayImage, "com.semear.tec.palavrizapp.provider", file)
                     showPhoto(uri)
                 }else{
                     showPhoto(Uri.fromFile(file))
                 }
+                DialogHelper.showToast(activity as Activity, "Download feito em ${file.path}")
+
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.semear.tec.palavrizapp.utils.commons
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
@@ -54,6 +55,10 @@ object DialogHelper {
         progressDialog?.show()
 
         return progressDialog!!
+    }
+
+    fun showToast(context: Context, text: String) {
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show()
     }
 
     fun createThemeDialog(activity: Activity, isEdit: Boolean? = false, theme: Themes? = null, onClickAttachment:  ((Themes?) -> Unit), createCallback: ((Themes) -> Unit), cancelCallback: (() -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
@@ -279,7 +284,7 @@ object DialogHelper {
 
         val idPlanEditText = view.findViewById<TextInputEditText>(R.id.et_plan_id)
         val idPlanEditText2 = view.findViewById<TextInputEditText>(R.id.et_plan_id2)
-       // val qntLimitEssayEditText = view.findViewById<TextInputEditText>(R.id.et_essay_limit_quant)
+        // val qntLimitEssayEditText = view.findViewById<TextInputEditText>(R.id.et_essay_limit_quant)
         val checkboxIsActive = view.findViewById<CheckBox>(R.id.check_active_limit)
         val radioDay = view.findViewById<RadioButton>(R.id.radio_day)
         val radioWeek = view.findViewById<RadioButton>(R.id.radio_week)
@@ -337,10 +342,10 @@ object DialogHelper {
             view.btn_delete_plan.visibility = View.GONE
         }
 
-      /*  holder.view.check_plan.setOnCheckedChangeListener { buttonView, isChecked ->
-            planList[index].isChecked = isChecked
-        }
-*/
+        /*  holder.view.check_plan.setOnCheckedChangeListener { buttonView, isChecked ->
+              planList[index].isChecked = isChecked
+          }
+  */
 
         checkboxIsActive.setOnCheckedChangeListener { buttonView, isChecked ->
             //qntLimitEssayEditText.isEnabled = isChecked

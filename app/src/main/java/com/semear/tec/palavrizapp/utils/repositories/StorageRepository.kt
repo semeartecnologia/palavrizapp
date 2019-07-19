@@ -248,7 +248,7 @@ class StorageRepository(val context: Context) {
     fun downloadEssay(filename: String, onCompletion: (Boolean) -> Unit){
         val fhirPath = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        val file = File(fhirPath, "$filename.png")
+        val file = File(fhirPath, "Palavrizapp/$filename.png")
         file.parentFile.mkdirs()
         file.createNewFile()
 
