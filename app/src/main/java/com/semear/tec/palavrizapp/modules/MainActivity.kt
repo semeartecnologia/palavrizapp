@@ -10,6 +10,10 @@ import com.semear.tec.palavrizapp.R
 import com.semear.tec.palavrizapp.modules.base.BaseActivity
 import com.semear.tec.palavrizapp.modules.dashboard.DashboardFragment
 import com.semear.tec.palavrizapp.utils.repositories.SessionManager
+import com.semear.tec.palavrizapp.modules.classroom.ClassroomActivity
+import android.content.Intent
+import com.semear.tec.palavrizapp.models.Video
+import com.semear.tec.palavrizapp.utils.constants.Constants
 
 
 class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionListener {
@@ -23,7 +27,12 @@ class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionList
         initViewModel()
         registerObservers()
         sessionManager = SessionManager(applicationContext)
-        changeFragment(DashboardFragment(), "Dashboard")
+        if (sessionManager?.isUserFirstTime == true){
+            startClassroomActivity()
+            changeFragment(DashboardFragment(), "Dashboard")
+        }else {
+            changeFragment(DashboardFragment(), "Dashboard")
+        }
     }
 
 
@@ -72,6 +81,14 @@ class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionList
 
     override fun OnPlansClicked() {
 
+    }
+
+    private fun startClassroomActivity() {
+        val it = Intent(this, ClassroomActivity::class.java)
+        val video = Video("-1", "intro", "-SADSsdolksfquiAS", "Bem-vindo ao palavrizapp!", "Introdução ao aplicativo do palavrizar, aprenda como usar o aplicativo", "", "/v0/b/palavrizapp-debug.appspot.com/o/videos/SampleVideo_1280x720_5mb.mp4", "" )
+        it.putExtra(Constants.EXTRA_VIDEO, video)
+        it.putExtra(Constants.EXTRA_VIDEO_FIRST, true)
+        startActivity(it)
     }
 
     override fun OnThemesClicked() {

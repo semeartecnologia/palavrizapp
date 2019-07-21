@@ -19,6 +19,7 @@ object Constants {
     const val EXTRA_VIDEO_PATH = "video_path"
     const val EXTRA_IS_EDIT = "is_edit"
     const val EXTRA_VIDEO = "extra_video"
+    const val EXTRA_VIDEO_FIRST = "extra_video_first"
 
     //Broadcast
     const val BROADCAST_UPLOAD_DONE = "upload_done"

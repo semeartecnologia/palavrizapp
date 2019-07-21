@@ -15,6 +15,7 @@ import com.semear.tec.palavrizapp.utils.adapters.CommentsAdapter
 import com.semear.tec.palavrizapp.utils.commons.FileHelper
 import com.semear.tec.palavrizapp.utils.constants.Constants
 import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO
+import com.semear.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_FIRST
 import kotlinx.android.synthetic.main.activity_classroom.*
 import java.io.File
 
@@ -23,6 +24,7 @@ class ClassroomActivity : BaseActivity() {
 
 
     private var video: Video? = null
+    private var isFirstTime: Boolean? = null
     private var classroomViewModel: ClassroomViewModel? = null
 
     private lateinit var adapter: CommentsAdapter
@@ -121,17 +123,27 @@ class ClassroomActivity : BaseActivity() {
     private fun setupExtras(){
         if (intent != null) {
             video = intent?.getParcelableExtra(EXTRA_VIDEO)
+            isFirstTime = intent?.getBooleanExtra(EXTRA_VIDEO_FIRST, false)
         }
     }
 
     private fun setupNextClassButton(video: Video?){
         if (video != null) {
             btn_next_class?.visibility = View.VISIBLE
+            if (isFirstTime == true){
+                btn_next_class?.text = getString(R.string.btn_concluir)
+            }
             btn_next_class?.setOnClickListener {
-                finish()
-                val itent = Intent(this, ClassroomActivity::class.java)
-                itent.putExtra(Constants.EXTRA_VIDEO, video)
-                startActivity(itent)
+
+                if (isFirstTime == true){
+                    finish()
+                }else{
+                    finish()
+                    val itent = Intent(this, ClassroomActivity::class.java)
+                    itent.putExtra(Constants.EXTRA_VIDEO, video)
+                    startActivity(itent)
+                }
+
             }
         }else{
             btn_next_class_disabled?.visibility = View.VISIBLE

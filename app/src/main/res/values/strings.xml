@@ -187,6 +187,8 @@
     <string name="first_class_onboard_title">Começe agora</string>
     <string name="first_class_onboard_text">Assista sua primeira aula grátis</string>
 
+    <string name="video_introducao">VÍDEO INTRODUTÓRIO</string>
+
     <!-- Tela Essay -->
     <string name="no_essay_yet">Você ainda não enviou uma redação para corrigirmos</string>
     <string name="btn_first_send">Envie sua primeira redação</string>
