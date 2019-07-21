@@ -49,7 +49,7 @@
     <!-- Dashboard -->
     <string name="card_title_plan">Meu Plano</string>
     <string name="card_see_more_plans">Veja mais planos ></string>
-    <string name="salute_you">Olá %s</string>
+    <string name="salute_you">Olá, %s</string>
     <string name="title_activity_main">Dashboard</string>
 
     <!-- Fragment Planos -->
