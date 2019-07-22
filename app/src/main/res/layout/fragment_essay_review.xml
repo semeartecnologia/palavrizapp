@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.semear.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity">
+    tools:context="com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout"

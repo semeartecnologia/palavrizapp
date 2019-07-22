@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@color/gray"
-    tools:context="com.semear.tec.palavrizapp.modules.admin.users.ListUserFragment">
+    tools:context="com.palavrizar.tec.palavrizapp.modules.admin.users.ListUserFragment">
 
     <SearchView
         android:id="@+id/sv_users"

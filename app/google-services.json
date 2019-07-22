@@ -1,92 +1,85 @@
 {
   "project_info": {
-    "project_number": "383925985769",
-    "firebase_url": "https://palavrizapp.firebaseio.com",
-    "project_id": "palavrizapp",
-    "storage_bucket": "palavrizapp.appspot.com"
+    "project_number": "881277667183",
+    "firebase_url": "https://palavrizar-831b1.firebaseio.com",
+    "project_id": "palavrizar-831b1",
+    "storage_bucket": "palavrizar-831b1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:383925985769:android:091d195dfd492dfa",
+        "mobilesdk_app_id": "1:881277667183:android:0e64bc1ad611e504",
         "android_client_info": {
-          "package_name": "com.semear.tec.palavrizapp"
+          "package_name": "com.palavrizar.tec.palavrizapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "383925985769-dj07hq82pcrbf0kogt0va7kjgvq12ven.apps.googleusercontent.com",
+          "client_id": "881277667183-r28c9goohe8ed2buak8bloho8khf878h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.semear.tec.palavrizapp",
-            "certificate_hash": "2ec6c2ac9b124941fd111ce08074bc1fb4fdf4cc"
-          }
-        },
-        {
-          "client_id": "383925985769-mavr5javm2afdn03k4414m9hiqfvlkn3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.semear.tec.palavrizapp",
-            "certificate_hash": "808a2985035fa51657aae106a8295edab2b525bf"
-          }
-        },
-        {
-          "client_id": "383925985769-2sk8vdq7cfv7qqq7362inm8o87uh3n79.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.semear.tec.palavrizapp",
-            "certificate_hash": "b211c8fda06bc86da188c16c117dc9e67a5849cc"
-          }
-        },
-        {
-          "client_id": "383925985769-0b5d5bicnf0tkjo5sdkogsere9eeeoki.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.semear.tec.palavrizapp",
-            "certificate_hash": "fc8371da3cdf49fadc69ec4c28e5b0e95e00ca8b"
-          }
-        },
-        {
-          "client_id": "383925985769-55m9sr719tv0d0jhivs6a1oi57oakgf7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.semear.tec.palavrizapp",
-            "certificate_hash": "76c2002c10d0f2cea8e1e4ed2a16c59103109762"
-          }
-        },
-        {
-          "client_id": "383925985769-6nejb8pp22ceu6btnfd6tpf2o9r7e15u.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.semear.tec.palavrizapp",
+            "package_name": "com.palavrizar.tec.palavrizapp",
             "certificate_hash": "6697c9e8e170195855e98ecb0644242d06c9cc7c"
           }
         },
         {
-          "client_id": "383925985769-jqd002o3thrflvskmnla8bhuto9ttecn.apps.googleusercontent.com",
+          "client_id": "881277667183-agf1lcgcnqapegp7kjm54u9ifi53k0t6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.palavrizar.tec.palavrizapp",
+            "certificate_hash": "76c2002c10d0f2cea8e1e4ed2a16c59103109762"
+          }
+        },
+        {
+          "client_id": "881277667183-vb0p5p2u4f78egiu328tpr0oicemsmql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.palavrizar.tec.palavrizapp",
+            "certificate_hash": "fc8371da3cdf49fadc69ec4c28e5b0e95e00ca8b"
+          }
+        },
+        {
+          "client_id": "881277667183-ot1gkk94omevo6uepkp1ma1rnjl81mad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.palavrizar.tec.palavrizapp",
+            "certificate_hash": "b211c8fda06bc86da188c16c117dc9e67a5849cc"
+          }
+        },
+        {
+          "client_id": "881277667183-cckjb82euk6fdmpvfj1hvir2736tmcp0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.palavrizar.tec.palavrizapp",
+            "certificate_hash": "808a2985035fa51657aae106a8295edab2b525bf"
+          }
+        },
+        {
+          "client_id": "881277667183-dactbgor4sj9kk5uo5s9rell16vtk7nb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.palavrizar.tec.palavrizapp",
+            "certificate_hash": "2ec6c2ac9b124941fd111ce08074bc1fb4fdf4cc"
+          }
+        },
+        {
+          "client_id": "881277667183-9nmkjq33n0o51otm6l4junl9gjepncd7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBj2mrgSZ3Tw14Wocxv4uVBWl8kDB3RZmw"
+          "current_key": "AIzaSyAVKU6zsvQLSRc77xaH4h-_EGC1SUdONHg"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "383925985769-jqd002o3thrflvskmnla8bhuto9ttecn.apps.googleusercontent.com",
+              "client_id": "881277667183-9nmkjq33n0o51otm6l4junl9gjepncd7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

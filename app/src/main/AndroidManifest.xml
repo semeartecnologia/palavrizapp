@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.semear.tec.palavrizapp">
+    package="com.palavrizar.tec.palavrizapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -19,11 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modules.plans.MyPlansActivity"/>
+        <activity android:name="com.palavrizar.tec.palavrizapp.modules.plans.MyPlansActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.semear.tec.palavrizapp.provider"
+            android:authorities="com.palavrizar.tec.palavrizapp.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -31,21 +31,21 @@
                 android:resource="@xml/path_provider" />
         </provider>
 
-        <activity android:name=".modules.admin.AdminActivity" />
+        <activity android:name="com.palavrizar.tec.palavrizapp.modules.admin.AdminActivity" />
         <activity
-            android:name=".modules.classroom.input_comment.AddCommentActivity"
+            android:name="com.palavrizar.tec.palavrizapp.modules.classroom.input_comment.AddCommentActivity"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".modules.essay.photo_zoom.ImageZoomActivity" />
-        <activity android:name=".modules.essay.essay_view_professor.EssayViewActivity" />
-        <activity android:name=".modules.essay.MyEssayActivity" />
+        <activity android:name="com.palavrizar.tec.palavrizapp.modules.essay.photo_zoom.ImageZoomActivity" />
+        <activity android:name="com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity" />
+        <activity android:name="com.palavrizar.tec.palavrizapp.modules.essay.MyEssayActivity" />
         <activity
-            android:name=".modules.essay.image_check.EssayCheckActivity"
+            android:name="com.palavrizar.tec.palavrizapp.modules.essay.image_check.EssayCheckActivity"
             android:noHistory="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".modules.login.LoginActivity"
+            android:name="com.palavrizar.tec.palavrizapp.modules.login.LoginActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -78,27 +78,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".modules.register.RegisterActivity"
+            android:name="com.palavrizar.tec.palavrizapp.modules.register.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".modules.MainActivity"
+            android:name="com.palavrizar.tec.palavrizapp.modules.MainActivity"
             android:label="@string/title_activity_main" />
-        <activity android:name=".modules.welcome.WelcomeActivity" />
+        <activity android:name="com.palavrizar.tec.palavrizapp.modules.welcome.WelcomeActivity" />
         <activity
-            android:name=".modules.classroom.ClassroomActivity"
+            android:name="com.palavrizar.tec.palavrizapp.modules.classroom.ClassroomActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".modules.classroom.FullscreenVideoActivity"
+            android:name="com.palavrizar.tec.palavrizapp.modules.classroom.FullscreenVideoActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity android:name=".modules.upload.UploadActivity" />
+        <activity android:name="com.palavrizar.tec.palavrizapp.modules.upload.UploadActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9fccde76341c25f9c7fff7bba5833402cf51ccce" />
 
         <service
-            android:name=".modules.upload.UploadService"
+            android:name="com.palavrizar.tec.palavrizapp.modules.upload.UploadService"
             android:description="@string/upload_service_description"
             android:exported="false" />
     </application>

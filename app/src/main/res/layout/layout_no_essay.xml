@@ -8,7 +8,7 @@
     android:id="@+id/layout_no_essay"
     android:visibility="gone"
     android:padding="16dp"
-    tools:context="com.semear.tec.palavrizapp.modules.essay.MyEssayActivity">
+    tools:context="com.palavrizar.tec.palavrizapp.modules.essay.MyEssayActivity">
 
         <ImageView
             android:id="@+id/imageView2"

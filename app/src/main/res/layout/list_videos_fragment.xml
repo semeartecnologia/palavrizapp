@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
-    tools:context="com.semear.tec.palavrizapp.modules.admin.videos.ListVideosFragment">
+    tools:context="com.palavrizar.tec.palavrizapp.modules.admin.videos.ListVideosFragment">
 
     <ProgressBar
         android:id="@+id/progress_loading_videos"

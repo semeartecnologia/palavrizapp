@@ -6,7 +6,7 @@
     android:background="@color/gray"
     android:padding="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.semear.tec.palavrizapp.modules.essay.MyEssayActivity">
+    tools:context="com.palavrizar.tec.palavrizapp.modules.essay.MyEssayActivity">
 
     <include layout="@layout/layout_no_essay"/>
 
