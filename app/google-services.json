@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "361566659483-6hqer8ga1fksi0uj0dej33iipfuhhfvm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.palavrizar.tec.palavrizapp",
+            "certificate_hash": "808a2985035fa51657aae106a8295edab2b525bf"
+          }
+        },
+        {
+          "client_id": "361566659483-5bkm5pnio88netkq2ka9vfrrmm75htju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.palavrizar.tec.palavrizapp",
+            "certificate_hash": "1697790e501ddb1c5b8347b17a79f4b68ffd319c"
+          }
+        },
+        {
           "client_id": "361566659483-o1cjuq8ch824k4d4h7ispvk9dg55p1v6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
