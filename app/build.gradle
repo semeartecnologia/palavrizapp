@@ -24,14 +24,14 @@ android {
         applicationId "com.palavrizar.tec.palavrizapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 21
-        versionName "v1.2"
+        versionCode 23
+        versionName "v1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         release {
-            storeFile file('key.jks')
-            keyAlias "key"
+            storeFile file('palavrizappKey.jks')
+            keyAlias "palavrizapp"
             storePassword "palavrizapp1212"
             keyPassword "palavrizapp1313"
         }
