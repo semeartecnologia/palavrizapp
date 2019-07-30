@@ -1,19 +1,15 @@
 package com.palavrizar.tec.palavrizapp.utils.commons
 
 import android.app.DownloadManager
-import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import com.palavrizar.tec.palavrizapp.R
-import com.palavrizar.tec.palavrizapp.utils.constants.Helper.*
 import java.io.File
 import java.io.FileOutputStream
 
@@ -46,67 +42,6 @@ object FileHelper {
             e.printStackTrace()
         }
 
-    }
-
-    fun getPathPdf(context: Context, contentUri: Uri): String?{
-        var uri = contentUri
-        if (Build.VERSION.SDK_INT > 26){
-            val file = File(uri.path)//create path from uri
-            val split = file.path.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()//split the path.
-            return split[1]//assign it to a string(your choice).
-        }else{
-            var selection: String? = null
-            var selectionArgs: Array<String>? = null
-            // Uri is different in versions after KITKAT (Android 4.4), we need to
-            if (DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
-                if (isExternalStorageDocument(uri)) {
-                    val docId = DocumentsContract.getDocumentId(uri)
-                    val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
-                } else if (isDownloadsDocument(uri)) {
-                    val id = DocumentsContract.getDocumentId(uri)
-                    uri = ContentUris.withAppendedId(
-                            Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
-                } else if (isMediaDocument(uri)) {
-                    val docId = DocumentsContract.getDocumentId(uri)
-                    val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    val type = split[0]
-                    if ("image" == type) {
-                        uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                    } else if ("video" == type) {
-                        uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                    } else if ("audio" == type) {
-                        uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                    }
-                    selection = "_id=?"
-                    selectionArgs = arrayOf(split[1])
-                }
-            }
-            if ("content".equals(uri.getScheme(), ignoreCase = true)) {
-
-
-                if (isGooglePhotosUri(uri)) {
-                    return uri.getLastPathSegment()
-                }
-
-                val projection = arrayOf(MediaStore.Images.Media.DATA)
-                var cursor: Cursor? = null
-                try {
-                    cursor = context.contentResolver
-                            .query(uri, projection, selection, selectionArgs, null)
-                    val column_index = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                    if (cursor.moveToFirst()) {
-                        return cursor.getString(column_index)
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
-            } else if ("file".equals(uri.getScheme(), ignoreCase = true)) {
-                return uri.path
-            }
-            return null
-        }
     }
 
     fun getRealPathFromURI(context: Context, contentUri: Uri): String? {

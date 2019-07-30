@@ -344,7 +344,7 @@ class EssayCorrectFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == SELECT_VIDEO){
-            videoUrl = FileHelper.getPathPdf(activity as Activity, data?.data ?: return)
+            videoUrl = FileHelper.getRealPathFromURI(activity as Activity, data?.data ?: return)
             val splittedPath = videoUrl?.split("/")
             if (splittedPath != null) {
                 setupFilename(splittedPath[splittedPath.size-1], false)
