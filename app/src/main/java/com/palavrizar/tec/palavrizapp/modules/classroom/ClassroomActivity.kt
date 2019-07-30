@@ -129,7 +129,7 @@ class ClassroomActivity : BaseActivity() {
     private fun setupNextClassButton(video: Video?){
         if (video != null) {
             btn_next_class?.visibility = View.VISIBLE
-            if (isFirstTime == true){
+            if (isFirstTime == true || video.orderVideo == "-1"){
                 btn_next_class?.text = getString(R.string.btn_concluir)
             }
             btn_next_class?.setOnClickListener {
