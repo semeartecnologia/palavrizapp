@@ -526,6 +526,19 @@ object DialogHelper {
     }
 
 
+    fun showMessage(activity: Activity, title: String, message: String){
+        val builder = AlertDialog.Builder(activity)
+
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton("Ok"){dialog, which ->
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+
     fun showAlert(activity: Activity, titleAlert: String, textAlert: String) {
 
         val builder: AlertDialog.Builder

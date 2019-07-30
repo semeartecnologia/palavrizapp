@@ -298,5 +298,9 @@
     <string name="no_plan">Veja o melhor plano que se encaixa pra você</string>
 
 
+    <string name="no_plan_no_essay">Você precisa assinar um plano ou comprar envios avulsos para enviar redação</string>
+    <string name="no_credits_essay">Você já atingiu seu limite de envios de seu plano!</string>
+
+
 
 </resources>

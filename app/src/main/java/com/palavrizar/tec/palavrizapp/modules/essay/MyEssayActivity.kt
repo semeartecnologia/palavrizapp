@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Themes
@@ -68,33 +69,37 @@ class MyEssayActivity : AppCompatActivity() {
 
     private fun setupListeners(){
         btn_send_essay.setOnClickListener{
-            viewmodel?.fetchThemes {
-                DialogHelper.createThemePickerDialog(this,it,
-                        {
-                            //theme picked
-                            val alreadySent = adapter.essayList.any { essay -> essay.themeId == it.themeId }
+            if (viewmodel?.getUserPlan() == Constants.PLAN_FREE_ID){
+                Log.d("gratis", "eh gratis")
+                DialogHelper.showMessage(this, "", getString(R.string.no_plan_no_essay))
+                return@setOnClickListener
+            }else {
 
-                            if (alreadySent){
-                                DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
+                viewmodel?.fetchThemes {
+                    DialogHelper.createThemePickerDialog(this, it,
+                            {
+                                //theme picked
+                                val alreadySent = adapter.essayList.any { essay -> essay.themeId == it.themeId }
+
+                                if (alreadySent) {
+                                    DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
+                                        themeSelected = it
+                                        checkCameraPermission()
+                                    }, {
+
+                                    })
+                                } else {
                                     themeSelected = it
                                     checkCameraPermission()
-                                }, {
-
-                                })
-                            }else{
-                                themeSelected = it
-                                checkCameraPermission()
-                            }
-                        },{ url ->
-                    //pdf clicked
-                    requestWriteStoragePermission(url)
+                                }
+                            }, { url ->
+                        //pdf clicked
+                        requestWriteStoragePermission(url)
 
 
-
-                })
+                    })
+                }
             }
-            //DialogHelper.createThemePickerDialog(this,)
-            //
         }
     }
 
