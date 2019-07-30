@@ -27,13 +27,13 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
     private lateinit var ctx: Context
     private var videoRepository: VideoRepository? = null
     private var jsonProgress: JSONObject? = null
-    var listVideosWatchedAlready: ArrayList<Video> = ArrayList()
 
     fun addAllVideo(v: ArrayList<Video>, jsonProgress: JSONObject? = null) {
         this.listVideos.clear()
-        listVideosWatchedAlready.clear()
+//        listVideosWatchedAlready.clear()
         v.forEach {
             it.orderVideo = this.listVideos.size.toString()
+            this.listVideos.add(it)
 
             if (jsonProgress != null){
                 try{
@@ -46,11 +46,8 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
 
                 }
             }
-            if (it.quantVideoWached >= 100){
-                this.listVideosWatchedAlready.add(it)
-            }else{
-                this.listVideos.add(it)
-            }
+            this.listVideos.add(it)
+
 
         }
         this.listVideosBackup.clear()
@@ -59,16 +56,16 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
 
         this.jsonProgress = jsonProgress
 
-        this.listVideos.addAll(this.listVideosWatchedAlready)
         this.notifyDataSetChanged()
     }
 
-    fun clearVideoList() {
-        this.listVideos.clear()
-    }
-
-    fun associateVideoWatched(){
-
+    fun getIndexToScroll(): Int {
+        this.listVideos.forEachIndexed { index, video ->
+            if (video.quantVideoWached < 100){
+                return index
+            }
+        }
+        return 0
     }
 
 
@@ -139,7 +136,7 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
 
         if (jsonProgress != null){
             try{
-            val getValue = jsonProgress?.get(video.videoKey)
+                val getValue = jsonProgress?.get(video.videoKey)
                 if (getValue != null){
                     val currentProgress = BigDecimal.valueOf(jsonProgress?.getDouble(video.videoKey) ?: 0.toDouble()).toFloat()
                     viewHolder.progress.progress = currentProgress.toInt()

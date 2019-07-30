@@ -250,6 +250,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
                 mAdapter?.addAllVideo(videoList, jsonProgress)
                 progressBar?.visibility = View.GONE
                 recyclerTheme1?.visibility = View.VISIBLE
+                recyclerTheme1?.layoutManager?.scrollToPosition(mAdapter?.getIndexToScroll() ?: 0)
             }
         }
 
