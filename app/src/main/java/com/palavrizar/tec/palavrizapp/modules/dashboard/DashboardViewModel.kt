@@ -55,8 +55,8 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
             if (it.size > 0){
                 val plan = it[0]
 
-                if (currentUser == null) {
-                    userRepository.getUser(currentUser!!.userId,{user ->
+                if (sessionManager.userLogged != null) {
+                    userRepository.getUser(sessionManager.userLogged.userId,{user ->
 
                         var timeWait = when {
                             plan.period == EnumPeriod.QUINZENAL -> (DateFormatHelper.MILLISECONDS_IN_DAY * 15) + (DateFormatHelper.MILLISECONDS_IN_HOUR * 4)
@@ -69,13 +69,15 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
                             timeWait = 60 * 1000 * 3 // 3 mins no debug
                         }
 
-                        if (user != null && (user.creditEarnedTime + timeWait >= System.currentTimeMillis()) && isRenewed){
+                        if (user != null && (user.creditEarnedTime + timeWait <= System.currentTimeMillis()) && isRenewed){
                             userRepository.giveUserCredits(user.userId, plan.limitEssay ?: return@getUser)
                         }
                     }) {
                         //onFail
                     }
 
+                }else{
+                    val a = ""
                 }
             }
         }
