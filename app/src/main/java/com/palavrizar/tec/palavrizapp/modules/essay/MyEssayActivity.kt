@@ -2,6 +2,8 @@ package com.palavrizar.tec.palavrizapp.modules.essay
 
 import android.Manifest
 import android.app.Activity
+import android.app.Dialog
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -65,45 +67,16 @@ class MyEssayActivity : AppCompatActivity() {
         setupRecyclerView()
         checkUserHasEssay()
         setupListeners()
+        registerObservers()
     }
 
     private fun setupListeners(){
         btn_send_essay.setOnClickListener{
-            if (viewmodel?.getUserPlan() == Constants.PLAN_FREE_ID){
-                Log.d("gratis", "eh gratis")
-                DialogHelper.showMessage(this, "", getString(R.string.no_plan_no_essay))
-                return@setOnClickListener
-            }else {
-
-                viewmodel?.fetchThemes {
-                    DialogHelper.createThemePickerDialog(this, it,
-                            {
-                                //theme picked
-                                val alreadySent = adapter.essayList.any { essay -> essay.themeId == it.themeId }
-
-                                if (alreadySent) {
-                                    DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
-                                        themeSelected = it
-                                        checkCameraPermission()
-                                    }, {
-
-                                    })
-                                } else {
-                                    themeSelected = it
-                                    checkCameraPermission()
-                                }
-                            }, { url ->
-                        //pdf clicked
-                        requestWriteStoragePermission(url)
-
-
-                    })
-                }
-            }
+            viewmodel?.sendEssayClicked()
         }
     }
 
-    fun requestWriteStoragePermission(uri: String) {
+    private fun requestWriteStoragePermission(uri: String) {
         if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -119,6 +92,55 @@ class MyEssayActivity : AppCompatActivity() {
                 FileHelper.openPdf(this, file)
             }
         }
+    }
+
+    private fun registerObservers(){
+        viewmodel?.userHasCreditLiveData?.observe(this, Observer {
+            if ( it == false ){
+                showNoCreditsDialog()
+            }
+        })
+        viewmodel?.dialogThemesLiveData?.observe(this, Observer {
+                showDialogThemes(it ?: return@Observer)
+        })
+        viewmodel?.userNoPlanLiveData?.observe(this, Observer {
+            if (it == true){
+                showDialogNoPlan()
+            }
+        })
+    }
+
+    private fun showDialogNoPlan(){
+        DialogHelper.showMessage(this, "", getString(R.string.no_plan_no_essay))
+    }
+
+    private fun showDialogThemes(listOfThemes: ArrayList<Themes>){
+        DialogHelper.createThemePickerDialog(this, listOfThemes,
+                {
+                    //theme picked
+                    val alreadySent = adapter.essayList.any { essay -> essay.themeId == it.themeId }
+
+                    if (alreadySent) {
+                        DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
+                            themeSelected = it
+                            checkCameraPermission()
+                        }, {
+
+                        })
+                    } else {
+                        themeSelected = it
+                        checkCameraPermission()
+                    }
+                }, { url ->
+            //pdf clicked
+            requestWriteStoragePermission(url)
+
+
+        })
+    }
+
+    private fun showNoCreditsDialog(){
+        DialogHelper.showMessage(this, "", getString(R.string.no_credits_essay))
     }
 
     private fun startImageCheckActivity(bmp: Bitmap) {

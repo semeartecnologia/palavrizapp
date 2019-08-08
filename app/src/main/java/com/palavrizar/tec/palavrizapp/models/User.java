@@ -14,6 +14,8 @@ public class User implements Parcelable {
     private String plan_id;
     private String photoUri;
     private Long registerDate;
+    private int essayCredits;
+    private long creditEarnedTime;
 
     public User(){}
 
@@ -89,6 +91,23 @@ public class User implements Parcelable {
         this.registerDate = registerDate;
     }
 
+    public long getCreditEarnedTime() {
+        return creditEarnedTime;
+    }
+
+    public void setCreditEarnedTime(long creditEarnedTime) {
+        this.creditEarnedTime = creditEarnedTime;
+    }
+
+    public int getEssayCredits() {
+        return essayCredits;
+    }
+
+    public void setEssayCredits(int essayCredits) {
+        this.essayCredits = essayCredits;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -105,6 +124,8 @@ public class User implements Parcelable {
         dest.writeString(this.plan_id);
         dest.writeString(this.photoUri);
         dest.writeValue(this.registerDate);
+        dest.writeInt(this.essayCredits);
+        dest.writeLong(this.creditEarnedTime);
     }
 
     protected User(Parcel in) {
@@ -118,6 +139,8 @@ public class User implements Parcelable {
         this.plan_id = in.readString();
         this.photoUri = in.readString();
         this.registerDate = (Long) in.readValue(Long.class.getClassLoader());
+        this.essayCredits = in.readInt();
+        this.creditEarnedTime = in.readLong();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

@@ -24,7 +24,7 @@ android {
         applicationId "com.palavrizar.tec.palavrizapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 23
+        versionCode 25
         versionName "v1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

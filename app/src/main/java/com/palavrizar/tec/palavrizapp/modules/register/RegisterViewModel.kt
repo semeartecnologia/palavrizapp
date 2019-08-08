@@ -75,6 +75,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
         user.email = gUser?.email
         user.fullname = fullname
         user.photoUri = gUser?.photoUrl?.toString()
+        user.essayCredits = 0
         if (user.photoUri == null)
             user.photoUri = ""
         //tipo e plano padrao, depois tem que trocar isso

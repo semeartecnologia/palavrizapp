@@ -36,4 +36,16 @@ class UserRepository(val context: Context) {
     fun deleteUser(userId: String){
         realtimeRepository.deleteUser(userId)
     }
+
+    fun giveUserCredits(userId: String, numCredits: Int){
+        realtimeRepository.editUserCredits(numCredits, userId){}
+    }
+
+    fun userHasCredit(userId: String, onCompletion: (Boolean) -> Unit){
+        realtimeRepository.userHasCredit(userId, onCompletion)
+    }
+
+    fun consumeOneCreditIfPossible(userId: String, onCompletion: () -> Unit, onFail: () -> Unit){
+        realtimeRepository.removeOneCreditIfPossible(userId,onCompletion,onFail)
+    }
 }

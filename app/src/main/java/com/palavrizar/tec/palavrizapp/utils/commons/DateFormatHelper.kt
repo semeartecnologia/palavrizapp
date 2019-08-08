@@ -8,6 +8,9 @@ import java.util.*
 
 object DateFormatHelper {
 
+    const val MILLISECONDS_IN_DAY: Long = 60 * 60 * 1000 * 24
+    const val MILLISECONDS_IN_HOUR: Long = 60 * 60 * 1000
+
     val currentTimeDate: String
         @SuppressLint("SimpleDateFormat")
         get() = SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().time)

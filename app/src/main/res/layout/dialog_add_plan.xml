@@ -86,17 +86,7 @@
         android:layout_marginStart="16dp"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radio_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:checked="true"
-            android:backgroundTint="@color/colorSecondaryText"
-            android:fontFamily="@font/titillium_light"
-            android:text="@string/diario"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="12sp" />
+
 
         <RadioButton
             android:id="@+id/radio_week"
@@ -106,6 +96,19 @@
             android:backgroundTint="@color/colorSecondaryText"
             android:fontFamily="@font/titillium_light"
             android:text="@string/semanal"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/radio_quinze"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:checked="true"
+            android:backgroundTint="@color/colorSecondaryText"
+            android:fontFamily="@font/titillium_light"
+            android:text="@string/quinze"
             android:textColor="@color/colorSecondaryText"
             android:textSize="12sp" />
 
@@ -141,7 +144,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/titillium_regular"
-            android:hint="@string/plan_id_hint"
+            android:inputType="number"
+            android:hint="@string/limit_envio_redacao"
             android:imeOptions="actionNext"
             android:maxLength="50"
             android:maxLines="1" />

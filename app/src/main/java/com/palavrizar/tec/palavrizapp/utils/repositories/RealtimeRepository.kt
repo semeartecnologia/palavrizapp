@@ -292,6 +292,21 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
+    fun getPlanById(planId: String, onCompletion: (PlansBilling?) -> Unit){
+        val reference = "plans/"
+        val queryReference = mDatabaseReference.child(reference).child(planId)
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val plan = dataSnapshot.getValue(PlansBilling::class.java)
+                onCompletion(plan)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(null)
+            }
+        })
+    }
+
     fun getPlansByValue(value: String, onCompletion: (ArrayList<PlansBilling>) -> Unit){
         val reference = "plans/"
         var plansList = arrayListOf<PlansBilling>()
@@ -340,6 +355,46 @@ class RealtimeRepository(val context: Context) {
         mDatabaseReference.child(reference).child("${user.userId}/").child("plan/").setValue(plan).addOnCompleteListener {
             onCompletion.invoke()
         }
+    }
+
+    fun editUserCredits(numCredits: Int, userId: String, onCompletion: () -> Unit){
+        val reference = "users/"
+        val childUpdates = HashMap<String, Any?>()
+        childUpdates["$userId/essayCredits/"] = numCredits
+        childUpdates["$userId/creditEarnedTime/"] = System.currentTimeMillis()
+
+        mDatabaseReference.child(reference).updateChildren(childUpdates).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun userHasCredit(userId: String, onCompletion: (Boolean) -> Unit){
+        getUser(userId, {
+            if (it != null) {
+                if (it.essayCredits >= 1) {
+                    onCompletion.invoke(true)
+                }else{
+                    onCompletion.invoke(false)
+                }
+            }
+        },{})
+    }
+
+    fun removeOneCreditIfPossible(userId: String, onCompletion: () -> Unit, onFail: () -> Unit){
+        val reference = "users/"
+
+        getUser(userId, {
+            if (it != null) {
+                if (it.essayCredits >= 1) {
+                    mDatabaseReference.child(reference).child("$userId/").child("essayCredits/").setValue(it.essayCredits - 1).addOnCompleteListener {
+                        onCompletion.invoke()
+                    }
+                }else{
+                    onFail.invoke()
+                }
+            }
+        },{})
+
     }
 
     fun deleteTheme(themeId: String){

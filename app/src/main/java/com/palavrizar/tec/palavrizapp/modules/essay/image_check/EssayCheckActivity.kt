@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_check_image.*
 import java.util.concurrent.TimeUnit
 import com.palavrizar.tec.palavrizapp.utils.commons.DateFormatHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
+import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
 
 
 class EssayCheckActivity : AppCompatActivity() {
@@ -25,6 +26,7 @@ class EssayCheckActivity : AppCompatActivity() {
     private var essayRepository: EssayRepository? = null
     var sessionManager: SessionManager? = null
     private var themesRepository: ThemesRepository? = null
+    private var userRepository: UserRepository? = null
 
     private var themeId: String? = ""
     var themeName: String? = ""
@@ -44,6 +46,7 @@ class EssayCheckActivity : AppCompatActivity() {
         essayRepository = EssayRepository(applicationContext)
         sessionManager = SessionManager(applicationContext)
         themesRepository = ThemesRepository(applicationContext)
+        userRepository = UserRepository(applicationContext)
     }
 
     private fun setupExtras(){
@@ -77,17 +80,23 @@ class EssayCheckActivity : AppCompatActivity() {
 
                 @SuppressLint("CheckResult")
                 override fun onSuccess() {
-                    layout_sendind_progress.visibility = View.GONE
-                    DialogHelper.showAlert(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success), "Ok")
-                    io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
-                            .subscribe { _ ->
-                                finish()
-                            }
+                    userRepository?.consumeOneCreditIfPossible(sessionManager?.userLogged?.userId ?: return, {
+                        layout_sendind_progress.visibility = View.GONE
+                        DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success))
+                        io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
+                                .subscribe { _ ->
+                                    finish()
+                                }
+                    }, {
+                        layout_sendind_progress.visibility = View.GONE
+                        DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error_2))
+                    })
+
                 }
 
                 override fun onFail() {
                     layout_sendind_progress.visibility = View.GONE
-                    DialogHelper.showAlert(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error), "Ok")
+                    DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error))
                 }
 
                 override fun onProgress(progress: Int) {

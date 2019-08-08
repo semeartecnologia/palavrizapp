@@ -26,6 +26,7 @@ public class SessionManager {
     private static final String USER_EMAIL = "user_email";
     private static final String USER_PHOTO_URI = "user_photo_uri";
     private static final String USER_VIDEO_PROGRESS = "user_video_progress";
+    private static final String USER_CREDITS = "user_credits";
 
     private static final String VIDEO_FILER_THEME = "video_filter_theme";
     private static final String VIDEO_FILER_STRUCTURE = "video_filter_structure";
@@ -49,6 +50,7 @@ public class SessionManager {
         editor.putString(USER_PHOTO_URI, user.getPhotoUri());
         editor.putString(USER_EMAIL, user.getEmail());
         editor.putString(USER_PLAN, user.getPlan());
+        editor.putInt(USER_CREDITS, user.getEssayCredits());
         editor.apply();
     }
 
@@ -61,6 +63,7 @@ public class SessionManager {
         editor.putString(USER_PLAN, "");
         editor.putString(USER_PHOTO_URI, "");
         editor.putString(USER_EMAIL, "");
+        editor.putInt(USER_CREDITS, 0);
         editor.apply();
     }
 
@@ -84,6 +87,7 @@ public class SessionManager {
         user.setPhotoUri(sharedPref.getString(USER_PHOTO_URI,""));
         user.setPlan(sharedPref.getString(USER_PLAN,""));
         user.setUserType(UserType.values()[sharedPref.getInt(USER_TYPE,0)]);
+        user.setEssayCredits(sharedPref.getInt(USER_TYPE,0));
         return user;
     }
 

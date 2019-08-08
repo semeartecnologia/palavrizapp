@@ -54,7 +54,7 @@ class DashboardFragment : Fragment() {
         dashboardViewModel?.purchasedPlan?.observe(this, Observer {
             if (it != null){
                 //TEM PLANO
-                dashboardViewModel?.updateUserPlan(it.sku)
+                dashboardViewModel?.updateUserPlan(it.sku, it.isAutoRenewing)
             }else{
                 //NAO TEM PLANO
                 dashboardViewModel?.updateUserPlan(Constants.PLAN_FREE_ID)

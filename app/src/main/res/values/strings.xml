@@ -106,6 +106,7 @@
     <string name="essay_send">Enviar</string>
     <string name="upload_essay_title">Oops</string>
     <string name="upload_essay_error">Erro ao enviar sua redação, tente novamente mais tarde</string>
+    <string name="upload_essay_error_2">Erro ao descontar seus créditos, comunique nosso administrador</string>
     <string name="upload_essay_success">Sucesso! Sua redação foi enviada, agora aguarde nosso feedback</string>
     <string name="upload_status_waiting">Aguardando Correção</string>
     <string name="upload_status_correcting">Correção em andamento</string>
@@ -274,9 +275,9 @@
     <string name="add_plan">Adicionar plano</string>
     <string name="plan_id_hint">ID do produto cadastrado na Google Play</string>
     <string name="plan_id_label">ID</string>
-    <string name="limit_envio_redacao">Quantidade de envios </string>
+    <string name="limit_envio_redacao">Quantidade de envios permitido</string>
     <string name="por">redações por:</string>
-    <string name="diario">Diário</string>
+    <string name="quinze">Quinzenal</string>
     <string name="mensal">Mensal</string>
     <string name="semanal">Semanal</string>
     <string name="active_it">Ativar limite de envio redação</string>

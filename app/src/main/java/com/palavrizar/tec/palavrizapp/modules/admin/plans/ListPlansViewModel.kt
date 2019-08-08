@@ -9,6 +9,7 @@ import com.android.billingclient.api.*
 import com.palavrizar.tec.palavrizapp.models.PlansBilling
 import com.palavrizar.tec.palavrizapp.utils.repositories.PlansRepository
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
+import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
 
 
 class ListPlansViewModel(application: Application) : AndroidViewModel(application), PurchasesUpdatedListener, AcknowledgePurchaseResponseListener  {
@@ -16,12 +17,13 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
 
 
     private val plansRepository = PlansRepository(application)
+    private val userRepository = UserRepository(application)
     private val sessionManager = SessionManager(application)
-    val listPlansLiveData = MutableLiveData<ArrayList<PlansBilling>>()
-    val planLiveData = MutableLiveData<ArrayList<PlansBilling>>()
 
+    val listPlansLiveData = MutableLiveData<ArrayList<PlansBilling>>()
     val listPlanSubsDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
     val listPurchasesLiveData = MutableLiveData<ArrayList<Purchase>>()
+
     private var mBillingClient: BillingClient? = null
 
     var skuPurchased: String? = null
@@ -63,11 +65,20 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
 
                     skuPurchased = it.sku
                     mBillingClient?.acknowledgePurchase(acknowledgePurchaseParams, this)
+                    giveUserCredits(it.sku)
                 }
 
             }
         }else{
         }
+    }
+
+    fun giveUserCredits(planId: String){
+        plansRepository.getPlansByValue(planId) {
+            userRepository.giveUserCredits(sessionManager.userLogged.userId, it[0].limitEssay ?: return@getPlansByValue)
+
+        }
+
     }
 
     override fun onAcknowledgePurchaseResponse(billingResult: BillingResult?) {

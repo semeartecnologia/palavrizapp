@@ -2,18 +2,48 @@ package com.palavrizar.tec.palavrizapp.modules.essay
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.MutableLiveData
 import com.palavrizar.tec.palavrizapp.models.Themes
+import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import com.palavrizar.tec.palavrizapp.utils.repositories.ThemesRepository
+import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
 
 class MyEssayViewModel(application: Application) : AndroidViewModel(application) {
 
     private val themesRepository = ThemesRepository(application)
+    private val userRepository = UserRepository(application)
     private val sessionManager = SessionManager(application)
+
+    val userHasCreditLiveData = MutableLiveData<Boolean>()
+    val dialogThemesLiveData = MutableLiveData<ArrayList<Themes>>()
+    val userNoPlanLiveData = MutableLiveData<Boolean>()
 
     fun fetchThemes(onThemePicked: ((ArrayList<Themes>)-> Unit)){
         themesRepository.getTheme {
             onThemePicked.invoke(it)
+        }
+    }
+
+    fun sendEssayClicked(){
+        if (getUserPlan() == Constants.PLAN_FREE_ID){
+            userNoPlanLiveData.postValue(true)
+        }else{
+            checkAndGoIfHaveCredit()
+        }
+    }
+
+    private fun checkAndGoIfHaveCredit(){
+        userRepository.userHasCredit(sessionManager.userLogged.userId) {
+            if (it) {
+                userHasCreditLiveData.postValue(true)
+                fetchThemes {
+                    dialogThemesLiveData.postValue(it)
+                }
+            }else{
+                userHasCreditLiveData.postValue(false)
+            }
+
         }
     }
 

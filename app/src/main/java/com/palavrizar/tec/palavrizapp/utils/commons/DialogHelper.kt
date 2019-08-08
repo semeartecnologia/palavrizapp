@@ -286,7 +286,7 @@ object DialogHelper {
         val idPlanEditText2 = view.findViewById<TextInputEditText>(R.id.et_plan_id2)
         // val qntLimitEssayEditText = view.findViewById<TextInputEditText>(R.id.et_essay_limit_quant)
         val checkboxIsActive = view.findViewById<CheckBox>(R.id.check_active_limit)
-        val radioDay = view.findViewById<RadioButton>(R.id.radio_day)
+        val radioQuinze = view.findViewById<RadioButton>(R.id.radio_quinze)
         val radioWeek = view.findViewById<RadioButton>(R.id.radio_week)
         val radioMonth = view.findViewById<RadioButton>(R.id.radio_month)
 
@@ -301,7 +301,7 @@ object DialogHelper {
 
                 if (period != null){
                     when {
-                        period == EnumPeriod.DIARIO -> radioDay.isChecked = true
+                        period == EnumPeriod.QUINZENAL -> radioQuinze.isChecked = true
                         period == EnumPeriod.SEMANAL -> radioWeek.isChecked = true
                         period == EnumPeriod.MENSAL -> radioMonth.isChecked = true
                     }
@@ -314,6 +314,8 @@ object DialogHelper {
                 idPlanEditText.isEnabled = false
                 view.create_structure_add_plan.text = activity.getString(R.string.edit_plan_label)
                 view.btn_create_plan.text = activity.getString(R.string.create_theme_edit_option)
+            }else{
+                idPlanEditText2.setText("1")
             }
         }
 
@@ -349,7 +351,7 @@ object DialogHelper {
 
         checkboxIsActive.setOnCheckedChangeListener { buttonView, isChecked ->
             //qntLimitEssayEditText.isEnabled = isChecked
-            radioDay.isEnabled = isChecked
+            radioQuinze.isEnabled = isChecked
             radioMonth.isEnabled = isChecked
             radioWeek.isEnabled = isChecked
 
@@ -368,11 +370,11 @@ object DialogHelper {
         view.btn_create_plan.setOnClickListener {
             if (isEdit == false) {
 
-                var period = EnumPeriod.DIARIO
+                var period = EnumPeriod.QUINZENAL
 
                 if (checkboxIsActive.isChecked) {
-                    if (radioDay.isChecked) {
-                        period = EnumPeriod.DIARIO
+                    if (radioQuinze.isChecked) {
+                        period = EnumPeriod.QUINZENAL
                     } else if (radioWeek.isChecked) {
                         period = EnumPeriod.SEMANAL
                     } else if (radioMonth.isChecked) {
@@ -389,9 +391,9 @@ object DialogHelper {
                     plansBilling.plan_id = idPlanEditText.text.toString()
 
                     if (checkboxIsActive.isChecked) {
-                        var period = EnumPeriod.DIARIO
-                        if (radioDay.isChecked) {
-                            period = EnumPeriod.DIARIO
+                        var period = EnumPeriod.QUINZENAL
+                        if (radioQuinze.isChecked) {
+                            period = EnumPeriod.QUINZENAL
                         } else if (radioWeek.isChecked) {
                             period = EnumPeriod.SEMANAL
                         } else if (radioMonth.isChecked) {
@@ -406,7 +408,6 @@ object DialogHelper {
 
                     createCallback.invoke(plansBilling)
                     createConceptDialog.dismiss()
-
 
                 }
 
