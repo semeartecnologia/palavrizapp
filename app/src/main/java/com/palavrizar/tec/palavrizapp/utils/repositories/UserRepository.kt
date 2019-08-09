@@ -41,8 +41,18 @@ class UserRepository(val context: Context) {
         realtimeRepository.editUserCredits(numCredits, userId){}
     }
 
+    fun getUserCredits(userId: String, onCompletion: (Int) -> Unit){
+        realtimeRepository.getUserCredits(userId,onCompletion)
+    }
+
     fun userHasCredit(userId: String, onCompletion: (Boolean) -> Unit){
-        realtimeRepository.userHasCredit(userId, onCompletion)
+        realtimeRepository.getUserCredits(userId){
+            if (it > 0) {
+                onCompletion(true)
+            }else{
+                onCompletion(false)
+            }
+        }
     }
 
     fun consumeOneCreditIfPossible(userId: String, onCompletion: () -> Unit, onFail: () -> Unit){

@@ -400,14 +400,10 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
-    fun userHasCredit(userId: String, onCompletion: (Boolean) -> Unit){
+    fun getUserCredits(userId: String, onCompletion: (Int) -> Unit){
         getUser(userId, {
             if (it != null) {
-                if (it.essayCredits >= 1) {
-                    onCompletion.invoke(true)
-                }else{
-                    onCompletion.invoke(false)
-                }
+                    onCompletion.invoke(it.essayCredits )
             }
         },{})
     }

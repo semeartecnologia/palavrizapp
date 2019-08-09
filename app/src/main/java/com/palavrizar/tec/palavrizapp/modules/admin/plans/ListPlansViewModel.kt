@@ -22,7 +22,8 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
 
     val listPlansLiveData = MutableLiveData<ArrayList<PlansBilling>>()
     val listPlanSubsDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
-    val listPurchasesLiveData = MutableLiveData<ArrayList<Purchase>>()
+    val planSubDetailsLiveData = MutableLiveData<SkuDetails>()
+    val getUserCreditsLiveData = MutableLiveData<Int>()
 
     private var mBillingClient: BillingClient? = null
 
@@ -133,17 +134,25 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
             if (purchasesResult.purchasesList.isEmpty()){
                 fetchPlanList()
             }else {
-                var listPurchases = arrayListOf<Purchase>()
-                listPurchases.addAll(purchasesResult.purchasesList)
-                listPurchasesLiveData.postValue(listPurchases)
+                if (purchasesResult.purchasesList.size > 0) {
+                    getSingleProductCatalog(purchasesResult.purchasesList[0].sku)
+                    getUserCredits()
+                }
             }
         }else{
             fetchPlanList()
         }
     }
 
-    fun loadProducstCatalog(skuList: ArrayList<String>) {
+    private fun getUserCredits(){
+        userRepository.getUserCredits(sessionManager.userLogged.userId){
+            getUserCreditsLiveData.postValue(it)
+        }
+    }
 
+    private fun getSingleProductCatalog(sku: String) {
+        val skuList = arrayListOf<String>()
+        skuList.add(sku)
         if (mBillingClient?.isReady == true) {
             val params = SkuDetailsParams
                     .newBuilder()
@@ -152,7 +161,22 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
                     .build()
             mBillingClient?.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
                 if (responseCode.responseCode == BillingClient.BillingResponseCode.OK ) {
-                    println("querySkuDetailsAsync, responseCode: $responseCode")
+                    planSubDetailsLiveData.postValue(skuDetailsList[0])
+                }
+            }
+        }
+    }
+
+    fun loadProducstCatalog(skuList: ArrayList<String>) {
+        if (mBillingClient?.isReady == true) {
+            val params = SkuDetailsParams
+                    .newBuilder()
+                    .setSkusList(skuList)
+                    .setType(BillingClient.SkuType.SUBS)
+                    .build()
+            mBillingClient?.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
+                if (responseCode.responseCode == BillingClient.BillingResponseCode.OK ) {
+                    //println("querySkuDetailsAsync, responseCode: $responseCode")
                     val listPlanDetails = arrayListOf<SkuDetails>()
                     skuDetailsList.forEach {
                         /*var planDetail = PlanDetails("", it.title, it.description, it.price)*/
@@ -161,11 +185,11 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
                     listPlanSubsDetailsLiveData.postValue(listPlanDetails)
                     //initProductAdapter(skuDetailsList)
                 } else {
-                    println("Can't querySkuDetailsAsync, responseCode: $responseCode")
+              //      println("Can't querySkuDetailsAsync, responseCode: $responseCode")
                 }
             }
         } else {
-            println("Billing Client not ready")
+            //println("Billing Client not ready")
         }
     }
 

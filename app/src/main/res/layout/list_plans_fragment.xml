@@ -9,6 +9,7 @@
     tools:context="com.palavrizar.tec.palavrizapp.modules.admin.plans.ListPlansFragment">
 
 
+    <!-- //TODO Bahia é nesse layout_has_plan que é exibido quando o usuario entra na pagina de meu plano e tem um plano -->
     <RelativeLayout
         android:id="@+id/layout_has_plan"
         android:visibility="gone"
@@ -20,25 +21,77 @@
             android:layout_margin="8dp"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:text="@string/your_plan_label"
-                android:textStyle="bold"
-                android:textSize="20sp"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_user_plan_title"
-                android:layout_marginStart="8dp"
-                android:textSize="24sp"
+                <TextView
+                    android:text="@string/your_plan_title"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_user_plan_title"
+                    android:layout_marginStart="8dp"
+                    android:textSize="24sp"
+                    tools:text="asdkoaasdasds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/your_plan_description"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_user_plan_desc"
+                    android:layout_marginStart="8dp"
+                    android:textSize="24sp"
+                    tools:text="asdk asdas as sa dasdads asd asdas das asdoas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/your_plan_credits"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_user_plan_credits"
+                    android:layout_marginStart="8dp"
+                    android:textSize="24sp"
+                    tools:text="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
 
         </LinearLayout>
+
 
         <Button
             android:id="@+id/btn_update_plan"
