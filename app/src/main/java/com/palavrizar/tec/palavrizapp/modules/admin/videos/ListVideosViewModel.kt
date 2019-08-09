@@ -22,7 +22,14 @@ class ListVideosViewModel(application: Application) : AndroidViewModel(applicati
 
     fun fetchIntroVideo(){
         videoRepository.getVideoIntro {
-            videoIntroLiveData.postValue(it)
+            var video = it
+            videoRepository.getThumnailDownloadUrl(it?.videoThumb ?: "") {
+                if (!it.isBlank()) {
+                   video?.videoThumb = it
+                }
+                videoIntroLiveData.postValue(video)
+            }
+
         }
     }
 

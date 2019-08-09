@@ -84,6 +84,17 @@
                 android:textSize="12sp"
                 tools:text="Vídeo de introdução a língua portugues uahsuahsuahsu auhsauhsuahsuah uahsua hush asasasas Vídeo de  a língua portugues uahsuahsuahsu auhsauhsuahsuah uahsua hush asasasas" />
 
+            <TextView
+                android:id="@+id/tv_label_video_intro"
+                android:visibility="gone"
+                android:text="@string/video_intro_text"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <LinearLayout
                 android:id="@+id/layout_theme"
                 android:layout_marginTop="4dp"

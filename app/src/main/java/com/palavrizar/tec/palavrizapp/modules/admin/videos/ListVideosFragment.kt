@@ -93,6 +93,11 @@ class ListVideosFragment : Fragment(), OnVideoEvent {
                 layout_video_intro?.visibility = View.VISIBLE
                 video_title?.text = it.title
                 video_description?.text = it.description
+                layout_theme?.visibility = View.GONE
+                layout_structure?.visibility = View.GONE
+                layout_concept?.visibility = View.GONE
+                tv_label_video_intro.visibility = View.VISIBLE
+
 
                 Picasso.get().load(it.videoThumb).into(video_thumbnail)
             }
