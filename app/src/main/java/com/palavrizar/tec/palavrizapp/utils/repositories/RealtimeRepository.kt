@@ -116,6 +116,38 @@ class RealtimeRepository(val context: Context) {
 
     }
 
+    fun checkVideoIntroExistAlready(onCompletion: ((Boolean) -> Unit)){
+        val reference = "videoIntro/"
+
+        val videoList = arrayListOf<Video>()
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                videoList.clear()
+                dataSnapshot.children.mapNotNullTo(videoList) { it.getValue(Video::class.java) }
+                if (videoList.isEmpty()){
+                    onCompletion(false)
+                }else{
+                    onCompletion(true)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(false)
+            }
+        })
+    }
+
+    fun saveVideoIntro(video: Video){
+        val reference = "videoIntro/"
+        var key = "vIntro"
+
+        video.videoKey = key
+        mDatabaseReference.child(reference).child(key).setValue(video).addOnCompleteListener {
+                }.addOnFailureListener {
+                }
+    }
+
     fun saveVideo(video: Video){
         val reference = "videos/"
         var key = mDatabaseReference.child(reference).push().key

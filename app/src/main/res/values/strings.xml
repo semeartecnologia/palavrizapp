@@ -301,6 +301,9 @@
 
     <string name="no_plan_no_essay">Você precisa assinar um plano ou comprar envios avulsos para enviar redação</string>
     <string name="no_credits_essay">Você já atingiu seu limite de envios de seu plano!</string>
+    <string name="video_intro_text">Video Introdutório</string>
+    <string name="video_intro_already_there">Você já cadastrou um video de introdução, deseja sobrescrever?</string>
+    <string name="video_intro_cant_edit">O vídeo introdutório não pode ser editado, você deve cadastrar um novo vídeo que irá sobrescrevê-lo</string>
 
 
 

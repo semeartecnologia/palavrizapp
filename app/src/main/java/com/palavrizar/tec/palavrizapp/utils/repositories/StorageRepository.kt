@@ -28,7 +28,7 @@ class StorageRepository(val context: Context) {
     private var realtimeRepository = RealtimeRepository(context)
 
 
-    fun uploadVideo(video: Video){
+    fun uploadVideo(video: Video, isIntroVideo: Boolean = false){
 
         var filename = video.path.split("/").lastOrNull() ?: ""
 
@@ -47,7 +47,7 @@ class StorageRepository(val context: Context) {
             if (task.isSuccessful) {
                 ref.downloadUrl.addOnSuccessListener {
                     video.path = it.path ?: ""
-                    uploadThumb(video)
+                    uploadThumb(video, isIntroVideo)
                 }
             }
         }
@@ -204,7 +204,7 @@ class StorageRepository(val context: Context) {
         }
     }
 
-    private fun uploadThumb(video: Video) {
+    private fun uploadThumb(video: Video, isIntroVideo: Boolean = false) {
         val refThumb = videosParentRef.child("thumbs/").child("thumb-"+System.currentTimeMillis())
 
         val thumbTask = refThumb.putFile( Uri.fromFile(File(video.videoThumb)))
@@ -226,7 +226,11 @@ class StorageRepository(val context: Context) {
 
                 refThumb.downloadUrl.addOnSuccessListener {
                     video.videoThumb = it.path ?: ""
-                    realtimeRepository.saveVideo(video)
+                    if (isIntroVideo){
+                        realtimeRepository.saveVideoIntro(video)
+                    }else {
+                        realtimeRepository.saveVideo(video)
+                    }
                 }
 
             }

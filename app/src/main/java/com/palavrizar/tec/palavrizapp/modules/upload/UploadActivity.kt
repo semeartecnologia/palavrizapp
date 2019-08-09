@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.modules.upload
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
@@ -401,7 +402,22 @@ class UploadActivity : BaseActivity() {
 
                     val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName, concept, structure)
                     toggleButtonUpload()
-                    getThumbnailAndUpload(video)
+
+                    if (check_intro?.isChecked == true){
+                        uploadViewModel.getVideoIntroUploadedAlready {
+                            if (it){
+                                DialogHelper.showYesNoMessage(this, "", getString(R.string.video_intro_already_there),
+                                        {
+                                            getThumbnailAndUpload(video, true)
+                                        }){
+
+                                        }
+                            }
+                        }
+                    }else{
+                        toggleButtonUpload()
+                        getThumbnailAndUpload(video)
+                    }
                 }
 
             }
@@ -501,7 +517,7 @@ class UploadActivity : BaseActivity() {
         preview_video.start()
     }
 
-    private fun getThumbnailAndUpload(video: Video){
+    private fun getThumbnailAndUpload(video: Video, isIntro: Boolean = false){
         var file = File(videoUrl)
         val videoThumb = ThumbnailUtils.createVideoThumbnail(file.absolutePath,
                 MediaStore.Images.Thumbnails.MINI_KIND)
@@ -509,7 +525,7 @@ class UploadActivity : BaseActivity() {
         video.videoThumb = FileHelper.getRealPathFromURI(this, getImageUri(this, videoThumb) )
 
         Log.d("teste", "Thumb created!!! " + video.videoThumb)
-        uploadViewModel.uploadVideo(this, video)
+        uploadViewModel.uploadVideo(this, video, isIntro)
     }
 
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri {

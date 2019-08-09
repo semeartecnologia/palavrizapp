@@ -22,10 +22,15 @@ class UploadViewModel(application: Application): AndroidViewModel(application) {
     var themeListLiveData = MutableLiveData<ArrayList<Themes>>()
     var planListLiveData = MutableLiveData<ArrayList<PlansBilling>>()
 
-    fun uploadVideo(context: Context, video: Video){
+    fun uploadVideo(context: Context, video: Video, isIntro: Boolean = false){
         val intent = Intent(context, UploadService::class.java)
         intent.putExtra(Constants.EXTRA_VIDEO, video)
+        intent.putExtra(Constants.EXTRA_VIDEO_FIRST, isIntro)
         context.startService(intent)
+    }
+
+    fun getVideoIntroUploadedAlready(onCompletion: ((Boolean) -> Unit)){
+        videoRepository.getVideosUploadedAlready(onCompletion)
     }
 
     fun editVideo(video: Video?){

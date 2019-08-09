@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import com.palavrizar.tec.palavrizapp.models.Video
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO
+import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_FIRST
 import com.palavrizar.tec.palavrizapp.utils.repositories.RealtimeRepository
 import com.palavrizar.tec.palavrizapp.utils.repositories.StorageRepository
 
@@ -33,8 +34,9 @@ class UploadService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("palavrizapp-service", "uploaded service binded")
         val video = intent?.getParcelableExtra<Video>(EXTRA_VIDEO)
+        val isIntro = intent?.getBooleanExtra(EXTRA_VIDEO_FIRST, false) ?: false
         if (video != null) {
-            storageRepository.uploadVideo(video)
+            storageRepository.uploadVideo(video, isIntro)
         }
         return super.onStartCommand(intent, flags, startId)
     }

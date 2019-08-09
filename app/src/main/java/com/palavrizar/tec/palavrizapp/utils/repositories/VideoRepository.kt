@@ -68,4 +68,8 @@ class VideoRepository(val context: Context) {
         realtimeRepository.getVideosConceptList(onCompletion)
     }
 
+    fun getVideosUploadedAlready(onCompletion: ((Boolean) -> Unit)){
+        realtimeRepository.checkVideoIntroExistAlready(onCompletion)
+    }
+
 }
