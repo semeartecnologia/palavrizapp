@@ -72,4 +72,8 @@ class VideoRepository(val context: Context) {
         realtimeRepository.checkVideoIntroExistAlready(onCompletion)
     }
 
+    fun getVideoIntro(onCompletion: ((Video?) -> Unit)){
+        realtimeRepository.getVideosIntro(onCompletion)
+    }
+
 }

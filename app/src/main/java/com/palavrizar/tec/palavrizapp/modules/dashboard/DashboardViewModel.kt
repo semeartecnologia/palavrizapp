@@ -76,8 +76,6 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
                         //onFail
                     }
 
-                }else{
-                    val a = ""
                 }
             }
         }

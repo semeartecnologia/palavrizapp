@@ -12,10 +12,17 @@ class ListVideosViewModel(application: Application) : AndroidViewModel(applicati
     var videoListLiveData = MutableLiveData<ArrayList<Video>>()
     var showProgressLiveData = MutableLiveData<Boolean>()
     var successEditOrderLiveData = MutableLiveData<Boolean>()
+    var videoIntroLiveData = MutableLiveData<Video?>()
 
     fun fetchVideos(){
         videoRepository.getAllVideos {
             videoListLiveData.postValue(it)
+        }
+    }
+
+    fun fetchIntroVideo(){
+        videoRepository.getVideoIntro {
+            videoIntroLiveData.postValue(it)
         }
     }
 

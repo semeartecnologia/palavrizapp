@@ -138,6 +138,24 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
+    fun getVideosIntro(onCompletion: ((Video?) -> Unit)){
+        val reference = "videoIntro/"
+        var key = "vIntro"
+
+        var queryReference = mDatabaseReference.child(reference).child(key)
+
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val video = dataSnapshot.getValue(Video::class.java)
+                onCompletion(video)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(null)
+            }
+        })
+    }
+
     fun saveVideoIntro(video: Video){
         val reference = "videoIntro/"
         var key = "vIntro"

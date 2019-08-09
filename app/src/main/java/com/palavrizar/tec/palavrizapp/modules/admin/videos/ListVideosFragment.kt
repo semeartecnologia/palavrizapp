@@ -26,6 +26,8 @@ import com.palavrizar.tec.palavrizapp.utils.commons.FileHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.ItemDragCallback
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnVideoEvent
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_video_class.*
 import kotlinx.android.synthetic.main.list_videos_fragment.*
 
 
@@ -59,6 +61,7 @@ class ListVideosFragment : Fragment(), OnVideoEvent {
         setupRecyclerVideos()
         registerObservers()
         viewModel.fetchVideos()
+        viewModel.fetchIntroVideo()
         setupFab()
         setupView()
     }
@@ -83,6 +86,15 @@ class ListVideosFragment : Fragment(), OnVideoEvent {
             if (it != null) {
                 progress_loading_videos?.visibility = View.GONE
                 adapter.addAllVideo(it)
+            }
+        })
+        viewModel.videoIntroLiveData.observe(this, Observer {
+            if (it != null){
+                layout_video_intro?.visibility = View.VISIBLE
+                video_title?.text = it.title
+                video_description?.text = it.description
+
+                Picasso.get().load(it.videoThumb).into(video_thumbnail)
             }
         })
         viewModel.showProgressLiveData.observe(this, Observer {
