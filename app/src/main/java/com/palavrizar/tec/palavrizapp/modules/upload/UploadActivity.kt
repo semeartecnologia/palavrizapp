@@ -410,8 +410,10 @@ class UploadActivity : BaseActivity() {
                                         {
                                             getThumbnailAndUpload(video, true)
                                         }){
-
+                                            finish()
                                         }
+                            }else{
+                                getThumbnailAndUpload(video, true)
                             }
                         }
                     }else{

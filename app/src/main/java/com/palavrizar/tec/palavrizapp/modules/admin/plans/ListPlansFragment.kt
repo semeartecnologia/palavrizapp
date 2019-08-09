@@ -20,6 +20,7 @@ import com.palavrizar.tec.palavrizapp.utils.adapters.ListPlansAdapter
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnPlanClicked
 import kotlinx.android.synthetic.main.list_plans_fragment.*
+import java.lang.Exception
 
 
 class ListPlansFragment : Fragment(), OnPlanClicked {
@@ -144,24 +145,35 @@ class ListPlansFragment : Fragment(), OnPlanClicked {
                 adapter.plansList = it
             }
         })
-        viewModel.listPurchasesLiveData.observe(this, Observer {
-            if (it != null){
-                setupUserHasPlan(it)
+        viewModel.planSubDetailsLiveData.observe(this, Observer {
+            setupUserHasPlan(it)
+        })
+        viewModel.getUserCreditsLiveData.observe(this, Observer {
+            if (it != null) {
+                setupUserCredits(it)
             }
         })
 
     }
 
-    fun setupUserHasPlan(listPurchase: ArrayList<Purchase>){
+    private fun setupUserHasPlan(planDetails: SkuDetails?){
         tv_user_see_plans?.visibility = View.GONE
         frame_layout_recycle?.visibility = View.GONE
         layout_has_plan?.visibility = View.VISIBLE
-        tv_user_plan_title?.text = listPurchase[0].sku
+        tv_user_plan_title?.text = planDetails?.title ?: ""
+        tv_user_plan_desc?.text = planDetails?.description ?: ""
 
         btn_update_plan?.setOnClickListener {
             manageAccount()
         }
+    }
 
+    private fun setupUserCredits(numCredits: Int){
+        try {
+            tv_user_plan_credits?.text = numCredits.toString()
+        }catch(e: Exception){
+
+        }
     }
 
     fun manageAccount(){

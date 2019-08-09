@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "82849852942-j167so2tppflkjmn5c20pte4g1cgdaom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.palavrizar.tec.palavrizapp.debug",
+            "certificate_hash": "71c9d4fb1199afc668e05f90419a13084003290c"
+          }
+        },
+        {
           "client_id": "82849852942-2tr3naodnpkuns48k9deu5f5scrfahh9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
