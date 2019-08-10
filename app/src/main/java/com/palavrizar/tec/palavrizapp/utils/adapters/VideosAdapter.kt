@@ -32,9 +32,6 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         this.listVideos.clear()
 //        listVideosWatchedAlready.clear()
         v.forEach {
-            it.orderVideo = this.listVideos.size.toString()
-            this.listVideos.add(it)
-
             if (jsonProgress != null){
                 try{
                     val getValue = jsonProgress.get(it.videoKey)
@@ -46,7 +43,9 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
 
                 }
             }
+            it.orderVideo = this.listVideos.size.toString()
             this.listVideos.add(it)
+
 
 
         }

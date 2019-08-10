@@ -621,6 +621,25 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
+/*
+    fun getTotalVideoPlan(plan: String, onCompletion: ((Int) -> Unit)){
+
+        val reference = "videos/"
+        var queryReference = mDatabaseReference.child(reference).child(plan)
+
+
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                onCompletion(dataSnapshot.childrenCount.toInt())
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(0)
+            }
+        })
+    }
+*/
+
     fun getVideosList(plan: String, onCompletion: ((ArrayList<Video>) -> Unit), videoFilter: String? = null){
 
         val reference = "videos/"
