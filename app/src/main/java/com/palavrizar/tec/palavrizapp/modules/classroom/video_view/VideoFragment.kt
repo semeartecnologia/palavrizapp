@@ -168,14 +168,9 @@ class VideoFragment: Fragment() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-
     override fun onPause() {
         super.onPause()
+        refreshJsonProgress()
         if (Util.SDK_INT <= 23) {
             releasePlayer()
         }
@@ -215,8 +210,6 @@ class VideoFragment: Fragment() {
 
     override fun onStop() {
         super.onStop()
-
-        refreshJsonProgress()
 
         if (Util.SDK_INT > 23) {
             releasePlayer()
