@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.modules.upload
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,11 +9,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -37,6 +41,7 @@ import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_PATH
 import kotlinx.android.synthetic.main.fragment_add_video.*
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 
 
@@ -59,6 +64,7 @@ class UploadActivity : BaseActivity() {
     private var themeListString = arrayListOf<String>()
 
     private var listOfThemes = arrayListOf<Themes>()
+    private var videoPdfPath: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +91,10 @@ class UploadActivity : BaseActivity() {
         loadStructures()
         loadConcepts()
         setupRadioGroup()
+        setupAddPdfButton()
     }
+
+
 
     private fun setupRadioGroup() {
         radioGroupVideoInfo.setOnCheckedChangeListener { group, checkedId ->
@@ -98,19 +107,33 @@ class UploadActivity : BaseActivity() {
             }
         }
     }
+    private fun setupAddPdfButton() {
+        btn_add_pdf?.setOnClickListener {
+            callPdfPicker(false)
+        }
+
+        layout_pdf_filename?.setOnClickListener {
+            videoPdfPath = ""
+            layout_pdf_filename?.visibility = View.GONE
+        }
+
+    }
 
     private fun changeRadioItem(i: Int){
         if ( i == 0){
             spinner_theme?.visibility = View.VISIBLE
             layout_picker_structure?.visibility = View.GONE
+            layout_add_pdf?.visibility = View.GONE
             layout_picker_concept?.visibility = View.GONE
         }else if (i == 1){
             spinner_theme?.visibility = View.GONE
+            layout_add_pdf?.visibility = View.VISIBLE
+           layout_picker_concept?.visibility =  View.VISIBLE
             layout_picker_structure?.visibility = View.GONE
-            layout_picker_concept?.visibility =  View.VISIBLE
 
         }else if( i == 2){
             spinner_theme?.visibility = View.GONE
+            layout_add_pdf?.visibility = View.VISIBLE
             layout_picker_structure?.visibility = View.VISIBLE
             layout_picker_concept?.visibility = View.GONE
         }
@@ -137,6 +160,113 @@ class UploadActivity : BaseActivity() {
                     , {}, {})
         }
     }
+
+    private fun callPdfPicker(isEdit: Boolean){
+        val intentPDF = Intent(Intent.ACTION_GET_CONTENT)
+        intentPDF.type = "application/pdf"
+        intentPDF.addCategory(Intent.CATEGORY_OPENABLE)
+        if (isEdit){
+            startActivityForResult(Intent.createChooser(intentPDF, "Select PDF"), 232)
+        }else {
+            startActivityForResult(Intent.createChooser(intentPDF, "Select PDF"), 231)
+        }
+    }
+
+    private fun saveFileInStorage(uri: Uri,  onCompletion: (String) -> Unit) {
+
+        Thread(Runnable {
+            var file: File? = null
+            try {
+                val mimeType = contentResolver.getType(uri)
+                if (mimeType != null) {
+                    val inputStream = contentResolver.openInputStream(uri)
+
+                    val fileName = getFileName(uri)
+                    if (fileName != "") {
+                        file = File(
+                                getExternalFilesDir(
+                                        Environment.DIRECTORY_DOWNLOADS)!!.absolutePath + "/" + fileName)
+                        val output = FileOutputStream(file)
+                        try {
+                            val buffer = ByteArray(inputStream!!.available()) // or other buffer size
+                            var read = inputStream.read(buffer)
+
+                            while (read != -1) {
+                                output.write(buffer, 0, read)
+                                read = inputStream.read(buffer)
+                            }
+
+                            output.flush()
+                            val path = file.absolutePath//use this path
+                            onCompletion(path)
+
+                        } finally {
+                            output.close()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }).start()
+
+    }
+
+    private fun getFileName(uri: Uri): String {
+        // The query, since it only applies to a single document, will only return
+        // one row. There's no need to filter, sort, or select fields, since we want
+        // all fields for one document.
+        var displayName = ""
+        var cursor: Cursor? = null
+
+        cursor = this.contentResolver
+                .query(uri, null, null, null, null, null)
+        try {
+            // moveToFirst() returns false if the cursor has 0 rows.  Very handy for
+            // "if there's anything to look at, look at it" conditionals.
+            if (cursor != null && cursor.moveToFirst()) {
+
+                // Note it's called "Display Name".  This is
+                // provider-specific, and might not necessarily be the file name.
+                displayName = cursor.getString(
+                        cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                //Log.i(TAG, "Display Name: $displayName")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            if (cursor != null) {
+                cursor.close()
+            }
+        }
+        return displayName
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 231) {
+                if (data != null) {
+                    saveFileInStorage(data.data!!){
+                        val urlPdf = it
+                        runOnUiThread {
+                            layout_pdf_filename?.visibility = View.VISIBLE
+                            layout_pdf_filename?.text = urlPdf.split("/")?.lastOrNull() ?: "Excluir PDF"
+                            videoPdfPath = it
+                        }
+                    }
+                }
+            }else if(requestCode == 232){
+                if (data != null) {
+                    saveFileInStorage(data.data!!){
+
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun setupDeleteButton() {
         if (isEdit){
@@ -185,7 +315,7 @@ class UploadActivity : BaseActivity() {
                     structureListString.add(structure.structure)
                 }
 
-                 adapterStructure = ArrayAdapter(this,
+                adapterStructure = ArrayAdapter(this,
                         android.R.layout.simple_spinner_item, structureListString)
 
                 adapterStructure?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -193,8 +323,8 @@ class UploadActivity : BaseActivity() {
 
                 if (isEdit){
                     if (!video?.structure.isNullOrBlank()){
-                         spinner_structure.setSelection ( structureListString.indexOf(video?.structure))
-                     }
+                        spinner_structure.setSelection ( structureListString.indexOf(video?.structure))
+                    }
                 }
             }
         })
@@ -396,11 +526,11 @@ class UploadActivity : BaseActivity() {
                 adapter.disableAllCheckboxes()
 
                 if (isEdit){
-                    val video = Video(this.video?.orderVideo ?: "0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName, concept, structure )
+                    val video = Video(this.video?.orderVideo ?: "0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme?.urlPdf ?: videoPdfPath ?: "", selectedTheme?.themeName, concept, structure )
                     uploadViewModel.editVideo(video)
                 }else {
 
-                    val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme?.urlPdf ?: "", selectedTheme?.themeName, concept, structure)
+                    val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme?.urlPdf ?: videoPdfPath ?: "", selectedTheme?.themeName, concept, structure)
                     toggleButtonUpload()
 
                     if (check_intro?.isChecked == true){
@@ -410,8 +540,8 @@ class UploadActivity : BaseActivity() {
                                         {
                                             getThumbnailAndUpload(video, true)
                                         }){
-                                            finish()
-                                        }
+                                    finish()
+                                }
                             }else{
                                 getThumbnailAndUpload(video, true)
                             }

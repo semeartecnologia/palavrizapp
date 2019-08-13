@@ -142,31 +142,23 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
 
     }
 
-    fun getFileName(uri: Uri): String {
-        // The query, since it only applies to a single document, will only return
-        // one row. There's no need to filter, sort, or select fields, since we want
-        // all fields for one document.
+    private fun getFileName(uri: Uri): String {
         var displayName = ""
         var cursor: Cursor? = null
         if (activity != null)
             cursor = activity!!.contentResolver
                     .query(uri, null, null, null, null, null)
         try {
-            // moveToFirst() returns false if the cursor has 0 rows.  Very handy for
-            // "if there's anything to look at, look at it" conditionals.
-            if (cursor != null && cursor!!.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst()) {
 
-                // Note it's called "Display Name".  This is
-                // provider-specific, and might not necessarily be the file name.
-                displayName = cursor!!.getString(
-                        cursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                //Log.i(TAG, "Display Name: $displayName")
+                displayName = cursor.getString(
+                        cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
             }
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             if (cursor != null) {
-                cursor!!.close()
+                cursor.close()
             }
         }
         return displayName
@@ -185,19 +177,6 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
                         }
 
                     }
-                    /* = FileHelper.getPathPdf(activity as Activity, data.data!!)
-                    showCreateThemeDialog(editedTheme)*/
-                }
-            }else if(requestCode == 232){
-                if (data != null) {
-                    saveFileInStorage(data.data!!){
-                        editedTheme?.urlPdf = it
-                        runOnUiThread {
-                            showEditThemeDialog(editedTheme, true)
-                        }
-                    }
-                    /*editedTheme?.urlPdf = FileHelper.getPathPdf(activity as Activity, data.data!!)
-                    showEditThemeDialog(editedTheme, true)*/
                 }
             }
         }

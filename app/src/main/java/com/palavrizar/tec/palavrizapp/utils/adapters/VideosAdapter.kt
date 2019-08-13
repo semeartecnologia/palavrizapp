@@ -121,7 +121,8 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
             val mText = text.toLowerCase()
             for (video in listVideosBackup) {
 
-                if (video.title.contains(text) || video.description.contains(mText)) {
+                if (video.title.contains(text) || video.description.contains(mText) || video.themeName?.contains(mText) == true || video.concept?.contains(mText) == true
+                        || video.structure?.contains(mText) == true) {
                     arrayVideos.add(video)
                 }
 
@@ -129,13 +130,6 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         }
         onVideoSearched.onVideosSearch(arrayVideos)
     }
-
-    /*private fun copyVideoList() {
-        this.userListCopy = arrayListOf()
-        this.userListCopy?.clear()
-        this.userListCopy?.addAll(userList)
-
-    }*/
 
     override fun onRowMoved(fromPosition: Int, toPosition: Int) {
         if (fromPosition < toPosition) {
