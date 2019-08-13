@@ -176,6 +176,11 @@ class RealtimeRepository(val context: Context) {
         video.videoKey = key
         val childUpdates = HashMap<String, Any?>()
         childUpdates["/videos/${Constants.NO_PLAN}/$key/"] = video
+
+   /*     getTotalVideoPlan{
+
+        }
+*/
         video.videoPlan?.split("/")?.forEach {
             if (it.isNotBlank()) {
                 childUpdates["/videos/$it/$key/"] = video
@@ -621,16 +626,20 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
-/*
-    fun getTotalVideoPlan(plan: String, onCompletion: ((Int) -> Unit)){
+
+    fun getTotalVideoPlan(onCompletion: ((Int) -> Unit)){
 
         val reference = "videos/"
-        var queryReference = mDatabaseReference.child(reference).child(plan)
+        var queryReference = mDatabaseReference.child(reference)
 
 
         queryReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                onCompletion(dataSnapshot.childrenCount.toInt())
+                dataSnapshot.children.forEach {
+                    val a = it
+                    val count = a.childrenCount
+                    val b = ""
+                }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -638,7 +647,7 @@ class RealtimeRepository(val context: Context) {
             }
         })
     }
-*/
+
 
     fun getVideosList(plan: String, onCompletion: ((ArrayList<Video>) -> Unit), videoFilter: String? = null){
 
