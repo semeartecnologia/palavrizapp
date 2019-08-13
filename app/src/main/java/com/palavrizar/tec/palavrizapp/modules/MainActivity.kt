@@ -84,11 +84,7 @@ class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionList
     }
 
     private fun startClassroomActivity() {
-        val it = Intent(this, ClassroomActivity::class.java)
-        val video = Video("-1", "intro", "-SADSsdolksfquiAS", "Bem-vindo ao palavrizapp!", "Introdução ao aplicativo do palavrizar, aprenda como usar o aplicativo", "", "/v0/b/palavrizapp-debug.appspot.com/o/videos/SampleVideo_1280x720_5mb.mp4", "" )
-        it.putExtra(Constants.EXTRA_VIDEO, video)
-        it.putExtra(Constants.EXTRA_VIDEO_FIRST, true)
-        startActivity(it)
+        mainViewModel?.startClassroomActivity(this)
     }
 
     override fun OnThemesClicked() {
