@@ -18,6 +18,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:layout_margin="16dp"
+                android:id="@+id/frame_video"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="240dp" />
+
             <VideoView
                 android:layout_margin="16dp"
                 android:id="@+id/preview_video"
