@@ -178,6 +178,15 @@ class ListThemesFragment : Fragment(), OnThemeClicked {
 
                     }
                 }
+            }else if(requestCode == 232){
+                if (data != null) {
+                    saveFileInStorage(data.data!!){
+                        editedTheme?.urlPdf = it
+                        runOnUiThread {
+                            showEditThemeDialog(editedTheme, true)
+                        }
+                    }
+                }
             }
         }
     }

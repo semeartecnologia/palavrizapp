@@ -58,8 +58,10 @@ class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionList
         val fm = supportFragmentManager
         val ft = fm.beginTransaction()
         ft.replace(R.id.frameContent, fragment, fragName)
-        if (fragment !is DashboardFragment)
+        if (fragment !is DashboardFragment) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
             ft.addToBackStack("tag")
+        }
         ft.commit()
     }
 

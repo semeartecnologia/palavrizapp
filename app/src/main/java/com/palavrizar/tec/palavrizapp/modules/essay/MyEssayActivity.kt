@@ -19,6 +19,7 @@ import android.util.Log
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Themes
+import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.modules.essay.image_check.EssayCheckActivity
 import com.palavrizar.tec.palavrizapp.utils.adapters.MyEssayAdapter
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
@@ -32,7 +33,7 @@ import kotlinx.android.synthetic.main.activity_my_essay.*
 import kotlinx.android.synthetic.main.layout_no_essay.*
 import java.io.File
 
-class MyEssayActivity : AppCompatActivity() {
+class MyEssayActivity : BaseActivity() {
 
     private var viewmodel: MyEssayViewModel? = null
     private val adapter = MyEssayAdapter()
@@ -48,6 +49,7 @@ class MyEssayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_essay)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title)
 
         initViewModel()
