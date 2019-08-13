@@ -20,6 +20,7 @@ import com.palavrizar.tec.palavrizapp.modules.classroom.ClassroomActivity
 import com.palavrizar.tec.palavrizapp.utils.adapters.VideosAdapter
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnVideoEvent
+import com.palavrizar.tec.palavrizapp.utils.interfaces.OnVideoSearched
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import com.palavrizar.tec.palavrizapp.utils.repositories.VideoRepository
 import kotlinx.android.synthetic.main.fragment_video_catalog.*
@@ -27,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_video_catalog.*
 /**
  * Fragmento de catalogo de aulas
  */
-class VideoCatalogFragment : Fragment(), OnVideoEvent {
+class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
 
     private var videoCatalogViewModel: VideoCatalogViewModel? = null
     private var recyclerTheme1: RecyclerView? = null
@@ -58,6 +59,10 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         return v
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupSearchView()
+    }
 
     private fun setupView(v: View) {
         videoCatalogViewModel?.getPlanName()
@@ -74,6 +79,29 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
 
         setupToggleButtons()
         setupFilterButton()
+
+    }
+
+
+    private fun setupSearchView(){
+        val myContext = this
+        sv_videos?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    mAdapter?.filter(query, myContext)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    mAdapter?.filter(newText, myContext)
+                }
+                return true
+            }
+
+        })
     }
 
     private fun setupToggleButtons() {
@@ -237,6 +265,10 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent {
         }else{
             getVideoList()
         }
+    }
+
+    override fun onVideosSearch(videoList: ArrayList<Video>) {
+        mAdapter?.setVideoSearched(videoList, sessionManager?.videosProgress)
     }
 
     private fun getVideoList(videoFilter: String? = null) {

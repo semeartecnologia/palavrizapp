@@ -66,7 +66,11 @@
 
     </LinearLayout>
 
-
+    <SearchView
+        android:layout_margin="4dp"
+        android:id="@+id/sv_videos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Spinner
         android:visibility="gone"

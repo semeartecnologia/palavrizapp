@@ -13,6 +13,7 @@ import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Video
 import com.palavrizar.tec.palavrizapp.utils.commons.ItemDragCallback
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnVideoEvent
+import com.palavrizar.tec.palavrizapp.utils.interfaces.OnVideoSearched
 import com.palavrizar.tec.palavrizapp.utils.repositories.VideoRepository
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
@@ -28,6 +29,27 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
     private var videoRepository: VideoRepository? = null
     private var jsonProgress: JSONObject? = null
 
+    fun setVideoSearched(listVideos: ArrayList<Video>, jsonProgress: JSONObject? = null){
+        this.listVideos.clear()
+        listVideos.forEach {
+            if (jsonProgress != null){
+                try{
+                    val getValue = jsonProgress.get(it.videoKey)
+                    if (getValue != null){
+                        val currentProgress = BigDecimal.valueOf(jsonProgress.getDouble(it.videoKey)).toFloat()
+                        it.quantVideoWached = currentProgress.toInt()
+                    }else{
+                        it.quantVideoWached = 0
+                    }
+                }catch (e: Exception){
+
+                }
+            }
+            this.listVideos.add(it)
+        }
+        this.notifyDataSetChanged()
+    }
+
     fun addAllVideo(v: ArrayList<Video>, jsonProgress: JSONObject? = null) {
         this.listVideos.clear()
 //        listVideosWatchedAlready.clear()
@@ -36,8 +58,10 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
                 try{
                     val getValue = jsonProgress.get(it.videoKey)
                     if (getValue != null){
-                        val currentProgress = BigDecimal.valueOf(jsonProgress.getDouble(it.videoKey) ?: 0.toDouble()).toFloat()
+                        val currentProgress = BigDecimal.valueOf(jsonProgress.getDouble(it.videoKey)).toFloat()
                         it.quantVideoWached = currentProgress.toInt()
+                    }else{
+                        it.quantVideoWached = 0
                     }
                 }catch (e: Exception){
 
@@ -88,6 +112,30 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
 
     }
 
+    fun filter(text: String, onVideoSearched: OnVideoSearched) {
+        val arrayVideos = arrayListOf<Video>()
+
+        if (text.isEmpty()) {
+            arrayVideos.addAll(listVideosBackup)
+        } else {
+            val mText = text.toLowerCase()
+            for (video in listVideosBackup) {
+
+                if (video.title.contains(text) || video.description.contains(mText)) {
+                    arrayVideos.add(video)
+                }
+
+            }
+        }
+        onVideoSearched.onVideosSearch(arrayVideos)
+    }
+
+    /*private fun copyVideoList() {
+        this.userListCopy = arrayListOf()
+        this.userListCopy?.clear()
+        this.userListCopy?.addAll(userList)
+
+    }*/
 
     override fun onRowMoved(fromPosition: Int, toPosition: Int) {
         if (fromPosition < toPosition) {
@@ -139,9 +187,11 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
                 if (getValue != null){
                     val currentProgress = BigDecimal.valueOf(jsonProgress?.getDouble(video.videoKey) ?: 0.toDouble()).toFloat()
                     viewHolder.progress.progress = currentProgress.toInt()
+                }else{
+                    viewHolder.progress.progress = 0
                 }
             }catch (e: Exception){
-
+                viewHolder.progress.progress = 0
             }
 
         }
