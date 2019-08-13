@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.utils.repositories
 
 import android.content.Context
+import android.util.Log
 import com.google.firebase.database.*
 import com.palavrizar.tec.palavrizapp.models.*
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
@@ -177,18 +178,18 @@ class RealtimeRepository(val context: Context) {
         val childUpdates = HashMap<String, Any?>()
         childUpdates["/videos/${Constants.NO_PLAN}/$key/"] = video
 
-   /*     getTotalVideoPlan{
+       getTotalVideoPlan{ hashCountVideos ->
+           video.videoPlan?.split("/")?.forEach {
+               if (it.isNotBlank()) {
+                   val countVideos = hashCountVideos?.get(it) ?: 0
+                   childUpdates["/videos/$it/$key/"] = Video(countVideos.toString(), video.videoPlan, video.videoKey, video.title, video.description, video.category, video.path, video.videoThumb, video.pdfPath, video.themeName, video.concept, video.structure, video.quantVideoWached)
+               }
+           }
+           mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
+           }.addOnFailureListener {
+           }
+        }
 
-        }
-*/
-        video.videoPlan?.split("/")?.forEach {
-            if (it.isNotBlank()) {
-                childUpdates["/videos/$it/$key/"] = video
-            }
-        }
-        mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
-        }.addOnFailureListener {
-        }
     }
 
     fun deleteVideo(videoKey: String, onCompletion: (Boolean) -> Unit){
@@ -627,23 +628,23 @@ class RealtimeRepository(val context: Context) {
     }
 
 
-    fun getTotalVideoPlan(onCompletion: ((Int) -> Unit)){
-
+    private fun getTotalVideoPlan(onCompletion: ((HashMap<String, Int>?) -> Unit)){
         val reference = "videos/"
+        val childUpdates = HashMap<String, Int>()
         var queryReference = mDatabaseReference.child(reference)
 
-
-        queryReference.addValueEventListener(object : ValueEventListener {
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 dataSnapshot.children.forEach {
-                    val a = it
-                    val count = a.childrenCount
-                    val b = ""
+                    val key = it.key ?: ""
+                    if (!key.isBlank()){
+                        childUpdates[key] = it.childrenCount.toInt()
+                    }
                 }
+                onCompletion(childUpdates)
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
-                onCompletion(0)
+                onCompletion(null)
             }
         })
     }
