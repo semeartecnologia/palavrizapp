@@ -221,6 +221,8 @@
 
     <!-- Contextual Menu -->
     <string name="logout">Sair</string>
+    <!-- Contextual Admin Menu -->
+    <string name="local_limit_menu">Limitar Localização</string>
 
     <!-- Upload Service -->
     <string name="notification_title">Subindo vídeo</string>
@@ -306,6 +308,10 @@
     <string name="video_intro_text">Video Introdutório</string>
     <string name="video_intro_already_there">Você já cadastrou um video de introdução, deseja sobrescrever?</string>
     <string name="video_intro_cant_edit">O vídeo introdutório não pode ser editado, você deve cadastrar um novo vídeo que irá sobrescrevê-lo</string>
+    <string name="add_city_hint">Nome da Cidade</string>
+    <string name="add_state_hint">Estado</string>
+    <string name="add_btn_label">Adicionar</string>
+    <string name="close_dialog">Sair</string>
 
 
 

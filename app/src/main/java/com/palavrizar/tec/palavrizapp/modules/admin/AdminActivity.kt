@@ -2,6 +2,8 @@ package com.palavrizar.tec.palavrizapp.modules.admin
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.view.Menu
+import android.view.MenuItem
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.utils.adapters.PagerAdapter
@@ -18,6 +20,21 @@ class AdminActivity : BaseActivity() {
         setContentView(R.layout.activity_admin)
 
         setupTabs()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_admin, menu)
+        return true
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_location -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupTabs() {
