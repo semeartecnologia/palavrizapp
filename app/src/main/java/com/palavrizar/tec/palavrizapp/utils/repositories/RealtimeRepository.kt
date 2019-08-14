@@ -208,6 +208,11 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
+    fun deleteUser(userId: String){
+        val reference = "users/"
+        mDatabaseReference.child(reference).child(userId).removeValue()
+    }
+
     fun saveEssay(essay: Essay, userId: String){
         val reference = "essays/"
         var key = mDatabaseReference.child(reference).push().key
@@ -466,9 +471,9 @@ class RealtimeRepository(val context: Context) {
         mDatabaseReference.child(reference).child(planId).removeValue()
     }
 
-    fun deleteUser(userId: String){
-        val reference = "users/"
-        mDatabaseReference.child(reference).child(userId).removeValue()
+    fun deleteLocationBlacklist(locationId: String){
+        val reference = "locationBlacklist/"
+        mDatabaseReference.child(reference).child(locationId).removeValue()
     }
 
     fun getThemes(onCompletion: (ArrayList<Themes>) -> Unit){
@@ -708,6 +713,7 @@ class RealtimeRepository(val context: Context) {
         if (key == null){
             key = "-" + System.currentTimeMillis().toString()
         }
+        location.key = key
         mDatabaseReference.child(reference).child("$key/").setValue(location).addOnCompleteListener {
             onCompletion.invoke()
         }

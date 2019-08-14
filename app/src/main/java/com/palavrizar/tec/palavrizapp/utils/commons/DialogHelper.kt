@@ -156,7 +156,7 @@ object DialogHelper {
         return createThemeDialog
     }
 
-    fun createLocationDialog(activity: Activity, listBlacklist: ArrayList<LocationBlacklist>, onSaveCallback: ((LocationBlacklist)-> Unit)): AlertDialog {
+    fun createLocationDialog(activity: Activity, listBlacklist: ArrayList<LocationBlacklist>, onSaveCallback: ((LocationBlacklist)-> Unit), onRemoveCallback: ((LocationBlacklist)-> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_limit_location, null, true)
         val cityEditText = view.findViewById<TextInputEditText>(R.id.et_location_city)
         val stateEditText = view.findViewById<TextInputEditText>(R.id.et_location_state)
@@ -164,10 +164,13 @@ object DialogHelper {
         val rvBlacklist = view.findViewById<RecyclerView>(R.id.rv_list_cities_banned)
         rvBlacklist.layoutManager = LinearLayoutManager(activity)
         val adapter = LocationAdapter(object: OnRemoveLocationClicked{
-            override fun onRemoveClicked(location: LocationBlacklist) {
-                 //removido com sucesso
+            override fun onRemoveClicked(location: LocationBlacklist, index: Int) {
+                onRemoveCallback(location)
+                listBlacklist.remove(location)
+                if (listBlacklist.isEmpty()){
+                    rvBlacklist.visibility = View.GONE
+                }
             }
-
         })
 
         val createLocationDialog  = AlertDialog.Builder(activity)
@@ -182,6 +185,8 @@ object DialogHelper {
         view.btn_add_city.setOnClickListener {
             if (!cityEditText.text.toString().isBlank() && !stateEditText.text.toString().isBlank()){
                 onSaveCallback.invoke(LocationBlacklist(cityEditText.text.toString(), stateEditText.text.toString()))
+                adapter.addLocation(LocationBlacklist(cityEditText.text.toString(), stateEditText.text.toString()))
+                rvBlacklist.visibility = View.VISIBLE
             }else{
                 showToast(activity, activity.getString(R.string.fill_all_fields))
             }

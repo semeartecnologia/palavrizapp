@@ -48,9 +48,11 @@ class AdminActivity : BaseActivity() {
 
     private fun showDialogLocationBlacklist(){
         adminViewModel.getLocationBlacklisted { list ->
-            DialogHelper.createLocationDialog(this, list){
+            DialogHelper.createLocationDialog(this, list, {
                 adminViewModel.saveLocationBlacklisted(it)
-            }
+            }){
+                adminViewModel.deleteLocationBlacklisted(it)
+        }
         }
 
     }

@@ -17,4 +17,10 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
         userRepository.getLocationBlacklist(onCompletion)
     }
 
+
+    fun deleteLocationBlacklisted(location: LocationBlacklist){
+        userRepository.deleteLocationBlacklist(location)
+    }
+
+
 }

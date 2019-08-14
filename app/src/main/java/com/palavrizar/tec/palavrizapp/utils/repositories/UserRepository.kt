@@ -67,4 +67,8 @@ class UserRepository(val context: Context) {
     fun saveLocationBlacklist(location: LocationBlacklist){
         realtimeRepository.saveLocationBlacklist(location){}
     }
+
+    fun deleteLocationBlacklist(location: LocationBlacklist){
+        realtimeRepository.deleteLocationBlacklist(location.key ?: return)
+    }
 }

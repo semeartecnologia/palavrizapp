@@ -20,6 +20,12 @@ class LocationAdapter(val listener: OnRemoveLocationClicked) : RecyclerView.Adap
             notifyDataSetChanged()
         }
 
+    fun addLocation(location: LocationBlacklist){
+        locationBlacklist.add(0, location)
+        notifyDataSetChanged()
+    }
+
+
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = inflate(R.layout.item_location_limit, p0)
         context = p0.context
@@ -37,7 +43,9 @@ class LocationAdapter(val listener: OnRemoveLocationClicked) : RecyclerView.Adap
         holder.stateName = location.state
 
         holder.ivRemove.setOnClickListener {
-            listener.onRemoveClicked(location)
+            listener.onRemoveClicked(location, index)
+            locationBlacklist.remove(location)
+            notifyDataSetChanged()
         }
 
     }
