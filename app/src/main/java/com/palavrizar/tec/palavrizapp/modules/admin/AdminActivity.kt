@@ -1,5 +1,6 @@
 package com.palavrizar.tec.palavrizapp.modules.admin
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.view.Menu
@@ -7,11 +8,13 @@ import android.view.MenuItem
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.utils.adapters.PagerAdapter
+import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import kotlinx.android.synthetic.main.activity_admin.*
 
 class AdminActivity : BaseActivity() {
 
     private var pagerAdapter = PagerAdapter(supportFragmentManager)
+    private lateinit var adminViewModel: AdminViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +22,12 @@ class AdminActivity : BaseActivity() {
         setTitle(R.string.toolbar_admin)
         setContentView(R.layout.activity_admin)
 
+        initViewModel()
         setupTabs()
+    }
+
+    private fun initViewModel() {
+        adminViewModel = ViewModelProviders.of(this).get(AdminViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -31,9 +39,16 @@ class AdminActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_location -> {
+                showDialogLocationBlacklist()
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showDialogLocationBlacklist(){
+        DialogHelper.createLocationDialog(this, arrayListOf()){
+            adminViewModel.saveLocationBlacklisted(it)
         }
     }
 

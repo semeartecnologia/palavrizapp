@@ -13,15 +13,19 @@ import android.view.View
 import android.widget.*
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.*
+import com.palavrizar.tec.palavrizapp.utils.adapters.LocationAdapter
 import com.palavrizar.tec.palavrizapp.utils.adapters.ThemesListPickerAdapter
+import com.palavrizar.tec.palavrizapp.utils.interfaces.OnRemoveLocationClicked
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.dialog_add_plan.view.*
 import kotlinx.android.synthetic.main.dialog_create_concept.view.*
+import kotlinx.android.synthetic.main.dialog_create_concept.view.btn_delete_concept
 import kotlinx.android.synthetic.main.dialog_create_structure.view.*
 import kotlinx.android.synthetic.main.dialog_create_theme.view.*
 import kotlinx.android.synthetic.main.dialog_edit_user.view.*
+import kotlinx.android.synthetic.main.dialog_limit_location.view.*
 import kotlinx.android.synthetic.main.dialog_theme_picker.view.*
 
 object DialogHelper {
@@ -151,6 +155,44 @@ object DialogHelper {
         createThemeDialog.show()
         return createThemeDialog
     }
+
+    fun createLocationDialog(activity: Activity, listBlacklist: ArrayList<LocationBlacklist>, onSaveCallback: ((LocationBlacklist)-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_limit_location, null, true)
+        val cityEditText = view.findViewById<TextInputEditText>(R.id.et_location_city)
+        val stateEditText = view.findViewById<TextInputEditText>(R.id.et_location_state)
+
+        val rvBlacklist = view.findViewById<RecyclerView>(R.id.rv_list_cities_banned)
+        rvBlacklist.layoutManager = LinearLayoutManager(activity)
+        val adapter = LocationAdapter(object: OnRemoveLocationClicked{
+            override fun onRemoveClicked(location: LocationBlacklist) {
+                 //removido com sucesso
+            }
+
+        })
+
+        val createLocationDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .create()
+
+        view.btn_cancel_location.setOnClickListener {
+            createLocationDialog.dismiss()
+        }
+
+        view.btn_add_city.setOnClickListener {
+            if (!cityEditText.text.toString().isBlank() && !stateEditText.text.toString().isBlank()){
+                onSaveCallback.invoke(LocationBlacklist(cityEditText.text.toString(), stateEditText.text.toString()))
+            }else{
+                showToast(activity, activity.getString(R.string.fill_all_fields))
+            }
+        }
+        adapter.locationBlacklist = listBlacklist
+        rvBlacklist.adapter = adapter
+        createLocationDialog.show()
+        return createLocationDialog
+
+    }
+
 
     fun createStructureDialog(activity: Activity, isEdit: Boolean? = false, structure: Structure? = null,  createCallback: ((Structure) -> Unit), cancelCallback: (() -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_create_structure, null, true)
