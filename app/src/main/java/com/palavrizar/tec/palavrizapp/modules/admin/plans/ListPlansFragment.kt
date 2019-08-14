@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -140,10 +141,10 @@ class ListPlansFragment : Fragment(), OnPlanClicked {
             viewModel.loadProducstCatalog(listPlansString)
         })
         viewModel.listPlanSubsDetailsLiveData.observe(this, Observer {
-            if (it != null){
+            //if (it != null){
                 progress_loading_plans?.visibility = View.GONE
-                adapter.plansList = it
-            }
+                adapter.plansList = it!!
+            //}
         })
         viewModel.planSubDetailsLiveData.observe(this, Observer {
             setupUserHasPlan(it)
@@ -179,6 +180,7 @@ class ListPlansFragment : Fragment(), OnPlanClicked {
     fun manageAccount(){
         val browserIntent = Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://play.google.com/store/account/subscriptions"))
+        Log.d("AQUI", Uri.parse("https://play.google.com/store/account/subscriptions").toString())
         startActivity(browserIntent)
     }
 

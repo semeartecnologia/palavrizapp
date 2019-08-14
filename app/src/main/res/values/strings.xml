@@ -283,7 +283,7 @@
     <string name="active_it">Ativar limite de envio redação</string>
     <string name="edit_plan_label">Editar Plano</string>
 
-    <string name="your_plan_title">Plano:</string>
+    <string name="your_plan_title">Plano</string>
     <string name="your_plan_description">Descrição:</string>
     <string name="your_plan_credits">Créditos:</string>
     <string name="your_plan_expiration_date">Expira em:</string>
@@ -306,7 +306,8 @@
     <string name="video_intro_text">Video Introdutório</string>
     <string name="video_intro_already_there">Você já cadastrou um video de introdução, deseja sobrescrever?</string>
     <string name="video_intro_cant_edit">O vídeo introdutório não pode ser editado, você deve cadastrar um novo vídeo que irá sobrescrevê-lo</string>
-
+    <string name="current_plan">Plano Atual</string>
+    <string name="your_plan_deadline">Expira em</string>
 
 
 </resources>
