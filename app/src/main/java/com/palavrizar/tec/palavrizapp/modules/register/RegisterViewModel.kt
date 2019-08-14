@@ -6,6 +6,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import com.google.firebase.auth.FirebaseAuth
+import com.palavrizar.tec.palavrizapp.models.LocationBlacklist
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.models.UserType
 import com.palavrizar.tec.palavrizapp.modules.welcome.WelcomeActivity
@@ -50,6 +51,10 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
 
                     }
         }
+    }
+
+    fun getBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
+        userRepository.getLocationBlacklist(onCompletion)
     }
 
     fun checkFields(fullname: String, email: String, password: String, confirmPassword: String,radioCheckedId: Int) : Boolean{

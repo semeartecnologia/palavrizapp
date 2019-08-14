@@ -1,30 +1,33 @@
 package com.palavrizar.tec.palavrizapp.modules.register
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.*
 import android.os.Bundle
-import android.support.design.widget.TextInputEditText
-import android.support.design.widget.TextInputLayout
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RadioGroup
-
+import butterknife.ButterKnife
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
+import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.squareup.picasso.Picasso
-
-import butterknife.BindView
-import butterknife.ButterKnife
 import kotlinx.android.synthetic.main.fragment_register.*
+import java.io.IOException
+import java.util.*
+
 
 class RegisterActivity : BaseActivity() {
 
 
-
+    private var locationManager: LocationManager? = null
     private var registerViewModel: RegisterViewModel? = null
+    private var provider: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +44,71 @@ class RegisterActivity : BaseActivity() {
         setupButtonEvents()
         registerObservers()
 
+        getUserLocation()
+    }
 
+    private fun getUserLocation(){
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+
+        val criteria = Criteria()
+        provider = locationManager?.getBestProvider(criteria, false).toString()
+        val location = requestLocationPermission()
+
+        if (location != null) {
+            //System.out.println("Provider $provider has been selected.")
+            //onLocationChanged(location)
+            val lat = location.latitude
+            val lng = location.longitude
+
+            val gcd = Geocoder(this, Locale.getDefault())
+            var addresses: List<Address>? = null
+            try {
+                addresses = gcd.getFromLocation(lat, lng, 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            if (addresses != null && addresses.isNotEmpty()) {
+                checkBlacklistCity(addresses[0].subAdminArea)
+            }
+
+        }
+    }
+
+    private fun checkBlacklistCity(city: String){
+        registerViewModel?.getBlacklist {
+            it.forEach { location ->
+                if (location.city == city){
+                    DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
+                }
+            }
+        }
+    }
+
+    private fun requestLocationPermission(): Location? {
+        return if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                    224)
+            null
+        } else {
+            locationManager?.getLastKnownLocation(provider)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            224 -> {
+                locationManager?.getLastKnownLocation(provider)
+            }
+            else -> {
+                // Ignore all other requests.
+            }
+        }
     }
 
     private fun setupActionBar() {

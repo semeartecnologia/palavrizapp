@@ -312,6 +312,7 @@
     <string name="add_state_hint">Estado</string>
     <string name="add_btn_label">Adicionar</string>
     <string name="close_dialog">Sair</string>
+    <string name="app_not_available_sorry">O Aplicativo não está disponível para sua cidade, procure a Palavrizar mais próximo de você</string>
 
 
 
