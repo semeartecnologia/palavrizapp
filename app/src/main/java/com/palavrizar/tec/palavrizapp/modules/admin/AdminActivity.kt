@@ -47,9 +47,12 @@ class AdminActivity : BaseActivity() {
     }
 
     private fun showDialogLocationBlacklist(){
-        DialogHelper.createLocationDialog(this, arrayListOf()){
-            adminViewModel.saveLocationBlacklisted(it)
+        adminViewModel.getLocationBlacklisted { list ->
+            DialogHelper.createLocationDialog(this, list){
+                adminViewModel.saveLocationBlacklisted(it)
+            }
         }
+
     }
 
     private fun setupTabs() {

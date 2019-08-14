@@ -187,6 +187,11 @@ object DialogHelper {
             }
         }
         adapter.locationBlacklist = listBlacklist
+
+        if (!listBlacklist.isEmpty()){
+            rvBlacklist.visibility = View.VISIBLE
+        }
+
         rvBlacklist.adapter = adapter
         createLocationDialog.show()
         return createLocationDialog
@@ -396,6 +401,7 @@ object DialogHelper {
             radioQuinze.isEnabled = isChecked
             radioMonth.isEnabled = isChecked
             radioWeek.isEnabled = isChecked
+
 
         }
 

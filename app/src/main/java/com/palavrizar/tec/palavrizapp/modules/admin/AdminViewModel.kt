@@ -13,4 +13,8 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
         userRepository.saveLocationBlacklist(location)
     }
 
+    fun getLocationBlacklisted(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
+        userRepository.getLocationBlacklist(onCompletion)
+    }
+
 }

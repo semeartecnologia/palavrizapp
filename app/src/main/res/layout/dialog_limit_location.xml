@@ -137,7 +137,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/roudend_primary_button"
-                android:enabled="false"
                 android:fontFamily="@font/titillium_regular"
                 android:text="@string/add_btn_label"
                 android:textColor="@color/colorPrimaryText"
