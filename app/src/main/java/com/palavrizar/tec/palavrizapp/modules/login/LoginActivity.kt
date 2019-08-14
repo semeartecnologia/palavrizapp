@@ -1,9 +1,15 @@
 package com.palavrizar.tec.palavrizapp.modules.login
 
+import android.Manifest
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.*
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.view.View
 import com.crashlytics.android.Crashlytics
@@ -16,6 +22,8 @@ import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_login.*
+import java.io.IOException
+import java.util.*
 
 
 /**
@@ -24,6 +32,9 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : BaseActivity() {
 
     private var callbackManager: CallbackManager? = null
+    private var locationManager: LocationManager? = null
+    private var provider: String = ""
+
 
     companion object {
         const val G_SIGN_IN = 233
@@ -39,6 +50,61 @@ class LoginActivity : BaseActivity() {
         initViewModel()
         setupView()
         registerObservers()
+
+        getUserLocation()
+    }
+
+    private fun getUserLocation(){
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+
+        val criteria = Criteria()
+        provider = locationManager?.getBestProvider(criteria, false).toString()
+        val location = requestLocationPermission()
+
+        if (location != null) {
+            //System.out.println("Provider $provider has been selected.")
+            //onLocationChanged(location)
+            val lat = location.latitude
+            val lng = location.longitude
+
+            val gcd = Geocoder(this, Locale.getDefault())
+            var addresses: List<Address>? = null
+            try {
+                addresses = gcd.getFromLocation(lat, lng, 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            if (addresses != null && addresses.isNotEmpty()) {
+                checkBlacklistCity(addresses[0].subAdminArea)
+            }
+
+        }
+    }
+
+    private fun checkBlacklistCity(city: String){
+        loginViewModel?.getBlacklist {
+            it.forEach { location ->
+                if (location.city.toLowerCase() == city.toLowerCase()){
+                    DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
+                    btn_google_login?.isEnabled = false
+                    btn_email_login?.isEnabled = false
+                }
+            }
+        }
+    }
+
+    private fun requestLocationPermission(): Location? {
+        return if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION),
+                    224)
+            null
+        } else {
+            locationManager?.getLastKnownLocation(provider)
+        }
     }
 
     private fun setupView(){
@@ -96,6 +162,8 @@ class LoginActivity : BaseActivity() {
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         loginViewModel?.initViewModel()
     }
+
+
 
     fun showLoginEmailErrorMessage(show: Boolean){
         if (show) {
