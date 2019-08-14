@@ -702,6 +702,33 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
+    fun saveLocationBlacklist(location: LocationBlacklist, onCompletion: () -> Unit){
+        val reference = "locationBlacklist/"
+        var key = mDatabaseReference.child(reference).push().key
+        if (key == null){
+            key = "-" + System.currentTimeMillis().toString()
+        }
+        mDatabaseReference.child(reference).child("$key/").setValue(location).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun getLocationBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
+        val reference = "locationBlacklist/"
+        var locationBlacklist = arrayListOf<LocationBlacklist>()
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                locationBlacklist.clear()
+                dataSnapshot.children.mapNotNullTo(locationBlacklist) { it.getValue(LocationBlacklist::class.java) }
+                onCompletion(locationBlacklist)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(locationBlacklist)
+            }
+        })
+    }
+
 
     fun getVideosStructureList(onCompletion: ((ArrayList<Structure>) -> Unit)){
         val reference = "videoStructures/"

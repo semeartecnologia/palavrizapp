@@ -2,6 +2,7 @@ package com.palavrizar.tec.palavrizapp.utils.repositories
 
 import android.content.Context
 import com.google.firebase.database.FirebaseDatabase
+import com.palavrizar.tec.palavrizapp.models.LocationBlacklist
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.models.UserType
 
@@ -57,5 +58,13 @@ class UserRepository(val context: Context) {
 
     fun consumeOneCreditIfPossible(userId: String, onCompletion: () -> Unit, onFail: () -> Unit){
         realtimeRepository.removeOneCreditIfPossible(userId,onCompletion,onFail)
+    }
+
+    fun getLocationBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
+        realtimeRepository.getLocationBlacklist(onCompletion)
+    }
+
+    fun saveLocationBlacklist(location: LocationBlacklist){
+        realtimeRepository.saveLocationBlacklist(location){}
     }
 }
