@@ -44,31 +44,29 @@ class RegisterActivity : BaseActivity() {
 
     }
 
-    fun setupActionBar() {
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.title = getString(R.string.actionbar_register_title)
-        }
+    private fun setupActionBar() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.actionbar_register_title)
     }
 
     private fun initViewModel() {
         registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
-        registerViewModel!!.initViewModel()
+        registerViewModel?.initViewModel()
     }
 
     private fun registerObservers() {
-        registerViewModel!!.showMessageErrorRegister.observe(this, Observer
-                { aBoolean ->
-                    showToast(getString(R.string.register_fail), aBoolean ?: true)
-                })
+        registerViewModel?.showMessageErrorRegister?.observe(this, Observer
+        { aBoolean ->
+            showToast(getString(R.string.register_fail), aBoolean ?: true)
+        })
 
-        registerViewModel!!.showMessageMissingFields.observe(this, Observer
-                { aBoolean -> showToast(getString(R.string.fill_all_fields), aBoolean ?: true) })
+        registerViewModel?.showMessageMissingFields?.observe(this, Observer
+        { aBoolean -> showToast(getString(R.string.fill_all_fields), aBoolean ?: true) })
 
-        registerViewModel!!.showMessagePwdNotMatch.observe(this, Observer
-                { aBoolean -> showToast(getString(R.string.pwd_not_match), aBoolean ?: true) })
+        registerViewModel?.showMessagePwdNotMatch?.observe(this, Observer
+        { aBoolean -> showToast(getString(R.string.pwd_not_match), aBoolean ?: true) })
 
-        registerViewModel!!.isLoading.observe(this,
+        registerViewModel?.isLoading?.observe(this,
                 Observer<Boolean> { this.toggleLoading(it ?: true) })
     }
 
@@ -106,7 +104,7 @@ class RegisterActivity : BaseActivity() {
             val passwordText = password?.text?.toString() ?: return@setOnClickListener
             val name = fullname?.text?.toString() ?: return@setOnClickListener
             val confPassword = confirm_password?.text?.toString() ?: return@setOnClickListener
-            registerViewModel!!.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name, radioGroupGender?.checkedRadioButtonId ?: 0)
+            registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name, radioGroupGender?.checkedRadioButtonId ?: 0)
         }
 
         btn_cancel?.setOnClickListener { v -> finish() }
