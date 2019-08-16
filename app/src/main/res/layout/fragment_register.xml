@@ -217,7 +217,7 @@
                     android:id="@+id/btn_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/primary_button"
+                    android:background="@drawable/roudend_primary_button"
                     android:fontFamily="@font/titillium_regular"
                     android:text="@string/register_now_btn"
                     android:textColor="@color/colorPrimaryText"

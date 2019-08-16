@@ -78,8 +78,9 @@ class RegisterActivity : BaseActivity() {
     private fun checkBlacklistCity(city: String){
         registerViewModel?.getBlacklist {
             it.forEach { location ->
-                if (location.city == city){
+                if (location.city.toLowerCase() == city.toLowerCase()){
                     DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
+                    btn_register.isEnabled = false
                 }
             }
         }
@@ -90,7 +91,7 @@ class RegisterActivity : BaseActivity() {
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION),
                     224)
             null
         } else {

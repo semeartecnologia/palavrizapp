@@ -24,6 +24,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.palavrizar.tec.palavrizapp.R
+import com.palavrizar.tec.palavrizapp.models.LocationBlacklist
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.models.UserType
 import com.palavrizar.tec.palavrizapp.modules.MainActivity
@@ -82,6 +83,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             return false
         }
         return true
+    }
+
+    fun getBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
+        userRepository?.getLocationBlacklist(onCompletion)
     }
 
     /**
