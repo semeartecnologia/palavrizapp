@@ -275,7 +275,9 @@
     <string name="no_next_class">Este é o último vídeo cadastrado em seu plano</string>
 
     <string name="add_plan">Adicionar plano</string>
-    <string name="plan_id_hint">ID do produto cadastrado na Google Play</string>
+    <string name="add_product">Adicionar produto</string>
+    <string name="plan_id_hint">ID do plano cadastrado na Google Play</string>
+    <string name="product_id_hint">ID do produto cadastrado na Google Play</string>
     <string name="plan_id_label">ID</string>
     <string name="limit_envio_redacao">Quantidade de envios permitido</string>
     <string name="por">redações por:</string>
@@ -284,6 +286,7 @@
     <string name="semanal">Semanal</string>
     <string name="active_it">Ativar limite de envio redação</string>
     <string name="edit_plan_label">Editar Plano</string>
+    <string name="edit_product_label">Editar Produt</string>
 
     <string name="your_plan_title">Plano:</string>
     <string name="your_plan_description">Descrição:</string>
@@ -313,7 +316,9 @@
     <string name="add_btn_label">Adicionar</string>
     <string name="close_dialog">Sair</string>
     <string name="app_not_available_sorry">O Aplicativo não está disponível para sua cidade, procure a Palavrizar mais próximo de você</string>
-
+    <string name="num_credits_avulsos_user_hint">Quantidade de créditos avulsos</string>
+    <string name="planos">Planos</string>
+    <string name="produtos">Produtos</string>
 
 
 </resources>

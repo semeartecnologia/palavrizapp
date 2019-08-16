@@ -7,8 +7,10 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import com.android.billingclient.api.*
 import com.palavrizar.tec.palavrizapp.models.PlansBilling
+import com.palavrizar.tec.palavrizapp.models.Product
 import com.palavrizar.tec.palavrizapp.utils.repositories.PlansRepository
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
+import com.palavrizar.tec.palavrizapp.utils.repositories.StoreRepository
 import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
 
 
@@ -17,11 +19,14 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
 
 
     private val plansRepository = PlansRepository(application)
+    private val storeRepository = StoreRepository(application)
     private val userRepository = UserRepository(application)
     private val sessionManager = SessionManager(application)
 
     val listPlansLiveData = MutableLiveData<ArrayList<PlansBilling>>()
+    val listProductsLiveData = MutableLiveData<ArrayList<Product>>()
     val listPlanSubsDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
+    val listProductsSkuDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
     val planSubDetailsLiveData = MutableLiveData<SkuDetails>()
     val getUserCreditsLiveData = MutableLiveData<Int>()
 
@@ -33,10 +38,20 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
         plansRepository.savePlan(plansBilling, onCompletion)
     }
 
+    fun saveProduct(product: Product){
+        storeRepository.saveProduct(product){}
+    }
+
 
     fun fetchPlanList(){
         plansRepository.getPlans {
             listPlansLiveData.postValue(it)
+        }
+    }
+
+    fun fetchProductList(){
+        storeRepository.getProducts {
+            listProductsLiveData.postValue(it)
         }
     }
 
@@ -166,6 +181,26 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
+
+    fun loadProducstInAppsCatalog(skuList: ArrayList<String>) {
+        if (mBillingClient?.isReady == true) {
+            val params = SkuDetailsParams
+                    .newBuilder()
+                    .setSkusList(skuList)
+                    .setType(BillingClient.SkuType.INAPP)
+                    .build()
+            mBillingClient?.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
+                if (responseCode.responseCode == BillingClient.BillingResponseCode.OK ) {
+                    val listPlanDetails = arrayListOf<SkuDetails>()
+                    skuDetailsList.forEach {
+                        listPlanDetails.add(it)
+                    }
+                    listProductsSkuDetailsLiveData.postValue(listPlanDetails)
+                }
+            }
+        }
+    }
+
 
     fun loadProducstCatalog(skuList: ArrayList<String>) {
         if (mBillingClient?.isReady == true) {

@@ -323,6 +323,58 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
+    fun saveProduct(product: Product, onCompletion: () -> Unit){
+        val reference = "products/"
+        var key = mDatabaseReference.child(reference).push().key
+        if (key == null){
+            key = "-" + System.currentTimeMillis().toString()
+        }
+        product.productKey = key
+
+        mDatabaseReference.child(reference).child("$key/").setValue(product).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun getProductByValue(value: String, onCompletion: (Product?) -> Unit){
+        val reference = "products/"
+
+        val queryReference = mDatabaseReference.child(reference)
+                .orderByChild("product_id")
+                .equalTo(value)
+
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                val product = dataSnapshot.getValue(Product::class.java)
+                onCompletion(product)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(null)
+            }
+        })
+    }
+
+    fun getProducts(onCompletion: (ArrayList<Product>) -> Unit){
+        val reference = "products/"
+        var productList = arrayListOf<Product>()
+
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                productList.clear()
+                dataSnapshot.children.mapNotNullTo(productList) { it.getValue(Product::class.java) }
+                onCompletion(productList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(productList)
+            }
+        })
+    }
+
+
     fun savePlan(plansBilling: PlansBilling, onCompletion: () -> Unit){
         val reference = "plans/"
         var key = mDatabaseReference.child(reference).push().key
@@ -353,20 +405,6 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
-    fun getPlanById(planId: String, onCompletion: (PlansBilling?) -> Unit){
-        val reference = "plans/"
-        val queryReference = mDatabaseReference.child(reference).child(planId)
-        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val plan = dataSnapshot.getValue(PlansBilling::class.java)
-                onCompletion(plan)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                onCompletion(null)
-            }
-        })
-    }
 
     fun getPlansByValue(value: String, onCompletion: (ArrayList<PlansBilling>) -> Unit){
         val reference = "plans/"
@@ -414,6 +452,16 @@ class RealtimeRepository(val context: Context) {
     fun editUserPlan(plan: String, user: User, onCompletion: () -> Unit){
         val reference = "users/"
         mDatabaseReference.child(reference).child("${user.userId}/").child("plan/").setValue(plan).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun giveUserCredits(numCredits: Int, userId: String, onCompletion: () -> Unit){
+        val reference = "users/"
+        val childUpdates = HashMap<String, Any?>()
+        childUpdates["$userId/essaySoloCredits/"] = numCredits
+
+        mDatabaseReference.child(reference).updateChildren(childUpdates).addOnCompleteListener {
             onCompletion.invoke()
         }
     }

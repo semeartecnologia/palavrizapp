@@ -20,6 +20,9 @@ import com.palavrizar.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.dialog_add_plan.view.*
+import kotlinx.android.synthetic.main.dialog_add_plan.view.btn_cancel_plan
+import kotlinx.android.synthetic.main.dialog_add_product.view.*
+import kotlinx.android.synthetic.main.dialog_choose_plan_or_product.view.*
 import kotlinx.android.synthetic.main.dialog_create_concept.view.*
 import kotlinx.android.synthetic.main.dialog_create_concept.view.btn_delete_concept
 import kotlinx.android.synthetic.main.dialog_create_structure.view.*
@@ -155,6 +158,30 @@ object DialogHelper {
         createThemeDialog.show()
         return createThemeDialog
     }
+
+    fun createPlanOrProductDialog(activity: Activity, onProductsSelected: (()-> Unit), onPlansSelected: (()-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_choose_plan_or_product, null, true)
+
+        val createPlanOrProductDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .create()
+
+        view.layout_pick_products.setOnClickListener {
+            createPlanOrProductDialog.dismiss()
+            onProductsSelected.invoke()
+        }
+
+        view.layout_pick_plans.setOnClickListener {
+            createPlanOrProductDialog.dismiss()
+            onPlansSelected.invoke()
+        }
+
+        createPlanOrProductDialog.show()
+        return createPlanOrProductDialog
+
+    }
+
 
     fun createLocationDialog(activity: Activity, listBlacklist: ArrayList<LocationBlacklist>, onSaveCallback: ((LocationBlacklist)-> Unit), onRemoveCallback: ((LocationBlacklist)-> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_limit_location, null, true)
@@ -330,6 +357,75 @@ object DialogHelper {
         createConceptDialog.show()
         return createConceptDialog
     }
+
+    fun createAddProductDialog(activity: Activity, isEdit: Boolean? = false, product: Product? = null,  createCallback: ((Product) -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_add_product, null, true)
+
+        val idProductEditText = view.findViewById<TextInputEditText>(R.id.et_product_id)
+        val numAvulsosEditText = view.findViewById<TextInputEditText>(R.id.et_num_avulsos)
+
+        if (product != null){
+            idProductEditText.setText(product.product_id)
+            val numCredits = product.numCredits
+            if (numCredits != null){
+                numAvulsosEditText.setText(numCredits.toString())
+            }
+
+            if (isEdit == true) {
+                idProductEditText.isEnabled = false
+                view.create_structure_add_product.text = activity.getString(R.string.edit_product_label)
+                view.btn_create_product.text = activity.getString(R.string.create_theme_edit_option)
+            }
+        }
+
+        if (!idProductEditText?.text.isNullOrBlank()){
+            view.btn_create_product.isEnabled = true
+        }
+        idProductEditText?.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                view.btn_create_product.isEnabled = s?.isEmpty() != true
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                view.btn_create_product.isEnabled = s?.isEmpty() != true
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                view.btn_create_product.isEnabled = s?.isEmpty() != true
+            }
+        })
+
+        val createAddProductDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .create()
+
+        if (isEdit == false || isEdit == null) {
+            view.btn_delete_product.visibility = View.GONE
+        }
+
+        view.btn_delete_plan.setOnClickListener {
+            createAddProductDialog.dismiss()
+            onDeleteCallback.invoke()
+        }
+
+        view.btn_create_plan.setOnClickListener {
+            if (isEdit == false) {
+                createCallback.invoke(Product(idProductEditText.text.toString(), numAvulsosEditText.text.toString().toInt()))
+                createAddProductDialog.dismiss()
+            } else {
+                if (product != null) {
+                    product.product_id = idProductEditText.text.toString()
+                    product.numCredits = numAvulsosEditText.text.toString().toInt()
+                    createCallback.invoke(product)
+                    createAddProductDialog.dismiss()
+
+                }
+
+            }
+        }
+        createAddProductDialog.show()
+        return createAddProductDialog
+    }
+
 
     fun createAddPlanDialog(activity: Activity, isEdit: Boolean? = false, plansBilling: PlansBilling? = null,  createCallback: ((PlansBilling) -> Unit), cancelCallback: (() -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_add_plan, null, true)

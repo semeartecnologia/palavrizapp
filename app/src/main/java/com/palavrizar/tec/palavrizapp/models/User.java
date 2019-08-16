@@ -15,6 +15,7 @@ public class User implements Parcelable {
     private String photoUri;
     private Long registerDate;
     private int essayCredits;
+    private int essaySoloCredits;
     private long creditEarnedTime;
 
     public User(){}
@@ -107,6 +108,15 @@ public class User implements Parcelable {
         this.essayCredits = essayCredits;
     }
 
+    public int getEssaySoloCredits() {
+        return essaySoloCredits;
+    }
+
+    public void setEssaySoloCredits(int essaySoloCredits) {
+        this.essaySoloCredits = essaySoloCredits;
+    }
+
+
 
     @Override
     public int describeContents() {
@@ -125,6 +135,7 @@ public class User implements Parcelable {
         dest.writeString(this.photoUri);
         dest.writeValue(this.registerDate);
         dest.writeInt(this.essayCredits);
+        dest.writeInt(this.essaySoloCredits);
         dest.writeLong(this.creditEarnedTime);
     }
 
@@ -140,6 +151,7 @@ public class User implements Parcelable {
         this.photoUri = in.readString();
         this.registerDate = (Long) in.readValue(Long.class.getClassLoader());
         this.essayCredits = in.readInt();
+        this.essaySoloCredits = in.readInt();
         this.creditEarnedTime = in.readLong();
     }
 

@@ -9,7 +9,6 @@
     tools:context="com.palavrizar.tec.palavrizapp.modules.admin.plans.ListPlansFragment">
 
 
-    <!-- //TODO Bahia é nesse layout_has_plan que é exibido quando o usuario entra na pagina de meu plano e tem um plano -->
     <RelativeLayout
         android:id="@+id/layout_has_plan"
         android:visibility="gone"
@@ -108,6 +107,11 @@
 
     </RelativeLayout>
 
+    <Spinner
+        android:id="@+id/spinner_plans_products"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/tv_user_see_plans"
             android:layout_marginStart="8dp"
@@ -120,9 +124,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+    <FrameLayout
+        android:id="@+id/frame_layout_recycle_products"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress_loading_products"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="top|center"
+            android:elevation="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_products"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frame_layout_recycle"
+        android:id="@+id/frame_layout_recycle_plans"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

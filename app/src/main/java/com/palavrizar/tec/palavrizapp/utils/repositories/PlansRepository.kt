@@ -16,10 +16,6 @@ class PlansRepository(val context: Context) {
         realtimeRepository.getPlans(onCompletion)
     }
 
-    fun getPlanById(planId: String, onCompletion: (PlansBilling?) -> Unit){
-        realtimeRepository.getPlanById(planId, onCompletion)
-    }
-
     fun getPlansByValue(value: String, onCompletion: (ArrayList<PlansBilling>) -> Unit){
         realtimeRepository.getPlansByValue(value, onCompletion)
     }
