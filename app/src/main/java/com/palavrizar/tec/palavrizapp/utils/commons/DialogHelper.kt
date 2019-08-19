@@ -402,12 +402,16 @@ object DialogHelper {
             view.btn_delete_product.visibility = View.GONE
         }
 
-        view.btn_delete_plan.setOnClickListener {
+        view.btn_delete_product.setOnClickListener {
             createAddProductDialog.dismiss()
             onDeleteCallback.invoke()
         }
 
-        view.btn_create_plan.setOnClickListener {
+        view.btn_cancel_product.setOnClickListener {
+            createAddProductDialog.dismiss()
+        }
+
+        view.btn_create_product.setOnClickListener {
             if (isEdit == false) {
                 createCallback.invoke(Product(idProductEditText.text.toString(), numAvulsosEditText.text.toString().toInt()))
                 createAddProductDialog.dismiss()

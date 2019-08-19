@@ -29,6 +29,7 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
     val listProductsSkuDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
     val planSubDetailsLiveData = MutableLiveData<SkuDetails>()
     val getUserCreditsLiveData = MutableLiveData<Int>()
+    val productLiveData = MutableLiveData<Product>()
 
     private var mBillingClient: BillingClient? = null
 
@@ -40,6 +41,17 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun saveProduct(product: Product){
         storeRepository.saveProduct(product){}
+    }
+
+
+    fun getProductByValue(value: String){
+        storeRepository.getProductByValue(value){
+            productLiveData.postValue(it)
+        }
+    }
+
+    fun editProduct(productId: String, product: Product){
+        storeRepository.editProducs(productId, product){}
     }
 
 

@@ -336,9 +336,17 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
+    fun editProduct(productId: String, product: Product, onCompletion: () -> Unit){
+        val reference = "products/"
+        mDatabaseReference.child(reference).child("$productId/").setValue(product).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+
     fun getProductByValue(value: String, onCompletion: (Product?) -> Unit){
         val reference = "products/"
-
+        val productList = arrayListOf<Product>()
         val queryReference = mDatabaseReference.child(reference)
                 .orderByChild("product_id")
                 .equalTo(value)
@@ -346,8 +354,8 @@ class RealtimeRepository(val context: Context) {
         queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                val product = dataSnapshot.getValue(Product::class.java)
-                onCompletion(product)
+                dataSnapshot.children.mapNotNullTo(productList) { it.getValue<Product>(Product::class.java) }
+                onCompletion(productList[0])
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

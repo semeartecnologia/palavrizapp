@@ -21,4 +21,8 @@ class StoreRepository(val context: Context) {
         realtimeRepository.getProducts(onCompletion)
     }
 
+    fun editProducs(productId: String, product: Product, onCompletion: () -> Unit){
+        realtimeRepository.editProduct(productId, product, onCompletion)
+    }
+
 }

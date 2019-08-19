@@ -62,6 +62,7 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
         adapter = ListPlansAdapter(this)
         adapterProducts = ListProductsAdapter(this)
         setupRecyclerPlans()
+        setupRecyclerProducts()
         registerObservers()
         setupView()
 
@@ -108,11 +109,11 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0){
-                    frame_layout_recycle_plans.visibility = View.VISIBLE
-                    frame_layout_recycle_products.visibility = View.GONE
+                    recycler_plans?.visibility = View.VISIBLE
+                    recycler_products?.visibility = View.GONE
                 }else{
-                    frame_layout_recycle_products.visibility = View.VISIBLE
-                    frame_layout_recycle_plans.visibility = View.GONE
+                    recycler_products?.visibility = View.VISIBLE
+                    recycler_plans?.visibility = View.GONE
                 }
             }
 
@@ -178,7 +179,11 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
     }
 
     override fun onProductClicked(skuDetails: SkuDetails) {
-
+        if (!isAdmin){
+            viewModel.startBillingFlow(activity as Activity, skuDetails)
+        }else{
+            viewModel.getProductByValue(skuDetails.sku)
+        }
     }
 
     override fun onPlanClicked(skuDetails: SkuDetails) {
@@ -203,6 +208,21 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
     }
 
     private fun registerObservers() {
+        viewModel.productLiveData.observe(this, Observer {
+            if (it != null){
+                DialogHelper.createAddProductDialog(activity as Activity,
+                        true,
+                        it,
+                        {product ->
+                            //create callback
+                            viewModel.editProduct(product.productKey, product)
+                        },
+                        {
+                            //delete callback
+                        }
+                )
+            }
+        })
         viewModel.listPlansLiveData.observe(this, Observer {
             val listPlansString = arrayListOf<String>()
             it?.forEach {plans ->
@@ -242,7 +262,6 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
     private fun setupUserHasPlan(planDetails: SkuDetails?){
         tv_user_see_plans?.visibility = View.GONE
         frame_layout_recycle_plans?.visibility = View.GONE
-        frame_layout_recycle_products?.visibility = View.GONE
         layout_has_plan?.visibility = View.VISIBLE
         tv_user_plan_title?.text = planDetails?.title ?: ""
         tv_user_plan_desc?.text = planDetails?.description ?: ""
@@ -269,6 +288,11 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
     private fun setupRecyclerPlans() {
         recycler_plans?.layoutManager = LinearLayoutManager(context)
         recycler_plans?.adapter = adapter
+    }
+
+    private fun setupRecyclerProducts() {
+        recycler_products?.layoutManager = LinearLayoutManager(context)
+        recycler_products?.adapter = adapterProducts
     }
 
 }
