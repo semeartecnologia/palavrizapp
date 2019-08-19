@@ -54,6 +54,10 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
         storeRepository.editProducs(productId, product){}
     }
 
+    fun deleteProduct(productId: String){
+        storeRepository.deleteProducs(productId)
+    }
+
 
     fun fetchPlanList(){
         plansRepository.getPlans {

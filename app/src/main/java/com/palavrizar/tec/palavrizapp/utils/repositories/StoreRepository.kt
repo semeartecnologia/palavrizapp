@@ -25,4 +25,7 @@ class StoreRepository(val context: Context) {
         realtimeRepository.editProduct(productId, product, onCompletion)
     }
 
+    fun deleteProducs(productId: String){
+        realtimeRepository.deleteProduct(productId)
+    }
 }

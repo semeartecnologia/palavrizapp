@@ -358,7 +358,7 @@ object DialogHelper {
         return createConceptDialog
     }
 
-    fun createAddProductDialog(activity: Activity, isEdit: Boolean? = false, product: Product? = null,  createCallback: ((Product) -> Unit), onDeleteCallback: (()-> Unit)): AlertDialog {
+    fun createAddProductDialog(activity: Activity, isEdit: Boolean? = false, product: Product? = null,  createCallback: ((Product) -> Unit), onDeleteCallback: ((String)-> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_add_product, null, true)
 
         val idProductEditText = view.findViewById<TextInputEditText>(R.id.et_product_id)
@@ -375,6 +375,7 @@ object DialogHelper {
                 idProductEditText.isEnabled = false
                 view.create_structure_add_product.text = activity.getString(R.string.edit_product_label)
                 view.btn_create_product.text = activity.getString(R.string.create_theme_edit_option)
+                view.btn_delete_product?.visibility = View.VISIBLE
             }
         }
 
@@ -404,7 +405,7 @@ object DialogHelper {
 
         view.btn_delete_product.setOnClickListener {
             createAddProductDialog.dismiss()
-            onDeleteCallback.invoke()
+            onDeleteCallback.invoke(product!!.productKey)
         }
 
         view.btn_cancel_product.setOnClickListener {

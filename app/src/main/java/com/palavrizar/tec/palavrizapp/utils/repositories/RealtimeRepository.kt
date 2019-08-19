@@ -364,6 +364,12 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
+    fun deleteProduct(productId: String){
+        val reference = "products/"
+        mDatabaseReference.child(reference).child(productId).removeValue()
+    }
+
+
     fun getProducts(onCompletion: (ArrayList<Product>) -> Unit){
         val reference = "products/"
         var productList = arrayListOf<Product>()

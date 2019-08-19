@@ -217,7 +217,8 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
                             //create callback
                             viewModel.editProduct(product.productKey, product)
                         },
-                        {
+                        {productId ->
+                            viewModel.deleteProduct(productId)
                             //delete callback
                         }
                 )
