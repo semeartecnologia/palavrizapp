@@ -28,4 +28,8 @@ class StoreRepository(val context: Context) {
     fun deleteProducs(productId: String){
         realtimeRepository.deleteProduct(productId)
     }
+
+    fun giveUserSoloCredits(numCredits: Int, userId: String, onCompletion: () -> Unit){
+        realtimeRepository.giveUserCredits(numCredits, userId, onCompletion)
+    }
 }

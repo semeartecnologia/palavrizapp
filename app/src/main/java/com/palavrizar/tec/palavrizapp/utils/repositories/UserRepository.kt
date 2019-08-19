@@ -46,6 +46,11 @@ class UserRepository(val context: Context) {
         realtimeRepository.getUserCredits(userId,onCompletion)
     }
 
+    fun getUserSoloCredits(userId: String, onCompletion: (Int) -> Unit){
+        realtimeRepository.getUserSoloCredits(userId,onCompletion)
+    }
+
+
     fun userHasCredit(userId: String, onCompletion: (Boolean) -> Unit){
         realtimeRepository.getUserCredits(userId){
             if (it > 0) {

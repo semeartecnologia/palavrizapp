@@ -51,6 +51,7 @@
     <string name="card_see_more_plans">Veja mais planos ></string>
     <string name="salute_you">Olá, %s</string>
     <string name="title_activity_main">Dashboard</string>
+    <string name="card_store">Loja</string>
 
     <!-- Fragment Planos -->
     <string name="free_plan_title">Plano Free</string>

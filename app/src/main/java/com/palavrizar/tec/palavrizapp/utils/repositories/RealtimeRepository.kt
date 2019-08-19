@@ -499,6 +499,14 @@ class RealtimeRepository(val context: Context) {
         },{})
     }
 
+    fun getUserSoloCredits(userId: String, onCompletion: (Int) -> Unit){
+        getUser(userId, {
+            if (it != null) {
+                onCompletion.invoke(it.essaySoloCredits )
+            }
+        },{})
+    }
+
     fun removeOneCreditIfPossible(userId: String, onCompletion: () -> Unit, onFail: () -> Unit){
         val reference = "users/"
 

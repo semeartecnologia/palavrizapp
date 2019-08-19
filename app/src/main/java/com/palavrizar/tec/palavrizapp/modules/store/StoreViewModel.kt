@@ -12,7 +12,11 @@ import com.palavrizar.tec.palavrizapp.utils.repositories.PlansRepository
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import com.palavrizar.tec.palavrizapp.utils.repositories.StoreRepository
 import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
-
+import com.android.vending.billing.IInAppBillingService
+import android.os.IBinder
+import android.content.ComponentName
+import android.content.ServiceConnection
+import com.android.billingclient.api.ConsumeParams
 
 class StoreViewModel(application: Application) : AndroidViewModel(application), PurchasesUpdatedListener, AcknowledgePurchaseResponseListener  {
 
@@ -29,12 +33,6 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
 
     var skuPurchased: String? = null
 
-    fun saveProduct(product: Product, onCompletion: () -> Unit){
-        storeRepository.saveProduct(product){
-
-        }
-    }
-
     fun fetchProductsList(){
         storeRepository.getProducts{
             listProductsLiveData.postValue(it)
@@ -50,8 +48,12 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
                             .setPurchaseToken(it.purchaseToken)
                             .build()
 
+
+                    val consumeParams = ConsumeParams.newBuilder().setPurchaseToken(it.purchaseToken).build()
+
                     skuPurchased = it.sku
                     mBillingClient?.acknowledgePurchase(acknowledgePurchaseParams, this)
+                    mBillingClient?.consumeAsync(consumeParams) { billingResult, purchaseToken -> }
                     giveUserCredits(it.sku)
                 }
 
@@ -61,8 +63,13 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
     }
 
     private fun giveUserCredits(productId: String){
-        storeRepository.getProductByValue(productId) {
-            userRepository.giveUserCredits(sessionManager.userLogged.userId, it?.numCredits ?: return@getProductByValue)
+        storeRepository.getProductByValue(productId) {prod ->
+            if (prod != null) {
+                userRepository.getUserSoloCredits(sessionManager.userLogged.userId) { numCredits ->
+                    storeRepository.giveUserSoloCredits((prod.numCredits?.plus(numCredits))
+                            ?: return@getUserSoloCredits, sessionManager.userLogged.userId) {}
+                }
+            }
 
         }
     }

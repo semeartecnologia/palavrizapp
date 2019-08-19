@@ -16,12 +16,14 @@ import com.palavrizar.tec.palavrizapp.modules.admin.AdminActivity
 import com.palavrizar.tec.palavrizapp.modules.essay.MyEssayActivity
 import com.palavrizar.tec.palavrizapp.modules.essay.essay_mark_list.EssayMarkListFragment
 import com.palavrizar.tec.palavrizapp.modules.plans.MyPlansActivity
+import com.palavrizar.tec.palavrizapp.modules.store.StoreFragment
 import com.palavrizar.tec.palavrizapp.modules.videocatalog.VideoCatalogFragment
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import kotlinx.android.synthetic.main.card_admin_area.*
 import kotlinx.android.synthetic.main.card_aulas.*
 import kotlinx.android.synthetic.main.card_list_essay.*
 import kotlinx.android.synthetic.main.card_send_essay.*
+import kotlinx.android.synthetic.main.card_store.*
 import kotlinx.android.synthetic.main.card_user_planos.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
@@ -101,6 +103,10 @@ class DashboardFragment : Fragment() {
         }
         card_layout_admin_area?.setOnClickListener {
             startMyAdminActivity()
+        }
+        card_store?.setOnClickListener {
+            mainActivity?.changeFragment(StoreFragment(), "Loja")
+            mainActivity?.setActionBarTitle("Loja")
         }
 
 

@@ -66,6 +66,8 @@
 
                 <include layout="@layout/card_user_planos"/>
 
+                <include layout="@layout/card_store"/>
+
             </LinearLayout>
 
         </ScrollView>

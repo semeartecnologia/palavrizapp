@@ -3,10 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/colorPrimary"
     tools:context="com.palavrizar.tec.palavrizapp.modules.store.StoreFragment">
 
     <FrameLayout
+        android:background="@drawable/background_login_shape"
         android:layout_width="match_parent"
+        android:padding="16dp"
         android:layout_height="match_parent">
 
         <ProgressBar
