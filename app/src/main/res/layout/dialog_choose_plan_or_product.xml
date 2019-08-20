@@ -8,11 +8,15 @@
     <LinearLayout
         android:id="@+id/layout_pick_products"
         android:layout_width="match_parent"
-        android:background="@color/bg_screen1"
+        android:background="@drawable/background_dialog"
         android:layout_height="80dp">
 
         <TextView
-            android:text="Products"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="@string/add_product"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -20,12 +24,16 @@
 
     <LinearLayout
         android:id="@+id/layout_pick_plans"
-        android:background="@color/bg_screen2"
+        android:background="@drawable/background_dialog"
         android:layout_width="match_parent"
         android:layout_height="80dp">
 
         <TextView
-            android:text="Plans"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:text="@string/add_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

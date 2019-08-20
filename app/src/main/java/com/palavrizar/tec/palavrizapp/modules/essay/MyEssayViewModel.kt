@@ -26,20 +26,31 @@ class MyEssayViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun sendEssayClicked(){
-        if (getUserPlan() == Constants.PLAN_FREE_ID){
-            userNoPlanLiveData.postValue(true)
-        }else{
-            checkAndGoIfHaveCredit()
+        userRepository.userHasSoloCredits(sessionManager.userLogged.userId){ hasSoloCredits ->
+            if (getUserPlan() == Constants.PLAN_FREE_ID && !hasSoloCredits ){
+                userNoPlanLiveData.postValue(true)
+            }else{
+                if (hasSoloCredits){
+                    startSendEssayFlow()
+                }else {
+                    checkAndGoIfHaveCredit()
+                }
+            }
+        }
+
+    }
+
+    private fun startSendEssayFlow(){
+        userHasCreditLiveData.postValue(true)
+        fetchThemes {
+            dialogThemesLiveData.postValue(it)
         }
     }
 
     private fun checkAndGoIfHaveCredit(){
         userRepository.userHasCredit(sessionManager.userLogged.userId) {
             if (it) {
-                userHasCreditLiveData.postValue(true)
-                fetchThemes {
-                    dialogThemesLiveData.postValue(it)
-                }
+                startSendEssayFlow()
             }else{
                 userHasCreditLiveData.postValue(false)
             }

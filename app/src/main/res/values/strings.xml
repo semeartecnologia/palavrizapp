@@ -318,8 +318,8 @@
     <string name="close_dialog">Sair</string>
     <string name="app_not_available_sorry">O Aplicativo não está disponível para sua cidade, procure a Palavrizar mais próximo de você</string>
     <string name="num_credits_avulsos_user_hint">Quantidade de créditos avulsos</string>
-    <string name="planos">Planos</string>
-    <string name="produtos">Produtos</string>
+    <string name="add_planos"><u>Adicionar Planos</u></string>
+    <string name="add_produtos"><u>Adicionar Produtos</u></string>
 
 
 </resources>

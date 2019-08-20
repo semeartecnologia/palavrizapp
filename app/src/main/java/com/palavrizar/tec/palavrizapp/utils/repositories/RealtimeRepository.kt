@@ -512,7 +512,13 @@ class RealtimeRepository(val context: Context) {
 
         getUser(userId, {
             if (it != null) {
-                if (it.essayCredits >= 1) {
+                if (it.essaySoloCredits >= 1){
+                    //creditos avulsos
+                    mDatabaseReference.child(reference).child("$userId/").child("essaySoloCredits/").setValue(it.essaySoloCredits - 1).addOnCompleteListener {
+                        onCompletion.invoke()
+                    }
+                }else if (it.essayCredits >= 1) {
+                    //creditos de planos
                     mDatabaseReference.child(reference).child("$userId/").child("essayCredits/").setValue(it.essayCredits - 1).addOnCompleteListener {
                         onCompletion.invoke()
                     }
