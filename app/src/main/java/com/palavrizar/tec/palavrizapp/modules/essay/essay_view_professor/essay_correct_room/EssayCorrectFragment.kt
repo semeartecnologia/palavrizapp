@@ -37,9 +37,11 @@ class EssayCorrectFragment : Fragment() {
     private var isReadMode: Boolean? = null
 
     private var videoUrl: String? = null
+    private var videoUri: Uri? = null
 
     private val SELECT_VIDEO = 300
     private val REQUEST_READ_STORAGE = 400
+    private val REQUEST_OPEN_VIDEO_STORAGE = 403
     private val REQUEST_WRITE_STORAGE = 401
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,9 +130,9 @@ class EssayCorrectFragment : Fragment() {
                 if (file.exists()){
                     if(Build.VERSION.SDK_INT>=24) {
                         val uri = FileProvider.getUriForFile(context ?: return@setOnClickListener, "com.palavrizar.tec.palavrizapp.provider", file)
-                        showVideo(uri)
+                        requestStoragePermissioAndShowVideo(uri)
                     }else{
-                        showVideo(Uri.fromFile(file))
+                        requestStoragePermissioAndShowVideo(Uri.fromFile(file))
                     }
                 }else {
                     showProgress(false)
@@ -142,9 +144,9 @@ class EssayCorrectFragment : Fragment() {
                         if (Build.VERSION.SDK_INT >= 24) {
                             val uri = FileProvider.getUriForFile(context
                                     ?: return@downloadVideoFeedback, "com.palavrizar.tec.palavrizapp.provider", file)
-                            showVideo(uri)
+                            requestStoragePermissioAndShowVideo(uri)
                         } else {
-                            showVideo(Uri.fromFile(file))
+                            requestStoragePermissioAndShowVideo(Uri.fromFile(file))
                         }
                     }
                 }
@@ -231,6 +233,22 @@ class EssayCorrectFragment : Fragment() {
     fun setupVideoAttachmentButton(){
         btn_attachment_video_feedback?.setOnClickListener {
             requestStoragePermission()
+        }
+    }
+
+
+    private fun requestStoragePermissioAndShowVideo(videoUri: Uri) {
+        if (ContextCompat.checkSelfPermission(activity as Activity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            this.videoUri = videoUri
+
+            ActivityCompat.requestPermissions(activity as Activity,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    REQUEST_OPEN_VIDEO_STORAGE)
+
+        } else {
+            showVideo(videoUri)
         }
     }
 
@@ -340,6 +358,22 @@ class EssayCorrectFragment : Fragment() {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_OPEN_VIDEO_STORAGE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    if (this.videoUri != null) {
+                        showVideo(this.videoUri!!)
+                    }
+                } else {
+                    return
+                }
+            }
+        }
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // super.onActivityResult(requestCode, resultCode, data)
