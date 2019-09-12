@@ -12,6 +12,8 @@
     <color name="colorSecondaryText">#8C000000</color>
     <color name="lightRed">#FF7777</color>
 
+    <color name="light_purple">#a85c8b</color>
+
     <color name="check_box_item_1">#ededed</color>
     <color name="check_box_item_2">#c4c4c4</color>
 

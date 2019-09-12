@@ -58,16 +58,112 @@
             android:id="@+id/linearLayout2"
             android:layout_weight="50"
             android:layout_width="0dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_height="156dp"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_theme"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/text_purple_background"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/tv_theme_placeholder_item_video"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_theme_video"
+                    android:maxLines="2"
+                    tools:text="Legalização das drogas"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginStart="4dp"
+                    android:ellipsize="end"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_structure"
+                android:orientation="horizontal"
+                android:background="@drawable/text_purple_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/tv_structure_placeholder_item_video"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_structure_video"
+                    android:maxLines="2"
+                    android:textColor="@android:color/white"
+                    tools:text="Esseé a esturtra"
+                    android:textSize="12sp"
+                    android:layout_marginStart="4dp"
+                    android:ellipsize="end"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout_concept"
+                android:orientation="horizontal"
+
+                android:background="@drawable/text_purple_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/tv_concept_placeholder_item_video"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_concept_video"
+                    android:maxLines="2"
+                    android:textSize="12sp"
+                    tools:text="Esse é o Conceito"
+                    android:textColor="@android:color/white"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="4dp"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
 
 
             <TextView
                 android:id="@+id/video_title"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
+                android:textColor="@color/light_purple"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 tools:text="Aula 01 - Introdução a língua portuguesa " />
@@ -95,80 +191,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <LinearLayout
-                android:id="@+id/layout_theme"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
-                <TextView
-                    android:text="@string/tv_theme_placeholder_item_video"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:layout_marginStart="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/tv_theme_video"
-                    android:maxLines="2"
-                    android:layout_marginStart="4dp"
-                    android:ellipsize="end"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layout_structure"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="@string/tv_structure_placeholder_item_video"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:layout_marginStart="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_structure_video"
-                    android:maxLines="2"
-                    android:textSize="12sp"
-                    android:layout_marginStart="4dp"
-                    android:ellipsize="end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_concept"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="@string/tv_concept_placeholder_item_video"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:layout_marginStart="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_concept_video"
-                    android:maxLines="2"
-                    android:textSize="12sp"
-                    android:layout_marginStart="4dp"
-                    android:ellipsize="end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
 
 
 
