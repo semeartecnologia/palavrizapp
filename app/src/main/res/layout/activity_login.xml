@@ -10,7 +10,7 @@
         android:id="@+id/logoImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
+
         android:src="@drawable/full_logo_palavrizar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/linearLayout"
