@@ -10,8 +10,9 @@
     <color name="colorSecondaryTransLight">#90ffff5a</color>
     <color name="colorPrimaryText">#fff9f9</color>
     <color name="colorSecondaryText">#8C000000</color>
-    <color name="lightRed">#FF7777</color>
 
+    <color name="lightRed">#FF7777</color>
+    <color name="lightGreen">#52AE71</color>
     <color name="light_purple">#a85c8b</color>
     <color name="light_grey">#e5e5e5</color>
 

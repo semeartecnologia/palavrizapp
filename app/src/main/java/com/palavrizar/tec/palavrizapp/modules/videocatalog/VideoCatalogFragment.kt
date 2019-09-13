@@ -112,6 +112,8 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
                 getVideoList("concept")
                 sessionManager?.videoConceptFilter = true
             }else{
+
+                viewConceptSelected?.visibility = View.GONE
                 sessionManager?.videoConceptFilter = false
                 checkAllToogleOff()
             }
@@ -122,6 +124,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
                 getVideoList("themeName")
                 sessionManager?.videoThemeFilter = true
             }else{
+                viewThemeSelected?.visibility = View. GONE
                 sessionManager?.videoThemeFilter = false
                 checkAllToogleOff()
             }
@@ -132,6 +135,8 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
                 getVideoList("structure")
                 sessionManager?.videoStructureFilter = true
             }else{
+
+                viewStructureSelected?.visibility = View.GONE
                 sessionManager?.videoStructureFilter = false
                 checkAllToogleOff()
             }
@@ -158,16 +163,27 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
         if (res == R.id.toggleStructure){
             toggleTheme?.isChecked = false
             toggleConcept?.isChecked = false
+            viewStructureSelected?.visibility = View.VISIBLE
+            viewConceptSelected?.visibility = View.GONE
+            viewThemeSelected?.visibility = View. GONE
             sessionManager?.videoConceptFilter = false
             sessionManager?.videoThemeFilter = false
+
         }else if(res == R.id.toggleTheme){
             toggleConcept?.isChecked = false
             toggleStructure?.isChecked = false
+            viewThemeSelected?.visibility = View.VISIBLE
+            viewConceptSelected?.visibility = View.GONE
+            viewStructureSelected?.visibility = View.GONE
             sessionManager?.videoStructureFilter = false
             toggleConcept?.isChecked = false
+
         }else if(res == R.id.toggleConcept){
             toggleTheme?.isChecked = false
             toggleStructure?.isChecked = false
+            viewStructureSelected?.visibility = View.GONE
+            viewConceptSelected?.visibility = View.VISIBLE
+            viewThemeSelected?.visibility = View. GONE
             sessionManager?.videoStructureFilter = false
             sessionManager?.videoThemeFilter = false
         }

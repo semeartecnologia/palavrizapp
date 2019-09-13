@@ -40,41 +40,97 @@
         android:layout_marginTop="8dp"
         android:weightSum="3">
 
-        <ToggleButton
-            android:id="@+id/toggleTheme"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_themes"
-            android:baselineAligned="false"
-            android:textOff=""
-            android:textOn="" />
+            android:layout_height="wrap_content">
 
-        <ToggleButton
-            android:id="@+id/toggleStructure"
+            <ToggleButton
+                android:id="@+id/toggleTheme"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/btn_themes"
+                android:baselineAligned="false"
+                android:textOff=""
+                android:textOn="" />
+
+            <View
+                android:id="@+id/viewThemeSelected"
+                android:visibility="gone"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_height="4dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="52dp"
-
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_structure"
-            android:textOff=""
-            android:textOn="" />
+            android:layout_height="wrap_content">
 
-        <ToggleButton
-            android:id="@+id/toggleConcept"
+
+            <ToggleButton
+                android:id="@+id/toggleStructure"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/btn_structure"
+                android:textOff=""
+                android:textOn="" />
+
+
+            <View
+                android:id="@+id/viewStructureSelected"
+                android:visibility="gone"
+                android:background="@color/lightGreen"
+                android:layout_width="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_height="4dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
-
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_height="52dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_concept"
-            android:textOff=""
-            android:textOn="" />
+            android:layout_height="wrap_content">
+
+
+            <ToggleButton
+                android:id="@+id/toggleConcept"
+                android:layout_width="match_parent"
+
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_height="52dp"
+                android:background="@drawable/btn_concept"
+                android:textOff=""
+                android:textOn="" />
+
+            <View
+                android:id="@+id/viewConceptSelected"
+                android:visibility="gone"
+                android:background="@color/colorSecondaryDark"
+                android:layout_width="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_height="4dp"/>
+        </LinearLayout>
 
     </LinearLayout>
 
