@@ -15,90 +15,98 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:src="@drawable/ideia"
+            android:layout_width="90dp"
+            android:layout_alignParentEnd="true"
+            android:layout_height="90dp" />
+
+
         <LinearLayout
-            android:id="@+id/layout_plan_user"
-            android:layout_margin="8dp"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/layout_plan_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="@string/your_plan_title"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/gotham"
+                android:textSize="32sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_user_plan_title"
+                android:textSize="24sp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/gotham"
+                tools:text="asdkoaasdasds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+
+                android:layout_marginTop="32dp"
+                android:text="@string/your_plan_description"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/gotham"
+                android:textSize="32sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_user_plan_desc"
+                android:textSize="24sp"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/gotham"
+                tools:text="asdk asdas as sa dasdads asd asdas das asdoas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
+                android:layout_marginTop="32dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/your_plan_title"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_user_plan_title"
-                    android:layout_marginStart="8dp"
+                    android:id="@+id/tv_user_plan_credits"
                     android:textSize="24sp"
-                    tools:text="asdkoaasdasds"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/gotham"
+                    tools:text="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:text="@string/your_plan_description"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_user_plan_desc"
-                    android:layout_marginStart="8dp"
-                    android:textSize="24sp"
-                    tools:text="asdk asdas as sa dasdads asd asdas das asdoas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
                 <TextView
                     android:text="@string/your_plan_credits"
                     android:textStyle="bold"
+
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/gotham"
                     android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_user_plan_credits"
                     android:layout_marginStart="8dp"
-                    android:textSize="24sp"
-                    tools:text="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
+
             </LinearLayout>
-
-
-
         </LinearLayout>
+
 
 
         <Button
             android:id="@+id/btn_update_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_below="@+id/layout_plan_details"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/layout_plan_user"
             android:background="@drawable/primary_button"
             android:fontFamily="@font/titillium_regular"
             android:padding="16dp"
@@ -116,17 +124,17 @@
         android:popupBackground="@color/colorPrimaryText"
         android:padding="4dp"/>
 
-        <TextView
-            android:id="@+id/tv_user_see_plans"
-            android:layout_marginStart="8dp"
-            android:text="@string/no_plan"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal"
-            android:textAlignment="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_user_see_plans"
+        android:layout_marginStart="8dp"
+        android:text="@string/no_plan"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:id="@+id/frame_layout_recycle_plans"

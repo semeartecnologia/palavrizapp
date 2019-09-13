@@ -289,9 +289,9 @@
     <string name="edit_plan_label">Editar Plano</string>
     <string name="edit_product_label">Editar Produt</string>
 
-    <string name="your_plan_title">Plano:</string>
-    <string name="your_plan_description">Descrição:</string>
-    <string name="your_plan_credits">Créditos:</string>
+    <string name="your_plan_title">PLANO</string>
+    <string name="your_plan_description">DESCRIÇÃO</string>
+    <string name="your_plan_credits">CRÉDITOS</string>
     <string name="your_plan_expiration_date">Expira em:</string>
 
     <string name="p1w">por semana</string>
