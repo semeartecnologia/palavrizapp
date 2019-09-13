@@ -33,36 +33,48 @@
     </FrameLayout>
 
 
-
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:weightSum="3"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:weightSum="3">
 
         <ToggleButton
             android:id="@+id/toggleTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:textOn="@string/tema"
-            android:textOff="@string/tema"/>
+            android:background="@drawable/btn_themes"
+            android:baselineAligned="false"
+            android:textOff=""
+            android:textOn="" />
 
         <ToggleButton
             android:id="@+id/toggleStructure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:textOn="@string/estrutura"
-            android:textOff="@string/estrutura"/>
+            android:background="@drawable/btn_structure"
+            android:textOff=""
+            android:textOn="" />
 
         <ToggleButton
             android:id="@+id/toggleConcept"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_height="52dp"
             android:layout_weight="1"
-            android:textOn="@string/conceito"
-            android:textOff="@string/conceito"/>
+            android:background="@drawable/btn_concept"
+            android:textOff=""
+            android:textOn="" />
 
     </LinearLayout>
 
