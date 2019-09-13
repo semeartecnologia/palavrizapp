@@ -34,7 +34,6 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun setFirstTimeFalse(){
         sessionManager.isUserFirstTime = false
-
     }
 
     fun executeRequest(context: Context, run: () -> Unit) {

@@ -23,7 +23,7 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyEssayAdapter.ViewHolder {
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = inflate(R.layout.item_my_essay, p0)
         context = p0.context
         return ViewHolder(view)
@@ -35,9 +35,8 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
         return essayList.size
     }
 
-    override fun onBindViewHolder(holder: MyEssayAdapter.ViewHolder, index: Int) {
-        holder.essayTitle = essayList[index].title
-        holder.essayTheme = essayList[index].theme
+    override fun onBindViewHolder(holder: ViewHolder, index: Int) {
+        holder.essayTitle = essayList[index].theme
 
         val status = essayList[index].status
         when (status) {
@@ -60,12 +59,6 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
                 view.tv_essay_title.text = value
             }
 
-        var essayTheme: String? = null
-            set(value) {
-                field = value
-                view.tv_essay_theme.text = value
-            }
-
         var essayStatus: String? = null
             set(value) {
                 field = value
@@ -73,7 +66,7 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
             }
     }
 
-    fun startEssayActivity(essay: Essay){
+    private fun startEssayActivity(essay: Essay){
         val it = Intent(context, EssayViewActivity::class.java)
         it.putExtra(Constants.EXTRA_ESSAY, essay)
         it.putExtra(Constants.EXTRA_ESSAY_READ_MODE, true)

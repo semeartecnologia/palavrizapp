@@ -582,6 +582,7 @@ class RealtimeRepository(val context: Context) {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 essayList.clear()
                 dataSnapshot.children.mapNotNullTo(essayList) { it.getValue<Essay>(Essay::class.java) }
+                essayList.reverse()
                 onCompletion(essayList)
             }
 
@@ -602,6 +603,7 @@ class RealtimeRepository(val context: Context) {
                 essayList.clear()
                 try {
                     dataSnapshot.children.mapNotNullTo(essayList) { it.getValue<Essay>(Essay::class.java) }
+                    essayList.reverse()
                     onCompletion(essayList)
                 }catch(e: Exception){
                 }

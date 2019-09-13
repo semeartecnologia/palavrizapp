@@ -31,7 +31,7 @@ class EssayListAdapter(val listener: OnEssayClicked) : RecyclerView.Adapter<Essa
     override fun onBindViewHolder(holder: EssayListAdapter.ViewHolder, index: Int) {
         val essay = essayList[index]
 
-        holder.essayTitle = essay.title
+        holder.essayTitle = essay.theme
         holder.essayAuthor = essay.author?.fullname ?: context?.getString(R.string.user_not_found)
         holder.essayDate = essay.postDate
         when{
