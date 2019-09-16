@@ -10,11 +10,14 @@ import android.location.*
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import butterknife.ButterKnife
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
+import com.palavrizar.tec.palavrizapp.utils.commons.Utils
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -158,6 +161,31 @@ class RegisterActivity : BaseActivity() {
 
     private fun setupButtonEvents() {
 
+        email.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus){
+                if (!Utils.isValidEmail(email.text.toString())){
+                    email.error = "E-mail inválido"
+                }
+            }
+        }
+
+        confirm_password?.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+                if (confirm_password.text.toString() != password.text.toString() ){
+                    confirm_password.error = "Senhas diferentes"
+                }else{
+                    confirm_password.error = ""
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
         radioGroupGender?.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.radio_male -> changeAvatarMale()
@@ -172,7 +200,13 @@ class RegisterActivity : BaseActivity() {
             val passwordText = password?.text?.toString() ?: return@setOnClickListener
             val name = fullname?.text?.toString() ?: return@setOnClickListener
             val confPassword = confirm_password?.text?.toString() ?: return@setOnClickListener
-            registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name, radioGroupGender?.checkedRadioButtonId ?: 0)
+
+            if (!Utils.isValidEmail(emailText)){
+                email.error = "E-mail inválido"
+            }else {
+                registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name, radioGroupGender?.checkedRadioButtonId
+                        ?: 0)
+            }
         }
 
         btn_cancel?.setOnClickListener { v -> finish() }

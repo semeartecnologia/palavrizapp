@@ -122,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:maxLines="1"
+                app:errorTextAppearance="@style/error_appearance"
                 android:nextFocusDown="@+id/password"
                 android:inputType="text"
                 android:maxLength="60"
