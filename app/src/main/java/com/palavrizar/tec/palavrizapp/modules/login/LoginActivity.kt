@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.modules.login
 
 import android.Manifest
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -20,6 +21,7 @@ import com.palavrizar.tec.palavrizapp.BuildConfig
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
+import com.palavrizar.tec.palavrizapp.utils.commons.Utils
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_login.*
 import java.io.IOException
@@ -124,6 +126,9 @@ class LoginActivity : BaseActivity() {
         loginViewModel?.showCompleteFields?.observe(this,
                 Observer {showToast(getString(R.string.fill_all_fields), it == true)
         })
+        loginViewModel?.forgotPasswordSent?.observe(this, Observer {
+            DialogHelper.showMessage(this, "", getString(R.string.forgot_password_sent))
+        })
     }
 
     private fun initFabric(){
@@ -165,7 +170,7 @@ class LoginActivity : BaseActivity() {
 
 
 
-    fun showLoginEmailErrorMessage(show: Boolean){
+    private fun showLoginEmailErrorMessage(show: Boolean){
         if (show) {
             val title: String = getString(R.string.error_title)
             val text: String = getString(R.string.email_fail_login_text)
@@ -175,7 +180,18 @@ class LoginActivity : BaseActivity() {
             builder.setTitle(title)
                     .setMessage(text)
                     .setPositiveButton(ok) { dialog, _ -> dialog.dismiss() }
-                    .setNeutralButton(forgotPassword) { dialog, _ -> dialog.dismiss() }
+                    .setNeutralButton(forgotPassword) { dialog, _ ->
+                        val email = et_email.text.toString().trim()
+                        DialogHelper.createForgotPasswordDialog(this, email) {
+                            if (!it.isBlank() && Utils.isValidEmail(it)) {
+                                dialog.dismiss()
+                                loginViewModel?.onForgotEmailSent(email)
+
+                            }else{
+                                DialogHelper.showToast(this, "E-mail inválido")
+                            }
+                        }
+                    }
                     .show()
         }
     }

@@ -84,7 +84,9 @@
         <activity
             android:name="com.palavrizar.tec.palavrizapp.modules.MainActivity"
             android:label="@string/title_activity_main" />
-        <activity android:name="com.palavrizar.tec.palavrizapp.modules.welcome.WelcomeActivity" />
+        <activity android:name="com.palavrizar.tec.palavrizapp.modules.welcome.WelcomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.palavrizar.tec.palavrizapp.modules.classroom.ClassroomActivity"
             android:theme="@style/AppTheme.NoActionBar" />

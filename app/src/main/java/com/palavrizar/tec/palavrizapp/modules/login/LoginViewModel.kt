@@ -49,6 +49,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val showCompleteFields = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>()
 
+    val forgotPasswordSent = MutableLiveData<Boolean>()
+
     /**
      * checa se o usuario ja esta online
      * @return
@@ -83,6 +85,17 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             return false
         }
         return true
+    }
+
+    fun onForgotEmailSent(email: String){
+        mAuth?.sendPasswordResetEmail(email)
+                ?.addOnCompleteListener {
+                    if (it.isSuccessful){
+                        forgotPasswordSent.postValue(true)
+                    }else{
+                        forgotPasswordSent.postValue(false)
+                    }
+                }
     }
 
     fun getBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){

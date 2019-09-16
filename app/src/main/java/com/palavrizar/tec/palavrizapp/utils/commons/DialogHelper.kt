@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.dialog_add_plan.view.*
 import kotlinx.android.synthetic.main.dialog_add_plan.view.btn_cancel_plan
+import kotlinx.android.synthetic.main.dialog_add_plan.view.create_structure_add_plan
 import kotlinx.android.synthetic.main.dialog_add_product.view.*
 import kotlinx.android.synthetic.main.dialog_choose_plan_or_product.view.*
 import kotlinx.android.synthetic.main.dialog_create_concept.view.*
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.dialog_create_concept.view.btn_delete_conc
 import kotlinx.android.synthetic.main.dialog_create_structure.view.*
 import kotlinx.android.synthetic.main.dialog_create_theme.view.*
 import kotlinx.android.synthetic.main.dialog_edit_user.view.*
+import kotlinx.android.synthetic.main.dialog_forgot_password.view.*
 import kotlinx.android.synthetic.main.dialog_limit_location.view.*
 import kotlinx.android.synthetic.main.dialog_theme_picker.view.*
 
@@ -179,6 +181,34 @@ object DialogHelper {
 
         createPlanOrProductDialog.show()
         return createPlanOrProductDialog
+
+    }
+
+    fun createForgotPasswordDialog(activity: Activity, email: String? = "", onSentClicked: ((String)-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_forgot_password, null, true)
+        val etEmail = view.findViewById<TextInputEditText>(R.id.et_email_forgot)
+
+
+        val forgotPasswordDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .create()
+
+        if (!email.isNullOrBlank()){
+            etEmail.setText(email)
+        }
+
+        view.btn_forgot.setOnClickListener {
+            forgotPasswordDialog.dismiss()
+            onSentClicked.invoke(etEmail.text.toString())
+        }
+
+        view.btn_cancel_forgot.setOnClickListener {
+            forgotPasswordDialog.dismiss()
+        }
+
+        forgotPasswordDialog.show()
+        return forgotPasswordDialog
 
     }
 

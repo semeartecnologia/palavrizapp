@@ -321,5 +321,11 @@
     <string name="add_planos"><u>Adicionar Planos</u></string>
     <string name="add_produtos"><u>Adicionar Produtos</u></string>
 
+    <string name="forgot_password_label">Recuperar Senha</string>
+    <string name="forgot_password_send_btn">Enviar</string>
+    <string name="forgot_password_hint">E-mail cadastrado</string>
+
+    <string name="forgot_password_sent">Sucesso, você receberá um link em seu e-mail para redefinir sua senha!</string>
+
 
 </resources>
