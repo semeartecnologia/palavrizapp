@@ -169,22 +169,15 @@ class RegisterActivity : BaseActivity() {
             }
         }
 
-        confirm_password?.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
+        confirm_password?.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus){
                 if (confirm_password.text.toString() != password.text.toString() ){
                     confirm_password.error = "Senhas diferentes"
-                }else{
-                    confirm_password.error = ""
                 }
             }
+        }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
 
         radioGroupGender?.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
