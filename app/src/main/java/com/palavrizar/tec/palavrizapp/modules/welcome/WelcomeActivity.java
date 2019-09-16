@@ -41,7 +41,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
     ProgressBar loadingProfile;
-
+    String gender;
     ActionBar actionBar;
 
     private String username, photoUri;
@@ -54,7 +54,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         username = String.format(getString(R.string.intro_screen_title_1), getIntent().getStringExtra("username"));
         photoUri = getIntent().getStringExtra("photoUri");
-
+        gender = getIntent().getStringExtra("gender");
 
         setContentView(R.layout.activity_welcome);
 
@@ -194,6 +194,9 @@ public class WelcomeActivity extends AppCompatActivity {
             photoImageView = view.findViewById(R.id.photo_user);
             loadingProfile = findViewById(R.id.loading_profile);
 
+            CircleImageView maleAvatar = view.findViewById(R.id.profile_image_male);
+            CircleImageView femaleAvatar = view.findViewById(R.id.profile_image_female);
+
             int[] colors = getResources().getIntArray(R.array.array_dot_active);
 
 
@@ -207,8 +210,18 @@ public class WelcomeActivity extends AppCompatActivity {
                 String profilePic = photoUri + "?height=500&type=normal";
                 //Log.d("urizao", profilePic);
                 Picasso.get().load(profilePic).into(photoImageView);
-
             }
+
+            if (photoUri.isEmpty()){
+                if (gender.equals("male")){
+                    if (maleAvatar != null)
+                    maleAvatar.setVisibility(View.VISIBLE);
+                }else if (gender.equals("female")){
+                    if (femaleAvatar != null)
+                    femaleAvatar.setVisibility(View.VISIBLE);
+                }
+            }
+
 
 
             container.addView(view);

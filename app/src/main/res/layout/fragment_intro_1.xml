@@ -32,6 +32,20 @@
                 app:civ_border_width="2dp"
                 app:civ_border_color="#ffffff"/>
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image_male"
+                android:visibility="gone"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:src="@drawable/avatar_man_512" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image_female"
+                android:visibility="gone"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:src="@drawable/avatar_woman_512"/>
+
         </FrameLayout>
 
 

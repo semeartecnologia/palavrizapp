@@ -244,9 +244,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         sessionManager!!.setUserOnline(it, true)
                     }
 
+                    user.fullname = it?.fullname
+                    user.gender = it?.gender
                     //Verifica se é a primeira vez dele e passa pra Welcome Screen
                     if (sessionManager!!.isUserFirstTime) {
-                        startWelcomeActivity(user.photoUri, user.fullname)
+                        startWelcomeActivity(user.photoUri, user.fullname, user.gender)
                     } else {
                         startMainActivity()
                     }
@@ -270,11 +272,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Chama a activity Welcome First Time
      */
-    private fun startWelcomeActivity(photoUri: String, username: String?) {
+    private fun startWelcomeActivity(photoUri: String, username: String?, gender: String) {
         val it = Intent(getApplication(), WelcomeActivity::class.java)
         it.flags = FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         it.putExtra("photoUri", photoUri)
         it.putExtra("username", username)
+        it.putExtra("gender", gender)
         getApplication<Application>().startActivity(it)
 
     }

@@ -17,6 +17,7 @@ public class User implements Parcelable {
     private int essayCredits;
     private int essaySoloCredits;
     private long creditEarnedTime;
+    private String gender;
 
     public User(){}
 
@@ -116,7 +117,13 @@ public class User implements Parcelable {
         this.essaySoloCredits = essaySoloCredits;
     }
 
+    public String getGender() {
+        return gender;
+    }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     @Override
     public int describeContents() {
@@ -137,6 +144,7 @@ public class User implements Parcelable {
         dest.writeInt(this.essayCredits);
         dest.writeInt(this.essaySoloCredits);
         dest.writeLong(this.creditEarnedTime);
+        dest.writeString(this.gender);
     }
 
     protected User(Parcel in) {
@@ -153,6 +161,7 @@ public class User implements Parcelable {
         this.essayCredits = in.readInt();
         this.essaySoloCredits = in.readInt();
         this.creditEarnedTime = in.readLong();
+        this.gender = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

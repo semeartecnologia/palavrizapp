@@ -201,11 +201,25 @@ class RegisterActivity : BaseActivity() {
             val name = fullname?.text?.toString() ?: return@setOnClickListener
             val confPassword = confirm_password?.text?.toString() ?: return@setOnClickListener
 
-            if (!Utils.isValidEmail(emailText)){
-                email.error = "E-mail inválido"
+
+            if (passwordText.length < 6){
+                DialogHelper.showMessage(this, "", "A senha deve ter ao menos 6 caracteres")
             }else {
-                registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name, radioGroupGender?.checkedRadioButtonId
-                        ?: 0)
+
+                if (!Utils.isValidEmail(emailText)) {
+                    email.error = "E-mail inválido"
+                } else {
+
+                    var gender = ""
+                    if (radio_male?.isChecked == true) {
+                        gender = "male"
+                    } else if (radio_female?.isChecked == true) {
+                        gender = "female"
+                    }
+
+                    registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name, radioGroupGender?.checkedRadioButtonId
+                            ?: 0, gender)
+                }
             }
         }
 
