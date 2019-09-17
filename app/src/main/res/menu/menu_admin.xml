@@ -7,4 +7,9 @@
         android:title="@string/local_limit_menu"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_whitelist"
+        android:title="@string/login_whitelist"
+        app:showAsAction="never"/>
+
 </menu>

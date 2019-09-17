@@ -1,18 +1,12 @@
 package com.palavrizar.tec.palavrizapp.modules.login
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
-import android.location.*
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
 import com.crashlytics.android.Crashlytics
@@ -30,18 +24,15 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.palavrizar.tec.palavrizapp.R
+import com.palavrizar.tec.palavrizapp.models.EmailWhitelist
 import com.palavrizar.tec.palavrizapp.models.LocationBlacklist
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.models.UserType
 import com.palavrizar.tec.palavrizapp.modules.MainActivity
 import com.palavrizar.tec.palavrizapp.modules.register.RegisterActivity
 import com.palavrizar.tec.palavrizapp.modules.welcome.WelcomeActivity
-import com.palavrizar.tec.palavrizapp.utils.commons.DeviceInfoHelper
-import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
-import java.io.IOException
-import java.util.*
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -56,16 +47,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     val showEmailPasswordIncorrectDialog = MutableLiveData<Boolean>()
     val emailFailedDIalog = MutableLiveData<Boolean>()
-    val needPermissionLocationLiveData = MutableLiveData<Boolean>()
-    val locationBlacklistedLiveData = MutableLiveData<Boolean>()
-
-    private var provider: String = ""
-    private var location: Location? = null
-    private var locationManager: LocationManager? = null
-
     val showCompleteFields = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>()
-    var user: User? = null
+
+    val checkLocationLiveData = MutableLiveData<User>()
+
     val forgotPasswordSent = MutableLiveData<Boolean>()
 
     /**
@@ -115,7 +101,13 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 }
     }
 
+    fun getBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
+        userRepository?.getLocationBlacklist(onCompletion)
+    }
 
+    fun getWhitelist(onCompletion: ((ArrayList<EmailWhitelist>) -> Unit)){
+        userRepository?.getLoginWhitelist(onCompletion)
+    }
 
     /**
      * Algumas configs para inicializar a autenticação via GMAIL
@@ -241,8 +233,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         loadFirebaseInfo(user)
     }
 
-    private fun startApplication(user: User){
-        //Verifica se é a primeira vez dele e passa pra Welcome Screen
+    fun startApplication(user: User){
+        sessionManager?.setUserOnline(user, true)
         if (sessionManager!!.isUserFirstTime) {
             startWelcomeActivity(user.photoUri, user.fullname, user.gender)
         } else {
@@ -250,65 +242,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun checkUserLocationAllowedAndStart(context: Context){
-        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        val criteria = Criteria()
-        provider = locationManager?.getBestProvider(criteria, false).toString()
-
-        needPermissionLocationLiveData.postValue(true)
-    }
-
-    fun onPermissionLocationResult(granted: Boolean){
-        if (granted){
-            checkBlacklistCity(getApplication()){
-                if (it == false){
-                    startApplication(this.user ?: return@checkBlacklistCity)
-                }
-            }
-        }
-    }
-
-
-
-
-    @SuppressLint("MissingPermission")
-    private fun checkBlacklistCity(context: Context, onCompletion: (Boolean?) -> Unit){
-        val deviceInfoHelper = DeviceInfoHelper(context)
-        val location = deviceInfoHelper.getCurrentLocation()
-        if (location != null) {
-            val lat = location.latitude
-            val lng = location.longitude
-
-            val gcd = Geocoder(context, Locale.getDefault())
-            var addresses: List<Address>? = null
-            try {
-                addresses = gcd.getFromLocation(lat.toDouble(), lng.toDouble(), 1)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            if (addresses != null && addresses.isNotEmpty()) {
-                userRepository?.getLocationBlacklist{
-                    it.forEach { location ->
-                        if (location.city.toLowerCase() == addresses[0].subAdminArea.toLowerCase()){
-                            locationBlacklistedLiveData.postValue(true)
-                            onCompletion(true)
-                        }
-                    }
-                    onCompletion(false)
-                }
-            }
-
-        }else{
-            onCompletion(null)
-        }
-
-    }
-
     fun loadFirebaseInfo(user: User){
         userRepository?.getUser(user.userId,
                 {
-
                     //NEW USER, REGISTER HIM
                     if (it == null){
                         //poe a padrãozada
@@ -317,21 +253,29 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         user.registerDate = System.currentTimeMillis()
 
                         //registra usuario pelo repositorio
-                        userRepository!!.registerUser(user)
-                        sessionManager!!.setUserOnline(user, true)
-                    }else{
-                        //Salva Login no cache Shared Preferences
-                        sessionManager!!.setUserOnline(it, true)
+                        userRepository?.registerUser(user)
                     }
+
+                    user.userId = it?.userId
+                    user.userType = it?.userType
+                    user.plan = it?.plan
+                    user.photoUri = it?.photoUri
                     user.fullname = it?.fullname
                     user.gender = it?.gender
+                    user.essayCredits = it?.essayCredits ?: 0
+                    user.creditEarnedTime = it?.creditEarnedTime ?: 0L
+                    user.essaySoloCredits = it?.essaySoloCredits ?: 0
+                    user.location = it?.location
+                    user.registerDate = it?.registerDate
+                    user.email = it?.email
+                    //Verifica se é a primeira vez dele e passa pra Welcome Screen
 
-                    this.user = user
-                    if (user.userType == UserType.ADMINISTRADOR) {
+                    if (user.userType == UserType.ADMINISTRADOR){
                         startApplication(user)
                     }else{
-                        checkUserLocationAllowedAndStart(getApplication())
+                        checkLocationLiveData.postValue(user)
                     }
+
                 },
                 {
                     emailFailedDIalog.postValue(true)
@@ -352,12 +296,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Chama a activity Welcome First Time
      */
-    private fun startWelcomeActivity(photoUri: String, username: String?, gender: String) {
+    private fun startWelcomeActivity(photoUri: String, username: String?, gender: String?) {
         val it = Intent(getApplication(), WelcomeActivity::class.java)
         it.flags = FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         it.putExtra("photoUri", photoUri)
         it.putExtra("username", username)
-        it.putExtra("gender", gender)
+        it.putExtra("gender", gender ?: "")
         getApplication<Application>().startActivity(it)
 
     }

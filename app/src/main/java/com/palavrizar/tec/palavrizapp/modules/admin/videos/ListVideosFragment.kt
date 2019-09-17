@@ -61,11 +61,14 @@ class ListVideosFragment : Fragment(), OnVideoEvent {
         setupRecyclerVideos()
         registerObservers()
         viewModel.fetchVideos()
-        viewModel.fetchIntroVideo()
         setupFab()
         setupView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchIntroVideo()
+    }
 
     override fun onVideoClicked(v: Video) {
         val it = Intent(activity as Activity, UploadActivity::class.java)

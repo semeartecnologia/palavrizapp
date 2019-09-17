@@ -15,7 +15,9 @@ import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.*
 import com.palavrizar.tec.palavrizapp.utils.adapters.LocationAdapter
 import com.palavrizar.tec.palavrizapp.utils.adapters.ThemesListPickerAdapter
+import com.palavrizar.tec.palavrizapp.utils.adapters.WhitelistAdapter
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnRemoveLocationClicked
+import com.palavrizar.tec.palavrizapp.utils.interfaces.OnRemoveWhitelist
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnThemeClicked
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -32,6 +34,7 @@ import kotlinx.android.synthetic.main.dialog_edit_user.view.*
 import kotlinx.android.synthetic.main.dialog_forgot_password.view.*
 import kotlinx.android.synthetic.main.dialog_limit_location.view.*
 import kotlinx.android.synthetic.main.dialog_theme_picker.view.*
+import kotlinx.android.synthetic.main.dialog_whitelist.view.*
 
 object DialogHelper {
 
@@ -211,6 +214,54 @@ object DialogHelper {
         return forgotPasswordDialog
 
     }
+
+    fun createWhitelistDialog(activity: Activity, listWhitelist: ArrayList<EmailWhitelist>, onSaveCallback: ((EmailWhitelist)-> Unit), onRemoveCallback: ((EmailWhitelist)-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_whitelist, null, true)
+        val emailEditText = view.findViewById<TextInputEditText>(R.id.et_email_whitelist)
+
+        val rvWhitelist = view.findViewById<RecyclerView>(R.id.rv_whitelist)
+        rvWhitelist.layoutManager = LinearLayoutManager(activity)
+        val adapter = WhitelistAdapter(object: OnRemoveWhitelist{
+            override fun onRemoveClicked(login: EmailWhitelist, index: Int) {
+                onRemoveCallback(login)
+                listWhitelist.remove(login)
+                if (listWhitelist.isEmpty()){
+                    rvWhitelist.visibility = View.GONE
+                }
+            }
+        })
+
+        val createWhitelistDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .create()
+
+        view.btn_cancel_whitelist.setOnClickListener {
+            createWhitelistDialog.dismiss()
+        }
+
+        view.btn_add_whitelist.setOnClickListener {
+            if (!emailEditText.text.toString().isBlank() ){
+                onSaveCallback.invoke(EmailWhitelist(emailEditText.text.toString()))
+                adapter.addWhitelist(EmailWhitelist(emailEditText.text.toString()))
+                emailEditText.setText("")
+                rvWhitelist.visibility = View.VISIBLE
+            }else{
+                showToast(activity, activity.getString(R.string.fill_all_fields))
+            }
+        }
+        adapter.emailWhitelist = listWhitelist
+
+        if (listWhitelist.isNotEmpty()){
+            rvWhitelist.visibility = View.VISIBLE
+        }
+
+        rvWhitelist.adapter = adapter
+        createWhitelistDialog.show()
+        return createWhitelistDialog
+
+    }
+
 
 
     fun createLocationDialog(activity: Activity, listBlacklist: ArrayList<LocationBlacklist>, onSaveCallback: ((LocationBlacklist)-> Unit), onRemoveCallback: ((LocationBlacklist)-> Unit)): AlertDialog {

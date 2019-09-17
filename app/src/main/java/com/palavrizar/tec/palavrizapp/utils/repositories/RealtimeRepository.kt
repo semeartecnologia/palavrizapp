@@ -813,6 +813,44 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
+    //--
+
+    fun saveLoginWhitelist(email: EmailWhitelist, onCompletion: () -> Unit){
+        val reference = "loginWhitelist/"
+        var key = mDatabaseReference.child(reference).push().key
+        if (key == null){
+            key = "-" + System.currentTimeMillis().toString()
+        }
+        email.key = key
+        mDatabaseReference.child(reference).child("$key/").setValue(email).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
+    fun getLoginWhitelist(onCompletion: ((ArrayList<EmailWhitelist>) -> Unit)){
+        val reference = "loginWhitelist/"
+        var emailWhitelist = arrayListOf<EmailWhitelist>()
+        val queryReference = mDatabaseReference.child(reference)
+        queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                emailWhitelist.clear()
+                dataSnapshot.children.mapNotNullTo(emailWhitelist) { it.getValue(EmailWhitelist::class.java) }
+                onCompletion(emailWhitelist)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                onCompletion(emailWhitelist)
+            }
+        })
+    }
+
+    fun deleteLoginWhitelist(id: String){
+        val reference = "loginWhitelist/"
+        mDatabaseReference.child(reference).child(id).removeValue()
+    }
+
+
+    //--
+
 
     fun getVideosStructureList(onCompletion: ((ArrayList<Structure>) -> Unit)){
         val reference = "videoStructures/"

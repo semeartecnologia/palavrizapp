@@ -8,6 +8,7 @@ import android.content.Intent
 import com.palavrizar.tec.palavrizapp.models.*
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.repositories.PlansRepository
+import com.palavrizar.tec.palavrizapp.utils.repositories.RealtimeRepository
 import com.palavrizar.tec.palavrizapp.utils.repositories.VideoRepository
 
 class UploadViewModel(application: Application): AndroidViewModel(application) {
@@ -16,11 +17,13 @@ class UploadViewModel(application: Application): AndroidViewModel(application) {
     var videoRepository = VideoRepository(application)
     var plansRepository = PlansRepository(application)
     var editVideoSuccessLiveData = MutableLiveData<Boolean>()
+    var realtimeRepository = RealtimeRepository(application)
 
     var structuresListLiveData = MutableLiveData<ArrayList<Structure>>()
     var conceptsListLiveData = MutableLiveData<ArrayList<Concept>>()
     var themeListLiveData = MutableLiveData<ArrayList<Themes>>()
     var planListLiveData = MutableLiveData<ArrayList<PlansBilling>>()
+    var videoDownloadUrl = MutableLiveData<String>()
 
     fun uploadVideo(context: Context, video: Video, isIntro: Boolean = false){
         val intent = Intent(context, UploadService::class.java)
@@ -33,6 +36,10 @@ class UploadViewModel(application: Application): AndroidViewModel(application) {
         videoRepository.getVideosUploadedAlready(onCompletion)
     }
 
+    fun editVideoToIntro(video: Video){
+        realtimeRepository.saveVideoIntro(video)
+    }
+
     fun editVideo(video: Video?){
         if (video != null) {
             videoRepository.editVideo(video) {
@@ -41,8 +48,14 @@ class UploadViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun deleteVideo(video: Video){
-        videoRepository.deleteVideo(video){
+    fun getVideoUrlDownload(path: String){
+        videoRepository.getVideoDownloadUrl(path){
+            videoDownloadUrl.postValue(it)
+        }
+    }
+
+    fun deleteVideo(video: Video,  keepStorage: Boolean = false){
+        videoRepository.deleteVideo(video, keepStorage){
             deleteVideoLiveData.postValue(true)
         }
     }
