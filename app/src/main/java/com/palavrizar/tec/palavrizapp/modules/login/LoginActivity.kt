@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.palavrizar.tec.palavrizapp.BuildConfig
 import com.palavrizar.tec.palavrizapp.R
+import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.Utils
@@ -53,10 +54,10 @@ class LoginActivity : BaseActivity() {
         setupView()
         registerObservers()
 
-        getUserLocation()
+        //getUserLocation()
     }
 
-    private fun getUserLocation(){
+    private fun getUserLocation(user: User){
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
 
         val criteria = Criteria()
@@ -78,20 +79,26 @@ class LoginActivity : BaseActivity() {
             }
 
             if (addresses != null && addresses.isNotEmpty()) {
-                checkBlacklistCity(addresses[0].subAdminArea)
+                checkBlacklistCity(addresses[0].subAdminArea, user)
             }
 
         }
     }
 
-    private fun checkBlacklistCity(city: String){
+    private fun checkBlacklistCity(city: String, user: User){
+        var isBlacklist = false
         loginViewModel?.getBlacklist {
             it.forEach { location ->
                 if (location.city.toLowerCase() == city.toLowerCase()){
                     DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
                     btn_google_login?.isEnabled = false
                     btn_email_login?.isEnabled = false
+                    isBlacklist = true
                 }
+            }
+
+            if (!isBlacklist){
+                loginViewModel?.startApplication(user)
             }
         }
     }
@@ -128,6 +135,11 @@ class LoginActivity : BaseActivity() {
         })
         loginViewModel?.forgotPasswordSent?.observe(this, Observer {
             DialogHelper.showMessage(this, "", getString(R.string.forgot_password_sent))
+        })
+        loginViewModel?.bucetaLiveData?.observe(this, Observer {
+            if (it != null) {
+                getUserLocation(it)
+            }
         })
     }
 
@@ -198,18 +210,12 @@ class LoginActivity : BaseActivity() {
 
     fun showProgressBar(show: Boolean){
         if (show){
-//            btn_facebook_login.visibility = View.GONE
-//            btn_email_login.visibility = View.INVISIBLE
-//            btn_google_login.visibility = View.INVISIBLE
             btn_email_login.setText("")
 
             progress_login.visibility = View.VISIBLE
             et_email.isEnabled = false
             et_password.isEnabled = false
         }else{
-//            btn_facebook_login.visibility = View.VISIBLE
-//            btn_email_login.visibility = View.VISIBLE
-//            btn_google_login.visibility = View.VISIBLE
             btn_email_login.setText(R.string.action_sign_in)
             progress_login.visibility = View.GONE
             et_email.isEnabled = true

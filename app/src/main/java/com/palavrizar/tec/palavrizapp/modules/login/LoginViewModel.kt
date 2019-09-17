@@ -49,6 +49,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val showCompleteFields = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>()
 
+    val bucetaLiveData = MutableLiveData<User>()
+
     val forgotPasswordSent = MutableLiveData<Boolean>()
 
     /**
@@ -226,6 +228,14 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         loadFirebaseInfo(user)
     }
 
+    fun startApplication(user: User){
+        if (sessionManager!!.isUserFirstTime) {
+            startWelcomeActivity(user.photoUri, user.fullname, user.gender)
+        } else {
+            startMainActivity()
+        }
+    }
+
     fun loadFirebaseInfo(user: User){
         userRepository?.getUser(user.userId,
                 {
@@ -247,11 +257,13 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     user.fullname = it?.fullname
                     user.gender = it?.gender
                     //Verifica se é a primeira vez dele e passa pra Welcome Screen
-                    if (sessionManager!!.isUserFirstTime) {
-                        startWelcomeActivity(user.photoUri, user.fullname, user.gender)
-                    } else {
-                        startMainActivity()
+
+                    if (user.userType == UserType.ADMINISTRADOR){
+                        startApplication(user)
+                    }else{
+                        bucetaLiveData.postValue(user)
                     }
+
                 },
                 {
                     emailFailedDIalog.postValue(true)
@@ -272,12 +284,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Chama a activity Welcome First Time
      */
-    private fun startWelcomeActivity(photoUri: String, username: String?, gender: String) {
+    private fun startWelcomeActivity(photoUri: String, username: String?, gender: String?) {
         val it = Intent(getApplication(), WelcomeActivity::class.java)
         it.flags = FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         it.putExtra("photoUri", photoUri)
         it.putExtra("username", username)
-        it.putExtra("gender", gender)
+        it.putExtra("gender", gender ?: "")
         getApplication<Application>().startActivity(it)
 
     }
