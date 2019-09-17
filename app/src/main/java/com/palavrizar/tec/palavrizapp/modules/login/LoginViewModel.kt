@@ -234,6 +234,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun startApplication(user: User){
+        sessionManager?.setUserOnline(user, true)
         if (sessionManager!!.isUserFirstTime) {
             startWelcomeActivity(user.photoUri, user.fullname, user.gender)
         } else {
@@ -252,18 +253,24 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         user.registerDate = System.currentTimeMillis()
 
                         //registra usuario pelo repositorio
-                        userRepository!!.registerUser(user)
-                        sessionManager!!.setUserOnline(user, true)
-                    }else{
-                        //Salva Login no cache Shared Preferences
-                        sessionManager!!.setUserOnline(it, true)
+                        userRepository?.registerUser(user)
                     }
 
+                    user.userId = it?.userId
+                    user.userType = it?.userType
+                    user.plan = it?.plan
+                    user.photoUri = it?.photoUri
                     user.fullname = it?.fullname
                     user.gender = it?.gender
+                    user.essayCredits = it?.essayCredits ?: 0
+                    user.creditEarnedTime = it?.creditEarnedTime ?: 0L
+                    user.essaySoloCredits = it?.essaySoloCredits ?: 0
+                    user.location = it?.location
+                    user.registerDate = it?.registerDate
+                    user.email = it?.email
                     //Verifica se é a primeira vez dele e passa pra Welcome Screen
 
-                    if (it?.userType == UserType.ADMINISTRADOR){
+                    if (user.userType == UserType.ADMINISTRADOR){
                         startApplication(user)
                     }else{
                         checkLocationLiveData.postValue(user)

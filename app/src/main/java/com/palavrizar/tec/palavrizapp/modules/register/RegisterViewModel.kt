@@ -6,6 +6,8 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.palavrizar.tec.palavrizapp.models.EmailWhitelist
 import com.palavrizar.tec.palavrizapp.models.LocationBlacklist
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.models.UserType
@@ -55,6 +57,9 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
 
     fun getBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
         userRepository.getLocationBlacklist(onCompletion)
+    }
+    fun getWhitelist(onCompletion: ((ArrayList<EmailWhitelist>) -> Unit)){
+        userRepository.getLoginWhitelist(onCompletion)
     }
 
     fun checkFields(fullname: String, email: String, password: String, confirmPassword: String,radioCheckedId: Int) : Boolean{

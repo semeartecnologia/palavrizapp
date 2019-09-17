@@ -15,6 +15,7 @@ import android.text.TextWatcher
 import android.view.View
 import butterknife.ButterKnife
 import com.palavrizar.tec.palavrizapp.R
+import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.Utils
@@ -47,35 +48,57 @@ class RegisterActivity : BaseActivity() {
         setupButtonEvents()
         registerObservers()
 
-     //   getUserLocation()
+        //   getUserLocation()
     }
 
-    private fun getUserLocation(onCompletion: (Boolean?) -> Unit){
+    private fun checkLocationBlacklisted(email: String, onCompletion: (Boolean?) -> Unit){
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
 
-        val criteria = Criteria()
-        provider = locationManager?.getBestProvider(criteria, false).toString()
-        val location = requestLocationPermission()
+        checkWhitelist(email){ isWhitelisted ->
+            if (!isWhitelisted){
+                val criteria = Criteria()
+                provider = locationManager?.getBestProvider(criteria, false).toString()
+                val location = requestLocationPermission()
 
-        if (location != null) {
-            //System.out.println("Provider $provider has been selected.")
-            //onLocationChanged(location)
-            val lat = location.latitude
-            val lng = location.longitude
+                if (location != null) {
+                    //System.out.println("Provider $provider has been selected.")
+                    //onLocationChanged(location)
+                    val lat = location.latitude
+                    val lng = location.longitude
 
-            val gcd = Geocoder(this, Locale.getDefault())
-            var addresses: List<Address>? = null
-            try {
-                addresses = gcd.getFromLocation(lat, lng, 1)
-            } catch (e: IOException) {
-                e.printStackTrace()
+                    val gcd = Geocoder(this, Locale.getDefault())
+                    var addresses: List<Address>? = null
+                    try {
+                        addresses = gcd.getFromLocation(lat, lng, 1)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    if (addresses != null && addresses.isNotEmpty()) {
+                        checkBlacklistCity(addresses[0].subAdminArea,onCompletion)
+                    }
+
+                }
+            }else{
+                //  loginViewModel?.startApplication(user)
+                onCompletion(false)
             }
+        }
 
-            if (addresses != null && addresses.isNotEmpty()) {
-                checkBlacklistCity(addresses[0].subAdminArea, onCompletion)
+    }
+
+    private fun checkWhitelist(email: String, onCompletion: ((Boolean) -> Unit)){
+        var isWhitelist = false
+        registerViewModel?.getWhitelist {
+            it.forEach {
+                if (email == it.email){
+                    isWhitelist = true
+                    onCompletion(true)
+                }
             }
-        }else{
-            onCompletion(null)
+            if (!isWhitelist) {
+                onCompletion(false)
+            }
         }
     }
 
@@ -205,12 +228,11 @@ class RegisterActivity : BaseActivity() {
             val name = fullname?.text?.toString() ?: return@setOnClickListener
             val confPassword = confirm_password?.text?.toString() ?: return@setOnClickListener
 
-            getUserLocation {
-                if (it == false){
-                    if (!Utils.isValidEmail(emailText)) {
-                        email.error = "E-mail inválido"
-                    } else {
-
+            if (!Utils.isValidEmail(emailText)) {
+                email.error = "E-mail inválido"
+            } else {
+                checkLocationBlacklisted(emailText) {
+                    if (it == false) {
                         var gender = ""
                         if (radio_male?.isChecked == true) {
                             gender = "male"
@@ -218,15 +240,16 @@ class RegisterActivity : BaseActivity() {
                             gender = "female"
                         }
 
-                        if (passwordText.length < 6){
+                        if (passwordText.length < 6) {
                             DialogHelper.showMessage(this, "", "A senha deve ter ao menos 6 caracteres")
-                        }else {
+                        } else {
                             registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name, radioGroupGender?.checkedRadioButtonId
                                     ?: 0, gender)
                         }
                     }
                 }
             }
+
 
         }
 
