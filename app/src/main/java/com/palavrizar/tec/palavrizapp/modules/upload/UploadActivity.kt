@@ -29,6 +29,7 @@ import com.palavrizar.tec.palavrizapp.BuildConfig
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.*
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
+import com.palavrizar.tec.palavrizapp.modules.classroom.video_view.VideoFragment
 import com.palavrizar.tec.palavrizapp.utils.adapters.PlanListAdapter
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.FileHelper
@@ -283,8 +284,16 @@ class UploadActivity : BaseActivity() {
             },{})
         }
     }
+    private fun setupVideoFragment(videoPath: String) {
+        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoPath, video?.videoKey)).commit()
+    }
 
     fun registerObservers(){
+        uploadViewModel.videoDownloadUrl?.observe(this, Observer {
+            if (it != null) {
+                setupVideoFragment(it)
+            }
+        })
         uploadViewModel.conceptsListLiveData.observe(this, Observer {
             if (it != null) {
                 val defaultValue = getString(R.string.choose_conceito)
@@ -526,8 +535,25 @@ class UploadActivity : BaseActivity() {
                 adapter.disableAllCheckboxes()
 
                 if (isEdit){
-                    val video = Video(this.video?.orderVideo ?: "0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb, selectedTheme?.urlPdf ?: videoPdfPath ?: "", selectedTheme?.themeName, concept, structure )
-                    uploadViewModel.editVideo(video)
+                    val video = Video(this.video?.orderVideo ?: "0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb ?: "", selectedTheme?.urlPdf ?: videoPdfPath ?: "", selectedTheme?.themeName, concept, structure )
+                    if (check_intro?.isChecked == true){
+                        uploadViewModel.getVideoIntroUploadedAlready {
+                            if (it){
+                                DialogHelper.showYesNoMessage(this, "", getString(R.string.video_intro_already_there),
+                                        {
+                                            uploadViewModel.deleteVideo(video, keepStorage = true)
+                                            uploadViewModel.editVideoToIntro(video)
+                                        }){
+                                    finish()
+                                }
+                            }else{
+                                uploadViewModel.deleteVideo(video, keepStorage = true)
+                                uploadViewModel.editVideoToIntro(video)
+                            }
+                        }
+                    }else {
+                        uploadViewModel.editVideo(video)
+                    }
                 }else {
 
                     val video = Video("0", listOfPlans, "", title, description, "", videoUrl, null, selectedTheme?.urlPdf ?: videoPdfPath ?: "", selectedTheme?.themeName, concept, structure)
@@ -643,10 +669,16 @@ class UploadActivity : BaseActivity() {
 
         })
     }
-
     private fun setupVideo(videoUri: String){
-        preview_video.setVideoURI(Uri.parse(videoUri))
-        preview_video.start()
+        if (!videoUri.startsWith("/v0/b/palavrizar")){
+            preview_video.setVideoURI(Uri.parse(videoUri))
+            preview_video.start()
+        }else{
+            preview_video?.visibility = View.GONE
+            frame_video?.visibility = View.VISIBLE
+            uploadViewModel.getVideoUrlDownload(video?.path ?: videoUri)
+        }
+
     }
 
     private fun getThumbnailAndUpload(video: Video, isIntro: Boolean = false){
@@ -656,7 +688,6 @@ class UploadActivity : BaseActivity() {
 
         video.videoThumb = FileHelper.getRealPathFromURI(this, getImageUri(this, videoThumb) )
 
-        Log.d("teste", "Thumb created!!! " + video.videoThumb)
         uploadViewModel.uploadVideo(this, video, isIntro)
     }
 

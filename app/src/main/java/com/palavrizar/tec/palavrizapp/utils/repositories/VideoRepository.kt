@@ -38,9 +38,9 @@ class VideoRepository(val context: Context) {
         realtimeRepository.editVideoOrder(videoList, onCompletion)
     }
 
-    fun deleteVideo(video: Video, onCompletion: (() -> Unit)){
+    fun deleteVideo(video: Video, keepStorage: Boolean = false, onCompletion: (() -> Unit)){
         realtimeRepository.deleteVideo(video.videoKey) {
-            if (it){
+            if (it && !keepStorage){
                 storageRepository.deleteVideoFromStorage(video.path) {
                     onCompletion()
                 }
