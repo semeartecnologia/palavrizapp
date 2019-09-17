@@ -1,12 +1,18 @@
 package com.palavrizar.tec.palavrizapp.modules.login
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
+import android.location.*
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
 import com.crashlytics.android.Crashlytics
@@ -30,8 +36,12 @@ import com.palavrizar.tec.palavrizapp.models.UserType
 import com.palavrizar.tec.palavrizapp.modules.MainActivity
 import com.palavrizar.tec.palavrizapp.modules.register.RegisterActivity
 import com.palavrizar.tec.palavrizapp.modules.welcome.WelcomeActivity
+import com.palavrizar.tec.palavrizapp.utils.commons.DeviceInfoHelper
+import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
+import java.io.IOException
+import java.util.*
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -46,9 +56,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     val showEmailPasswordIncorrectDialog = MutableLiveData<Boolean>()
     val emailFailedDIalog = MutableLiveData<Boolean>()
+    val needPermissionLocationLiveData = MutableLiveData<Boolean>()
+    val locationBlacklistedLiveData = MutableLiveData<Boolean>()
+
+    private var provider: String = ""
+    private var location: Location? = null
+    private var locationManager: LocationManager? = null
+
     val showCompleteFields = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>()
-
+    var user: User? = null
     val forgotPasswordSent = MutableLiveData<Boolean>()
 
     /**
@@ -98,9 +115,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 }
     }
 
-    fun getBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
-        userRepository?.getLocationBlacklist(onCompletion)
-    }
+
 
     /**
      * Algumas configs para inicializar a autenticação via GMAIL
@@ -226,9 +241,74 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         loadFirebaseInfo(user)
     }
 
+    private fun startApplication(user: User){
+        //Verifica se é a primeira vez dele e passa pra Welcome Screen
+        if (sessionManager!!.isUserFirstTime) {
+            startWelcomeActivity(user.photoUri, user.fullname, user.gender)
+        } else {
+            startMainActivity()
+        }
+    }
+
+    private fun checkUserLocationAllowedAndStart(context: Context){
+        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        val criteria = Criteria()
+        provider = locationManager?.getBestProvider(criteria, false).toString()
+
+        needPermissionLocationLiveData.postValue(true)
+    }
+
+    fun onPermissionLocationResult(granted: Boolean){
+        if (granted){
+            checkBlacklistCity(getApplication()){
+                if (it == false){
+                    startApplication(this.user ?: return@checkBlacklistCity)
+                }
+            }
+        }
+    }
+
+
+
+
+    @SuppressLint("MissingPermission")
+    private fun checkBlacklistCity(context: Context, onCompletion: (Boolean?) -> Unit){
+        val deviceInfoHelper = DeviceInfoHelper(context)
+        val location = deviceInfoHelper.getCurrentLocation()
+        if (location != null) {
+            val lat = location.latitude
+            val lng = location.longitude
+
+            val gcd = Geocoder(context, Locale.getDefault())
+            var addresses: List<Address>? = null
+            try {
+                addresses = gcd.getFromLocation(lat.toDouble(), lng.toDouble(), 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            if (addresses != null && addresses.isNotEmpty()) {
+                userRepository?.getLocationBlacklist{
+                    it.forEach { location ->
+                        if (location.city.toLowerCase() == addresses[0].subAdminArea.toLowerCase()){
+                            locationBlacklistedLiveData.postValue(true)
+                            onCompletion(true)
+                        }
+                    }
+                    onCompletion(false)
+                }
+            }
+
+        }else{
+            onCompletion(null)
+        }
+
+    }
+
     fun loadFirebaseInfo(user: User){
         userRepository?.getUser(user.userId,
                 {
+
                     //NEW USER, REGISTER HIM
                     if (it == null){
                         //poe a padrãozada
@@ -243,14 +323,14 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         //Salva Login no cache Shared Preferences
                         sessionManager!!.setUserOnline(it, true)
                     }
-
                     user.fullname = it?.fullname
                     user.gender = it?.gender
-                    //Verifica se é a primeira vez dele e passa pra Welcome Screen
-                    if (sessionManager!!.isUserFirstTime) {
-                        startWelcomeActivity(user.photoUri, user.fullname, user.gender)
-                    } else {
-                        startMainActivity()
+
+                    this.user = user
+                    if (user.userType == UserType.ADMINISTRADOR) {
+                        startApplication(user)
+                    }else{
+                        checkUserLocationAllowedAndStart(getApplication())
                     }
                 },
                 {

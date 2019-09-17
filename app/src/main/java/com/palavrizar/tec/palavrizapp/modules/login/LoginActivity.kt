@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.modules.login
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -36,6 +37,7 @@ class LoginActivity : BaseActivity() {
     private var callbackManager: CallbackManager? = null
     private var locationManager: LocationManager? = null
     private var provider: String = ""
+    private var location: Location? = null
 
 
     companion object {
@@ -51,61 +53,32 @@ class LoginActivity : BaseActivity() {
 
         initViewModel()
         setupView()
+
         registerObservers()
-
-        getUserLocation()
     }
 
-    private fun getUserLocation(){
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
 
-        val criteria = Criteria()
-        provider = locationManager?.getBestProvider(criteria, false).toString()
-        val location = requestLocationPermission()
-
-        if (location != null) {
-            //System.out.println("Provider $provider has been selected.")
-            //onLocationChanged(location)
-            val lat = location.latitude
-            val lng = location.longitude
-
-            val gcd = Geocoder(this, Locale.getDefault())
-            var addresses: List<Address>? = null
-            try {
-                addresses = gcd.getFromLocation(lat, lng, 1)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            if (addresses != null && addresses.isNotEmpty()) {
-                checkBlacklistCity(addresses[0].subAdminArea)
-            }
-
-        }
-    }
-
-    private fun checkBlacklistCity(city: String){
-        loginViewModel?.getBlacklist {
-            it.forEach { location ->
-                if (location.city.toLowerCase() == city.toLowerCase()){
-                    DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
-                    btn_google_login?.isEnabled = false
-                    btn_email_login?.isEnabled = false
-                }
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 224){
+            if ( grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestPermissionAndGetLocation()
+            }else{
+                DialogHelper.showMessage(this, "", "Você precisa fornecer autorização de localização para continuar")
             }
         }
     }
 
-    private fun requestLocationPermission(): Location? {
-        return if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
+    private fun requestPermissionAndGetLocation() {
+        if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION),
                     224)
-            null
         } else {
-            locationManager?.getLastKnownLocation(provider)
+            loginViewModel?.onPermissionLocationResult(true)
         }
     }
 
@@ -129,6 +102,18 @@ class LoginActivity : BaseActivity() {
         loginViewModel?.forgotPasswordSent?.observe(this, Observer {
             DialogHelper.showMessage(this, "", getString(R.string.forgot_password_sent))
         })
+        loginViewModel?.needPermissionLocationLiveData?.observe(this, Observer {
+            requestPermissionAndGetLocation()
+        })
+        loginViewModel?.locationBlacklistedLiveData?.observe(this, Observer {
+            showLocationDeniedDialog()
+        })
+    }
+
+    private fun showLocationDeniedDialog(){
+        DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
+        btn_google_login?.isEnabled = false
+        btn_email_login?.isEnabled = false
     }
 
     private fun initFabric(){
@@ -198,24 +183,19 @@ class LoginActivity : BaseActivity() {
 
     fun showProgressBar(show: Boolean){
         if (show){
-//            btn_facebook_login.visibility = View.GONE
-//            btn_email_login.visibility = View.INVISIBLE
-//            btn_google_login.visibility = View.INVISIBLE
-            btn_email_login.setText("")
-
+            btn_email_login.text = ""
             progress_login.visibility = View.VISIBLE
             et_email.isEnabled = false
             et_password.isEnabled = false
         }else{
-//            btn_facebook_login.visibility = View.VISIBLE
-//            btn_email_login.visibility = View.VISIBLE
-//            btn_google_login.visibility = View.VISIBLE
             btn_email_login.setText(R.string.action_sign_in)
             progress_login.visibility = View.GONE
             et_email.isEnabled = true
             et_password.isEnabled = true
         }
     }
+
+
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
