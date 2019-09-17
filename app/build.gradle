@@ -24,8 +24,8 @@ android {
         applicationId "com.palavrizar.tec.palavrizapp"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 30
-        versionName "v1.3"
+        versionCode 31
+        versionName "v1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
