@@ -49,7 +49,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val showCompleteFields = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>()
 
-    val bucetaLiveData = MutableLiveData<User>()
+    val checkLocationLiveData = MutableLiveData<User>()
 
     val forgotPasswordSent = MutableLiveData<Boolean>()
 
@@ -258,10 +258,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     user.gender = it?.gender
                     //Verifica se é a primeira vez dele e passa pra Welcome Screen
 
-                    if (user.userType == UserType.ADMINISTRADOR){
+                    if (it?.userType == UserType.ADMINISTRADOR){
                         startApplication(user)
                     }else{
-                        bucetaLiveData.postValue(user)
+                        checkLocationLiveData.postValue(user)
                     }
 
                 },

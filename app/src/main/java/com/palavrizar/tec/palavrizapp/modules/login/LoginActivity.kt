@@ -53,8 +53,6 @@ class LoginActivity : BaseActivity() {
         initViewModel()
         setupView()
         registerObservers()
-
-        //getUserLocation()
     }
 
     private fun getUserLocation(user: User){
@@ -116,6 +114,20 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 224){
+            if ( grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            }else{
+                DialogHelper.showMessage(this, "", "Você precisa fornecer autorização de localização para continuar")
+            }
+        }
+    }
+
+
     private fun setupView(){
         initFabric()
         setupButtonEvents()
@@ -136,7 +148,7 @@ class LoginActivity : BaseActivity() {
         loginViewModel?.forgotPasswordSent?.observe(this, Observer {
             DialogHelper.showMessage(this, "", getString(R.string.forgot_password_sent))
         })
-        loginViewModel?.bucetaLiveData?.observe(this, Observer {
+        loginViewModel?.checkLocationLiveData?.observe(this, Observer {
             if (it != null) {
                 getUserLocation(it)
             }
