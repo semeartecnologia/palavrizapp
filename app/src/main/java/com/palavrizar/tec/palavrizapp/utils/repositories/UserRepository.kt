@@ -2,6 +2,7 @@ package com.palavrizar.tec.palavrizapp.utils.repositories
 
 import android.content.Context
 import com.google.firebase.database.FirebaseDatabase
+import com.palavrizar.tec.palavrizapp.models.EmailWhitelist
 import com.palavrizar.tec.palavrizapp.models.LocationBlacklist
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.models.UserType
@@ -73,6 +74,18 @@ class UserRepository(val context: Context) {
 
     fun consumeOneCreditIfPossible(userId: String, onCompletion: () -> Unit, onFail: () -> Unit){
         realtimeRepository.removeOneCreditIfPossible(userId,onCompletion,onFail)
+    }
+
+    fun getLoginWhitelist(onCompletion: ((ArrayList<EmailWhitelist>) -> Unit)){
+        realtimeRepository.getLoginWhitelist(onCompletion)
+    }
+
+    fun saveLoginWhitelist(email: EmailWhitelist){
+        realtimeRepository.saveLoginWhitelist(email){}
+    }
+
+    fun deleteLoginWhitelist(location: EmailWhitelist){
+        realtimeRepository.deleteLoginWhitelist(location.key ?: return)
     }
 
     fun getLocationBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){

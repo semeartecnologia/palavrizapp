@@ -42,8 +42,23 @@ class AdminActivity : BaseActivity() {
                 showDialogLocationBlacklist()
                 true
             }
+            R.id.action_whitelist -> {
+                showDialogLoginWhitelist()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showDialogLoginWhitelist(){
+        adminViewModel.getLoginWhitelist { list ->
+            DialogHelper.createWhitelistDialog(this, list, {
+                adminViewModel.saveLoginWhitelist(it)
+            }){
+                adminViewModel.deleteLoginWhitelist(it)
+            }
+        }
+
     }
 
     private fun showDialogLocationBlacklist(){

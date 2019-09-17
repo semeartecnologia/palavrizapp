@@ -83,8 +83,16 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun checkBlacklistCity(city: String, user: User){
+    private fun checkBlacklistCity(email: String){
         var isBlacklist = false
+        var isWhitelist = false
+        loginViewModel?.getWhitelist {
+            it.forEach {
+                if (email == it.email){
+                    isWhitelist
+                }
+            }
+        }
         loginViewModel?.getBlacklist {
             it.forEach { location ->
                 if (location.city.toLowerCase() == city.toLowerCase()){

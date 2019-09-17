@@ -24,6 +24,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.palavrizar.tec.palavrizapp.R
+import com.palavrizar.tec.palavrizapp.models.EmailWhitelist
 import com.palavrizar.tec.palavrizapp.models.LocationBlacklist
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.models.UserType
@@ -102,6 +103,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getBlacklist(onCompletion: ((ArrayList<LocationBlacklist>) -> Unit)){
         userRepository?.getLocationBlacklist(onCompletion)
+    }
+
+    fun getWhitelist(onCompletion: ((ArrayList<EmailWhitelist>) -> Unit)){
+        userRepository?.getLoginWhitelist(onCompletion)
     }
 
     /**
