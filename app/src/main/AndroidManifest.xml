@@ -83,7 +83,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.palavrizar.tec.palavrizapp.modules.MainActivity"
-            android:label="@string/title_activity_main" />
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.palavrizar.tec.palavrizapp.modules.welcome.WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />

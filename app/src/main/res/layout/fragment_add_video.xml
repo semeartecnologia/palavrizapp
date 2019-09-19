@@ -69,7 +69,7 @@
                     android:layout_height="match_parent"
                     android:maxLines="1"
                     android:nextFocusDown="@+id/textInputDescription"
-                    android:maxLength="50"
+                    android:maxLength="100"
                     android:imeOptions="actionNext"
                     android:fontFamily="@font/titillium_regular"
                     android:hint="@string/video_title"/>
@@ -78,7 +78,7 @@
 
             <TextView
                 android:id="@+id/tv_title_max_length"
-                tools:text="0/50"
+                tools:text="0/100"
                 android:layout_gravity="end"
                 android:layout_marginEnd="16dp"
                 android:layout_width="wrap_content"
@@ -164,56 +164,6 @@
                 android:layout_width="match_parent"
                 android:layout_margin="16dp"
                 android:layout_height="wrap_content"/>
-
-
-
-            <LinearLayout
-                android:id="@+id/layout_picker_structure"
-                android:orientation="horizontal"
-                android:layout_margin="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="100">
-
-
-                <Spinner
-                    android:id="@+id/spinner_structure"
-                    android:layout_width="0dp"
-                    android:layout_weight="95"
-                    android:layout_height="wrap_content"/>
-
-                <ImageView
-                    android:id="@+id/btn_add_structure"
-                    android:layout_weight="5"
-                    android:src="@drawable/ic_add_circle_accent_24dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_margin="16dp"
-                android:id="@+id/layout_picker_concept"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="100">
-
-                <Spinner
-                    android:id="@+id/spinner_concept"
-                    android:layout_width="0dp"
-                    android:layout_weight="95"
-                    android:layout_height="wrap_content" />
-
-                <ImageView
-                    android:id="@+id/btn_add_concept"
-                    android:layout_weight="5"
-                    android:src="@drawable/ic_add_circle_accent_24dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_add_pdf"

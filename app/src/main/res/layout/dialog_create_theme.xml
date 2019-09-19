@@ -76,7 +76,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLines="1"
-            android:maxLength="50"
             android:imeOptions="actionNext"
             android:fontFamily="@font/titillium_regular"
             android:hint="@string/create_theme_title"/>

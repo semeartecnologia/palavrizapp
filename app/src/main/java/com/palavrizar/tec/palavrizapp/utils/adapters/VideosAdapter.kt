@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.utils.adapters
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -154,25 +155,14 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         viewHolder.videoPath = video.path
         viewHolder.videoKey = video.videoKey
 
-        if (video.structure.isNullOrBlank()){
-            viewHolder.layoutStructure.visibility = View.GONE
+        if (!video.structure.isNullOrBlank()){
+            viewHolder.title.setTextColor(ContextCompat.getColor(this.ctx, R.color.lightGreen))
+        }else if (!video.concept.isNullOrBlank()){
+            viewHolder.title.setTextColor(ContextCompat.getColor(this.ctx, R.color.colorSecondaryDark))
+        }else if (!video.themeName.isNullOrBlank()){
+            viewHolder.title.setTextColor(ContextCompat.getColor(this.ctx, R.color.colorPrimary))
         }else{
-            viewHolder.layoutStructure.visibility = View.VISIBLE
-            viewHolder.structure.text = video.structure
-        }
-
-        if (video.concept.isNullOrBlank()){
-            viewHolder.layoutConcept.visibility = View.GONE
-        }else{
-            viewHolder.layoutConcept.visibility = View.VISIBLE
-            viewHolder.concept.text = video.concept
-        }
-
-        if (video.themeName.isNullOrBlank()){
-            viewHolder.layoutTheme.visibility = View.GONE
-        }else {
-            viewHolder.layoutTheme.visibility = View.VISIBLE
-            viewHolder.theme.text = video.themeName
+            viewHolder.title.setTextColor(ContextCompat.getColor(this.ctx, R.color.colorPrimary))
         }
 
         if (jsonProgress != null){
@@ -212,26 +202,14 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         var description: TextView
         var videoPath: String? = null
         var videoKey: String? = null
-        var structure: TextView
-        var concept: TextView
-        var theme: TextView
         var progress: ProgressBar
-        var layoutStructure: LinearLayout
-        var layoutConcept: LinearLayout
-        var layoutTheme: LinearLayout
         internal var videoThumb: ImageView
 
         init {
             title = itemView.findViewById(R.id.video_title)
             description = itemView.findViewById(R.id.video_description)
             videoThumb = itemView.findViewById(R.id.video_thumbnail)
-            structure = itemView.findViewById(R.id.tv_structure_video)
-            concept = itemView.findViewById(R.id.tv_concept_video)
-            theme = itemView.findViewById(R.id.tv_theme_video)
             progress = itemView.findViewById(R.id.progress_video_watched)
-            layoutStructure = itemView.findViewById(R.id.layout_structure)
-            layoutConcept = itemView.findViewById(R.id.layout_concept)
-            layoutTheme = itemView.findViewById(R.id.layout_theme)
         }
     }
 }

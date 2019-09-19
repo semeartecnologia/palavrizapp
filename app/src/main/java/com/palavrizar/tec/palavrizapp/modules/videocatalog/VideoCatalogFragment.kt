@@ -273,14 +273,20 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
 
     override fun onResume() {
         super.onResume()
-        if (sessionManager?.videoStructureFilter == true){
-            getVideoList("structure")
-        }else if (sessionManager?.videoThemeFilter == true){
-            getVideoList("themeName")
-        }else if (sessionManager?.videoConceptFilter == true){
-            getVideoList("concept")
-        }else{
-            getVideoList()
+        when {
+            sessionManager?.videoStructureFilter == true -> {
+                getVideoList("structure")
+                viewStructureSelected?.visibility = View.VISIBLE
+            }
+            sessionManager?.videoThemeFilter == true -> {
+                getVideoList("themeName")
+                viewThemeSelected?.visibility = View.VISIBLE
+            }
+            sessionManager?.videoConceptFilter == true -> {
+                getVideoList("concept")
+                viewConceptSelected?.visibility = View.VISIBLE
+            }
+            else -> getVideoList()
         }
     }
 

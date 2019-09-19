@@ -87,7 +87,6 @@ class UploadActivity : BaseActivity() {
         setupPlansList()
         setupDeleteButton()
         registerObservers()
-        setupAddButtonSpinners()
         loadThemes()
         loadStructures()
         loadConcepts()
@@ -123,45 +122,16 @@ class UploadActivity : BaseActivity() {
     private fun changeRadioItem(i: Int){
         if ( i == 0){
             spinner_theme?.visibility = View.VISIBLE
-            layout_picker_structure?.visibility = View.GONE
             layout_add_pdf?.visibility = View.GONE
-            layout_picker_concept?.visibility = View.GONE
         }else if (i == 1){
             spinner_theme?.visibility = View.GONE
             layout_add_pdf?.visibility = View.VISIBLE
-           layout_picker_concept?.visibility =  View.VISIBLE
-            layout_picker_structure?.visibility = View.GONE
-
         }else if( i == 2){
             spinner_theme?.visibility = View.GONE
             layout_add_pdf?.visibility = View.VISIBLE
-            layout_picker_structure?.visibility = View.VISIBLE
-            layout_picker_concept?.visibility = View.GONE
         }
 
     }
-
-    private fun setupAddButtonSpinners() {
-        btn_add_structure?.setOnClickListener {
-            DialogHelper.createStructureDialog(this, false, null,
-                    {
-                        uploadViewModel.saveStructure(it)
-                        adapterStructure?.add(it.structure)
-                        spinner_structure?.setSelection(structureListString.size-1)
-                    },
-                    {}, {})
-        }
-        btn_add_concept?.setOnClickListener {
-            DialogHelper.createConceptDialog(this, false, null,
-                    {
-                        uploadViewModel.saveConcept(it)
-                        adapterConcept?.add(it.concept)
-                        spinner_concept?.setSelection(conceptListString.size-1)
-                    }
-                    , {}, {})
-        }
-    }
-
     private fun callPdfPicker(isEdit: Boolean){
         val intentPDF = Intent(Intent.ACTION_GET_CONTENT)
         intentPDF.type = "application/pdf"
@@ -292,49 +262,6 @@ class UploadActivity : BaseActivity() {
         uploadViewModel.videoDownloadUrl?.observe(this, Observer {
             if (it != null) {
                 setupVideoFragment(it)
-            }
-        })
-        uploadViewModel.conceptsListLiveData.observe(this, Observer {
-            if (it != null) {
-                val defaultValue = getString(R.string.choose_conceito)
-                conceptListString = arrayListOf<String>()
-                conceptListString.add(defaultValue)
-                it.forEach { concept ->
-                    conceptListString.add(concept.concept)
-                }
-
-                adapterConcept = ArrayAdapter(this,
-                        android.R.layout.simple_spinner_item, conceptListString)
-                adapterConcept?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner_concept?.adapter = adapterConcept
-
-                if (isEdit){
-                    if (!video?.concept.isNullOrBlank()){
-                        spinner_concept.setSelection ( conceptListString.indexOf(video?.concept))
-                    }
-                }
-            }
-        })
-        uploadViewModel.structuresListLiveData.observe(this, Observer {
-            if (it != null) {
-                val defaultValue = getString(R.string.choose_structure)
-                structureListString = arrayListOf<String>()
-                structureListString.add(defaultValue)
-                it.forEach { structure ->
-                    structureListString.add(structure.structure)
-                }
-
-                adapterStructure = ArrayAdapter(this,
-                        android.R.layout.simple_spinner_item, structureListString)
-
-                adapterStructure?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner_structure?.adapter = adapterStructure
-
-                if (isEdit){
-                    if (!video?.structure.isNullOrBlank()){
-                        spinner_structure.setSelection ( structureListString.indexOf(video?.structure))
-                    }
-                }
             }
         })
         uploadViewModel.themeListLiveData.observe(this, Observer {
@@ -512,12 +439,12 @@ class UploadActivity : BaseActivity() {
 
                 var structure: String? = null
                 if (radio_structure.isChecked){
-                    structure = spinner_structure?.selectedItem.toString()
+                    structure = "structure"
                 }
 
                 var concept: String? = null
                 if (radio_concept.isChecked){
-                    concept = spinner_concept?.selectedItem.toString()
+                    concept = "concept"
                 }
 
                 var themeName: String? = null
@@ -617,30 +544,24 @@ class UploadActivity : BaseActivity() {
             }
 
             spinner_theme?.visibility = View.GONE
-            layout_picker_structure?.visibility = View.GONE
-            layout_picker_concept?.visibility = View.GONE
             if (!video?.themeName.isNullOrBlank()){
                 spinner_theme?.visibility = View.VISIBLE
                 radio_theme.isChecked = true
             }else if (!video?.structure.isNullOrBlank()){
-                layout_picker_structure?.visibility = View.VISIBLE
                 radio_structure.isChecked = true
             }else if (!video?.concept.isNullOrBlank()){
-                layout_picker_concept?.visibility = View.VISIBLE
                 radio_concept.isChecked = true
             }
 
         }else{
             radio_theme.isChecked = true
             spinner_theme?.visibility = View.VISIBLE
-            layout_picker_structure?.visibility = View.GONE
-            layout_picker_concept?.visibility = View.GONE
         }
 
         video_title.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
                 var size = s?.length ?: 0
-                if ( size <= 50) {
+                if ( size <= 100) {
                     tv_title_max_length.text = getString(R.string.video_size_title, size)
                 }
             }

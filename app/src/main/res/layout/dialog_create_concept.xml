@@ -44,7 +44,6 @@
             android:fontFamily="@font/titillium_regular"
             android:hint="@string/create_theme_title"
             android:imeOptions="actionNext"
-            android:maxLength="50"
             android:maxLines="1" />
 
     </android.support.design.widget.TextInputLayout>
