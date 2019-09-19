@@ -8,7 +8,6 @@
     <TextView
         android:id="@+id/question_username"
         tools:text="arthurmazer -"
-        android:layout_toEndOf="@id/profile_image"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/titillium_light"

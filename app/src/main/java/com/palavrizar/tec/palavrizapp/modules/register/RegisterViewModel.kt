@@ -37,15 +37,14 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
     /**
      * Método para fazer registro pelo EMAIL
      */
-    fun registerWithEmail(activity: Activity, email: String, password: String, confirmPassword: String, fullname: String,
-                          radioCheckedId: Int, genderText: String) {
-        if (checkFields(fullname, email, password, confirmPassword, radioCheckedId)) {
+    fun registerWithEmail(activity: Activity, email: String, password: String, confirmPassword: String, fullname: String) {
+        if (checkFields(fullname, email, password, confirmPassword)) {
             isLoading.postValue(true)
             mAuth?.createUserWithEmailAndPassword(email, password)
                     ?.addOnCompleteListener(activity) { task ->
                         if (task.isSuccessful) {
                             isLoading.postValue(false)
-                            getUserDataAndLogin(fullname, genderText)
+                            getUserDataAndLogin(fullname)
                         } else {
                             isLoading.postValue(false)
                             showMessageErrorRegister.postValue(true)
@@ -62,9 +61,9 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
         userRepository.getLoginWhitelist(onCompletion)
     }
 
-    fun checkFields(fullname: String, email: String, password: String, confirmPassword: String,radioCheckedId: Int) : Boolean{
+    fun checkFields(fullname: String, email: String, password: String, confirmPassword: String) : Boolean{
         if (fullname.isEmpty() || email.isEmpty() || password.isEmpty()
-                || confirmPassword.isEmpty() || radioCheckedId == -1) {
+                || confirmPassword.isEmpty()) {
             showMessageMissingFields.postValue(true)
             return false
         }else
@@ -75,7 +74,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
             return true
     }
 
-    fun getUserDataAndLogin(fullname: String, gender: String = "")
+    fun getUserDataAndLogin(fullname: String)
     {
         //pega o usuario corrente, independente do tipo de login
         val gUser = mAuth?.currentUser
@@ -86,7 +85,6 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
         user.fullname = fullname
         user.photoUri = gUser?.photoUrl?.toString()
         user.essayCredits = 0
-        user.gender = gender
         if (user.photoUri == null)
             user.photoUri = ""
         //tipo e plano padrao, depois tem que trocar isso
@@ -97,18 +95,17 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
         sessionManager.setUserOnline(user, true)
         //registra usuario pelo repositorio
         userRepository.registerUser(user)
-        startWelcomeActivity(user.photoUri, fullname.split(" ")[0], gender)
+        startWelcomeActivity(user.photoUri, fullname.split(" ")[0])
         }
 
     /**
      * Chama a activity Welcome First Time
      */
-    private fun startWelcomeActivity(photoUri: String, username: String?, gender: String) {
+    private fun startWelcomeActivity(photoUri: String, username: String?) {
         val it = Intent(getApplication(), WelcomeActivity::class.java)
         it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         it.putExtra("photoUri", photoUri)
         it.putExtra("username", username)
-        it.putExtra("gender", gender)
         getApplication<Application>().startActivity(it)
 
     }

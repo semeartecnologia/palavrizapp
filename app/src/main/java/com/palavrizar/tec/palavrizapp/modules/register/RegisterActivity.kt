@@ -185,13 +185,6 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    private fun changeAvatarMale() {
-        Picasso.get().load(R.drawable.avatar_man_512).into(profile_image)
-    }
-
-    private fun changeAvatarFemale() {
-        Picasso.get().load(R.drawable.avatar_woman_512).into(profile_image)
-    }
 
     private fun setupButtonEvents() {
 
@@ -212,16 +205,6 @@ class RegisterActivity : BaseActivity() {
         }
 
 
-
-        radioGroupGender?.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radio_male -> changeAvatarMale()
-                R.id.radio_female -> changeAvatarFemale()
-                else -> {
-                }
-            }
-        }
-
         btn_register?.setOnClickListener { v ->
             val emailText = email?.text?.toString() ?: return@setOnClickListener
             val passwordText = password?.text?.toString() ?: return@setOnClickListener
@@ -233,18 +216,10 @@ class RegisterActivity : BaseActivity() {
             } else {
                 checkLocationBlacklisted(emailText) {
                     if (it == false) {
-                        var gender = ""
-                        if (radio_male?.isChecked == true) {
-                            gender = "male"
-                        } else if (radio_female?.isChecked == true) {
-                            gender = "female"
-                        }
-
                         if (passwordText.length < 6) {
                             DialogHelper.showMessage(this, "", "A senha deve ter ao menos 6 caracteres")
                         } else {
-                            registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name, radioGroupGender?.checkedRadioButtonId
-                                    ?: 0, gender)
+                            registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name)
                         }
                     }
                 }

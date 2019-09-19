@@ -38,10 +38,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     TextView helloUser;
     CircleImageView photoImageView;
-
-
-    ProgressBar loadingProfile;
-    String gender;
     ActionBar actionBar;
 
     private String username, photoUri;
@@ -54,8 +50,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
         username = String.format(getString(R.string.intro_screen_title_1), getIntent().getStringExtra("username"));
         photoUri = getIntent().getStringExtra("photoUri");
-        gender = getIntent().getStringExtra("gender");
-
         setContentView(R.layout.activity_welcome);
 
         viewPager = findViewById(R.id.view_pager);
@@ -192,10 +186,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
             helloUser = view.findViewById(R.id.hello_username);
             photoImageView = view.findViewById(R.id.photo_user);
-            loadingProfile = findViewById(R.id.loading_profile);
-
-            CircleImageView maleAvatar = view.findViewById(R.id.profile_image_male);
-            CircleImageView femaleAvatar = view.findViewById(R.id.profile_image_female);
 
             int[] colors = getResources().getIntArray(R.array.array_dot_active);
 
@@ -208,18 +198,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             if (photoImageView != null){
                 String profilePic = photoUri + "?height=500&type=normal";
-                //Log.d("urizao", profilePic);
                 Picasso.get().load(profilePic).into(photoImageView);
-            }
-
-            if (photoUri.isEmpty()){
-                if (gender.equals("male")){
-                    if (maleAvatar != null)
-                    maleAvatar.setVisibility(View.VISIBLE);
-                }else if (gender.equals("female")){
-                    if (femaleAvatar != null)
-                    femaleAvatar.setVisibility(View.VISIBLE);
-                }
             }
 
 
