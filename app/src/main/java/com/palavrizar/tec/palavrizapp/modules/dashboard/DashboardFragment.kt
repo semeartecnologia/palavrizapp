@@ -7,9 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.UserType
 import com.palavrizar.tec.palavrizapp.modules.MainActivity
@@ -27,8 +25,8 @@ import kotlinx.android.synthetic.main.card_send_essay.*
 import kotlinx.android.synthetic.main.card_store.*
 import kotlinx.android.synthetic.main.card_user_planos.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
-
-
+import android.view.MenuInflater
+import com.palavrizar.tec.palavrizapp.modules.login.LoginActivity
 
 
 class DashboardFragment : Fragment() {
@@ -40,6 +38,7 @@ class DashboardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
     }
 
@@ -67,7 +66,18 @@ class DashboardFragment : Fragment() {
                 dashboardViewModel?.updateUserPlan(Constants.PLAN_FREE_ID)
             }
         })
+        dashboardViewModel?.isUserOnline?.observe(this, Observer{ isOnline ->
+            if (isOnline != null && (!isOnline)) {
+                redirectToLogin()
+            }
+        })
     }
+
+    private fun redirectToLogin(){
+        val it = Intent(activity as Activity, LoginActivity::class.java)
+        startActivity(it)
+    }
+
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
@@ -85,6 +95,22 @@ class DashboardFragment : Fragment() {
     fun queryPurchases(){
         dashboardViewModel?.queryPurchases()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                dashboardViewModel?.logout()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
 
     private fun initView() {

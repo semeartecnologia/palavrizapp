@@ -5,6 +5,8 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import com.android.billingclient.api.*
+import com.facebook.login.LoginManager
+import com.google.firebase.auth.FirebaseAuth
 import com.palavrizar.tec.palavrizapp.BuildConfig
 import com.palavrizar.tec.palavrizapp.models.EnumPeriod
 
@@ -29,6 +31,10 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private var mBillingClient: BillingClient? = null
     var purchasedPlan = MutableLiveData<Purchase?>()
 
+    var isUserOnline = MutableLiveData<Boolean>()
+    private var mAuth : FirebaseAuth = FirebaseAuth.getInstance()
+    private var loginManager : LoginManager = LoginManager.getInstance()
+
     val currentUser: User?
         get() = sessionManager.userLogged
 
@@ -43,6 +49,14 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
             startConnection(context, run)
         }
     }
+
+    fun logout(){
+        sessionManager.setUserOffline()
+        mAuth.signOut()
+        loginManager.logOut()
+        isUserOnline.postValue(false)
+    }
+
 
     fun updateUserPlan(sku: String?, isRenewed: Boolean = false){
         sessionManager.userPlan = sku

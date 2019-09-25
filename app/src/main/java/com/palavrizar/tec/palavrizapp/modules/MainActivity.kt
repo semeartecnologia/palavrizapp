@@ -25,7 +25,6 @@ class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initViewModel()
-        registerObservers()
         sessionManager = SessionManager(applicationContext)
         if (sessionManager?.isUserFirstTime == true){
             startClassroomActivity()
@@ -35,14 +34,6 @@ class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionList
         }
     }
 
-
-    private fun registerObservers() {
-        mainViewModel?.isUserOnline?.observe(this, Observer{ isOnline ->
-            if (isOnline != null && (!isOnline)) {
-                redirectToLogin()
-            }
-        })
-    }
 
     fun setActionBarTitle(text: String) {
         if (supportActionBar != null)
@@ -65,21 +56,6 @@ class MainActivity : BaseActivity(), DashboardFragment.OnFragmentInteractionList
         ft.commit()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_logout -> {
-                mainViewModel!!.logout()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     override fun OnPlansClicked() {
 

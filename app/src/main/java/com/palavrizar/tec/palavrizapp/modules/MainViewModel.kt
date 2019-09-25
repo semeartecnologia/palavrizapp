@@ -19,27 +19,9 @@ class MainViewModel(application: Application): AndroidViewModel(application){
 
     private lateinit var sessionManager : SessionManager
     private val videoRepository = VideoRepository(application)
-    var isUserOnline = MutableLiveData<Boolean>()
-    private lateinit var mAuth : FirebaseAuth
-    private lateinit var loginManager : LoginManager
-
-
 
     fun initViewModel(){
         sessionManager = SessionManager(getApplication())
-        mAuth = FirebaseAuth.getInstance()
-        loginManager = LoginManager.getInstance()
-    }
-
-    fun getUserOnline(): User? {
-        return sessionManager.userLogged
-    }
-
-    fun logout(){
-        sessionManager.setUserOffline()
-        mAuth.signOut()
-        loginManager.logOut()
-        isUserOnline.postValue(false)
     }
 
     fun startClassroomActivity(context: Context) {

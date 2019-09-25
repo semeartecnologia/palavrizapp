@@ -9,6 +9,7 @@ class MyPlansActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        title = getString(R.string.card_title_plan)
         setContentView(R.layout.activity_my_plans)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
