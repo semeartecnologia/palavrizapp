@@ -743,6 +743,20 @@ object DialogHelper {
         return createThemeDialog
     }
 
+    fun showOkMessage(activity: Activity, title: String, message: String, callback: (() -> Unit), cancellable: Boolean = true){
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setCancelable(cancellable)
+        builder.setPositiveButton("Ok"){dialog, which ->
+            callback.invoke()
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+
     fun showYesNoMessage(activity: Activity, title: String, message: String, positiveCallback: (() -> Unit), negativeCallback: (() -> Unit)? = null, cancellable: Boolean = true){
         val builder = AlertDialog.Builder(activity)
 

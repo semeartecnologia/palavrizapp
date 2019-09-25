@@ -17,6 +17,7 @@ import android.os.IBinder
 import android.content.ComponentName
 import android.content.ServiceConnection
 import com.android.billingclient.api.ConsumeParams
+import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 
 class StoreViewModel(application: Application) : AndroidViewModel(application), PurchasesUpdatedListener, AcknowledgePurchaseResponseListener  {
 
@@ -31,9 +32,12 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
     val listPlanSubsDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
     val listProductsLiveData = MutableLiveData<ArrayList<Product>>()
     val listproductDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
+    val skuPurchasedSuccess = MutableLiveData<String>()
 
     private var mBillingClient: BillingClient? = null
 
+    private var skuTypePurchased: String = ""
+    private var skuTitlePurchased: String = ""
     var skuPurchased: String? = null
 
     fun fetchProductsList(){
@@ -49,18 +53,23 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
         if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK){
             purchases?.forEach {
 
-                if (!it.isAcknowledged){
+                if (!it.isAcknowledged ){
                     val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
                             .setPurchaseToken(it.purchaseToken)
                             .build()
-
-
-                    val consumeParams = ConsumeParams.newBuilder().setPurchaseToken(it.purchaseToken).build()
-
                     skuPurchased = it.sku
                     mBillingClient?.acknowledgePurchase(acknowledgePurchaseParams, this)
-                    mBillingClient?.consumeAsync(consumeParams) { billingResult, purchaseToken -> }
-                    giveUserCredits(it.sku)
+
+
+
+                    if (this.skuTypePurchased == BillingClient.SkuType.SUBS){
+                        giveUserCredits(it.sku)
+                    }else if (this.skuTypePurchased == BillingClient.SkuType.INAPP){
+                        val consumeParams = ConsumeParams.newBuilder().setPurchaseToken(it.purchaseToken).build()
+                        mBillingClient?.consumeAsync(consumeParams) { billingResult, purchaseToken -> }
+                        giveUserSoloCredits(it.sku)
+                    }
+
                 }
 
             }
@@ -68,7 +77,15 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
         }
     }
 
-    private fun giveUserCredits(productId: String){
+    fun giveUserCredits(planId: String){
+        plansRepository.getPlansByValue(planId) {
+            userRepository.giveUserCredits(sessionManager.userLogged.userId, it[0].limitEssay ?: return@getPlansByValue)
+
+        }
+
+    }
+
+    private fun giveUserSoloCredits(productId: String){
         storeRepository.getProductByValue(productId) {prod ->
             if (prod != null) {
                 userRepository.getUserSoloCredits(sessionManager.userLogged.userId) { numCredits ->
@@ -107,8 +124,13 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
     }
 
     override fun onAcknowledgePurchaseResponse(billingResult: BillingResult?) {
-        if (skuPurchased != null){
+        if (skuPurchased != null && skuTypePurchased == BillingClient.SkuType.SUBS && billingResult?.responseCode == BillingClient.BillingResponseCode.OK){
+            val sku = skuPurchased
+            sessionManager.userPlan = sku
+            skuPurchasedSuccess.postValue(skuTitlePurchased)
+            plansRepository.editUserPlan(sku ?: "") {
 
+            }
         }
     }
 
@@ -160,6 +182,8 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
     }
 
     fun startBillingFlow(activity: Activity, skuDetails: SkuDetails){
+        skuTypePurchased = skuDetails.type
+        skuTitlePurchased = skuDetails.title
         val billingFlowParams = BillingFlowParams
                 .newBuilder()
                 .setSkuDetails(skuDetails)

@@ -146,7 +146,7 @@
     <!-- Admin -->
     <string name="toolbar_admin">Administrador</string>
     <string name="tab_user">Usuários</string>
-    <string name="tab_plans">Planos</string>
+    <string name="tab_plans">Loja</string>
     <string name="tab_themes">Temas</string>
     <string name="tab_videos">Videos</string>
     <string name="sucess_edit_user_title">Sucesso</string>
@@ -331,6 +331,8 @@
 
     <string name="no_plan_dialog">Você ainda não adquiriu nenhum plano, deseja conferir as possibilidades?</string>
     <string name="tab_products">Produtos</string>
+    <string name="label_plans">Planos</string>
+    <string name="success_subscribing_plan">Parabéns, você agora está inscrito no plano %s</string>
 
 
 </resources>

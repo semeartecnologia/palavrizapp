@@ -11,15 +11,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.billingclient.api.SkuDetails
 import com.palavrizar.tec.palavrizapp.R
+import com.palavrizar.tec.palavrizapp.utils.adapters.ListPlansAdapter
 import com.palavrizar.tec.palavrizapp.utils.adapters.ListProductsAdapter
+import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
+import com.palavrizar.tec.palavrizapp.utils.interfaces.OnPlanClicked
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnProductClicked
 import kotlinx.android.synthetic.main.store_fragment.*
 
-class StoreFragment : Fragment(), OnProductClicked {
+class StoreFragment : Fragment(), OnProductClicked, OnPlanClicked {
+
 
 
     private lateinit var adapter: ListProductsAdapter
-    private lateinit var adapterPlans: ListProductsAdapter
+    private lateinit var adapterPlans: ListPlansAdapter
 
     companion object {
         fun newInstance(isAdmin: Boolean):StoreFragment {
@@ -43,7 +47,7 @@ class StoreFragment : Fragment(), OnProductClicked {
 
         viewModel = ViewModelProviders.of(this).get(StoreViewModel::class.java)
         adapter = ListProductsAdapter(this)
-        adapterPlans = ListProductsAdapter(this)
+        adapterPlans = ListPlansAdapter(this)
         setupRecyclerProducts()
         registerObservers()
 
@@ -61,8 +65,20 @@ class StoreFragment : Fragment(), OnProductClicked {
         viewModel.startBillingFlow(activity as Activity, skuDetails)
     }
 
+    override fun onPlanClicked(skuDetails: SkuDetails) {
+        viewModel.startBillingFlow(activity as Activity, skuDetails)
+    }
+
 
     private fun registerObservers() {
+        viewModel.skuPurchasedSuccess.observe(this, Observer {
+            if (it != null) {
+                val message = String.format(getString(R.string.success_subscribing_plan), it)
+                DialogHelper.showOkMessage(activity as Activity, "", message, {
+                    activity?.onBackPressed()
+                }, false)
+            }
+        })
         viewModel.listPlansLiveData.observe(this, Observer {
             val listPlansString = arrayListOf<String>()
             it?.forEach {plans ->

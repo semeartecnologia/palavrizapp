@@ -52,7 +52,7 @@
                     android:textSize="24sp"
                     android:fontFamily="@font/gotham"
                     android:layout_marginTop="16dp"
-                    android:text="@string/tab_plans"
+                    android:text="@string/label_plans"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
