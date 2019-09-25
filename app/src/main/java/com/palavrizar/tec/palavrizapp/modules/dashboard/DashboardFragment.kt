@@ -64,6 +64,11 @@ class DashboardFragment : Fragment() {
         })
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        onCreate(savedInstanceState)
+    }
+
     override fun onResume() {
         super.onResume()
 
