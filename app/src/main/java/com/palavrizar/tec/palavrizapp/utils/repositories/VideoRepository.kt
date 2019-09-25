@@ -15,7 +15,7 @@ class VideoRepository(val context: Context) {
     }
 
     fun getAllVideos(onCompletion: ((ArrayList<Video>) -> Unit)){
-        realtimeRepository.getVideosList(Constants.NO_PLAN, onCompletion)
+        realtimeRepository.getVideosList(Constants.NO_PLAN, onCompletion, null, true)
     }
 
     fun getNextVideo(actualOrder: String, onCompletion: ((Video?) -> Unit)){

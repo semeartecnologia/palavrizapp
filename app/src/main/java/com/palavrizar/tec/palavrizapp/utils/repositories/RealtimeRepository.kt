@@ -733,7 +733,7 @@ class RealtimeRepository(val context: Context) {
     }
 
 
-    fun getVideosList(plan: String, onCompletion: ((ArrayList<Video>) -> Unit), videoFilter: String? = null){
+    fun getVideosList(plan: String, onCompletion: ((ArrayList<Video>) -> Unit), videoFilter: String? = null, isAdmin: Boolean = false){
 
         val reference = "videos/"
         var videoList = arrayListOf<Video>()
@@ -759,7 +759,9 @@ class RealtimeRepository(val context: Context) {
                         }else if(videoFilter == "themeName" && !video.themeName.isNullOrBlank()){
                             videoList.add(video)
                         }else if (videoFilter == null){
-                            videoList.add(video)
+                            if (!video.concept.isNullOrBlank() || !video.structure.isNullOrBlank() || !video.themeName.isNullOrBlank() || isAdmin) {
+                                videoList.add(video)
+                            }
                         }
                     }
                 }
