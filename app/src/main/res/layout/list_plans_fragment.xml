@@ -127,6 +127,7 @@
     <TextView
         android:id="@+id/tv_user_see_plans"
         android:layout_marginStart="8dp"
+        android:visibility="gone"
         android:text="@string/no_plan"
         android:textStyle="bold"
         android:textSize="16sp"

@@ -470,9 +470,9 @@ class UploadActivity : BaseActivity() {
                                         {
                                             uploadViewModel.deleteVideo(video, keepStorage = true)
                                             uploadViewModel.editVideoToIntro(video)
-                                        }){
+                                        },{
                                     finish()
-                                }
+                                })
                             }else{
                                 uploadViewModel.deleteVideo(video, keepStorage = true)
                                 uploadViewModel.editVideoToIntro(video)
@@ -492,9 +492,9 @@ class UploadActivity : BaseActivity() {
                                 DialogHelper.showYesNoMessage(this, "", getString(R.string.video_intro_already_there),
                                         {
                                             getThumbnailAndUpload(video, true)
-                                        }){
+                                        },{
                                     finish()
-                                }
+                                })
                             }else{
                                 getThumbnailAndUpload(video, true)
                             }

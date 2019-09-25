@@ -19,6 +19,7 @@ class StoreFragment : Fragment(), OnProductClicked {
 
 
     private lateinit var adapter: ListProductsAdapter
+    private lateinit var adapterPlans: ListProductsAdapter
 
     companion object {
         fun newInstance(isAdmin: Boolean):StoreFragment {
@@ -42,6 +43,7 @@ class StoreFragment : Fragment(), OnProductClicked {
 
         viewModel = ViewModelProviders.of(this).get(StoreViewModel::class.java)
         adapter = ListProductsAdapter(this)
+        adapterPlans = ListProductsAdapter(this)
         setupRecyclerProducts()
         registerObservers()
 
@@ -61,6 +63,18 @@ class StoreFragment : Fragment(), OnProductClicked {
 
 
     private fun registerObservers() {
+        viewModel.listPlansLiveData.observe(this, Observer {
+            val listPlansString = arrayListOf<String>()
+            it?.forEach {plans ->
+                listPlansString.add(plans.plan_id)
+            }
+            viewModel.loadPlansCatalog(listPlansString)
+        })
+        viewModel.listPlanSubsDetailsLiveData.observe(this, Observer {
+            if (it != null){
+                adapterPlans.plansList = it
+            }
+        })
         viewModel.listProductsLiveData.observe(this, Observer {
             val listProductsString = arrayListOf<String>()
             it?.forEach {prod ->
@@ -80,6 +94,9 @@ class StoreFragment : Fragment(), OnProductClicked {
     private fun setupRecyclerProducts() {
         recycler_products?.layoutManager = LinearLayoutManager(context)
         recycler_products?.adapter = adapter
+
+        recycler_plans?.layoutManager = LinearLayoutManager(context)
+        recycler_plans?.adapter = adapterPlans
     }
 
 }

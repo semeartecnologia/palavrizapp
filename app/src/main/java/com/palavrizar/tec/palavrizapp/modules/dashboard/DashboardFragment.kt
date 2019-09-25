@@ -1,5 +1,6 @@
 package com.palavrizar.tec.palavrizapp.modules.dashboard
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -28,10 +29,14 @@ import kotlinx.android.synthetic.main.card_user_planos.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 
+
+
 class DashboardFragment : Fragment() {
 
     private var dashboardViewModel: DashboardViewModel? = null
     private var listener: DashboardFragment.OnFragmentInteractionListener? = null
+
+   val REQ_CODE_MY_PLANS = 300
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,7 +154,21 @@ class DashboardFragment : Fragment() {
 
     private fun startMyPlansActivity(){
         val it = Intent(activity, MyPlansActivity::class.java)
-        startActivity(it)
+        startActivityForResult(it, REQ_CODE_MY_PLANS)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK && requestCode == REQ_CODE_MY_PLANS){
+            val redirectToStore = data?.getBooleanExtra("redirect", false)
+            if (redirectToStore == true){
+                val mainActivity = activity as MainActivity?
+                mainActivity?.changeFragment(StoreFragment(), "Loja")
+                mainActivity?.setActionBarTitle("Loja")
+            }
+            val a = ""
+        }
     }
 
     private fun checkUserTypeView() {

@@ -23,9 +23,12 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
 
 
     private val storeRepository = StoreRepository(application)
+    private val plansRepository = PlansRepository(application)
     private val userRepository = UserRepository(application)
     private val sessionManager = SessionManager(application)
 
+    val listPlansLiveData = MutableLiveData<ArrayList<PlansBilling>>()
+    val listPlanSubsDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
     val listProductsLiveData = MutableLiveData<ArrayList<Product>>()
     val listproductDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
 
@@ -36,6 +39,9 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
     fun fetchProductsList(){
         storeRepository.getProducts{
             listProductsLiveData.postValue(it)
+        }
+        plansRepository.getPlans {
+            listPlansLiveData.postValue(it)
         }
     }
 
@@ -71,6 +77,32 @@ class StoreViewModel(application: Application) : AndroidViewModel(application), 
                 }
             }
 
+        }
+    }
+
+    fun loadPlansCatalog(skuList: ArrayList<String>) {
+        if (mBillingClient?.isReady == true) {
+            val params = SkuDetailsParams
+                    .newBuilder()
+                    .setSkusList(skuList)
+                    .setType(BillingClient.SkuType.SUBS)
+                    .build()
+            mBillingClient?.querySkuDetailsAsync(params) { responseCode, skuDetailsList ->
+                if (responseCode.responseCode == BillingClient.BillingResponseCode.OK ) {
+                    //println("querySkuDetailsAsync, responseCode: $responseCode")
+                    val listPlanDetails = arrayListOf<SkuDetails>()
+                    skuDetailsList.forEach {
+                        /*var planDetail = PlanDetails("", it.title, it.description, it.price)*/
+                        listPlanDetails.add(it)
+                    }
+                    listPlanSubsDetailsLiveData.postValue(listPlanDetails)
+                    //initProductAdapter(skuDetailsList)
+                } else {
+                    //      println("Can't querySkuDetailsAsync, responseCode: $responseCode")
+                }
+            }
+        } else {
+            //println("Billing Client not ready")
         }
     }
 

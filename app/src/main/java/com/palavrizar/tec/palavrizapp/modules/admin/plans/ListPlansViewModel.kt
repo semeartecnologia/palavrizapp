@@ -24,12 +24,15 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
     private val sessionManager = SessionManager(application)
 
     val listPlansLiveData = MutableLiveData<ArrayList<PlansBilling>>()
+    val noPlanLiveData = MutableLiveData<Boolean>()
     val listProductsLiveData = MutableLiveData<ArrayList<Product>>()
     val listPlanSubsDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
     val listProductsSkuDetailsLiveData = MutableLiveData<ArrayList<SkuDetails>>()
     val planSubDetailsLiveData = MutableLiveData<SkuDetails>()
     val getUserCreditsLiveData = MutableLiveData<Int>()
     val productLiveData = MutableLiveData<Product>()
+
+    var isAdmin = false
 
     private var mBillingClient: BillingClient? = null
 
@@ -58,10 +61,13 @@ class ListPlansViewModel(application: Application) : AndroidViewModel(applicatio
         storeRepository.deleteProducs(productId)
     }
 
-
-    fun fetchPlanList(){
-        plansRepository.getPlans {
-            listPlansLiveData.postValue(it)
+    fun fetchPlanList(isAdmin: Boolean = false){
+        if (!isAdmin){
+            noPlanLiveData.postValue(true)
+        }else {
+            plansRepository.getPlans {
+                listPlansLiveData.postValue(it)
+            }
         }
     }
 

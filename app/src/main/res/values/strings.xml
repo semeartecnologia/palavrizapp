@@ -329,5 +329,8 @@
 
     <string name="forgot_password_sent">Sucesso, você receberá um link em seu e-mail para redefinir sua senha!</string>
 
+    <string name="no_plan_dialog">Você ainda não adquiriu nenhum plano, deseja conferir as possibilidades?</string>
+    <string name="tab_products">Produtos</string>
+
 
 </resources>

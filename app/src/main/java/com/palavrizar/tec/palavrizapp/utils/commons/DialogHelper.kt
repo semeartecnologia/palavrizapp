@@ -743,11 +743,12 @@ object DialogHelper {
         return createThemeDialog
     }
 
-    fun showYesNoMessage(activity: Activity, title: String, message: String, positiveCallback: (() -> Unit), negativeCallback: (() -> Unit)? = null){
+    fun showYesNoMessage(activity: Activity, title: String, message: String, positiveCallback: (() -> Unit), negativeCallback: (() -> Unit)? = null, cancellable: Boolean = true){
         val builder = AlertDialog.Builder(activity)
 
         builder.setTitle(title)
         builder.setMessage(message)
+        builder.setCancelable(cancellable)
         builder.setPositiveButton("SIM"){dialog, which ->
             positiveCallback.invoke()
             dialog.dismiss()

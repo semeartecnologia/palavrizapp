@@ -2,6 +2,7 @@ package com.palavrizar.tec.palavrizapp.modules.admin.plans
 
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -167,7 +168,7 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
             }
         }else{
             viewModel.executeRequest(activity?.applicationContext ?: return) {
-                viewModel.fetchPlanList()
+                viewModel.fetchPlanList(true)
                 viewModel.fetchProductList()
             }
 
@@ -208,6 +209,24 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
     }
 
     private fun registerObservers() {
+        viewModel.noPlanLiveData.observe(this, Observer {
+            if ( it == true){
+                DialogHelper.showYesNoMessage(activity as Activity,
+                        "",
+                        getString(R.string.no_plan_dialog),
+                        {
+                            val it = Intent()
+                            it.putExtra("redirect", true)
+                            activity?.setResult(RESULT_OK, it)
+                            activity?.finish()
+
+                        },
+                        {
+                            activity?.finish()
+                        }, false)
+            }
+        })
+
         viewModel.productLiveData.observe(this, Observer {
             if (it != null){
                 DialogHelper.createAddProductDialog(activity as Activity,
