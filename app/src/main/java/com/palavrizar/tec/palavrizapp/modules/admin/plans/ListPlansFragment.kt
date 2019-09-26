@@ -202,7 +202,10 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
                         {
 
                         },{
-                    viewModel.deletePlan(a[0].planFirebaseKey)
+                    DialogHelper.showYesNoMessage(activity as Activity, "", getString(R.string.delete_plan), {
+                        viewModel.deletePlan(a[0].planFirebaseKey)
+                    } )
+
                 })
             }
         }
@@ -237,7 +240,10 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
                             viewModel.editProduct(product.productKey, product)
                         },
                         {productId ->
-                            viewModel.deleteProduct(productId)
+                            DialogHelper.showYesNoMessage(activity as Activity, "", getString(R.string.delete_product), {
+                                viewModel.deleteProduct(productId)
+                            } )
+
                             //delete callback
                         }
                 )

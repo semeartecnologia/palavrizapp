@@ -288,7 +288,7 @@
     <string name="semanal">Semanal</string>
     <string name="active_it">Ativar limite de envio redação</string>
     <string name="edit_plan_label">Editar Plano</string>
-    <string name="edit_product_label">Editar Produt</string>
+    <string name="edit_product_label">Editar Produto</string>
 
     <string name="your_plan_title">PLANO</string>
     <string name="your_plan_description">DESCRIÇÃO</string>
@@ -333,6 +333,9 @@
     <string name="tab_products">Produtos</string>
     <string name="label_plans">Planos</string>
     <string name="success_subscribing_plan">Parabéns, você agora está inscrito no plano %s</string>
+
+    <string name="delete_plan">Você tem certeza que deseja excluir esse plano?</string>
+    <string name="delete_product">Você tem certeza que deseja excluir esse produto?</string>
 
 
 </resources>

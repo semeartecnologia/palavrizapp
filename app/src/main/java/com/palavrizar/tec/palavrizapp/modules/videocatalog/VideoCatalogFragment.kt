@@ -263,6 +263,9 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
             })
             videoCatalogViewModel?.namePlanLiveData?.observe(this, Observer {
                 if (!it.isNullOrBlank()){
+                    if (it == Constants.PLAN_FREE_ID){
+                     tv_plan_name?.visibility = View.GONE
+                    }
                     tv_plan_name?.text = it
                 }else{
                     tv_plan_name?.visibility = View.GONE
