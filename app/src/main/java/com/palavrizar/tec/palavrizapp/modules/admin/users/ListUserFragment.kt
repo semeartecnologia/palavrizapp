@@ -81,12 +81,15 @@ class ListUserFragment : Fragment(), OnUserClicked, OnUserSearch {
     }
 
     override fun onUserClicked(user: User) {
+        val type = user.userType
         DialogHelper.createEditUserAdminDialog(activity as Activity
                 ,
                 user,
          { newUser ->
             viewModel.setUserType(newUser.userId, newUser.userType){
-                DialogHelper.showAlert(activity as Activity, getString(R.string.sucess_edit_user_title), getString(R.string.sucess_edit_user_text), "OK")
+                if (newUser.userType != type) {
+                    DialogHelper.showMessage(activity as Activity, getString(R.string.sucess_edit_user_title), getString(R.string.sucess_edit_user_text))
+                }
             }
         },{
             DialogHelper.showYesNoMessage(activity as Activity, getString(R.string.dialog_delete_user_title), getString(R.string.dialog_delete_user_text),{

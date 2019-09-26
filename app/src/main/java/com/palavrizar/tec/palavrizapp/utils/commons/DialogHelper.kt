@@ -129,11 +129,12 @@ object DialogHelper {
 
         if (isEdit == false || isEdit == null) {
             view.btn_delete_theme.visibility = View.GONE
-            view.layout_pdf_filename.setOnClickListener {
-                theme?.urlPdf = ""
-                view.layout_pdf_filename.visibility = View.GONE
-                view.btn_attachment_pdf_theme.isEnabled = true
-            }
+        }
+
+        view.layout_pdf_filename.setOnClickListener {
+            theme?.urlPdf = ""
+            view.layout_pdf_filename.visibility = View.GONE
+            view.btn_attachment_pdf_theme.isEnabled = true
         }
 
         view.btn_delete_theme.setOnClickListener {

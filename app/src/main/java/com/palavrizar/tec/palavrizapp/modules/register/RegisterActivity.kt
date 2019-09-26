@@ -2,18 +2,26 @@ package com.palavrizar.tec.palavrizapp.modules.register
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.location.*
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethodManager
 import butterknife.ButterKnife
+import com.google.android.youtube.player.internal.r
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
@@ -22,8 +30,10 @@ import com.palavrizar.tec.palavrizapp.utils.commons.Utils
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_register.*
+import org.w3c.dom.Text
 import java.io.IOException
 import java.util.*
+
 
 
 class RegisterActivity : BaseActivity() {
@@ -169,7 +179,10 @@ class RegisterActivity : BaseActivity() {
         { aBoolean -> showToast(getString(R.string.fill_all_fields), aBoolean ?: true) })
 
         registerViewModel?.showMessagePwdNotMatch?.observe(this, Observer
-        { aBoolean -> showToast(getString(R.string.pwd_not_match), aBoolean ?: true) })
+        { aBoolean ->
+            showToast(getString(R.string.pwd_not_match), aBoolean ?: true)
+            textInputPwdConfirm.error = "Senhas diferentes"
+        })
 
         registerViewModel?.isLoading?.observe(this,
                 Observer<Boolean> { this.toggleLoading(it ?: true) })
@@ -185,13 +198,52 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
+    private fun dpToPx(context: Context, valueInDp: Float): Float {
+        val metrics = context.resources.displayMetrics;
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
+    }
+
+    private fun keyboardIsShown(isVisible: Boolean){
+        if (isVisible){
+            fab_hide_keyboard?.show()
+        }else{
+            fab_hide_keyboard?.hide()
+        }
+    }
+
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(if (currentFocus == null) View(this) else currentFocus)
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 
     private fun setupButtonEvents() {
+
+        val activity = this
+        viewRoot.viewTreeObserver.addOnGlobalLayoutListener {
+            var  heightDiff = viewRoot.rootView.height - viewRoot.height
+            if (heightDiff > dpToPx(activity, 200f)) { // if more than 200 dp, it's probably a keyboard...
+                keyboardIsShown(true)
+            }else{
+                keyboardIsShown(false)
+            }
+        }
+
+        fab_hide_keyboard?.setOnClickListener {
+            this.hideKeyboard()
+        }
 
         email.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus){
                 if (!Utils.isValidEmail(email.text.toString())){
-                    email.error = "E-mail inválido"
+                    textInputEmail.error = "E-mail inválido"
                 }
             }
         }
@@ -199,10 +251,11 @@ class RegisterActivity : BaseActivity() {
         confirm_password?.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus){
                 if (confirm_password.text.toString() != password.text.toString() ){
-                    confirm_password.error = "Senhas diferentes"
+                    textInputPwdConfirm.error = "Senhas diferentes"
                 }
             }
         }
+
 
 
         btn_register?.setOnClickListener { v ->
@@ -212,7 +265,7 @@ class RegisterActivity : BaseActivity() {
             val confPassword = confirm_password?.text?.toString() ?: return@setOnClickListener
 
             if (!Utils.isValidEmail(emailText)) {
-                email.error = "E-mail inválido"
+                textInputEmail.error = "E-mail inválido"
             } else {
                 checkLocationBlacklisted(emailText) {
                     if (it == false) {

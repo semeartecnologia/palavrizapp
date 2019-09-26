@@ -174,6 +174,7 @@ class LoginActivity : BaseActivity() {
         loginViewModel?.checkLocationLiveData?.observe(this, Observer {
             if (it != null) {
                 getUserLocation(it)
+
             }
         })
     }
