@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- NOME DO APP -->
-    <string name="app_name">Palavrizapp</string>
+    <string name="app_name">Palavrizar</string>
 
     <!-- REGISTRO -->
     <string name="actionbar_register_title">Criar conta</string>
