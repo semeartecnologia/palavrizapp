@@ -449,11 +449,12 @@ class UploadActivity : BaseActivity() {
 
                 var themeName: String? = null
                 var selectedTheme: Themes? = null
-                if (radio_theme.isChecked && spinner_theme?.selectedItemPosition != 0){
-                    themeName = spinner_theme?.selectedItem.toString()
+                if (radio_theme.isChecked){
+                  themeName = spinner_theme?.selectedItem.toString()
                     if (listOfThemes.isNotEmpty()) {
                         selectedTheme = listOfThemes.filter { it.themeName == themeName }.singleOrNull()
                     }
+                    themeName = "themes"
                 }
 
                 btn_upload.isEnabled = false
@@ -462,7 +463,7 @@ class UploadActivity : BaseActivity() {
                 adapter.disableAllCheckboxes()
 
                 if (isEdit){
-                    val video = Video(this.video?.orderVideo ?: "0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb ?: "", selectedTheme?.urlPdf ?: videoPdfPath ?: "", selectedTheme?.themeName, concept, structure )
+                    val video = Video(this.video?.orderVideo ?: "0", listOfPlans, this.video?.videoKey ?: return@setOnClickListener, title, description, "", videoUrl, video?.videoThumb ?: "", selectedTheme?.urlPdf ?: videoPdfPath ?: "", themeName, concept, structure )
                     if (check_intro?.isChecked == true){
                         uploadViewModel.getVideoIntroUploadedAlready {
                             if (it){

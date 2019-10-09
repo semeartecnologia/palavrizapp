@@ -38,6 +38,7 @@ class EssayListAdapter(val listener: OnEssayClicked) : RecyclerView.Adapter<Essa
             essay.status == StatusEssay.UPLOADED -> holder.essayStatus = context?.getString(R.string.upload_status_waiting)
             essay.status == StatusEssay.CORRECTING -> holder.essayStatus = context?.getString(R.string.upload_status_correcting)
             essay.status == StatusEssay.FEEDBACK_READY -> holder.essayStatus = context?.getString(R.string.upload_status_done)
+            essay.status == StatusEssay.NOT_READABLE -> holder.essayStatus = context?.getString(R.string.upload_status_not_readable)
         }
 
         holder.view.setOnClickListener {

@@ -16,6 +16,7 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
 
     sealed class ViewEvent {
         class FeedBackSent(val success: Boolean) : ViewEvent()
+        object EssayUnreadable : ViewEvent()
     }
 
     private var essayRepository = EssayRepository(getApplication())
@@ -31,7 +32,13 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
     fun setExtras(bundle: Bundle){
         val essay: Essay? = bundle.getParcelable(Constants.EXTRA_ESSAY)
         val isReadMode: Boolean = bundle.getBoolean(Constants.EXTRA_ESSAY_READ_MODE)
+
+
         if (essay != null) {
+            if (isReadMode && essay.status == StatusEssay.NOT_READABLE){
+                viewEvent.postValue(ViewEvent.EssayUnreadable)
+            }
+
             checkOwnerEssay(essay.essayId)
             if (isReadMode){
                 essay.isReadMode = true

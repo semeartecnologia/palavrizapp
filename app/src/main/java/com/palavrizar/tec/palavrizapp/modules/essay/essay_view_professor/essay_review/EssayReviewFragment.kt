@@ -70,6 +70,9 @@ class EssayReviewFragment() : Fragment() {
                     dialogProgres?.dismiss()
                     listener?.onCorrectClicked(it.essayId)
                 }
+                is EssayReviewViewModel.ViewEvent.EssayUnreadable -> {
+                    DialogHelper.showMessage(activity as Activity, "", getString(R.string.essay_feedback_unreadable_dialog))
+                }
             }
         })
         viewmodel?.enableCorrectButton?.observe(this, Observer {
@@ -120,7 +123,9 @@ class EssayReviewFragment() : Fragment() {
             DialogHelper.showYesNoMessage(activity, getString(R.string.dialog_confirmation_correct_title), getString(R.string.dialog_confirmation_correct_content), {
                 dialogProgres = DialogHelper.createDialogProgress(activity, "", false)
                 setCorrectOwner()
-            },{})
+            },{
+                viewmodel?.setEssayUnreadable()
+            })
         }
     }
 

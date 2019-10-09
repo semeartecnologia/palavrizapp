@@ -8,6 +8,7 @@ import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
 import com.palavrizar.tec.palavrizapp.models.Feedback
 import com.palavrizar.tec.palavrizapp.models.StatusEssay
+import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.repositories.EssayRepository
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
@@ -21,11 +22,13 @@ class EssayReviewViewModel(application: Application): AndroidViewModel(applicati
     sealed class ViewEvent {
         class SuccessSettingOwner(val essayId: String): ViewEvent()
         object FailSettingOwner: ViewEvent()
+        object EssayUnreadable: ViewEvent()
     }
 
     var actualEssayLiveData = MutableLiveData<Essay>()
     var essayImageUrlLiveData = MutableLiveData<String>()
     var enableCorrectButton = MutableLiveData<Boolean>()
+
 
     val dialogLiveData = MutableLiveData<Dialog?>()
     val viewEventLiveData = MutableLiveData<ViewEvent>()
@@ -52,6 +55,13 @@ class EssayReviewViewModel(application: Application): AndroidViewModel(applicati
     fun getEssayImage(url: String?){
         essayRepository.getEssayImage(url ?: "") {
             essayImageUrlLiveData.postValue(it)
+        }
+    }
+
+    fun setEssayUnreadable(){
+        val userLogged = sessionManager.userLogged
+        essayRepository.setEssayUnreadablaStatus(actualEssayLiveData.value ?: return, userLogged.userId) {
+            viewEventLiveData.postValue(ViewEvent.EssayUnreadable)
         }
     }
 

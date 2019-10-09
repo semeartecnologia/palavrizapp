@@ -85,8 +85,16 @@ class EssayCorrectFragment : Fragment() {
                         })
                     }
                 }
+                is EssayCorrectViewModel.ViewEvent.EssayUnreadable -> {
+                    showUnreadableMessage()
+                }
             }
         })
+    }
+
+
+    fun showUnreadableMessage(){
+        DialogHelper.showOkMessage(activity as Activity, "", getString(R.string.essay_not_readable_message), {})
     }
 
     private fun hideProgress(){

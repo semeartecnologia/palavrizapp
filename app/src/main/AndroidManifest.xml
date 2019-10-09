@@ -101,8 +101,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.palavrizar.tec.palavrizapp.modules.classroom.ClassroomActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.palavrizar.tec.palavrizapp.modules.classroom.FullscreenVideoActivity"
             android:screenOrientation="landscape"

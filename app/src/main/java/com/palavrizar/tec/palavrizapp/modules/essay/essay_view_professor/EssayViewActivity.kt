@@ -12,6 +12,7 @@ import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
 import com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.essay_correct_room.EssayCorrectFragment
 import com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.essay_review.EssayReviewFragment
+import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import kotlinx.android.synthetic.main.activity_essay_view.*
 
@@ -59,6 +60,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
         ft.replace(R.id.frameContent, fragment, fragName)
         ft.commit()
     }
+
 
     override fun onBackPressed() {
         finish()

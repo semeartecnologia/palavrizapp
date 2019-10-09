@@ -111,6 +111,7 @@
     <string name="upload_essay_success">Sucesso! Sua redação foi enviada, agora aguarde nosso feedback</string>
     <string name="upload_status_waiting">Aguardando Correção</string>
     <string name="upload_status_correcting">Correção em andamento</string>
+    <string name="upload_status_not_readable">Foto Ilegível</string>
     <string name="upload_status_done">Ver correção</string>
     <string name="btn_send_essay">Enviar Redação</string>
     <string name="essay_title">Título</string>
@@ -339,6 +340,9 @@
 
     <string name="correction_send_success">Correção enviada com sucesso!</string>
     <string name="essay_correction_no_video">Você precisa adicionar um vídeo de correção antes de enviar</string>
+
+    <string name="essay_feedback_unreadable_dialog">A redação foi marcada como não legível</string>
+    <string name="essay_not_readable_message">Essa redação recebeu o feedback de ilegível, por favor envie novamente</string>
 
 
 </resources>
