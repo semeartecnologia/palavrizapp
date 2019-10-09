@@ -80,7 +80,9 @@ class EssayCorrectFragment : Fragment() {
             when(it){
                 is EssayCorrectViewModel.ViewEvent.FeedBackSent -> {
                     if (it.success){
-                        activity?.finish()
+                        DialogHelper.showOkMessage(activity as Activity, "", getString(R.string.correction_send_success), {
+                            activity?.finish()
+                        })
                     }
                 }
             }
@@ -169,7 +171,12 @@ class EssayCorrectFragment : Fragment() {
 
     private fun setupSendFeedbackButton(essay: Essay) {
         btn_send_feedback?.setOnClickListener {
-            viewmodel?.onSendEssayFeedback(essay,  et_feedback_text?.text.toString(), videoUrl ?: "")
+            if (videoUrl.isNullOrBlank()){
+                DialogHelper.showOkMessage(activity as Activity, "", getString(R.string.essay_correction_no_video), {})
+            }else {
+                viewmodel?.onSendEssayFeedback(essay, et_feedback_text?.text.toString(), videoUrl
+                        ?: "")
+            }
         }
     }
 

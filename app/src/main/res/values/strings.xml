@@ -337,5 +337,8 @@
     <string name="delete_plan">Você tem certeza que deseja excluir esse plano?</string>
     <string name="delete_product">Você tem certeza que deseja excluir esse produto?</string>
 
+    <string name="correction_send_success">Correção enviada com sucesso!</string>
+    <string name="essay_correction_no_video">Você precisa adicionar um vídeo de correção antes de enviar</string>
+
 
 </resources>
