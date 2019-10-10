@@ -1,6 +1,8 @@
 package com.palavrizar.tec.palavrizapp.modules.essay.image_check
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -8,6 +10,8 @@ import android.view.View
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
 import com.palavrizar.tec.palavrizapp.models.StatusEssay
+import com.palavrizar.tec.palavrizapp.models.Themes
+import com.palavrizar.tec.palavrizapp.utils.adapters.MyEssayAdapter
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 import com.palavrizar.tec.palavrizapp.utils.repositories.EssayRepository
@@ -27,9 +31,13 @@ class EssayCheckActivity : AppCompatActivity() {
     var sessionManager: SessionManager? = null
     private var themesRepository: ThemesRepository? = null
     private var userRepository: UserRepository? = null
+    private val adapter = MyEssayAdapter()
 
+    private var themeSelected: Themes? = null
+    private var viewmodel: EssayCheckViewModel? = null
+/*
     private var themeId: String? = ""
-    var themeName: String? = ""
+    var themeName: String? = ""*/
 
     private val RESULT_NEGATIVE = 404
 
@@ -37,6 +45,8 @@ class EssayCheckActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_check_image)
+        initViewModel()
+        registerObservers()
         initRepository()
         setupExtras()
         setupView()
@@ -52,10 +62,77 @@ class EssayCheckActivity : AppCompatActivity() {
     private fun setupExtras(){
         if (intent != null) {
             bmpImageEssay = intent?.getParcelableExtra(Constants.EXTRA_IMAGE_CHECK)
-            themeId = intent?.getStringExtra(Constants.EXTRA_ESSAY_THEME_ID)
-            themeName = intent?.getStringExtra(Constants.EXTRA_ESSAY_THEME)
             iv_essay_preview.setImageBitmap(bmpImageEssay)
         }
+    }
+
+    private fun showDialogThemes(listOfThemes: ArrayList<Themes>){
+        DialogHelper.createThemePickerDialog(this, listOfThemes,
+                {
+                    //theme picked
+                    val alreadySent = adapter.essayList.any { essay -> essay.themeId == it.themeId }
+
+                    if (alreadySent) {
+                        DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
+                            sendEssay(it)
+                        }, {
+
+                        })
+                    } else {
+                        sendEssay(it)
+                    }
+                }, { url ->
+        })
+    }
+
+    private fun initViewModel(){
+        viewmodel = ViewModelProviders.of(this).get(EssayCheckViewModel::class.java)
+    }
+
+    private fun registerObservers(){
+        viewmodel?.dialogThemesLiveData?.observe(this, Observer {
+            if (it != null){
+                showDialogThemes(it)
+            }
+        })
+    }
+
+    private fun sendEssay(theme: Themes){
+        val user = sessionManager?.userLogged
+
+        val essay = Essay("", theme.themeName, theme.themeId, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
+        layout_sendind_progress.visibility = View.VISIBLE
+        essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
+
+            @SuppressLint("CheckResult")
+            override fun onSuccess() {
+                userRepository?.consumeOneCreditIfPossible(sessionManager?.userLogged?.userId ?: return, {
+                    layout_sendind_progress.visibility = View.GONE
+                    val subscription = io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
+                            .subscribe { _ ->
+                                finish()
+                            }
+                    DialogHelper.showOkMessage(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success),{
+                        subscription.dispose()
+                        finish()
+                    })
+
+                }, {
+                    layout_sendind_progress.visibility = View.GONE
+                    DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error_2))
+                })
+
+            }
+
+            override fun onFail() {
+                layout_sendind_progress.visibility = View.GONE
+                DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error))
+            }
+
+            override fun onProgress(progress: Int) {
+            }
+
+        })
     }
 
 
@@ -72,37 +149,11 @@ class EssayCheckActivity : AppCompatActivity() {
 
         btn_positive.setOnClickListener {
             dialog_is_readable.visibility = View.GONE
-            val user = sessionManager?.userLogged
 
-            val essay = Essay("", themeName ?: return@setOnClickListener, themeId ?: return@setOnClickListener, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
-            layout_sendind_progress.visibility = View.VISIBLE
-            essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
+            viewmodel?.fetchThemes()
 
-                @SuppressLint("CheckResult")
-                override fun onSuccess() {
-                    userRepository?.consumeOneCreditIfPossible(sessionManager?.userLogged?.userId ?: return, {
-                        layout_sendind_progress.visibility = View.GONE
-                        DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success))
-                        io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
-                                .subscribe { _ ->
-                                    finish()
-                                }
-                    }, {
-                        layout_sendind_progress.visibility = View.GONE
-                        DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error_2))
-                    })
 
-                }
 
-                override fun onFail() {
-                    layout_sendind_progress.visibility = View.GONE
-                    DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error))
-                }
-
-                override fun onProgress(progress: Int) {
-                }
-
-            })
         }
 
     }

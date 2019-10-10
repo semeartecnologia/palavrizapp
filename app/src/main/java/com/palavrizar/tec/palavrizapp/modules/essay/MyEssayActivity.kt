@@ -100,10 +100,9 @@ class MyEssayActivity : BaseActivity() {
         viewmodel?.userHasCreditLiveData?.observe(this, Observer {
             if ( it == false ){
                 showNoCreditsDialog()
+            }else{
+                checkCameraPermission()
             }
-        })
-        viewmodel?.dialogThemesLiveData?.observe(this, Observer {
-                showDialogThemes(it ?: return@Observer)
         })
         viewmodel?.userNoPlanLiveData?.observe(this, Observer {
             if (it == true){
@@ -116,30 +115,7 @@ class MyEssayActivity : BaseActivity() {
         DialogHelper.showMessage(this, "", getString(R.string.no_plan_no_essay))
     }
 
-    private fun showDialogThemes(listOfThemes: ArrayList<Themes>){
-        DialogHelper.createThemePickerDialog(this, listOfThemes,
-                {
-                    //theme picked
-                    val alreadySent = adapter.essayList.any { essay -> essay.themeId == it.themeId }
 
-                    if (alreadySent) {
-                        DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
-                            themeSelected = it
-                            checkCameraPermission()
-                        }, {
-
-                        })
-                    } else {
-                        themeSelected = it
-                        checkCameraPermission()
-                    }
-                }, { url ->
-            //pdf clicked
-            requestWriteStoragePermission(url)
-
-
-        })
-    }
 
     private fun showNoCreditsDialog(){
         DialogHelper.showMessage(this, "", getString(R.string.no_credits_essay))
@@ -148,8 +124,6 @@ class MyEssayActivity : BaseActivity() {
     private fun startImageCheckActivity(bmp: Bitmap) {
         val it = Intent(this, EssayCheckActivity::class.java)
         it.putExtra(EXTRA_IMAGE_CHECK, bmp)
-        it.putExtra(EXTRA_ESSAY_THEME_ID, themeSelected?.themeId)
-        it.putExtra(EXTRA_ESSAY_THEME, themeSelected?.themeName)
         startActivityForResult(it, REQUEST_IMAGE_CHECK)
     }
 

@@ -108,7 +108,7 @@
     <string name="upload_essay_title">Oops</string>
     <string name="upload_essay_error">Erro ao enviar sua redação, tente novamente mais tarde</string>
     <string name="upload_essay_error_2">Erro ao descontar seus créditos, comunique nosso administrador</string>
-    <string name="upload_essay_success">Sucesso! Sua redação foi enviada, agora aguarde nosso feedback</string>
+    <string name="upload_essay_success">Sucesso! Nossos professores irão corrigir sua redação em breve</string>
     <string name="upload_status_waiting">Aguardando Correção</string>
     <string name="upload_status_correcting">Correção em andamento</string>
     <string name="upload_status_not_readable">Foto Ilegível</string>
@@ -343,6 +343,7 @@
 
     <string name="essay_feedback_unreadable_dialog">A redação foi marcada como não legível</string>
     <string name="essay_not_readable_message">Essa redação recebeu o feedback de ilegível, por favor envie novamente</string>
+    <string name="sending_essay">Enviando...</string>
 
 
 </resources>

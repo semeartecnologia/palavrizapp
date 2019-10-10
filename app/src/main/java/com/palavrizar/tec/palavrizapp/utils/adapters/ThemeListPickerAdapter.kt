@@ -20,7 +20,7 @@ class ThemesListPickerAdapter(val listener: OnThemeClicked) : RecyclerView.Adapt
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ThemesListPickerAdapter.ViewHolder {
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = inflate(R.layout.item_essay_theme_chooser, p0)
         context = p0.context
         return ViewHolder(view)
@@ -32,24 +32,14 @@ class ThemesListPickerAdapter(val listener: OnThemeClicked) : RecyclerView.Adapt
         return themesList.size
     }
 
-    override fun onBindViewHolder(holder: ThemesListPickerAdapter.ViewHolder, index: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, index: Int) {
         val theme = themesList[index]
 
-        if (theme.urlPdf.isNullOrBlank()){
-            holder.view.pdf_button.visibility = View.GONE
-        }else{
-            holder.view.pdf_button.visibility = View.VISIBLE
-        }
 
         holder.essayTitle = theme.themeName
 
         holder.view.setOnClickListener {
             listener.onThemeClicked(theme)
-        }
-
-        holder.view.pdf_button.setOnClickListener {
-
-            listener.onDownloadPdfClicked(theme.urlPdf ?: "")
         }
 
     }
