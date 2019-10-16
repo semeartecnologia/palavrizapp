@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.utils.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -210,6 +211,8 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
             description = itemView.findViewById(R.id.video_description)
             videoThumb = itemView.findViewById(R.id.video_thumbnail)
             progress = itemView.findViewById(R.id.progress_video_watched)
+            progress.progressDrawable.setColorFilter(
+                    ContextCompat.getColor(ctx, R.color.searchLabel), android.graphics.PorterDuff.Mode.SRC_IN);
         }
     }
 }

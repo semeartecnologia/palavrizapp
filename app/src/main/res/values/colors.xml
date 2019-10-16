@@ -11,6 +11,12 @@
     <color name="colorPrimaryText">#fff9f9</color>
     <color name="colorSecondaryText">#8C000000</color>
 
+    <color name="purpleText">#76395D</color>
+    <color name="lightPurpleToggle">#EFD4E7</color>
+    <color name="darkPurpleToggle">#E19CD3</color>
+    <color name="searchLabel">#A66089</color>
+
+
     <color name="lightRed">#FF7777</color>
     <color name="lightGreen">#52AE71</color>
     <color name="light_purple">#a85c8b</color>

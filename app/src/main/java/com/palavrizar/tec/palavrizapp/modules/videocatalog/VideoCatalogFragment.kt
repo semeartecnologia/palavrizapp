@@ -25,6 +25,7 @@ import com.palavrizar.tec.palavrizapp.utils.interfaces.OnVideoSearched
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import com.palavrizar.tec.palavrizapp.utils.repositories.VideoRepository
 import kotlinx.android.synthetic.main.fragment_video_catalog.*
+import org.jetbrains.anko.backgroundResource
 
 /**
  * Fragmento de catalogo de aulas
@@ -38,9 +39,15 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
     private var videoRepository: VideoRepository? = null
     private var sessionManager: SessionManager? = null
     private var progressBar: ProgressBar? = null
-    private var toggleConcept: ToggleButton? = null
-    private var toggleTheme: ToggleButton? = null
-    private var toggleStructure: ToggleButton? = null
+    private var toggleConcept: TextView? = null
+    private var toggleTheme: TextView? = null
+    private var toggleStructure: TextView? = null
+    private var togglePlaylist: TextView? = null
+
+    private var themeIsChecked = false
+    private var structureIsChecked = false
+    private var conceptIsChecked = false
+    private var playlistIsChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +84,7 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
         toggleConcept = v.findViewById(R.id.toggleConcept)
         toggleTheme = v.findViewById(R.id.toggleTheme)
         toggleStructure= v.findViewById(R.id.toggleStructure)
+        togglePlaylist  = v.findViewById(R.id.tooglePlaylist)
 
         setupToggleButtons()
         setupFilterButton()
@@ -106,86 +114,131 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
     }
 
     private fun setupToggleButtons() {
-        toggleConcept?.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-                toggleButtonsFilter(R.id.toggleConcept)
+        toggleConcept?.setOnClickListener {
+            if (!conceptIsChecked){
+                conceptIsChecked = true
+                themeIsChecked = false
+                structureIsChecked = false
+                playlistIsChecked = false
+
+                toggleButtonsFilter()
                 getVideoList("concept")
                 sessionManager?.videoConceptFilter = true
             }else{
-
-                viewConceptSelected?.visibility = View.GONE
                 sessionManager?.videoConceptFilter = false
                 checkAllToogleOff()
             }
         }
-        toggleTheme?.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-                toggleButtonsFilter(R.id.toggleTheme)
+        toggleTheme?.setOnClickListener {
+            if (!themeIsChecked){
+                conceptIsChecked = false
+                themeIsChecked = true
+                structureIsChecked = false
+                playlistIsChecked = false
+
+                toggleButtonsFilter()
                 getVideoList("themeName")
                 sessionManager?.videoThemeFilter = true
             }else{
-                viewThemeSelected?.visibility = View. GONE
                 sessionManager?.videoThemeFilter = false
                 checkAllToogleOff()
             }
         }
-        toggleStructure?.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-                toggleButtonsFilter(R.id.toggleStructure)
+        toggleStructure?.setOnClickListener {
+            if (!structureIsChecked){
+                conceptIsChecked = false
+                themeIsChecked = false
+                structureIsChecked = true
+                playlistIsChecked = false
+
+                toggleButtonsFilter()
                 getVideoList("structure")
                 sessionManager?.videoStructureFilter = true
             }else{
-
-                viewStructureSelected?.visibility = View.GONE
                 sessionManager?.videoStructureFilter = false
+                checkAllToogleOff()
+            }
+        }
+        togglePlaylist?.setOnClickListener {
+            sessionManager?.videoStructureFilter = false
+            sessionManager?.videoThemeFilter = false
+            sessionManager?.videoConceptFilter = false
+
+            if (!playlistIsChecked){
+                conceptIsChecked = false
+                themeIsChecked = false
+                structureIsChecked = false
+                playlistIsChecked = true
+
+                toggleButtonsFilter()
+                getVideoList()
+            }else{
                 checkAllToogleOff()
             }
         }
 
         if (sessionManager?.videoStructureFilter == true){
-            toggleStructure?.isChecked = true
+            toggleStructure?.performClick()
         }
         if (sessionManager?.videoThemeFilter == true){
-            toggleTheme?.isChecked = true
+            toggleTheme?.performClick()
         }
         if (sessionManager?.videoConceptFilter == true){
-            toggleConcept?.isChecked = true
+            toggleConcept?.performClick()
         }
     }
 
     private fun checkAllToogleOff() {
-        if (toggleConcept?.isChecked == false && toggleTheme?.isChecked == false && toggleStructure?.isChecked == false){
-            getVideoList()
-        }
+        conceptIsChecked = false
+        structureIsChecked = false
+        themeIsChecked = false
+        playlistIsChecked = false
+
+        togglePlaylist?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+        toggleStructure?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+        toggleConcept?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+        toggleTheme?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+        getVideoList()
     }
 
-    private fun toggleButtonsFilter(res: Int){
-        if (res == R.id.toggleStructure){
-            toggleTheme?.isChecked = false
-            toggleConcept?.isChecked = false
-            viewStructureSelected?.visibility = View.VISIBLE
-            viewConceptSelected?.visibility = View.GONE
-            viewThemeSelected?.visibility = View. GONE
-            sessionManager?.videoConceptFilter = false
-            sessionManager?.videoThemeFilter = false
+    private fun toggleButtonsFilter(){
+        when {
+            structureIsChecked -> {
+                toggleStructure?.setBackgroundResource(R.drawable.background_tootle_selected)
+                toggleConcept?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleTheme?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                togglePlaylist?.setBackgroundResource(R.drawable.background_tootle_not_selected)
 
-        }else if(res == R.id.toggleTheme){
-            toggleConcept?.isChecked = false
-            toggleStructure?.isChecked = false
-            viewThemeSelected?.visibility = View.VISIBLE
-            viewConceptSelected?.visibility = View.GONE
-            viewStructureSelected?.visibility = View.GONE
-            sessionManager?.videoStructureFilter = false
-            toggleConcept?.isChecked = false
 
-        }else if(res == R.id.toggleConcept){
-            toggleTheme?.isChecked = false
-            toggleStructure?.isChecked = false
-            viewStructureSelected?.visibility = View.GONE
-            viewConceptSelected?.visibility = View.VISIBLE
-            viewThemeSelected?.visibility = View. GONE
-            sessionManager?.videoStructureFilter = false
-            sessionManager?.videoThemeFilter = false
+                sessionManager?.videoConceptFilter = false
+                sessionManager?.videoThemeFilter = false
+
+            }
+            themeIsChecked -> {
+                toggleStructure?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleConcept?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleTheme?.setBackgroundResource(R.drawable.background_tootle_selected)
+                togglePlaylist?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+
+                sessionManager?.videoStructureFilter = false
+                sessionManager?.videoConceptFilter = false
+
+            }
+            conceptIsChecked -> {
+                toggleConcept?.setBackgroundResource(R.drawable.background_tootle_selected)
+                togglePlaylist?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleStructure?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleTheme?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+
+                sessionManager?.videoStructureFilter = false
+                sessionManager?.videoThemeFilter = false
+            }
+            playlistIsChecked -> {
+                togglePlaylist?.setBackgroundResource(R.drawable.background_tootle_selected)
+                toggleConcept?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleStructure?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleTheme?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+            }
         }
     }
 
@@ -279,15 +332,21 @@ class VideoCatalogFragment : Fragment(), OnVideoEvent, OnVideoSearched {
         when {
             sessionManager?.videoStructureFilter == true -> {
                 getVideoList("structure")
-                viewStructureSelected?.visibility = View.VISIBLE
+                toggleStructure?.setBackgroundResource(R.drawable.background_tootle_selected)
+                toggleConcept?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleTheme?.setBackgroundResource(R.drawable.background_tootle_not_selected)
             }
             sessionManager?.videoThemeFilter == true -> {
                 getVideoList("themeName")
-                viewThemeSelected?.visibility = View.VISIBLE
+                toggleStructure?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleConcept?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleTheme?.setBackgroundResource(R.drawable.background_tootle_selected)
             }
             sessionManager?.videoConceptFilter == true -> {
                 getVideoList("concept")
-                viewConceptSelected?.visibility = View.VISIBLE
+                toggleStructure?.setBackgroundResource(R.drawable.background_tootle_not_selected)
+                toggleConcept?.setBackgroundResource(R.drawable.background_tootle_selected)
+                toggleTheme?.setBackgroundResource(R.drawable.background_tootle_not_selected)
             }
             else -> getVideoList()
         }
