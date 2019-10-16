@@ -145,12 +145,11 @@ class EssayReviewFragment() : Fragment() {
     }
 
     private fun setupImageEssay(){
-        viewmodel?.getEssayImage(actualEssay?.url)
+        viewmodel?.getEssayImage(actualEssay?.filename)
 
         image_essay?.setOnClickListener {
             val itn = Intent(activity, ImageZoomActivity::class.java)
-            val bitmap = (image_essay.drawable as BitmapDrawable).bitmap
-            itn.putExtra(Constants.EXTRA_IMAGE_FULL_SCREEN, bitmap)
+            itn.putExtra(Constants.EXTRA_IMAGE_FULL_SCREEN, actualEssay?.url)
             startActivity(itn)
         }
     }

@@ -74,14 +74,14 @@ object FilePath {
      * @return the real path from uri
      */
     private fun getRealPathFromURIDB(context: Context, contentUri: Uri): String? {
-        val cursor = context.getContentResolver().query(contentUri, null, null, null, null)
+        val cursor = context.contentResolver.query(contentUri, null, null, null, null)
         if (cursor == null) {
             return contentUri.path
         } else {
-            cursor!!.moveToFirst()
-            val index = cursor!!.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            val realPath = cursor!!.getString(index)
-            cursor!!.close()
+            cursor.moveToFirst()
+            val index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            val realPath = cursor.getString(index)
+            cursor.close()
             return realPath
         }
     }

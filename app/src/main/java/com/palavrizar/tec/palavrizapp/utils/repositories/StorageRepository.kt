@@ -17,6 +17,9 @@ import java.io.File
 import com.palavrizar.tec.palavrizapp.models.Themes
 import com.palavrizar.tec.palavrizapp.utils.interfaces.EssayUploadCallback
 import java.io.ByteArrayOutputStream
+import android.provider.MediaStore
+
+
 
 
 class StorageRepository(val context: Context) {
@@ -280,7 +283,7 @@ class StorageRepository(val context: Context) {
             return@Continuation refThumb.downloadUrl
         }).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                essay.url = filename
+                essay.filename = filename
                 realtimeRepository.saveEssay(essay, userId)
                 callback.onSuccess()
             }

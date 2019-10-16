@@ -165,12 +165,12 @@ class EssayCorrectFragment : Fragment() {
     }
 
     private fun setupView(essay: Essay){
-        setupImageEssay(essay.url)
+        setupImageEssay(essay.filename, essay.url)
         setupTitleAndTheme(essay)
         setupVideoAttachmentButton()
         setupSendFeedbackButton(essay)
         setupCancelButton(essay)
-        setupDownloadImageLink(essay.url)
+        setupDownloadImageLink(essay.filename)
         if (essay.isReadMode == true){
             isReadMode = true
             setupReadMode(essay)
@@ -234,13 +234,12 @@ class EssayCorrectFragment : Fragment() {
     }
 
 
-    private fun setupImageEssay(url: String){
-        viewmodel?.getEssayImage(url)
+    private fun setupImageEssay(filename: String, url: String){
+        viewmodel?.getEssayImage(filename)
 
         iv_essay?.setOnClickListener {
             val itn = Intent(activity, ImageZoomActivity::class.java)
-            val bitmap = (iv_essay.drawable as BitmapDrawable).bitmap
-            itn.putExtra(Constants.EXTRA_IMAGE_FULL_SCREEN, bitmap)
+            itn.putExtra(Constants.EXTRA_IMAGE_FULL_SCREEN, url)
             startActivity(itn)
         }
     }

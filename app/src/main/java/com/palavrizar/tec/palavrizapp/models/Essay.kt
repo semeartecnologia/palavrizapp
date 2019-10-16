@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
 
-class Essay(var title: String = "", var theme: String = "", var themeId: String = "", var author: User? = null, var postDate: String = "", var status: StatusEssay = StatusEssay.UPLOADED, var url: String = "", var essayId: String = "", var feedback: Feedback? = null) : Parcelable {
+class Essay(var title: String = "", var theme: String = "", var themeId: String = "", var author: User? = null, var postDate: String = "", var status: StatusEssay = StatusEssay.UPLOADED, var url: String = "", var essayId: String = "", var feedback: Feedback? = null, var filename: String = "") : Parcelable {
     @get:Exclude
     var isReadMode: Boolean? = false
 
@@ -17,7 +17,8 @@ class Essay(var title: String = "", var theme: String = "", var themeId: String 
             StatusEssay.values()[source.readInt()],
             source.readString(),
             source.readString(),
-            source.readParcelable<Feedback>(Feedback::class.java.classLoader)
+            source.readParcelable<Feedback>(Feedback::class.java.classLoader),
+            source.readString()
     )
 
     override fun describeContents() = 0
@@ -32,6 +33,7 @@ class Essay(var title: String = "", var theme: String = "", var themeId: String 
         writeString(url)
         writeString(essayId)
         writeParcelable(feedback, 0)
+        writeString(filename)
     }
 
     companion object {

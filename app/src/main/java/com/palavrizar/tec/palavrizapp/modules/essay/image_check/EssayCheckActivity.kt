@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
@@ -22,22 +24,19 @@ import java.util.concurrent.TimeUnit
 import com.palavrizar.tec.palavrizapp.utils.commons.DateFormatHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
+import java.io.File
 
 
 class EssayCheckActivity : AppCompatActivity() {
 
-    private var bmpImageEssay: Bitmap? = null
+    private var bmpImageEssayPath: String? = null
     private var essayRepository: EssayRepository? = null
     var sessionManager: SessionManager? = null
     private var themesRepository: ThemesRepository? = null
     private var userRepository: UserRepository? = null
     private val adapter = MyEssayAdapter()
-
-    private var themeSelected: Themes? = null
     private var viewmodel: EssayCheckViewModel? = null
-/*
-    private var themeId: String? = ""
-    var themeName: String? = ""*/
+
 
     private val RESULT_NEGATIVE = 404
 
@@ -61,8 +60,8 @@ class EssayCheckActivity : AppCompatActivity() {
 
     private fun setupExtras(){
         if (intent != null) {
-            bmpImageEssay = intent?.getParcelableExtra(Constants.EXTRA_IMAGE_CHECK)
-            iv_essay_preview.setImageBitmap(bmpImageEssay)
+            bmpImageEssayPath = intent?.getStringExtra(Constants.EXTRA_IMAGE_CHECK)
+            iv_essay_preview.setImageURI(Uri.fromFile(File(bmpImageEssayPath)))
         }
     }
 
@@ -102,7 +101,9 @@ class EssayCheckActivity : AppCompatActivity() {
 
         val essay = Essay("", theme.themeName, theme.themeId, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
         layout_sendind_progress.visibility = View.VISIBLE
-        essayRepository?.saveEssay(essay, user?.userId ?: "", bmpImageEssay, object: EssayUploadCallback{
+        val bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(File(bmpImageEssayPath)))
+        essay.url = bmpImageEssayPath ?: ""
+        essayRepository?.saveEssay(essay, user?.userId ?: "", bmp, object: EssayUploadCallback{
 
             @SuppressLint("CheckResult")
             override fun onSuccess() {

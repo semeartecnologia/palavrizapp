@@ -2,20 +2,19 @@ package com.palavrizar.tec.palavrizapp.modules.essay
 
 import android.Manifest
 import android.app.Activity
-import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.support.v7.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Themes
@@ -24,14 +23,14 @@ import com.palavrizar.tec.palavrizapp.modules.essay.image_check.EssayCheckActivi
 import com.palavrizar.tec.palavrizapp.utils.adapters.MyEssayAdapter
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.FileHelper
+import com.palavrizar.tec.palavrizapp.utils.commons.FilePath
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
-import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY_THEME
-import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY_THEME_ID
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_IMAGE_CHECK
 import com.palavrizar.tec.palavrizapp.utils.repositories.EssayRepository
 import kotlinx.android.synthetic.main.activity_my_essay.*
 import kotlinx.android.synthetic.main.layout_no_essay.*
 import java.io.File
+
 
 class MyEssayActivity : BaseActivity() {
 
@@ -41,9 +40,12 @@ class MyEssayActivity : BaseActivity() {
 
     private var themeSelected: Themes? = null
 
+    private var imageUri: Uri? = null
+
     private val REQUEST_CAMERA = 333
     private val REQUEST_IMAGE_CAPTURE = 345
     private val REQUEST_IMAGE_CHECK = 405
+    private val REQUEST_WRITE_STORAGE = 224
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,21 +80,16 @@ class MyEssayActivity : BaseActivity() {
         }
     }
 
-    private fun requestWriteStoragePermission(uri: String) {
+    private fun requestWriteStoragePermission() {
         if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    224)
+                    REQUEST_WRITE_STORAGE)
 
         } else {
-            viewmodel?.downloadPdf(uri) { filename ->
-                val fhirPath = Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                val file = File(fhirPath, "$filename.pdf")
-                FileHelper.openPdf(this, file)
-            }
+            startCamera()
         }
     }
 
@@ -121,9 +118,9 @@ class MyEssayActivity : BaseActivity() {
         DialogHelper.showMessage(this, "", getString(R.string.no_credits_essay))
     }
 
-    private fun startImageCheckActivity(bmp: Bitmap) {
+    private fun startImageCheckActivity(path: String) {
         val it = Intent(this, EssayCheckActivity::class.java)
-        it.putExtra(EXTRA_IMAGE_CHECK, bmp)
+        it.putExtra(EXTRA_IMAGE_CHECK, path)
         startActivityForResult(it, REQUEST_IMAGE_CHECK)
     }
 
@@ -158,9 +155,20 @@ class MyEssayActivity : BaseActivity() {
                     REQUEST_CAMERA)
 
         } else {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            this.startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+            requestWriteStoragePermission()
         }
+    }
+
+    private fun startCamera(){
+        var values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "Foto da Redação")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Foto para envio Palavrizar")
+        imageUri = contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -168,8 +176,11 @@ class MyEssayActivity : BaseActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+                requestWriteStoragePermission()
+            }
+        }else if (requestCode == REQUEST_WRITE_STORAGE){
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCamera()
             }
         }
     }
@@ -177,15 +188,16 @@ class MyEssayActivity : BaseActivity() {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                if (data != null && data.extras != null) {
-                    val photo = data.extras!!.get("data") as Bitmap
-                    startImageCheckActivity(photo)
-                }
+                    val thumbnail = MediaStore.Images.Media.getBitmap(
+                            contentResolver, imageUri);
+                    if (imageUri != null) {
+                        val imageUrl = FilePath.getRealPathFromURI(this, imageUri!!)
+                        startImageCheckActivity(imageUrl ?: return)
+                    }
             }
         } else if (resultCode == Constants.RESULT_NEGATIVE) {
             if (requestCode == REQUEST_IMAGE_CHECK) {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+                startCamera()
             }
         }
     }
