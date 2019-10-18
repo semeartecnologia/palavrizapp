@@ -3,15 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="@color/colorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".modules.plans.PlansFragment">
 
     <LinearLayout
         android:orientation="vertical"
-        android:background="@drawable/background_login_shape"
-        android:padding="16dp"
         android:weightSum="100"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

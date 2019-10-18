@@ -346,6 +346,9 @@
     <string name="essay_not_readable_message">Essa redação recebeu o feedback de ilegível, por favor envie novamente</string>
     <string name="sending_essay">Enviando…</string>
 
+    <string name="no_plan_text">Ainda não enviou nehuma redação?</string>
+    <string name="acesse_a_loja">Quer adquirir mais planos ou pacotes de envio de redação? <font color='#67305C'>ACESSE A LOJA!</font></string>
+
 
 
 </resources>

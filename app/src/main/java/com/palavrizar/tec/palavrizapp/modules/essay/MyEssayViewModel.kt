@@ -4,6 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import com.palavrizar.tec.palavrizapp.models.Themes
+import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import com.palavrizar.tec.palavrizapp.utils.repositories.ThemesRepository
@@ -18,11 +19,18 @@ class MyEssayViewModel(application: Application) : AndroidViewModel(application)
     val userHasCreditLiveData = MutableLiveData<Boolean>()
     val dialogThemesLiveData = MutableLiveData<ArrayList<Themes>>()
     val userNoPlanLiveData = MutableLiveData<Boolean>()
+    val currentUserLivedata = MutableLiveData<User>()
 
     fun fetchThemes(onThemePicked: ((ArrayList<Themes>)-> Unit)){
         themesRepository.getTheme {
             onThemePicked.invoke(it)
         }
+    }
+
+    fun getUserFirebase(){
+        userRepository.getUser(sessionManager.userLogged.userId, {
+            currentUserLivedata.postValue(it)
+        }, {})
     }
 
     fun sendEssayClicked(){

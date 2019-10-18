@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Themes
+import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.modules.essay.image_check.EssayCheckActivity
 import com.palavrizar.tec.palavrizapp.utils.adapters.MyEssayAdapter
@@ -37,9 +38,6 @@ class MyEssayActivity : BaseActivity() {
     private var viewmodel: MyEssayViewModel? = null
     private val adapter = MyEssayAdapter()
     private var essayRepository: EssayRepository? = null
-
-    private var themeSelected: Themes? = null
-
     private var imageUri: Uri? = null
 
     private val REQUEST_CAMERA = 333
@@ -61,6 +59,7 @@ class MyEssayActivity : BaseActivity() {
 
     private fun initViewModel(){
         viewmodel = ViewModelProviders.of(this).get(MyEssayViewModel::class.java)
+        viewmodel?.getUserFirebase()
     }
 
     private fun initRepositories(){
@@ -74,8 +73,18 @@ class MyEssayActivity : BaseActivity() {
         registerObservers()
     }
 
+
     private fun setupListeners(){
         btn_send_essay.setOnClickListener{
+            viewmodel?.sendEssayClicked()
+        }
+        btn_get_plan?.setOnClickListener {
+            val it = Intent()
+            setResult(Activity.RESULT_OK, it)
+            finish()
+
+        }
+        btn_enviar_redacao?.setOnClickListener {
             viewmodel?.sendEssayClicked()
         }
     }
@@ -93,7 +102,23 @@ class MyEssayActivity : BaseActivity() {
         }
     }
 
+    private fun setupViewUser(user: User){
+        if (user.essaySoloCredits > 0 || user.plan != "plano_gratis"){
+            btn_get_plan?.visibility = View.GONE
+            text_get_plan?.visibility = View.GONE
+            btn_enviar_redacao?.visibility = View.VISIBLE
+        }else{
+            btn_get_plan?.visibility = View.VISIBLE
+            text_get_plan?.visibility = View.VISIBLE
+        }
+    }
+
     private fun registerObservers(){
+        viewmodel?.currentUserLivedata?.observe(this, Observer {
+            if (it != null){
+                setupViewUser(it)
+            }
+        })
         viewmodel?.userHasCreditLiveData?.observe(this, Observer {
             if ( it == false ){
                 showNoCreditsDialog()
@@ -138,7 +163,9 @@ class MyEssayActivity : BaseActivity() {
             if (it.isEmpty()){
                 rv_my_essays?.visibility = View.GONE
                 layout_no_essay?.visibility = View.VISIBLE
+                btn_send_essay?.visibility = View.GONE
             }else{
+                btn_send_essay?.visibility = View.VISIBLE
                 rv_my_essays?.visibility = View.VISIBLE
                 layout_no_essay?.visibility = View.GONE
                 adapter.essayList = it

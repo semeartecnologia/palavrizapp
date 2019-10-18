@@ -10,7 +10,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.text.HtmlCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,6 +83,13 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
             showPlanOrProductPickerDialog()
         }
         setupSpinner()
+        setupAcessStoreLabel()
+    }
+
+    private fun setupAcessStoreLabel() {
+        val str = getString(R.string.acesse_a_loja)
+        tv_acess_store.text = Html.fromHtml(str)
+
     }
 
     private fun setupAdmin() {
@@ -211,10 +220,23 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
         }
     }
 
+    private fun setupNoPlanView(){
+        tv_check_plans?.setOnClickListener {
+            val it = Intent()
+            it.putExtra("redirect", true)
+            activity?.setResult(RESULT_OK, it)
+            activity?.finish()
+        }
+        spinner_plans_products?.visibility = View.GONE
+        frame_layout_recycle_plans?.visibility = View.GONE
+        layout_no_plan?.visibility = View.VISIBLE
+    }
+
     private fun registerObservers() {
         viewModel.noPlanLiveData.observe(this, Observer {
             if ( it == true){
-                DialogHelper.showYesNoMessage(activity as Activity,
+                setupNoPlanView()
+               /* DialogHelper.showYesNoMessage(activity as Activity,
                         "",
                         getString(R.string.no_plan_dialog),
                         {
@@ -226,7 +248,7 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
                         },
                         {
                             activity?.finish()
-                        }, false)
+                        }, false)*/
             }
         })
 

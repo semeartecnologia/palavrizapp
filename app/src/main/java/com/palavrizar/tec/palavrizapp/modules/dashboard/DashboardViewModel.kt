@@ -34,6 +34,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     var isUserOnline = MutableLiveData<Boolean>()
     private var mAuth : FirebaseAuth = FirebaseAuth.getInstance()
     private var loginManager : LoginManager = LoginManager.getInstance()
+    var currentUserLivedata = MutableLiveData<User>()
 
     val currentUser: User?
         get() = sessionManager.userLogged
@@ -48,6 +49,12 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         }else{
             startConnection(context, run)
         }
+    }
+
+    fun getUserFirebase(){
+        userRepository.getUser(sessionManager.userLogged.userId, {
+            currentUserLivedata.postValue(it)
+        }, {})
     }
 
     fun logout(){

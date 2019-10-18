@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.card_store.*
 import kotlinx.android.synthetic.main.card_user_planos.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import android.view.MenuInflater
+import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.modules.login.LoginActivity
 
 
@@ -33,6 +34,7 @@ class DashboardFragment : Fragment() {
 
     private var dashboardViewModel: DashboardViewModel? = null
     private var listener: DashboardFragment.OnFragmentInteractionListener? = null
+    private var currentUser: User? = null
 
    val REQ_CODE_MY_PLANS = 300
 
@@ -71,6 +73,11 @@ class DashboardFragment : Fragment() {
                 redirectToLogin()
             }
         })
+        dashboardViewModel?.currentUserLivedata?.observe(this, Observer {
+            if (it != null){
+                currentUser = it
+            }
+        })
     }
 
     private fun redirectToLogin(){
@@ -86,7 +93,7 @@ class DashboardFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
+        dashboardViewModel?.getUserFirebase()
         dashboardViewModel?.executeRequest(activity?.applicationContext ?: return){
             queryPurchases()
         }
@@ -175,7 +182,7 @@ class DashboardFragment : Fragment() {
 
     private fun startMyEssayActivity() {
         val it = Intent(activity, MyEssayActivity::class.java)
-        startActivity(it)
+        startActivityForResult(it, 111)
     }
 
     private fun startMyPlansActivity(){
@@ -194,6 +201,10 @@ class DashboardFragment : Fragment() {
                 mainActivity?.setActionBarTitle("Loja")
             }
             val a = ""
+        }else  if (resultCode == Activity.RESULT_OK && requestCode == 111){
+            val mainActivity = activity as MainActivity?
+            mainActivity?.changeFragment(StoreFragment(), "Loja")
+            mainActivity?.setActionBarTitle("Loja")
         }
     }
 
