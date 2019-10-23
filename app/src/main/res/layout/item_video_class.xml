@@ -53,12 +53,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:visibility="gone"
                 android:layout_marginEnd="8dp"
                 android:scaleY="2"
                 android:indeterminateTintMode="src_atop"
                 android:elevation="32dp"
                 android:indeterminateTint="@color/google_red"
-                android:progress="50" />
+                android:progress="0" />
 
         </LinearLayout>
 

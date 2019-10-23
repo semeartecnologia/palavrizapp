@@ -228,9 +228,10 @@ class RealtimeRepository(val context: Context) {
         val childUpdates = HashMap<String, Any?>()
 
         essay.status = StatusEssay.NOT_READABLE
+        val a = essay
 
-        childUpdates["/essaysWaiting/${essay.themeId}/${essay.essayId}"] = null
-        childUpdates["/essaysDone/${essay.themeId}/${essay.feedback?.user?.userId}/${essay.essayId}"] = essay
+        childUpdates["/essaysWaiting/${essay.essayId}"] = null
+        childUpdates["/essaysDone/$userId/${essay.essayId}"] = essay
         childUpdates["/essays/$userId/${essay.essayId}/status"] = essay.status
         mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
             onCompletion.invoke()
@@ -362,6 +363,15 @@ class RealtimeRepository(val context: Context) {
                 onCompletion(null)
             }
         })
+    }
+
+    fun deleteEssay(userId: String, essayId: String, onCompletion: () -> Unit){
+        val reference = "essays/"
+        mDatabaseReference.child(reference).child(userId).child(essayId).removeValue().addOnCompleteListener {
+            onCompletion()
+        }.addOnFailureListener {
+            onCompletion()
+        }
     }
 
     fun deleteProduct(productId: String){

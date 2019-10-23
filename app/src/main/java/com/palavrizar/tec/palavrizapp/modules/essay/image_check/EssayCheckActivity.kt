@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
@@ -23,19 +24,23 @@ import kotlinx.android.synthetic.main.activity_check_image.*
 import java.util.concurrent.TimeUnit
 import com.palavrizar.tec.palavrizapp.utils.commons.DateFormatHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
+import com.palavrizar.tec.palavrizapp.utils.interfaces.OnUnreadableClicked
 import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
 import java.io.File
 
 
-class EssayCheckActivity : AppCompatActivity() {
+class EssayCheckActivity : AppCompatActivity(), OnUnreadableClicked {
+
 
     private var bmpImageEssayPath: String? = null
     private var essayRepository: EssayRepository? = null
     var sessionManager: SessionManager? = null
     private var themesRepository: ThemesRepository? = null
     private var userRepository: UserRepository? = null
-    private val adapter = MyEssayAdapter()
+    private val adapter = MyEssayAdapter(this)
     private var viewmodel: EssayCheckViewModel? = null
+
+    private var essayRetry: Essay? = null
 
 
     private val RESULT_NEGATIVE = 404
@@ -51,6 +56,9 @@ class EssayCheckActivity : AppCompatActivity() {
         setupView()
     }
 
+    override fun onUnreadableClicked(essay: Essay) {
+    }
+
     private fun initRepository() {
         essayRepository = EssayRepository(applicationContext)
         sessionManager = SessionManager(applicationContext)
@@ -61,27 +69,33 @@ class EssayCheckActivity : AppCompatActivity() {
     private fun setupExtras(){
         if (intent != null) {
             bmpImageEssayPath = intent?.getStringExtra(Constants.EXTRA_IMAGE_CHECK)
+            essayRetry = intent?.getParcelableExtra(Constants.EXTRA_ESSAY_RETRY)
             iv_essay_preview.setImageURI(Uri.fromFile(File(bmpImageEssayPath)))
         }
     }
 
     private fun showDialogThemes(listOfThemes: ArrayList<Themes>){
-        DialogHelper.createThemePickerDialog(this, listOfThemes,
-                {
-                    //theme picked
-                    val alreadySent = adapter.essayList.any { essay -> essay.themeId == it.themeId }
+        val essay = essayRetry
+        if (essay != null){
+            sendEssay(null)
+        }else {
+            DialogHelper.createThemePickerDialog(this, listOfThemes,
+                    {
+                        //theme picked
+                        val alreadySent = adapter.essayList.any { essay -> essay.theme == it.themeName }
 
-                    if (alreadySent) {
-                        DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
+                        if (alreadySent) {
+                            DialogHelper.showYesNoMessage(this, "", getString(R.string.dialog_essay_already_sent_text), {
+                                sendEssay(it)
+                            }, {
+
+                            })
+                        } else {
                             sendEssay(it)
-                        }, {
-
-                        })
-                    } else {
-                        sendEssay(it)
-                    }
-                }, { url ->
-        })
+                        }
+                    }, { url ->
+            })
+        }
     }
 
     private fun initViewModel(){
@@ -96,32 +110,54 @@ class EssayCheckActivity : AppCompatActivity() {
         })
     }
 
-    private fun sendEssay(theme: Themes){
+    private fun sendEssay(theme: Themes? = null){
         val user = sessionManager?.userLogged
 
-        val essay = Essay("", theme.themeName, theme.themeId, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
+        essayRetry?.status = StatusEssay.UPLOADED
+        val essay = if (essayRetry == null && theme != null){
+            Essay("", theme.themeName, theme.themeId, user, DateFormatHelper.currentTimeDate,StatusEssay.UPLOADED, "")
+        }else{
+            essayRetry
+        }
         layout_sendind_progress.visibility = View.VISIBLE
+        val actualEssayId = essay?.essayId ?: ""
         val bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(File(bmpImageEssayPath)))
-        essay.url = bmpImageEssayPath ?: ""
-        essayRepository?.saveEssay(essay, user?.userId ?: "", bmp, object: EssayUploadCallback{
+        essay?.url = bmpImageEssayPath ?: ""
+        essayRepository?.saveEssay(essay ?: return, user?.userId ?: "", bmp, object: EssayUploadCallback{
 
             @SuppressLint("CheckResult")
             override fun onSuccess() {
-                userRepository?.consumeOneCreditIfPossible(sessionManager?.userLogged?.userId ?: return, {
-                    layout_sendind_progress.visibility = View.GONE
-                    val subscription = io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
-                            .subscribe { _ ->
-                                finish()
-                            }
-                    DialogHelper.showOkMessage(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success),{
-                        subscription.dispose()
-                        finish()
-                    })
+                val essay = essayRetry
+                if (essay != null){
+                    essayRepository?.deleteEssay(user?.userId ?: "", actualEssayId){
+                        layout_sendind_progress.visibility = View.GONE
+                        val subscription = io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
+                                .subscribe { _ ->
+                                    finish()
+                                }
+                        DialogHelper.showOkMessage(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success), {
+                            subscription.dispose()
+                            finish()
+                        })
+                    }
+                }else {
+                    userRepository?.consumeOneCreditIfPossible(sessionManager?.userLogged?.userId
+                            ?: return, {
+                        layout_sendind_progress.visibility = View.GONE
+                        val subscription = io.reactivex.Observable.timer(3, TimeUnit.SECONDS)
+                                .subscribe { _ ->
+                                    finish()
+                                }
+                        DialogHelper.showOkMessage(this@EssayCheckActivity, getString(R.string.upload_sucess_title), getString(R.string.upload_essay_success), {
+                            subscription.dispose()
+                            finish()
+                        })
 
-                }, {
-                    layout_sendind_progress.visibility = View.GONE
-                    DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error_2))
-                })
+                    }, {
+                        layout_sendind_progress.visibility = View.GONE
+                        DialogHelper.showMessage(this@EssayCheckActivity, getString(R.string.upload_essay_title), getString(R.string.upload_essay_error_2))
+                    })
+                }
 
             }
 

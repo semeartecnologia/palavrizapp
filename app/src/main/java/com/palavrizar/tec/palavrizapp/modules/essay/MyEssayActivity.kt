@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
+import com.palavrizar.tec.palavrizapp.models.Essay
 import com.palavrizar.tec.palavrizapp.models.Themes
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
@@ -26,17 +27,20 @@ import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.FileHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.FilePath
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
+import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY_RETRY
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_IMAGE_CHECK
+import com.palavrizar.tec.palavrizapp.utils.interfaces.OnUnreadableClicked
 import com.palavrizar.tec.palavrizapp.utils.repositories.EssayRepository
 import kotlinx.android.synthetic.main.activity_my_essay.*
 import kotlinx.android.synthetic.main.layout_no_essay.*
 import java.io.File
 
 
-class MyEssayActivity : BaseActivity() {
+class MyEssayActivity : BaseActivity(), OnUnreadableClicked {
+
 
     private var viewmodel: MyEssayViewModel? = null
-    private val adapter = MyEssayAdapter()
+    private val adapter = MyEssayAdapter(this)
     private var essayRepository: EssayRepository? = null
     private var imageUri: Uri? = null
 
@@ -44,6 +48,9 @@ class MyEssayActivity : BaseActivity() {
     private val REQUEST_IMAGE_CAPTURE = 345
     private val REQUEST_IMAGE_CHECK = 405
     private val REQUEST_WRITE_STORAGE = 224
+
+    private var isRetryEssay: Boolean = false
+    private var essayRetry: Essay? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,6 +130,8 @@ class MyEssayActivity : BaseActivity() {
             if ( it == false ){
                 showNoCreditsDialog()
             }else{
+                isRetryEssay = false
+                essayRetry = null
                 checkCameraPermission()
             }
         })
@@ -146,9 +155,21 @@ class MyEssayActivity : BaseActivity() {
     private fun startImageCheckActivity(path: String) {
         val it = Intent(this, EssayCheckActivity::class.java)
         it.putExtra(EXTRA_IMAGE_CHECK, path)
+        if (essayRetry != null){
+            it.putExtra(EXTRA_ESSAY_RETRY, essayRetry)
+        }
         startActivityForResult(it, REQUEST_IMAGE_CHECK)
     }
 
+    override fun onUnreadableClicked(essay: Essay) {
+        DialogHelper.showYesNoMessage(this, "", getString(R.string.essay_not_readable_message), {
+            isRetryEssay = true
+            essayRetry = essay
+            checkCameraPermission()
+        }, {
+
+        })
+    }
 
     private fun setupRecyclerView() {
         rv_my_essays.layoutManager = LinearLayoutManager(this)
@@ -173,7 +194,7 @@ class MyEssayActivity : BaseActivity() {
         }
     }
 
-    private fun checkCameraPermission() {
+    private fun checkCameraPermission(isRetry: Boolean = false, essay: Essay? = null) {
         if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 

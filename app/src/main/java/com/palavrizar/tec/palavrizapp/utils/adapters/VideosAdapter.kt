@@ -181,6 +181,12 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
 
         }
 
+        if (viewHolder.progress.progress > 0){
+            viewHolder.progress.visibility = View.VISIBLE
+        }else{
+            viewHolder.progress.visibility = View.GONE
+        }
+
         videoRepository?.getThumnailDownloadUrl(video.videoThumb ?: "") {
             if (!it.isBlank()) {
                 Picasso.get().load(it).into(viewHolder.videoThumb)

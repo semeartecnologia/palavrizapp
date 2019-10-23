@@ -13,9 +13,10 @@ import com.palavrizar.tec.palavrizapp.models.StatusEssay
 import com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.extensions.inflate
+import com.palavrizar.tec.palavrizapp.utils.interfaces.OnUnreadableClicked
 import kotlinx.android.synthetic.main.item_my_essay.view.*
 
-class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
+class MyEssayAdapter(val listener: OnUnreadableClicked) : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
 
     var context: Context? = null
 
@@ -74,9 +75,13 @@ class MyEssayAdapter : RecyclerView.Adapter<MyEssayAdapter.ViewHolder>() {
     }
 
     private fun startEssayActivity(essay: Essay){
-        val it = Intent(context, EssayViewActivity::class.java)
-        it.putExtra(Constants.EXTRA_ESSAY, essay)
-        it.putExtra(Constants.EXTRA_ESSAY_READ_MODE, true)
-        context?.startActivity(it)
+        if (essay.status == StatusEssay.NOT_READABLE){
+            listener.onUnreadableClicked(essay)
+        }else {
+            val it = Intent(context, EssayViewActivity::class.java)
+            it.putExtra(Constants.EXTRA_ESSAY, essay)
+            it.putExtra(Constants.EXTRA_ESSAY_READ_MODE, true)
+            context?.startActivity(it)
+        }
     }
 }

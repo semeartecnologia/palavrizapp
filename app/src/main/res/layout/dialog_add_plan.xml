@@ -39,6 +39,7 @@
             android:id="@+id/et_plan_id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:digits="@string/alfanumeric_digits"
             android:fontFamily="@font/titillium_regular"
             android:hint="@string/plan_id_hint"
             android:imeOptions="actionNext"

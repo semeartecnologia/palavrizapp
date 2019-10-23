@@ -133,7 +133,11 @@ class LoginActivity : BaseActivity() {
                     224)
             null
         } else {
-            locationManager?.getLastKnownLocation(provider)
+            if(locationManager?.getAllProviders()?.contains(LocationManager.GPS_PROVIDER) == true && locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) ==true) {
+                locationManager?.getLastKnownLocation(provider)
+            }else{
+               null
+            }
         }
     }
 

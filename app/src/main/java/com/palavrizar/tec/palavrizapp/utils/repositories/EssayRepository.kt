@@ -19,6 +19,10 @@ class EssayRepository(val context: Context) {
         }
     }
 
+    fun deleteEssay(userId: String, essayId: String, onCompletion: () -> Unit){
+        realtimeRepository.deleteEssay(userId, essayId, onCompletion)
+    }
+
     fun getEssayListByUser(onCompletion: ((ArrayList<Essay>) -> Unit)){
         val user = sessionManager.userLogged
         realtimeRepository.getEssayListByUser(user. userId, onCompletion)
