@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@color/colorPrimary"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:background="@drawable/background_palavrizar"
     tools:context="com.palavrizar.tec.palavrizapp.modules.store.StoreFragment">
 
     <FrameLayout
@@ -35,10 +36,25 @@
 
 
                 <TextView
-                    android:textSize="24sp"
+                    android:textSize="30sp"
+                    android:textColor="@color/colorPrimary"
                     android:fontFamily="@font/gotham"
                     android:layout_marginTop="16dp"
                     android:text="@string/tab_products"
+                    android:layout_gravity="center_horizontal"
+                    android:textAllCaps="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/gotham"
+                    android:layout_marginTop="16dp"
+                    android:text="Para dar uma up nos estudos"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -49,9 +65,12 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:textSize="24sp"
+                    android:textSize="30sp"
+                    android:textColor="@color/colorPrimary"
                     android:fontFamily="@font/gotham"
                     android:layout_marginTop="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textAllCaps="true"
                     android:text="@string/label_plans"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

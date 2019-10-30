@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,9 @@ import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnPlanClicked
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnProductClicked
 import kotlinx.android.synthetic.main.store_fragment.*
+import android.support.v7.widget.RecyclerView
+import android.graphics.Rect
+
 
 class StoreFragment : Fragment(), OnProductClicked, OnPlanClicked {
 
@@ -106,9 +111,24 @@ class StoreFragment : Fragment(), OnProductClicked, OnPlanClicked {
         })
     }
 
+    inner class SpacesItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(outRect: Rect, view: View,
+                                    parent: RecyclerView, state: RecyclerView.State) {
+
+            if (parent.getChildLayoutPosition(view)%2 == 0) {
+
+                outRect.right = space
+            }
+
+        }
+    }
+
 
     private fun setupRecyclerProducts() {
-        recycler_products?.layoutManager = LinearLayoutManager(context)
+        recycler_products?.layoutManager = GridLayoutManager(context,2)
+        recycler_products?.itemAnimator = DefaultItemAnimator()
+        recycler_products?.addItemDecoration(SpacesItemDecoration(16))
         recycler_products?.adapter = adapter
 
         recycler_plans?.layoutManager = LinearLayoutManager(context)

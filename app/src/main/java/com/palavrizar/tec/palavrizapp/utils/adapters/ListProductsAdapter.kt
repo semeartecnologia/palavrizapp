@@ -21,7 +21,7 @@ class ListProductsAdapter(var listener: OnProductClicked)  : RecyclerView.Adapte
         }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ListProductsAdapter.ViewHolder {
-        val view = inflate(R.layout.item_plan_billing, p0)
+        val view = inflate(R.layout.item_products, p0)
         context = p0.context
         return ViewHolder(view)
     }
@@ -77,11 +77,6 @@ class ListProductsAdapter(var listener: OnProductClicked)  : RecyclerView.Adapte
                 view.tv_plan_text?.text = value
             }
 
-        var planPeriod:  String? = null
-            set(value) {
-                field = value
-                view.tv_plan_period?.text = value
-            }
 
     }
 }

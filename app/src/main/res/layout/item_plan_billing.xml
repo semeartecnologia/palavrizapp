@@ -1,58 +1,151 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="8dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/background_plans"
+    android:orientation="vertical"
+    android:background="@drawable/background_products"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tv_plan_title"
+        android:layout_marginTop="16dp"
+        android:text="REDAÇÃO AVULSA"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/gotham"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        tools:text="Envie uma redação para corrigirmos"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="16dp"
+        android:id="@+id/tv_plan_description"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:layout_marginStart="24dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginEnd="24dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_label_yellow"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_plan_title"
-            tools:text="Plano Grátis"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            tools:text="Acompanhe algumas aulas demonstrativas e envia até 2 redações"
-            android:id="@+id/tv_plan_description"
-            android:layout_width="wrap_content"
-            android:layout_below="@id/tv_plan_title"
-            android:textSize="12sp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            tools:text="Preço: R$15,00"
             android:id="@+id/tv_plan_text"
+            tools:text="R$14,80"
+            android:fontFamily="@font/gotham"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary"
             android:layout_width="wrap_content"
-            android:textSize="12sp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_below="@id/tv_plan_description"
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_plan_period"
             tools:text="por mês"
-            android:textStyle="bold"
-            android:textSize="12sp"
+            android:textSize="24sp"
+            android:fontFamily="@font/gotham"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_toEndOf="@id/tv_plan_text"
-            android:layout_below="@id/tv_plan_description"
+            android:textColor="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</android.support.v7.widget.CardView>
+
+    <TextView
+
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorSecondaryDark"
+        android:text="EU QUERO"
+        android:textStyle="bold"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:layout_gravity="center"
+        android:background="@drawable/roudend_primary_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+</LinearLayout>
+
+
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <android.support.v7.widget.CardView android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_plans"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_plan_title"
+                tools:text="Plano Grátis"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                tools:text="Acompanhe algumas aulas demonstrativas e envia até 2 redações"
+                android:id="@+id/tv_plan_description"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/tv_plan_title"
+                android:textSize="12sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                tools:text="Preço: R$15,00"
+                android:id="@+id/tv_plan_text"
+                android:layout_width="wrap_content"
+                android:textSize="12sp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_below="@id/tv_plan_description"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_plan_period"
+                tools:text="por mês"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@id/tv_plan_text"
+                android:layout_below="@id/tv_plan_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+    -->

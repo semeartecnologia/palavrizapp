@@ -7,10 +7,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -18,13 +16,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
-import com.palavrizar.tec.palavrizapp.models.Themes
 import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
 import com.palavrizar.tec.palavrizapp.modules.essay.image_check.EssayCheckActivity
 import com.palavrizar.tec.palavrizapp.utils.adapters.MyEssayAdapter
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
-import com.palavrizar.tec.palavrizapp.utils.commons.FileHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.FilePath
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY_RETRY
@@ -33,7 +29,6 @@ import com.palavrizar.tec.palavrizapp.utils.interfaces.OnUnreadableClicked
 import com.palavrizar.tec.palavrizapp.utils.repositories.EssayRepository
 import kotlinx.android.synthetic.main.activity_my_essay.*
 import kotlinx.android.synthetic.main.layout_no_essay.*
-import java.io.File
 
 
 class MyEssayActivity : BaseActivity(), OnUnreadableClicked {
@@ -86,10 +81,7 @@ class MyEssayActivity : BaseActivity(), OnUnreadableClicked {
             viewmodel?.sendEssayClicked()
         }
         btn_get_plan?.setOnClickListener {
-            val it = Intent()
-            setResult(Activity.RESULT_OK, it)
-            finish()
-
+            goToStoreScreen()
         }
         btn_enviar_redacao?.setOnClickListener {
             viewmodel?.sendEssayClicked()
@@ -143,7 +135,15 @@ class MyEssayActivity : BaseActivity(), OnUnreadableClicked {
     }
 
     private fun showDialogNoPlan(){
-        DialogHelper.showMessage(this, "", getString(R.string.no_plan_no_essay))
+        DialogHelper.showGoToStoreMessage(this, "", getString(R.string.no_plan_no_essay), {}, {
+            goToStoreScreen()
+        })
+    }
+
+    private fun goToStoreScreen(){
+        val it = Intent()
+        setResult(Activity.RESULT_OK, it)
+        finish()
     }
 
 

@@ -264,6 +264,10 @@ class RegisterActivity : BaseActivity() {
             val name = fullname?.text?.toString() ?: return@setOnClickListener
             val confPassword = confirm_password?.text?.toString() ?: return@setOnClickListener
 
+            if (name.contains("Laboratoire")){
+                return@setOnClickListener
+            }
+
             if (!Utils.isValidEmail(emailText)) {
                 textInputEmail.error = "E-mail inválido"
             } else {

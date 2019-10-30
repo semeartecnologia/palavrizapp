@@ -225,6 +225,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         user.email = gUser.email
         user.fullname = gUser.displayName
 
+        if (user.email.contains("cloudtestlabaccounts")){
+            return
+        }
+
         if (gUser.photoUrl != null)
             user.photoUri = gUser.photoUrl!!.toString()
         else

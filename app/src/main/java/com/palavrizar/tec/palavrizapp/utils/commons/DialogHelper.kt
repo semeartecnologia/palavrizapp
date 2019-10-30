@@ -661,7 +661,7 @@ object DialogHelper {
         rvThemePicker.layoutManager = LinearLayoutManager(activity)
         val themePickerDialog  = AlertDialog.Builder(activity)
                 .setView(view)
-                .setCancelable(true)
+                .setCancelable(false)
                 .create()
 
         val adapter = ThemesListPickerAdapter(object: OnThemeClicked{
@@ -676,9 +676,7 @@ object DialogHelper {
 
         })
 
-        view.iv_close_dialog.setOnClickListener {
-            themePickerDialog.dismiss()
-        }
+
         adapter.themesList = listThemes
         rvThemePicker.adapter = adapter
         if (!activity.isFinishing) {
@@ -753,6 +751,25 @@ object DialogHelper {
             callback.invoke()
             dialog.dismiss()
         }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    fun showGoToStoreMessage(activity: Activity, title: String, message: String, positiveCallback: (() -> Unit), negativeCallback: (() -> Unit)? = null, cancellable: Boolean = true){
+        val builder = AlertDialog.Builder(activity)
+
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setCancelable(cancellable)
+        builder.setPositiveButton("Ir para loja!"){dialog, which ->
+            positiveCallback.invoke()
+            dialog.dismiss()
+        }
+        builder.setNeutralButton("Ok"){dialog,_ ->
+            negativeCallback?.invoke()
+            dialog.dismiss()
+        }
+
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
