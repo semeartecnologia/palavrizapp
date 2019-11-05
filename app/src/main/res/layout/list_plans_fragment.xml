@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,143 +11,162 @@
 
     <RelativeLayout
         android:id="@+id/layout_has_plan"
-        android:background="@drawable/background_palavrizar"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:visibility="gone" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_palavrizar">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout_plan_details"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:paddingTop="32dp"
-            android:paddingBottom="32dp"
-            android:background="@drawable/back_white_search"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
             android:layout_marginEnd="16dp"
-            android:orientation="vertical">
+            android:background="@drawable/back_white_search"
+            android:orientation="vertical"
+            android:paddingTop="32dp"
+            android:paddingBottom="32dp">
 
             <TextView
-                android:layout_marginStart="68dp"
-                android:text="PLANO ESCOLHIDO"
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/roudend_primary_button"
+                android:fontFamily="@font/gotham"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:background="@drawable/roudend_primary_button"
+                android:text="PLANO ESCOLHIDO"
                 android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:fontFamily="@font/gotham"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:layout_marginTop="24dp"
-                android:text="@string/your_plan_title"
-                android:layout_marginStart="68dp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/gotham"
-                android:textSize="32sp"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/gotham"
+                android:text="@string/your_plan_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <TextView
                 android:id="@+id/tv_user_plan_title"
-                android:textSize="24sp"
-                android:layout_marginStart="68dp"
-
-                android:layout_marginEnd="68dp"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/gotham"
-                tools:text="asdkoaasdasds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-
-                android:layout_marginStart="68dp"
-                android:layout_marginTop="32dp"
-                android:text="Descrição"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:fontFamily="@font/gotham"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginStart="68dp"
-                android:id="@+id/tv_user_plan_desc"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:layout_marginEnd="68dp"
-                android:fontFamily="@font/gotham"
-                tools:text="asdk asdas as sa dasdads asd asdas das asdoas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_marginTop="32dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/gotham_regular"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                tools:text="asdkoaasdasds" />
+
+            <TextView
+
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/gotham"
+                android:text="Descrição"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/tv_user_plan_title" />
+
+            <TextView
+                android:id="@+id/tv_user_plan_desc"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/gotham_regular"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                tools:text="asdk asdas as sa dasdads s" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/tv_user_plan_desc">
 
                 <TextView
 
-                    android:layout_marginStart="68dp"
                     android:id="@+id/tv_user_plan_credits"
-                    android:textSize="24sp"
-                    android:textColor="@color/colorPrimary"
-                    android:fontFamily="@font/gotham"
-                    tools:text="2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="24sp"
+                    tools:text="2" />
 
                 <TextView
-                    android:text="@string/your_plan_credits"
-                    android:textStyle="bold"
-
-                    android:textColor="@color/colorPrimary"
-                    android:fontFamily="@font/gotham"
-                    android:textSize="20sp"
-                    android:layout_marginStart="8dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/gotham"
+                    android:text="@string/your_plan_credits"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
 
         <TextView
             android:id="@+id/tv_acess_store"
-            android:background="@drawable/background_label_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/layout_plan_details"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/background_label_yellow"
             android:paddingStart="48dp"
-            android:paddingEnd="48dp"
-            android:textStyle="bold"
             android:paddingTop="4dp"
+            android:paddingEnd="48dp"
             android:paddingBottom="4dp"
             android:textColor="@android:color/white"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textStyle="bold"
+            tools:text="@string/acesse_a_loja" />
 
         <Button
             android:id="@+id/btn_update_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:visibility="gone"
             android:layout_below="@+id/layout_plan_details"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
             android:background="@drawable/primary_button"
             android:fontFamily="@font/titillium_regular"
             android:padding="16dp"
             android:text="@string/btn_update_plan"
-            android:textColor="@color/colorPrimaryText" />
+            android:textColor="@color/colorPrimaryText"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
