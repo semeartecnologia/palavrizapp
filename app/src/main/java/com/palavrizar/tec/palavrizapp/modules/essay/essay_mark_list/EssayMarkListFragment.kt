@@ -30,11 +30,16 @@ class EssayMarkListFragment : Fragment(), OnEssayClicked {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+    }
+
+    override fun onResume() {
         setupView()
         initViewModel()
         registerObservers()
         getEssayList()
-
+        super.onResume()
     }
 
     private fun getEssayList() {
@@ -53,11 +58,11 @@ class EssayMarkListFragment : Fragment(), OnEssayClicked {
     private fun registerObservers(){
         essayMarkViewModel?.essayList?.observe(this, Observer {
             //var listOfEssays = it.values.
-            adapter.essayList.clear()
             val hashEssayList = it
 
-            if (hashEssayList != null) {
-                adapter.essayList = it
+            if (hashEssayList != null && hashEssayList.isNotEmpty()) {
+
+                adapter.essayList = hashEssayList
                 adapter.notifyDataSetChanged()
             }
         })
