@@ -10,15 +10,15 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
-            android:layout_height="300dp"
+            android:layout_height="260dp"
             android:src="@drawable/camera_welcome" />
 
         <ImageView
             android:src="@drawable/texto_image_welcome_2"
             android:layout_width="wrap_content"
-            android:layout_height="260dp" />
+            android:layout_height="240dp" />
 
 
     </LinearLayout>
