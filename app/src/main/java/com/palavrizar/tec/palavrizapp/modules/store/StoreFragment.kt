@@ -67,11 +67,15 @@ class StoreFragment : Fragment(), OnProductClicked, OnPlanClicked {
     }
 
     override fun onProductClicked(skuDetails: SkuDetails) {
-        viewModel.startBillingFlow(activity as Activity, skuDetails)
+        DialogHelper.createProductDetailsDialog(activity as Activity, skuDetails.sku, skuDetails.title){
+            viewModel.startBillingFlow(activity as Activity, skuDetails)
+        }
     }
 
     override fun onPlanClicked(skuDetails: SkuDetails) {
-        viewModel.startBillingFlow(activity as Activity, skuDetails)
+        DialogHelper.createProductDetailsDialog(activity as Activity, skuDetails.sku, skuDetails.title){
+            viewModel.startBillingFlow(activity as Activity, skuDetails)
+        }
     }
 
 

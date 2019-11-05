@@ -14,6 +14,7 @@
     <TextView
         android:id="@+id/tvTitleProduct"
         android:layout_width="wrap_content"
+        android:textAlignment="center"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_centerHorizontal="true"
@@ -27,16 +28,20 @@
 
 
     <ScrollView
-        android:id="@+id/tvDetailsProduct"
+        android:id="@+id/tvDetailsProductScrollView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="250dp"
         android:layout_below="@id/tvTitleProduct"
-        android:layout_margin="32dp"
-        android:layout_marginStart="80dp">
+
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp">
 
         <TextView
+            android:id="@+id/tvDetailsProduct"
             android:background="@android:color/white"
-            android:text="1. Acesso a todos os vídeos do aplicativo e a uma correção semanal\n
+            tools:text="1. Acesso a todos os vídeos do aplicativo e a uma correção semanal\n
 2. “Correção Semanal”: um crédito válido por 7 dias a partir da data da compra do plano, renovado a cada 7 dias por 4 vezes no total.\n
 1. Correção semanal não é cumulativa. A cada 7 dias é expirado o envio de redação não utilizado. Um novo crédito é atualizado na conta com o prazo de 7 dias para envio até que cessem as 4 vezes.\n
 2. Redações de mesmo tema não são contabilizados como gasto de mesmo crédito.\n
@@ -55,21 +60,24 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:textSize="16sp"
+        android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/tvDetailsProduct"
+        android:layout_below="@+id/tvDetailsProductScrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
+        android:id="@+id/btnPurchase"
         android:layout_marginTop="32dp"
         android:layout_below="@+id/tvTextPadrao"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textColor="@color/colorPrimary"
         android:text="Comprar"
         android:textAllCaps="true"
+        android:layout_marginBottom="24dp"
         android:fontFamily="@font/gotham"
         android:textStyle="bold"
-        android:padding="24dp"
+        android:padding="16dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/roudend_secondary_button"
         android:layout_width="wrap_content"

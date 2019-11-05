@@ -349,6 +349,30 @@
     <string name="no_plan_text">Ainda não enviou nehuma redação?</string>
     <string name="acesse_a_loja">Quer adquirir mais planos ou pacotes de envio de redação? <font color='#67305C'>ACESSE A LOJA!</font></string>
 
+    <string name="details_curso_semanal">1. Acesso a todos os vídeos do aplicativo e a uma correção semanal\n
+2. “Correção Semanal”: um crédito válido por 7 dias a partir da data da compra do plano, renovado a cada 7 dias por 4 vezes no total.\n
+1. Correção semanal não é cumulativa. A cada 7 dias é expirado o envio de redação não utilizado. Um novo crédito é atualizado na conta com o prazo de 7 dias para envio até que cessem as 4 vezes.\n
+2. Redações de mesmo tema não são contabilizados como gasto de mesmo crédito.\n
+3. Ressarcimento de crédito ocorre apenas em não legibilidade da redação pela equipe Palavrizar\n
+3. Renovação automática do plano a cada mês por 3 meses com custo mental de R$39,80 por mês. Valor total do plano de R$119,40\n</string>
+
+    <string name="details_curso_quinzenal">1. Acesso a todos os vídeos do aplicativo e a uma correção quinzenal\n
+2. “Correção Quinzenal”: um crédito válido por 15 dias a partir da data da compra do plano, renovado a cada 15 dias por 2 vezes no total.\n
+1. Correção quinzenal não é cumulativa. A cada 15 dias é expirado o envio de redação não utilizado. Um novo crédito é atualizado na conta com o prazo de 15 dias para envio até que cessem as 2 vezes.\n
+2. Redações de mesmo tema não são contabilizados como gasto de mesmo crédito.\n
+3. Ressarcimento de crédito ocorre apenas em não legibilidade da redação pela equipe Palavrizar\n
+3. Renovação automática do plano a cada mês por 3 meses com custo mental de R$29,80 por mês. Valor total do plano de R$89,40\n</string>
+
+    <string name="details_avulso">1. Envio de uma redação\n
+2. Prazo de validade para envio da redação de 1 mês a partir da data de compra do pacote\n
+3. Ressarcimento de crédito ocorre apenas em não legibilidade da redação pela equipe Palavrizar\n</string>
+
+    <string name="details_pac5">1. Envio de cinco redações\n
+2. Prazo de validade para envio das 5 redações de 1 mês a partir da data de compra do pacote\n
+3. Ressarcimento de crédito ocorre apenas em não legibilidade da redação pela equipe Palavrizar\n</string>
+
+
+
 
 
 </resources>

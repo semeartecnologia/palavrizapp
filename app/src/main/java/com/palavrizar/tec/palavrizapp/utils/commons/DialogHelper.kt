@@ -653,6 +653,43 @@ object DialogHelper {
         return createConceptDialog
     }
 
+    fun createProductDetailsDialog(activity: Activity, idSku: String, titleProduct: String, onPurchaseClicked: (()-> Unit)): AlertDialog {
+        val view = activity.layoutInflater.inflate(R.layout.dialog_plan_details, null, true)
+
+        val productTitle = view.findViewById<TextView>(R.id.tvTitleProduct)
+        val productDetails = view.findViewById<TextView>(R.id.tvDetailsProduct)
+        val btnPurchase = view.findViewById<TextView>(R.id.btnPurchase)
+
+
+        productTitle.text = titleProduct
+
+
+        var details = when (idSku) {
+            "quinzenal_versao_26_07_2019" -> activity.getString(R.string.details_curso_quinzenal)
+            "completo_versao_26_07_2019" -> activity.getString(R.string.details_curso_semanal)
+            "redacao_01" -> activity.getString(R.string.details_avulso)
+            "redacao_05" -> activity.getString(R.string.details_pac5)
+            else -> activity.getString(R.string.details_curso_quinzenal)
+        }
+        productDetails.text = details
+
+        val productDetailsDialog  = AlertDialog.Builder(activity)
+                .setView(view)
+                .setCancelable(true)
+                .create()
+
+        btnPurchase.setOnClickListener {
+            onPurchaseClicked.invoke()
+            productDetailsDialog.dismiss()
+        }
+
+
+        if (!activity.isFinishing) {
+            productDetailsDialog.show()
+        }
+        return productDetailsDialog
+    }
+
 
     fun createThemePickerDialog(activity: Activity, listThemes: ArrayList<Themes>, onThemePicked: ((Themes)-> Unit), onPdfClicked: ((String)-> Unit)): AlertDialog {
         val view = activity.layoutInflater.inflate(R.layout.dialog_theme_picker, null, true)
