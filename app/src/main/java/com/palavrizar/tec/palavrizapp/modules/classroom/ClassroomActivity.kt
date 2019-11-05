@@ -31,7 +31,12 @@ class ClassroomActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_classroom)
+        setupExtras()
+        if (isFirstTime == true) {
+            setContentView(R.layout.activity_classroom_first_time)
+        }else{
+            setContentView(R.layout.activity_classroom)
+        }
 
         initViewModel()
         setupView()
