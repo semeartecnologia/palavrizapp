@@ -21,6 +21,7 @@ import com.palavrizar.tec.palavrizapp.utils.interfaces.OnProductClicked
 import kotlinx.android.synthetic.main.store_fragment.*
 import android.support.v7.widget.RecyclerView
 import android.graphics.Rect
+import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 
 
 class StoreFragment : Fragment(), OnProductClicked, OnPlanClicked {
@@ -97,6 +98,8 @@ class StoreFragment : Fragment(), OnProductClicked, OnPlanClicked {
         })
         viewModel.listPlanSubsDetailsLiveData.observe(this, Observer {
             if (it != null){
+                val sessionManager = SessionManager(activity)
+                adapterPlans.skuSelectd = sessionManager.userPlan
                 adapterPlans.plansList = it
             }
         })

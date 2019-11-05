@@ -4,6 +4,7 @@
     import android.support.v7.widget.RecyclerView
     import android.view.View
     import android.view.ViewGroup
+    import android.widget.LinearLayout
     import com.android.billingclient.api.SkuDetails
     import com.palavrizar.tec.palavrizapp.R
     import com.palavrizar.tec.palavrizapp.utils.extensions.inflate
@@ -13,6 +14,7 @@
     class ListPlansAdapter(var listener: OnPlanClicked)  : RecyclerView.Adapter<ListPlansAdapter.ViewHolder>()  {
 
         var context: Context? = null
+        var skuSelectd: String? = null
         var plansList: ArrayList<SkuDetails> = arrayListOf()
             set(value) {
                 field = value
@@ -31,6 +33,13 @@
 
         override fun onBindViewHolder(holder: ListPlansAdapter.ViewHolder, index: Int) {
             val plan = plansList[holder.adapterPosition]
+
+            if (skuSelectd != null && skuSelectd == plan.sku){
+                holder.planRoot?.alpha = 0.3f
+            }else{
+                holder.planRoot?.alpha = 1.0f
+            }
+
 
             holder.planTitle = plan.title
             holder.planDescription = plan.description
@@ -65,7 +74,12 @@
 
         class ViewHolder(var view: View): RecyclerView.ViewHolder(view) {
 
-            var planId: String? = null
+            var planRoot: LinearLayout? = null
+
+            init{
+                planRoot = view.findViewById(R.id.rootPlanLayout)
+            }
+
 
             var planTitle: String? = null
                 set(value) {

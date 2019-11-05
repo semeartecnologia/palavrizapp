@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="8dp"
     android:orientation="vertical"
+    android:id="@+id/rootPlanLayout"
     android:background="@drawable/background_products"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
