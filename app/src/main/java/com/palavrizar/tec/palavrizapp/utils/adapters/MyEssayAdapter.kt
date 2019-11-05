@@ -46,7 +46,8 @@ class MyEssayAdapter(val listener: OnUnreadableClicked) : RecyclerView.Adapter<M
         when (status) {
             StatusEssay.UPLOADED -> holder.essayStatus?.text = context?.getString(R.string.upload_status_waiting)
             StatusEssay.CORRECTING -> holder.essayStatus?.text = context?.getString(R.string.upload_status_correcting)
-            StatusEssay.FEEDBACK_READY -> holder.essayStatus?.text = context?.getString(R.string.upload_status_done)
+            StatusEssay.FEEDBACK_READY -> {holder.essayStatus?.text = context?.getString(R.string.upload_status_done)
+                holder.essayStatus?.setBackgroundResource(R.drawable.text_green_background)}
             StatusEssay.NOT_READABLE -> {
                 holder.essayStatus?.text = context?.getString(R.string.upload_status_not_readable)
                     holder.essayStatus?.setBackgroundResource(R.drawable.text_red_background)
