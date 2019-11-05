@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.modules.login
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -58,33 +59,35 @@ class LoginActivity : BaseActivity() {
     private fun getUserLocation(user: User){
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
 
-        checkWhitelist(user.email){ isWhitelisted ->
-            if (!isWhitelisted){
-                val criteria = Criteria()
-                provider = locationManager?.getBestProvider(criteria, false).toString()
-                val location = requestLocationPermission()
+        if (!user.email.isNullOrBlank()) {
+            checkWhitelist(user.email) { isWhitelisted ->
+                if (!isWhitelisted) {
+                    val criteria = Criteria()
+                    provider = locationManager?.getBestProvider(criteria, false).toString()
+                    val location = requestLocationPermission()
 
-                if (location != null) {
-                    //System.out.println("Provider $provider has been selected.")
-                    //onLocationChanged(location)
-                    val lat = location.latitude
-                    val lng = location.longitude
+                    if (location != null) {
+                        //System.out.println("Provider $provider has been selected.")
+                        //onLocationChanged(location)
+                        val lat = location.latitude
+                        val lng = location.longitude
 
-                    val gcd = Geocoder(this, Locale.getDefault())
-                    var addresses: List<Address>? = null
-                    try {
-                        addresses = gcd.getFromLocation(lat, lng, 1)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
+                        val gcd = Geocoder(this, Locale.getDefault())
+                        var addresses: List<Address>? = null
+                        try {
+                            addresses = gcd.getFromLocation(lat, lng, 1)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+
+                        if (addresses != null && addresses.isNotEmpty()) {
+                            checkBlacklistCity(addresses[0].subAdminArea, user)
+                        }
+
                     }
-
-                    if (addresses != null && addresses.isNotEmpty()) {
-                        checkBlacklistCity(addresses[0].subAdminArea, user)
-                    }
-
+                } else {
+                    loginViewModel?.startApplication(user)
                 }
-            }else{
-                loginViewModel?.startApplication(user)
             }
         }
 
@@ -136,7 +139,7 @@ class LoginActivity : BaseActivity() {
             if(locationManager?.getAllProviders()?.contains(LocationManager.GPS_PROVIDER) == true && locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) ==true) {
                 locationManager?.getLastKnownLocation(provider)
             }else{
-               null
+                null
             }
         }
     }
@@ -148,6 +151,7 @@ class LoginActivity : BaseActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 224){
             if ( grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestLocationPermission()
             }else{
                 DialogHelper.showMessage(this, "", "Você precisa fornecer autorização de localização para continuar")
             }
