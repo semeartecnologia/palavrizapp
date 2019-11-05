@@ -81,13 +81,18 @@ class RegisterActivity : BaseActivity() {
                     try {
                         addresses = gcd.getFromLocation(lat, lng, 1)
                     } catch (e: IOException) {
+                        onCompletion(true)
                         e.printStackTrace()
                     }
 
                     if (addresses != null && addresses.isNotEmpty()) {
                         checkBlacklistCity(addresses[0].subAdminArea,onCompletion)
+                    }else{
+                        onCompletion(true)
                     }
 
+                }else{
+                    onCompletion(true)
                 }
             }else{
                 //  loginViewModel?.startApplication(user)
@@ -278,6 +283,8 @@ class RegisterActivity : BaseActivity() {
                         } else {
                             registerViewModel?.registerWithEmail(this@RegisterActivity, emailText, passwordText, confPassword, name)
                         }
+                    }else{
+                        DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
                     }
                 }
             }
