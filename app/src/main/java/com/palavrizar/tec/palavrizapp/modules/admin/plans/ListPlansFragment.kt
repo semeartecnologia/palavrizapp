@@ -321,6 +321,11 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
 
     private fun setupUserCredits(numCredits: Int){
         try {
+            if (numCredits == 1){
+                tv_user_plan_credits_label?.text = getString(R.string.your_plan_credits)
+            }else{
+                tv_user_plan_credits_label?.text = getString(R.string.your_plan_credits_plural)
+            }
             tv_user_plan_credits?.text = numCredits.toString()
         }catch(e: Exception){
 
