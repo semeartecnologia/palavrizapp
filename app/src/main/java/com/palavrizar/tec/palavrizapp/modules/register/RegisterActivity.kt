@@ -19,6 +19,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import butterknife.ButterKnife
 import com.google.android.youtube.player.internal.r
@@ -249,6 +250,8 @@ class RegisterActivity : BaseActivity() {
             if (!hasFocus){
                 if (!Utils.isValidEmail(email.text.toString())){
                     textInputEmail.error = "E-mail inválido"
+                }else{
+                    textInputEmail.error = null
                 }
             }
         }
@@ -257,7 +260,18 @@ class RegisterActivity : BaseActivity() {
             if (!hasFocus){
                 if (confirm_password.text.toString() != password.text.toString() ){
                     textInputPwdConfirm.error = "Senhas diferentes"
+                }else{
+                    textInputPwdConfirm.error = null
                 }
+            }
+        }
+
+        confirm_password?.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                confirm_password?.clearFocus()
+                true
+            }else{
+                false
             }
         }
 
@@ -276,6 +290,7 @@ class RegisterActivity : BaseActivity() {
             if (!Utils.isValidEmail(emailText)) {
                 textInputEmail.error = "E-mail inválido"
             } else {
+                textInputEmail.error = null
                 checkLocationBlacklisted(emailText) {
                     if (it == false) {
                         if (passwordText.length < 6) {
