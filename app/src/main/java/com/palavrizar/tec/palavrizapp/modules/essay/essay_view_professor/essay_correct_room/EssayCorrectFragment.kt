@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
+import com.palavrizar.tec.palavrizapp.modules.classroom.FullscreenVideoActivity
 import com.palavrizar.tec.palavrizapp.modules.essay.photo_zoom.ImageZoomActivity
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.FileHelper
@@ -139,8 +140,7 @@ class EssayCorrectFragment : Fragment() {
 
                 if (file.exists()){
                     if(Build.VERSION.SDK_INT>=24) {
-                        val uri = FileProvider.getUriForFile(context ?: return@setOnClickListener, "com.palavrizar.tec.palavrizapp.provider", file)
-                        requestStoragePermissioAndShowVideo(uri)
+                        requestStoragePermissioAndShowVideo(Uri.fromFile(file))
                     }else{
                         requestStoragePermissioAndShowVideo(Uri.fromFile(file))
                     }
@@ -152,9 +152,7 @@ class EssayCorrectFragment : Fragment() {
                                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
                         val file = File(path, "Palavrizapp/$it.mp4")
                         if (Build.VERSION.SDK_INT >= 24) {
-                            val uri = FileProvider.getUriForFile(context
-                                    ?: return@downloadVideoFeedback, "com.palavrizar.tec.palavrizapp.provider", file)
-                            requestStoragePermissioAndShowVideo(uri)
+                            requestStoragePermissioAndShowVideo(Uri.fromFile(file))
                         } else {
                             requestStoragePermissioAndShowVideo(Uri.fromFile(file))
                         }
@@ -213,11 +211,16 @@ class EssayCorrectFragment : Fragment() {
     }
 
     private fun showVideo(videoUri: Uri){
-        val intent = Intent()
-        intent.action = Intent.ACTION_VIEW
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        intent.setDataAndType(videoUri, "video/*")
-        startActivity(intent)
+        val it = Intent(activity, FullscreenVideoActivity::class.java)
+        it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+        it.putExtra("urlVideo", videoUri.toString())
+        it.putExtra("videoKey", "")
+        it.putExtra("position", 0)
+        it.putExtra("window", 0)
+        it.putExtra("isStorageVideo", true)
+
+        activity?.startActivity(it)
     }
 
     private fun showPhoto(photoUri: Uri) {

@@ -11,6 +11,7 @@ class FullscreenVideoActivity: AppCompatActivity() {
     private var positionVideo: Long = 0
     private var currentWindow = 0
     private var videoKey = ""
+    private var isStorageVideo = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,7 @@ class FullscreenVideoActivity: AppCompatActivity() {
         positionVideo = intent?.getLongExtra("position",0) ?: 0
         currentWindow = intent?.getIntExtra("window", 0) ?: 0
         videoKey = intent?.getStringExtra("videoKey") ?: ""
+        isStorageVideo = intent?.getBooleanExtra("isStorageVideo",false) ?: false
     }
 
     private fun setupVideoFragment() {
@@ -39,6 +41,7 @@ class FullscreenVideoActivity: AppCompatActivity() {
         data.putLong("position", positionVideo)
         data.putInt("window", currentWindow)
         data.putString("videoKey", videoKey)
+        data.putBoolean("isStorageVideo", isStorageVideo)
         argumentFragment.arguments = data//Finally set argument bundle to fragment
         supportFragmentManager.beginTransaction().replace(R.id.frame_video, argumentFragment).commit()
     }

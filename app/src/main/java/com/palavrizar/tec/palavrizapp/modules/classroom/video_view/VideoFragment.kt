@@ -29,6 +29,7 @@ class VideoFragment: Fragment() {
     private lateinit var player: SimpleExoPlayer
     private var videoUrl = ""
     private var videoKey = ""
+    private var isStorageVideo = false
     private var position: Long = 0
     private var window = 0
     private var playWhenReady: Boolean = true
@@ -67,10 +68,6 @@ class VideoFragment: Fragment() {
     private fun configListenerProgress() {
         player.addListener(object: Player.EventListener{
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                    val realDurationMillis = player.getDuration()
-                Log.d("ala2", "CARAJO: $realDurationMillis")
-
-
             }
         })
     }
@@ -85,6 +82,7 @@ class VideoFragment: Fragment() {
             it.putExtra("videoKey", videoKey)
             it.putExtra("position", player.currentPosition)
             it.putExtra("window", player.currentWindowIndex)
+            it.putExtra("isStorageVideo", isStorageVideo)
 
             activity?.startActivity(it)
         }
@@ -95,6 +93,7 @@ class VideoFragment: Fragment() {
         position = getPosition() ?: 0
         window = getWindow() ?: 0
         videoKey = getVideoKey() ?: ""
+        isStorageVideo = getIsStorageVideo() ?: false
     }
 
     private fun getVideoUrl(): String? {
@@ -110,6 +109,10 @@ class VideoFragment: Fragment() {
     private fun getVideoKey(): String? {
         return arguments?.getString("videoKey")
     }
+    private fun getIsStorageVideo(): Boolean? {
+        return arguments?.getBoolean("isStorageVideo")
+    }
+
 
 
     companion object {
@@ -124,19 +127,27 @@ class VideoFragment: Fragment() {
     }
 
     private fun initPlayer(){
-        player = ExoPlayerFactory.newSimpleInstance(
-                context,
-                DefaultRenderersFactory(context),
-                DefaultTrackSelector(), DefaultLoadControl()
-        )
+        if (!isStorageVideo) {
+            player = ExoPlayerFactory.newSimpleInstance(
+                    context,
+                    DefaultRenderersFactory(context),
+                    DefaultTrackSelector(), DefaultLoadControl()
+            )
 
-        player_view.player = player
-        prepareMediaSource()
-        player.playWhenReady = true
-        player.seekTo(window, position)
+            player_view?.visibility = View.VISIBLE
+            video_view?.visibility = View.GONE
+            player_view?.player = player
+            prepareMediaSource()
+            player.playWhenReady = true
+            player.seekTo(window, position)
+            configListenerProgress()
+        }else{
+            player_view?.visibility = View.GONE
+            video_view?.visibility = View.VISIBLE
 
-
-        configListenerProgress()
+            video_view?.setVideoURI(Uri.parse(videoUrl))
+            video_view?.start()
+        }
 
     }
 
@@ -170,9 +181,11 @@ class VideoFragment: Fragment() {
 
     override fun onPause() {
         super.onPause()
-        refreshJsonProgress()
-        if (Util.SDK_INT <= 23) {
-            releasePlayer()
+        if (!isStorageVideo) {
+            refreshJsonProgress()
+            if (Util.SDK_INT <= 23) {
+                releasePlayer()
+            }
         }
     }
 
@@ -183,7 +196,7 @@ class VideoFragment: Fragment() {
 
         val currentJson = sessionManager?.videosProgress
 
-        if (currentJson != null){
+        if (currentJson != null && videoKey.isNotBlank()){
             try{
                 val getValue = currentJson.get(videoKey)
 
@@ -211,7 +224,7 @@ class VideoFragment: Fragment() {
     override fun onStop() {
         super.onStop()
 
-        if (Util.SDK_INT > 23) {
+        if (Util.SDK_INT > 23 && !isStorageVideo) {
             releasePlayer()
         }
     }
