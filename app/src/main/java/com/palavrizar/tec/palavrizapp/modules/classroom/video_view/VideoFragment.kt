@@ -1,6 +1,7 @@
 package com.palavrizar.tec.palavrizapp.modules.classroom.video_view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
@@ -145,6 +147,9 @@ class VideoFragment: Fragment() {
             player_view?.visibility = View.GONE
             video_view?.visibility = View.VISIBLE
 
+            var mediaController = MediaController(activity as Activity)
+            mediaController.setAnchorView(video_view)
+            video_view.setMediaController(mediaController)
             video_view?.setVideoURI(Uri.parse(videoUrl))
             video_view?.start()
         }

@@ -24,6 +24,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.MediaController
 import android.widget.Toast
 import com.palavrizar.tec.palavrizapp.BuildConfig
 import com.palavrizar.tec.palavrizapp.R
@@ -57,11 +58,6 @@ class UploadActivity : BaseActivity() {
 
 
     private var adapter: PlanListAdapter = PlanListAdapter()
-    private var adapterStructure: ArrayAdapter<String>? = null
-    private var adapterConcept: ArrayAdapter<String>? = null
-
-    private var conceptListString = arrayListOf<String>()
-    private var structureListString = arrayListOf<String>()
     private var themeListString = arrayListOf<String>()
 
     private var listOfThemes = arrayListOf<Themes>()
@@ -593,6 +589,9 @@ class UploadActivity : BaseActivity() {
     }
     private fun setupVideo(videoUri: String){
         if (!videoUri.startsWith("/v0/b/palavrizar")){
+            var mediaController = MediaController(this)
+            mediaController.setAnchorView(frame_video_view)
+            preview_video.setMediaController(mediaController)
             preview_video.setVideoURI(Uri.parse(videoUri))
             preview_video.start()
         }else{

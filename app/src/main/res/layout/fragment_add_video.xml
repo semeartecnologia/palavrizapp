@@ -25,11 +25,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp" />
 
-            <VideoView
+            <FrameLayout
+                android:id="@+id/frame_video_view"
                 android:layout_margin="16dp"
-                android:id="@+id/preview_video"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"/>
+                android:layout_height="240dp">
+                <VideoView
+                    android:id="@+id/preview_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_marginTop="8dp"

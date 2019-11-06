@@ -156,7 +156,7 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         viewHolder.videoPath = video.path
         viewHolder.videoKey = video.videoKey
 
-        if (!video.structure.isNullOrBlank()){
+       /* if (!video.structure.isNullOrBlank()){
             viewHolder.title.setTextColor(ContextCompat.getColor(this.ctx, R.color.lightGreen))
         }else if (!video.concept.isNullOrBlank()){
             viewHolder.title.setTextColor(ContextCompat.getColor(this.ctx, R.color.colorSecondaryDark))
@@ -165,7 +165,7 @@ class VideosAdapter(var listener: OnVideoEvent) : RecyclerView.Adapter<VideosAda
         }else{
             viewHolder.title.setTextColor(ContextCompat.getColor(this.ctx, R.color.colorPrimary))
         }
-
+*/
         if (jsonProgress != null){
             try{
                 val getValue = jsonProgress?.get(video.videoKey)
