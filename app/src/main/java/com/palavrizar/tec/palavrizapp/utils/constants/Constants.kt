@@ -37,4 +37,8 @@ object Constants {
 
     const val PLAN_FREE_ID = "plano_gratis"
     const val NO_PLAN= "NO_PLAN"
+
+
+    var COMMON_ERROR = 400
+    var USER_ALREADY_REGISTERED_ERROR = 403
 }

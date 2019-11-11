@@ -177,8 +177,13 @@ class RegisterActivity : BaseActivity() {
 
     private fun registerObservers() {
         registerViewModel?.showMessageErrorRegister?.observe(this, Observer
-        { aBoolean ->
-            showToast(getString(R.string.register_fail), aBoolean ?: true)
+        { errorCode ->
+            if (errorCode == Constants.USER_ALREADY_REGISTERED_ERROR){
+                showToast(getString(R.string.register_failed_email_already), true)
+            }else{
+                showToast(getString(R.string.register_fail), true)
+            }
+
         })
 
         registerViewModel?.showMessageMissingFields?.observe(this, Observer

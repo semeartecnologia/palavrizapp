@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
+import android.view.WindowManager
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Video
 import com.palavrizar.tec.palavrizapp.modules.base.BaseActivity
@@ -34,9 +35,11 @@ class ClassroomActivity : BaseActivity() {
         setupExtras()
         if (isFirstTime == true) {
             setContentView(R.layout.activity_classroom_first_time)
+            supportActionBar?.hide()
         }else{
             setContentView(R.layout.activity_classroom)
         }
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         initViewModel()
         setupView()

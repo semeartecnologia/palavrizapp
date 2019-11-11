@@ -13,6 +13,8 @@ import com.palavrizar.tec.palavrizapp.models.User
 import com.palavrizar.tec.palavrizapp.models.UserType
 import com.palavrizar.tec.palavrizapp.modules.welcome.WelcomeActivity
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
+import com.palavrizar.tec.palavrizapp.utils.constants.Constants.COMMON_ERROR
+import com.palavrizar.tec.palavrizapp.utils.constants.Constants.USER_ALREADY_REGISTERED_ERROR
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import com.palavrizar.tec.palavrizapp.utils.repositories.UserRepository
 
@@ -25,7 +27,7 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
 
     var isLoading = MutableLiveData<Boolean>()
     var showMessageMissingFields = MutableLiveData<Boolean>()
-    var showMessageErrorRegister = MutableLiveData<Boolean>()
+    var showMessageErrorRegister = MutableLiveData<Int>()
     var showMessagePwdNotMatch = MutableLiveData<Boolean>()
 
 
@@ -47,7 +49,12 @@ class RegisterViewModel(application: Application): AndroidViewModel(application)
                             getUserDataAndLogin(fullname)
                         } else {
                             isLoading.postValue(false)
-                            showMessageErrorRegister.postValue(true)
+                            if (task.exception?.localizedMessage == "The email address is already in use by another account."){
+                                showMessageErrorRegister.postValue(USER_ALREADY_REGISTERED_ERROR)
+                            }else{
+                                showMessageErrorRegister.postValue(COMMON_ERROR)
+                            }
+
                         }
 
                     }

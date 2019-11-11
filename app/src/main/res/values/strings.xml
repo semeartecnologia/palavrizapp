@@ -19,6 +19,7 @@
     <string name="permission_rationale">"Precisamos de sua localização para permitir seu cadastro no sistema."</string>
     <string name="register_now_btn">Registrar</string>
     <string name="register_fail">Falha ao registrar no sistema, verifique sua conexão</string>
+    <string name="register_failed_email_already">Falha ao registrar no sistema, e-mail já cadastrado em nosso sistema</string>
     <string name="not_registered_yet">Ainda não é cadastrado? <u>Cadastre-se aqui</u></string>
     <string name="fill_all_fields">Por favor, preencha todos os campos</string>
     <string name="pwd_not_match">Senha e confirmação não conferem</string>
