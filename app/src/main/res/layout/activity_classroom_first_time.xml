@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_palavrizar"
     android:orientation="vertical"
     android:id="@+id/root_layout">
@@ -50,7 +47,7 @@
             />
 
         <Button
-            android:id="@+id/btn_next_class_first"
+            android:id="@+id/btn_next_class"
             android:layout_marginTop="32dp"
             android:textSize="16sp"
             android:paddingTop="16dp"

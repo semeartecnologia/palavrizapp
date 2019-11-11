@@ -352,6 +352,7 @@ class EssayCorrectFragment : Fragment() {
 
             override fun onSuccess() {
                 iv_essay?.visibility = View.VISIBLE
+                progress?.visibility = View.GONE
             }
         })
     }
