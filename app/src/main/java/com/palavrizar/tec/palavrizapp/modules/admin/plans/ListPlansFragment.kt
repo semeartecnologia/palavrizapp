@@ -88,7 +88,11 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
 
     private fun setupAcessStoreLabel() {
         val str = getString(R.string.acesse_a_loja)
-        tv_acess_store.text = Html.fromHtml(str)
+        tv_acess_store?.text = Html.fromHtml(str)
+        tv_acess_store?.setOnClickListener {
+            redirectToStore()
+        }
+
 
     }
 
@@ -220,12 +224,16 @@ class ListPlansFragment : Fragment(), OnPlanClicked, OnProductClicked {
         }
     }
 
+    private fun redirectToStore(){
+        val it = Intent()
+        it.putExtra("redirect", true)
+        activity?.setResult(RESULT_OK, it)
+        activity?.finish()
+    }
+
     private fun setupNoPlanView(){
         tv_check_plans?.setOnClickListener {
-            val it = Intent()
-            it.putExtra("redirect", true)
-            activity?.setResult(RESULT_OK, it)
-            activity?.finish()
+            redirectToStore()
         }
         spinner_plans_products?.visibility = View.GONE
         frame_layout_recycle_plans?.visibility = View.GONE
