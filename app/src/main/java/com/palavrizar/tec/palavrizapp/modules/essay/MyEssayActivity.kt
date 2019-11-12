@@ -135,9 +135,7 @@ class MyEssayActivity : BaseActivity(), OnUnreadableClicked {
     }
 
     private fun showDialogNoPlan(){
-        DialogHelper.showGoToStoreMessage(this, "", getString(R.string.no_plan_no_essay), {}, {
-            goToStoreScreen()
-        })
+        DialogHelper.showGoToStoreMessage(this, "", getString(R.string.no_plan_no_essay), {goToStoreScreen()}, {})
     }
 
     private fun goToStoreScreen(){

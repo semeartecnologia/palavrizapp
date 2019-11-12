@@ -33,7 +33,7 @@ class ListProductsAdapter(var listener: OnProductClicked)  : RecyclerView.Adapte
     override fun onBindViewHolder(holder: ListProductsAdapter.ViewHolder, index: Int) {
         val product = plansList[holder.adapterPosition]
 
-        holder.planTitle = product.title
+        holder.planTitle = product.title.replace("(Palavrizar)", "")
         holder.planDescription = product.description
         holder.planPrice = product.price
 

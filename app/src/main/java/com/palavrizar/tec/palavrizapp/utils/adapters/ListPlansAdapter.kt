@@ -41,7 +41,7 @@
             }
 
 
-            holder.planTitle = plan.title
+            holder.planTitle = plan.title.replace("(Palavrizar)", "")
             holder.planDescription = plan.description
             holder.planPrice = plan.price
 

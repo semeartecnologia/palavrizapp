@@ -13,7 +13,8 @@
         android:id="@+id/tv_plan_title"
         android:layout_marginTop="16dp"
         android:text="REDAÇÃO AVULSA"
-        android:textSize="20sp"
+        android:textSize="16sp"
+        android:textAllCaps="true"
         android:textAlignment="center"
         android:layout_gravity="center"
         android:textColor="@color/colorPrimary"
@@ -29,7 +30,7 @@
         android:layout_marginTop="16dp"
         android:id="@+id/tv_plan_description"
         android:layout_gravity="center"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_marginStart="24dp"
         android:textColor="@color/colorPrimary"
         android:layout_marginEnd="24dp"
@@ -52,7 +53,7 @@
             android:id="@+id/tv_plan_text"
             tools:text="R$14,80"
             android:fontFamily="@font/gotham"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -60,7 +61,7 @@
         <TextView
             android:id="@+id/tv_plan_period"
             tools:text="por mês"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:fontFamily="@font/gotham"
             android:layout_marginStart="8dp"
             android:textColor="@color/colorPrimary"
@@ -73,9 +74,9 @@
     <TextView
 
         android:layout_marginTop="16dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_marginBottom="8dp"
-        android:textColor="@color/colorSecondaryDark"
+        android:textColor="#F9A239"
         android:text="EU QUERO"
         android:textStyle="bold"
         android:paddingStart="8dp"

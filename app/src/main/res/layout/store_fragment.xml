@@ -69,7 +69,7 @@
                     android:textColor="@color/colorPrimary"
                     android:fontFamily="@font/gotham"
                     android:layout_marginTop="16dp"
-                    android:text="Para dar uma up nos estudos"
+                    android:text="Para dar um up nos estudos"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:layout_gravity="center_horizontal"
