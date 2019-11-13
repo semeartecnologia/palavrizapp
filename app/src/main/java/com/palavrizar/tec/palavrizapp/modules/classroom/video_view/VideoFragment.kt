@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +19,8 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.modules.classroom.FullscreenVideoActivity
-import kotlinx.android.synthetic.main.video_view_fragment.*
 import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
+import kotlinx.android.synthetic.main.video_view_fragment.*
 import org.json.JSONObject
 import java.math.BigDecimal
 
@@ -31,6 +30,7 @@ class VideoFragment: Fragment() {
     private lateinit var player: SimpleExoPlayer
     private var videoUrl = ""
     private var videoKey = ""
+    private var videoProgress = 0
     private var isStorageVideo = false
     private var position: Long = 0
     private var window = 0
@@ -95,6 +95,7 @@ class VideoFragment: Fragment() {
         position = getPosition() ?: 0
         window = getWindow() ?: 0
         videoKey = getVideoKey() ?: ""
+        videoProgress = getVideoProgress() ?: 0
         isStorageVideo = getIsStorageVideo() ?: false
     }
 
@@ -111,6 +112,11 @@ class VideoFragment: Fragment() {
     private fun getVideoKey(): String? {
         return arguments?.getString("videoKey")
     }
+
+    private fun getVideoProgress(): Int? {
+        return arguments?.getInt("videoProgress")
+    }
+
     private fun getIsStorageVideo(): Boolean? {
         return arguments?.getBoolean("isStorageVideo")
     }
@@ -118,11 +124,12 @@ class VideoFragment: Fragment() {
 
 
     companion object {
-        fun newInstance(videoUrl: String, videoKey: String? = ""): VideoFragment {
+        fun newInstance(videoUrl: String, videoKey: String? = "", progress: Int = 0): VideoFragment {
             val fragment = VideoFragment()
             val args = Bundle()
             args.putString("videoUrl", videoUrl)
             args.putString("videoKey", videoKey)
+            args.putLong("position", progress.toLong())
             fragment.arguments = args
             return fragment
         }
@@ -188,9 +195,40 @@ class VideoFragment: Fragment() {
         super.onPause()
         if (!isStorageVideo) {
             refreshJsonProgress()
+            refreshJsonPosition()
             if (Util.SDK_INT <= 23) {
                 releasePlayer()
             }
+        }
+    }
+
+    private fun refreshJsonPosition(){
+        val currentPosition = player.currentPosition
+
+        val currentJson = sessionManager?.videosPosition
+
+        if (currentJson != null && videoKey.isNotBlank()){
+            try{
+                val getValue = currentJson.get(videoKey)
+
+                if (getValue != null){
+                    val position = BigDecimal.valueOf(currentJson.getDouble(videoKey)).toFloat();
+                    if (position < currentPosition){
+                        currentJson.put(videoKey, currentPosition)
+                        sessionManager?.saveVideosPosition(currentJson)
+                    }
+                }else {
+                    currentJson.put(videoKey, currentPosition)
+                    sessionManager?.saveVideosPosition(currentJson)
+                }
+            }catch (e: Exception){
+                currentJson.put(videoKey, currentPosition)
+                sessionManager?.saveVideosPosition(currentJson)
+            }
+        }else{
+            val json = JSONObject()
+            json.put(videoKey,currentPosition)
+            sessionManager?.saveVideosPosition(json)
         }
     }
 

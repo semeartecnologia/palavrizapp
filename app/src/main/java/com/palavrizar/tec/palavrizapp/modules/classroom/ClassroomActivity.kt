@@ -16,8 +16,10 @@ import com.palavrizar.tec.palavrizapp.utils.commons.FileHelper
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_VIDEO_FIRST
+import com.palavrizar.tec.palavrizapp.utils.repositories.SessionManager
 import kotlinx.android.synthetic.main.activity_classroom.*
 import java.io.File
+import java.math.BigDecimal
 
 
 class ClassroomActivity : BaseActivity() {
@@ -27,6 +29,7 @@ class ClassroomActivity : BaseActivity() {
     private var isFirstTime: Boolean? = null
     private var classroomViewModel: ClassroomViewModel? = null
 
+    private var sessionManager: SessionManager? = null
     private lateinit var adapter: CommentsAdapter
 
 
@@ -39,11 +42,40 @@ class ClassroomActivity : BaseActivity() {
         }else{
             setContentView(R.layout.activity_classroom)
         }
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         initViewModel()
-        setupView()
+        initSessionManager()
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        setupView()
+    }
+
+
+    private fun initSessionManager() {
+        sessionManager = SessionManager(this)
+    }
+
+    fun getVideoProgress(videoKey: String?): Int{
+        if (videoKey == null)
+            return 0
+        val jsonProgress = sessionManager?.videosPosition
+        return if (jsonProgress != null && jsonProgress.has(videoKey)) {
+            val getValue = jsonProgress.get(videoKey)
+            if (getValue != null) {
+                val currentProgress = BigDecimal.valueOf(jsonProgress.getDouble(videoKey)).toFloat()
+                currentProgress.toInt()
+            } else {
+                0
+            }
+        }else{
+            0
+        }
     }
 
     fun setupView(){
@@ -107,7 +139,8 @@ class ClassroomActivity : BaseActivity() {
     }*/
 
     private fun setupVideoFragment(videoPath: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoPath, video?.videoKey)).commit()
+        val progress = getVideoProgress(video?.videoKey)
+        supportFragmentManager.beginTransaction().replace(R.id.frame_video, VideoFragment.newInstance(videoPath, video?.videoKey, progress)).commit()
     }
 
     fun initViewModel(){

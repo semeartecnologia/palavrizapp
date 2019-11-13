@@ -2,6 +2,7 @@ package com.palavrizar.tec.palavrizapp.modules.classroom
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.modules.classroom.video_view.VideoFragment
 
@@ -17,6 +18,7 @@ class FullscreenVideoActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_full_screen)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         getExtras()
         setupView()

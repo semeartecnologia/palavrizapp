@@ -298,11 +298,11 @@
     <string name="your_plan_credits">CRÉDITO</string>
     <string name="your_plan_expiration_date">Expira em:</string>
 
-    <string name="p1w">por semana</string>
-    <string name="p1m">por mês</string>
-    <string name="p3m">por 3 meses</string>
-    <string name="p6m">por 6 meses</string>
-    <string name="p1y">por ano</string>
+    <string name="p1w">/semana</string>
+    <string name="p1m">/mês</string>
+    <string name="p3m">/3 meses</string>
+    <string name="p6m">/6 meses</string>
+    <string name="p1y">/ano</string>
 
     <string name="estrutura">Estrutura</string>
     <string name="conceito">Conceito</string>

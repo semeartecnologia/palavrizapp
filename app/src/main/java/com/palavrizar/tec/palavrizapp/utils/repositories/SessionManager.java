@@ -26,6 +26,7 @@ public class SessionManager {
     private static final String USER_EMAIL = "user_email";
     private static final String USER_PHOTO_URI = "user_photo_uri";
     private static final String USER_VIDEO_PROGRESS = "user_video_progress";
+    private static final String USER_VIDEO_POSITION = "user_video_position";
     private static final String USER_CREDITS = "user_credits";
 
     private static final String VIDEO_FILER_THEME = "video_filter_theme";
@@ -99,6 +100,24 @@ public class SessionManager {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(USER_PLAN, userPlan);
         editor.apply();
+    }
+
+    public void saveVideosPosition(JSONObject jsonVideosProgress){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(USER_VIDEO_POSITION, jsonVideosProgress.toString());
+        editor.commit();
+    }
+
+    public JSONObject getVideosPosition(){
+        String strjSON = sharedPref.getString(USER_VIDEO_POSITION,"");
+        if (strjSON != null && !strjSON.isEmpty() ){
+            try {
+                return new JSONObject(strjSON);
+            } catch (JSONException e) {
+
+            }
+        }
+        return null;
     }
 
     public void saveVideosProgess(JSONObject jsonVideosProgress){
