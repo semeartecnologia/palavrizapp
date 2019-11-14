@@ -54,6 +54,11 @@ class EssayReviewFragment() : Fragment() {
         viewmodel?.essayImageUrlLiveData?.observe(this, Observer {
             showImageEssay(it)
         })
+        viewmodel?.essayImageUrlFullScreenLiveData?.observe(this, Observer {
+            if (it != null) {
+                startFullscreenImageActivity(it)
+            }
+        })
         viewmodel?.dialogLiveData?.observe(this, Observer {
             when (it){
                 is EssayReviewViewModel.Dialog.FailDialog -> {
@@ -148,10 +153,15 @@ class EssayReviewFragment() : Fragment() {
         viewmodel?.getEssayImage(actualEssay?.filename)
 
         image_essay?.setOnClickListener {
-            val itn = Intent(activity, ImageZoomActivity::class.java)
-            itn.putExtra(Constants.EXTRA_IMAGE_FULL_SCREEN, actualEssay?.url)
-            startActivity(itn)
+            viewmodel?.showImageFullscreenClicked(actualEssay?.filename)
         }
+    }
+
+
+    private fun startFullscreenImageActivity(url: String){
+        val itn = Intent(activity, ImageZoomActivity::class.java)
+        itn.putExtra(Constants.EXTRA_IMAGE_FULL_SCREEN, url)
+        startActivity(itn)
     }
 
     private fun setCorrectOwner(){

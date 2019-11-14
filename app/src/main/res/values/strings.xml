@@ -226,6 +226,7 @@
     <string name="logout">Sair</string>
     <!-- Contextual Admin Menu -->
     <string name="local_limit_menu">Limitar Localização</string>
+
     <string name="login_whitelist">Login Whitelist</string>
 
     <!-- Upload Service -->
@@ -377,5 +378,6 @@
     <string name ="welcome_scren_text_1">Assista às aulas</string>
     <string name ="welcome_scren_text_2">veja aulas que lhe ajudarão tanto com a estrutura quanto com o conteúdo de sua redação</string>
 
+    <string name="menu_girar">GIRAR</string>
 
 </resources>

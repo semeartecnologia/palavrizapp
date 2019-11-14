@@ -45,7 +45,7 @@
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name="com.palavrizar.tec.palavrizapp.modules.essay.photo_zoom.ImageZoomActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+             />
         <activity android:name="com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.palavrizar.tec.palavrizapp.modules.essay.MyEssayActivity"

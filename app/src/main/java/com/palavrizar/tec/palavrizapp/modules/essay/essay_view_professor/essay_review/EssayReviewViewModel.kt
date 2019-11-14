@@ -27,6 +27,7 @@ class EssayReviewViewModel(application: Application): AndroidViewModel(applicati
 
     var actualEssayLiveData = MutableLiveData<Essay>()
     var essayImageUrlLiveData = MutableLiveData<String>()
+    var essayImageUrlFullScreenLiveData = MutableLiveData<String>()
     var enableCorrectButton = MutableLiveData<Boolean>()
 
 
@@ -57,6 +58,12 @@ class EssayReviewViewModel(application: Application): AndroidViewModel(applicati
             essayImageUrlLiveData.postValue(it)
         }
     }
+    fun showImageFullscreenClicked(url: String?){
+        essayRepository.getEssayImage(url ?: "") {
+            essayImageUrlFullScreenLiveData.postValue(it)
+        }
+    }
+
 
     fun setEssayUnreadable(){
         val userLogged = sessionManager.userLogged

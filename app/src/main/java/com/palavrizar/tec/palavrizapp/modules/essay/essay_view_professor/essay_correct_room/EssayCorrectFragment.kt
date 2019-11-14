@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -76,6 +75,11 @@ class EssayCorrectFragment : Fragment() {
         })
         viewmodel?.essayImageUrlLiveData?.observe(this, Observer {
             showImageEssay(it)
+        })
+        viewmodel?.essayImageUrlFullScreenLiveData?.observe(this, Observer {
+            if (it != null) {
+                startFullscreenImageActivity(it)
+            }
         })
         viewmodel?.viewEvent?.observe(this, Observer {
             when(it){
@@ -241,10 +245,14 @@ class EssayCorrectFragment : Fragment() {
         viewmodel?.getEssayImage(filename)
 
         iv_essay?.setOnClickListener {
-            val itn = Intent(activity, ImageZoomActivity::class.java)
-            itn.putExtra(Constants.EXTRA_IMAGE_FULL_SCREEN, url)
-            startActivity(itn)
+           viewmodel?.showImageFullscreenClicked(filename)
         }
+    }
+
+    private fun startFullscreenImageActivity(url: String){
+        val itn = Intent(activity, ImageZoomActivity::class.java)
+        itn.putExtra(Constants.EXTRA_IMAGE_FULL_SCREEN, url)
+        startActivity(itn)
     }
 
     fun setupVideoAttachmentButton(){

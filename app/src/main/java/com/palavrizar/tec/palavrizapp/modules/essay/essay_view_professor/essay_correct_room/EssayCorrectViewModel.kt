@@ -25,6 +25,7 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
     var actualEssay = MutableLiveData<Essay>()
     var userPermitionAccessRoom = MutableLiveData<Boolean>()
     var essayImageUrlLiveData = MutableLiveData<String>()
+    var essayImageUrlFullScreenLiveData = MutableLiveData<String>()
     var showProgress = MutableLiveData<Boolean>()
     var viewEvent = MutableLiveData<ViewEvent>()
 
@@ -50,6 +51,12 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
     fun getEssayImage(url: String?){
         essayRepository.getEssayImage(url ?: "") {
             essayImageUrlLiveData.postValue(it)
+        }
+    }
+
+    fun showImageFullscreenClicked(url: String?){
+        essayRepository.getEssayImage(url ?: "") {
+            essayImageUrlFullScreenLiveData.postValue(it)
         }
     }
 
