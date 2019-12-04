@@ -540,14 +540,22 @@ class UploadActivity : BaseActivity() {
                 video_description?.setText(video?.description)
             }
 
+            if (!video?.pdfPath.isNullOrBlank()){
+                layout_add_pdf?.visibility = View.VISIBLE
+                layout_pdf_filename?.visibility = View.VISIBLE
+                layout_pdf_filename?.text = video?.pdfPath?.split("/")?.lastOrNull() ?: "Excluir PDF"
+            }
+
             spinner_theme?.visibility = View.GONE
             if (!video?.themeName.isNullOrBlank()){
                 spinner_theme?.visibility = View.VISIBLE
                 radio_theme.isChecked = true
             }else if (!video?.structure.isNullOrBlank()){
                 radio_structure.isChecked = true
+                layout_add_pdf?.visibility = View.VISIBLE
             }else if (!video?.concept.isNullOrBlank()){
                 radio_concept.isChecked = true
+                layout_add_pdf?.visibility = View.VISIBLE
             }
 
         }else{
