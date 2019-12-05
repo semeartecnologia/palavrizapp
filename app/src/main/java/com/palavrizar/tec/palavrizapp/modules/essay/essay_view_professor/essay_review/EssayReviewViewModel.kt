@@ -82,7 +82,7 @@ class EssayReviewViewModel(application: Application): AndroidViewModel(applicati
                         val userLogged = sessionManager.userLogged
                         essay.feedback = Feedback(userLogged, null, null)
 
-                        essayRepository?.setFeedbackOwnerOnEssay(essay, userLogged, StatusEssay.CORRECTING) {
+                        essayRepository?.setFeedbackOwnerOnEssay(essay, StatusEssay.CORRECTING) {
                             //sucesso!! agora vc ta corrigindo
                             viewEventLiveData.postValue(ViewEvent.SuccessSettingOwner(essayId))
                         }

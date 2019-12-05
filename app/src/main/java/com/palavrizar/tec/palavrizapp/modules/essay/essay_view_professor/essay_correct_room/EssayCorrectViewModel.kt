@@ -77,13 +77,13 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
         if (urlVideo.isNotBlank()){
             essayRepository.uploadVideoFeedback(urlVideo){
                 actualEssay.feedback = Feedback(sessionManager.userLogged, it, feedbackText)
-                essayRepository.setFeedbackOwnerOnEssay(actualEssay, sessionManager.userLogged, StatusEssay.FEEDBACK_READY) {
+                essayRepository.setFeedbackOwnerOnEssay(actualEssay, StatusEssay.FEEDBACK_READY) {
                     viewEvent.postValue(ViewEvent.FeedBackSent(true))
                 }
             }
         }else{
             actualEssay.feedback = Feedback(sessionManager.userLogged, urlVideo, feedbackText)
-            essayRepository.setFeedbackOwnerOnEssay(actualEssay, sessionManager.userLogged, StatusEssay.FEEDBACK_READY) {
+            essayRepository.setFeedbackOwnerOnEssay(actualEssay, StatusEssay.FEEDBACK_READY) {
                 viewEvent.postValue(ViewEvent.FeedBackSent(true))
             }
         }

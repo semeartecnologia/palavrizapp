@@ -48,8 +48,8 @@ class EssayRepository(val context: Context) {
         realtimeRepository.getEssayWaitingListenerChange(essayId, onChange, onFail)
     }
 
-    fun setFeedbackOwnerOnEssay(essay: Essay, user: User, status: StatusEssay, onCompletion: () -> Unit){
-        realtimeRepository.setFeedbackOwnerOnEssay(essay, user, status, onCompletion)
+    fun setFeedbackOwnerOnEssay(essay: Essay, status: StatusEssay, onCompletion: () -> Unit){
+        realtimeRepository.setFeedbackOwnerOnEssay(essay, status, onCompletion)
     }
 
     fun setEssayUnreadablaStatus(essay: Essay, userId: String, onCompletion: () -> Unit){
