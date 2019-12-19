@@ -107,6 +107,11 @@
             android:name="com.palavrizar.tec.palavrizapp.modules.classroom.FullscreenVideoActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
+        <activity
+            android:name="com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.essay_review.video_view.EssayFeedbackView"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
         <activity android:name="com.palavrizar.tec.palavrizapp.modules.upload.UploadActivity" />
 
         <meta-data

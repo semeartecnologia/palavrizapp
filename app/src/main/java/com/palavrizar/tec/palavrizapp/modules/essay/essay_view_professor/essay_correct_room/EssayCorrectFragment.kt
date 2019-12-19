@@ -21,6 +21,7 @@ import android.view.ViewGroup
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
 import com.palavrizar.tec.palavrizapp.modules.classroom.FullscreenVideoActivity
+import com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.essay_review.video_view.EssayFeedbackView
 import com.palavrizar.tec.palavrizapp.modules.essay.photo_zoom.ImageZoomActivity
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
 import com.palavrizar.tec.palavrizapp.utils.commons.FileHelper
@@ -215,7 +216,7 @@ class EssayCorrectFragment : Fragment() {
     }
 
     private fun showVideo(videoUri: Uri){
-        val it = Intent(activity, FullscreenVideoActivity::class.java)
+        val it = Intent(activity, EssayFeedbackView::class.java)
         it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
         it.putExtra("urlVideo", videoUri.toString())
