@@ -667,6 +667,10 @@ object DialogHelper {
         var details = when (idSku) {
             "quinzenal_versao_26_07_2019" -> activity.getString(R.string.details_curso_quinzenal)
             "completo_versao_26_07_2019" -> activity.getString(R.string.details_curso_semanal)
+            "correcaosemanal_3m" -> activity.getString(R.string.details_curso_semanal)
+            "correcaoquinzenal_3m" -> activity.getString(R.string.details_curso_quinzenal)
+            "correcao_quinzenal." -> activity.getString(R.string.details_curso_quinzenal)
+            "correcao_semanal." -> activity.getString(R.string.details_curso_semanal)
             "redacao_01" -> activity.getString(R.string.details_avulso)
             "redacao_05" -> activity.getString(R.string.details_pac5)
             else -> activity.getString(R.string.details_curso_quinzenal)
