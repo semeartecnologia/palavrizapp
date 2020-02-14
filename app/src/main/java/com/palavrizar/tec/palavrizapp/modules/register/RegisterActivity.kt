@@ -89,11 +89,23 @@ class RegisterActivity : BaseActivity() {
                     if (addresses != null && addresses.isNotEmpty()) {
                         checkBlacklistCity(addresses[0].subAdminArea,onCompletion)
                     }else{
-                        onCompletion(true)
+                        if (addresses == null || addresses.isEmpty()){
+                            if (!isLocationEnabled()){
+                                DialogHelper.showMessage(this, "", getString(R.string.location_not_available))
+                            }else{
+                                onCompletion(false)
+                            }
+                        }else {
+                            onCompletion(true)
+                        }
                     }
 
                 }else{
-                    onCompletion(true)
+                    if (!isLocationEnabled()){
+                        DialogHelper.showMessage(this, "", getString(R.string.location_not_available))
+                    }else{
+                        onCompletion(false)
+                    }
                 }
             }else{
                 //  loginViewModel?.startApplication(user)
@@ -101,6 +113,15 @@ class RegisterActivity : BaseActivity() {
             }
         }
 
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val manager =  getSystemService( Context.LOCATION_SERVICE ) as LocationManager
+
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            return false
+        }
+        return true
     }
 
     private fun checkWhitelist(email: String, onCompletion: ((Boolean) -> Unit)){
@@ -123,7 +144,9 @@ class RegisterActivity : BaseActivity() {
         registerViewModel?.getBlacklist {
             it.forEach { location ->
                 if (location.city.toLowerCase() == city.toLowerCase()){
-                    DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
+                    val res = resources
+                    val text = String.format(res.getString(R.string.app_not_available_sorry), location.city.toLowerCase(Locale.getDefault()).capitalize())
+                    DialogHelper.showMessage(this, "", text)
                     btn_register.isEnabled = false
                     isBlacklisted = true
                     onCompletion(true)

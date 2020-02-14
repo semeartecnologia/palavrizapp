@@ -323,7 +323,8 @@
     <string name="add_state_hint">Estado</string>
     <string name="add_btn_label">Adicionar</string>
     <string name="close_dialog">Sair</string>
-    <string name="app_not_available_sorry">Ops! Percebemos que na sua cidade já existe uma escola que utiliza material Palavrizar. Entre em contato com a escola para saber mais!</string>
+    <string name="app_not_available_sorry">Ops! Percebemos que em %1$s já existe uma escola que utiliza material Palavrizar. Entre em contato com a escola para saber mais!</string>
+    <string name="location_not_available">Não conseguimos detectar sua localização, verifiqe se a Localização está ligada!</string>
     <string name="num_credits_avulsos_user_hint">Quantidade de créditos avulsos</string>
     <string name="add_planos"><u>Adicionar Planos</u></string>
     <string name="add_produtos"><u>Adicionar Produtos</u></string>

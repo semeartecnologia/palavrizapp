@@ -9,7 +9,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.*
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -84,13 +86,18 @@ class LoginActivity : BaseActivity() {
                             checkBlacklistCity(addresses[0].subAdminArea, user)
                         }
 
+                    }else{
+                        if (!isLocationEnabled()){
+                            DialogHelper.showMessage(this, "", getString(R.string.location_not_available))
+                        }else{
+                            loginViewModel?.startApplication(user)
+                        }
                     }
                 } else {
                     loginViewModel?.startApplication(user)
                 }
             }
         }
-
 
     }
 
@@ -113,8 +120,10 @@ class LoginActivity : BaseActivity() {
         var isBlacklist = false
         loginViewModel?.getBlacklist {
             it.forEach { location ->
-                if (location.city.toLowerCase() == city.toLowerCase()){
-                    DialogHelper.showMessage(this, "", getString(R.string.app_not_available_sorry))
+                if (location.city.toLowerCase(Locale.getDefault()) == city.toLowerCase(Locale.getDefault())){
+                    val res = resources
+                    val text = String.format(res.getString(R.string.app_not_available_sorry), location.city.toLowerCase(Locale.getDefault()).capitalize())
+                    DialogHelper.showMessage(this, "", text)
                     btn_google_login?.isEnabled = false
                     btn_email_login?.isEnabled = false
                     isBlacklist = true
@@ -125,6 +134,15 @@ class LoginActivity : BaseActivity() {
                 loginViewModel?.startApplication(user)
             }
         }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val manager =  getSystemService( Context.LOCATION_SERVICE ) as LocationManager
+
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            return false
+        }
+        return true
     }
 
     private fun requestLocationPermission(): Location? {

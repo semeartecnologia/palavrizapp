@@ -89,11 +89,11 @@ class ListUserAdapter(val listener: OnUserClicked) : RecyclerView.Adapter<ListUs
         } else {
             val mText = text.toLowerCase()
             for (user in userListCopy!!) {
-
+                if (user.fullname != null && user.email != null) {
                     if (user.fullname.contains(mText) || user.email.contains(mText)) {
                         arrayUsers.add(user)
                     }
-
+                }
             }
         }
         onUserSearch.onUsersSearch(arrayUsers)

@@ -615,15 +615,24 @@ class UploadActivity : BaseActivity() {
         val videoThumb = ThumbnailUtils.createVideoThumbnail(file.absolutePath,
                 MediaStore.Images.Thumbnails.MINI_KIND)
 
-        video.videoThumb = FileHelper.getRealPathFromURI(this, getImageUri(this, videoThumb) )
+        val uri = getImageUri(this, videoThumb)
+        if (uri != null){
+            video.videoThumb = FileHelper.getRealPathFromURI(this, uri )
+        }else{
+            video.videoThumb = ""
+        }
 
         uploadViewModel.uploadVideo(this, video, isIntro)
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+
+        if (path.isNullOrBlank()) {
+            return null
+        }
         return Uri.parse(path)
     }
 
