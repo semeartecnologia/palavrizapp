@@ -22,7 +22,17 @@ class EssayListAdapter(val listener: OnEssayClicked) : RecyclerView.Adapter<Essa
         return ViewHolder(view)
     }
 
-
+    fun addEssayDoneList(essayDoneList: ArrayList<Essay>){
+        val listSize = essayList.size
+        var qntAdded = 0
+        essayDoneList.forEach {
+            if (!essayList.contains(it)){
+                essayList.add(it)
+                qntAdded++
+            }
+        }
+        this.notifyItemRangeInserted(listSize, qntAdded)
+    }
 
     override fun getItemCount(): Int {
         return essayList.size

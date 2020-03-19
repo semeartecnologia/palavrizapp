@@ -11,9 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
+import com.palavrizar.tec.palavrizapp.models.StatusEssay
 import com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity
 import com.palavrizar.tec.palavrizapp.utils.adapters.EssayListAdapter
 import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY
+import com.palavrizar.tec.palavrizapp.utils.constants.Constants.EXTRA_ESSAY_REVIEW_MODE
 import com.palavrizar.tec.palavrizapp.utils.interfaces.OnEssayClicked
 import kotlinx.android.synthetic.main.fragment_essay_mark.*
 
@@ -43,6 +45,7 @@ class EssayMarkListFragment : Fragment(), OnEssayClicked {
     }
 
     private fun getEssayList() {
+        adapter.essayList.clear()
         essayMarkViewModel?.getEssayList()
     }
 
@@ -56,14 +59,18 @@ class EssayMarkListFragment : Fragment(), OnEssayClicked {
     }
 
     private fun registerObservers(){
-        essayMarkViewModel?.essayList?.observe(this, Observer {
-            //var listOfEssays = it.values.
+        essayMarkViewModel?.essayListLiveData?.observe(this, Observer {
             val hashEssayList = it
-
             if (hashEssayList != null && hashEssayList.isNotEmpty()) {
 
                 adapter.essayList = hashEssayList
                 adapter.notifyDataSetChanged()
+            }
+        })
+        essayMarkViewModel?.essayDoneListLiveData?.observe(this, Observer {
+            val essayDoneList = it
+            if (essayDoneList != null && essayDoneList.isNotEmpty()) {
+                adapter.addEssayDoneList(essayDoneList)
             }
         })
     }
@@ -71,6 +78,9 @@ class EssayMarkListFragment : Fragment(), OnEssayClicked {
     override fun onEssayClicked(essay: Essay) {
         val it = Intent(activity, EssayViewActivity::class.java)
         it.putExtra(EXTRA_ESSAY, essay)
+        if(essay.status == StatusEssay.FEEDBACK_READY){
+            it.putExtra(EXTRA_ESSAY_REVIEW_MODE, true)
+        }
         activity?.startActivity(it)
     }
 }

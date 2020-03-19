@@ -66,22 +66,23 @@ class StorageRepository(val context: Context) {
     }
 
     fun downloadVideoFeedback(urlVideo: String, onCompletion: (String?) -> Unit){
-        //val path = Environment
-        //                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        //        val file = File(path, "Palavrizapp/$filename")
-        val filename = urlVideo.split("/").lastOrNull() ?: ""
+        try {
+            val filename = urlVideo.split("/").lastOrNull() ?: ""
 
-        val pdfPath = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        val file = File(pdfPath, "Palavrizapp/$filename.mp4")
-        file.parentFile.mkdirs()
-        file.createNewFile()
+            val pdfPath = Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            val file = File(pdfPath, "Palavrizapp/$filename.mp4")
+            file.parentFile.mkdirs()
+            file.createNewFile()
 
-        val refThumb = videosParentRef.child("feedbacks/").child(filename)
-        refThumb.getFile(file).addOnSuccessListener {
-            onCompletion(filename)
-        }.addOnFailureListener {
-            onCompletion("")
+            val refThumb = videosParentRef.child("feedbacks/").child(filename)
+            refThumb.getFile(file).addOnSuccessListener {
+                onCompletion(filename)
+            }.addOnFailureListener {
+                onCompletion("")
+            }
+        }catch(e: Exception){
+            onCompletion(null)
         }
     }
 

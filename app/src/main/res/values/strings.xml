@@ -132,7 +132,9 @@
     <string name="btn_correct_in_progress">Correção em Andamento</string>
     <string name="tv_hint_feedback">Escreva seu feedback!</string>
     <string name="upload_video_feedback">Anexar vídeo</string>
+    <string name="upload_video_feedback_again">Anexar novamente</string>
     <string name="btn_send_feedback">Enviar</string>
+    <string name="btn_send_feedback_again">Reenviar</string>
     <string name="open_pdf_theme">Abrir tema</string>
     <string name="folder_reports">Palavrizapp/Temas</string>
 
@@ -349,6 +351,7 @@
     <string name="essay_feedback_unreadable_dialog">A redação foi marcada como não legível</string>
     <string name="essay_not_readable_message">Essa redação recebeu o feedback de ilegível, deseja enviar novamente?</string>
     <string name="sending_essay">Enviando…</string>
+    <string name="essay_text_updated">O feedback foi atualizado!</string>
 
     <string name="no_plan_text">Ainda não enviou nehuma redação?</string>
     <string name="acesse_a_loja">Quer adquirir mais planos ou pacotes de envio de redação? <font color='#67305C'>ACESSE A LOJA!</font></string>

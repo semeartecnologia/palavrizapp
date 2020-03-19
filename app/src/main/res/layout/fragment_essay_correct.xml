@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootView"
     android:background="@color/colorPrimary">
+
+
 
 
     <android.support.constraint.ConstraintLayout
@@ -13,6 +16,15 @@
         android:background="@color/colorPrimary"
         tools:context="com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.EssayViewActivity">
 
+        <TextView
+            android:id="@+id/fakeEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progress"
@@ -121,9 +133,32 @@
                 android:textSize="20sp"
                 tools:text="Titulo da Redacao" />
 
+
+
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btn_attachment_video_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/roudend_secondary_button"
+            android:visibility="gone"
+            android:drawableStart="@drawable/ic_videocam_white"
+            android:drawablePadding="8dp"
+            android:fontFamily="@font/titillium_regular"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/upload_video_feedback_again"
+            android:textColor="@color/colorPrimaryText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_essay_container" />
+
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -134,7 +169,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_essay_container">
+            app:layout_constraintTop_toBottomOf="@+id/btn_attachment_video_again">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/linearLayout"
@@ -159,20 +194,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+
                 <Button
                     android:id="@+id/btn_watch_video"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginBottom="16dp"
                     android:background="@drawable/roudend_primary_button"
                     android:drawableStart="@drawable/ic_videocam_white"
                     android:drawablePadding="8dp"
-                    android:layout_marginBottom="16dp"
                     android:fontFamily="@font/titillium_regular"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:text="@string/open_video_feedback"
                     android:textColor="@color/colorPrimaryText"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/layout_filename"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -307,6 +343,20 @@
                             android:fontFamily="@font/titillium_regular"
                             android:text="@string/btn_send_feedback"
                             android:textColor="@color/colorPrimaryText"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Button
+                            android:id="@+id/btn_send_again"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/roudend_primary_button"
+                            android:fontFamily="@font/titillium_regular"
+                            android:text="@string/btn_send_feedback_again"
+                            android:textColor="@color/colorPrimaryText"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"

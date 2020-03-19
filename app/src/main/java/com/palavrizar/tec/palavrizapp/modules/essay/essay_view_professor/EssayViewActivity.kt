@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
+import com.palavrizar.tec.palavrizapp.models.StatusEssay
 import com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.essay_correct_room.EssayCorrectFragment
 import com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.essay_review.EssayReviewFragment
 import com.palavrizar.tec.palavrizapp.utils.commons.DialogHelper
@@ -24,6 +25,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
     private lateinit var actualEssay: Essay
     private lateinit var actualFragment: Fragment
     private var isReadMode: Boolean = false
+    private var isReviewMode: Boolean = false
     private var viewModel: EssayViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +37,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
         setupView()
         registerObservers()
 
-        if (isReadMode){
+        if (isReadMode || actualEssay.status == StatusEssay.FEEDBACK_READY){
             startReadMode()
         }else {
             checkEssayHasOwner()
@@ -68,7 +70,7 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
     }
 
     fun startReadMode(){
-        changeFragment(EssayCorrectFragment.newInstance(actualEssay, true), "EssayCorrect")
+        changeFragment(EssayCorrectFragment.newInstance(actualEssay, true, isReviewMode), "EssayCorrect")
     }
 
     private fun setupView() {
@@ -112,6 +114,8 @@ class EssayViewActivity : AppCompatActivity(), EssayReviewFragment.OnFragmentInt
         if (intent != null) {
             actualEssay = intent.getParcelableExtra(Constants.EXTRA_ESSAY)
             isReadMode = intent.getBooleanExtra(Constants.EXTRA_ESSAY_READ_MODE, false)
+            isReviewMode = intent.getBooleanExtra(Constants.EXTRA_ESSAY_REVIEW_MODE, false)
+
         }
     }
 }

@@ -17,6 +17,7 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
     sealed class ViewEvent {
         class FeedBackSent(val success: Boolean) : ViewEvent()
         object EssayUnreadable : ViewEvent()
+        object TextEssayUpdated : ViewEvent()
     }
 
     private var essayRepository = EssayRepository(getApplication())
@@ -33,6 +34,7 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
     fun setExtras(bundle: Bundle){
         val essay: Essay? = bundle.getParcelable(Constants.EXTRA_ESSAY)
         val isReadMode: Boolean = bundle.getBoolean(Constants.EXTRA_ESSAY_READ_MODE)
+        val isReviewMode: Boolean = bundle.getBoolean(Constants.EXTRA_ESSAY_REVIEW_MODE)
 
 
         if (essay != null) {
@@ -43,6 +45,9 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
             checkOwnerEssay(essay.essayId)
             if (isReadMode){
                 essay.isReadMode = true
+            }
+            if(isReviewMode){
+                essay.isReviewMode = true
             }
             actualEssay.postValue(essay)
         }
@@ -72,6 +77,12 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
         essayRepository.downloadVideoFeedback(urlVideo, onCompletion)
     }
 
+    fun editTextEssay(actualEssay: Essay, feedbackText: String){
+        essayRepository.editEssayText(actualEssay,feedbackText){
+            viewEvent.postValue(ViewEvent.TextEssayUpdated)
+        }
+    }
+
     fun onSendEssayFeedback(actualEssay: Essay, feedbackText: String, urlVideo: String = ""){
         showProgress.postValue(true)
         if (urlVideo.isNotBlank()){
@@ -85,6 +96,24 @@ class EssayCorrectViewModel(application: Application): AndroidViewModel(applicat
             actualEssay.feedback = Feedback(sessionManager.userLogged, urlVideo, feedbackText)
             essayRepository.setFeedbackOwnerOnEssay(actualEssay, StatusEssay.FEEDBACK_READY) {
                 viewEvent.postValue(ViewEvent.FeedBackSent(true))
+            }
+        }
+
+    }
+
+    fun onUpdateEssayFeedback(actualEssay: Essay, feedbackText: String, urlVideo: String = ""){
+        showProgress.postValue(true)
+        if (urlVideo.isNotBlank()){
+            essayRepository.uploadVideoFeedback(urlVideo){
+                actualEssay.feedback = Feedback(sessionManager.userLogged, it, feedbackText)
+                essayRepository.setFeedbackOwnerOnEssay(actualEssay, StatusEssay.FEEDBACK_READY) {
+                    viewEvent.postValue(ViewEvent.TextEssayUpdated)
+                }
+            }
+        }else{
+            actualEssay.feedback = Feedback(sessionManager.userLogged, urlVideo, feedbackText)
+            essayRepository.setFeedbackOwnerOnEssay(actualEssay, StatusEssay.FEEDBACK_READY) {
+                viewEvent.postValue(ViewEvent.TextEssayUpdated)
             }
         }
 

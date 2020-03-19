@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.palavrizar.tec.palavrizapp.R
 import com.palavrizar.tec.palavrizapp.models.Essay
+import com.palavrizar.tec.palavrizapp.models.StatusEssay
 import com.palavrizar.tec.palavrizapp.modules.classroom.FullscreenVideoActivity
 import com.palavrizar.tec.palavrizapp.modules.essay.essay_view_professor.essay_review.video_view.EssayFeedbackView
 import com.palavrizar.tec.palavrizapp.modules.essay.photo_zoom.ImageZoomActivity
@@ -36,14 +37,18 @@ class EssayCorrectFragment : Fragment() {
 
     private var viewmodel: EssayCorrectViewModel? = null
     private var isReadMode: Boolean? = null
+    private var isVideoUpdated: Boolean = false
 
     private var videoUrl: String? = null
     private var videoUri: Uri? = null
 
     private val SELECT_VIDEO = 300
+    private val UPDATE_VIDEO = 301
     private val REQUEST_READ_STORAGE = 400
     private val REQUEST_OPEN_VIDEO_STORAGE = 403
     private val REQUEST_WRITE_STORAGE = 401
+    private val EXTRA_UPDATE = "isUpdate"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,10 +99,18 @@ class EssayCorrectFragment : Fragment() {
                 is EssayCorrectViewModel.ViewEvent.EssayUnreadable -> {
                     showUnreadableMessage()
                 }
+                is EssayCorrectViewModel.ViewEvent.TextEssayUpdated -> {
+                    DialogHelper.showOkMessage(activity as Activity, "", getString(R.string.essay_text_updated), {
+                        activity?.finish()
+                    })
+                }
             }
         })
     }
 
+    fun showFeedbackUpdatedMessage(){
+        DialogHelper.showOkMessage(activity as Activity, "", getString(R.string.essay_text_updated), {})
+    }
 
     fun showUnreadableMessage(){
         DialogHelper.showOkMessage(activity as Activity, "", getString(R.string.essay_not_readable_message), {})
@@ -152,14 +165,18 @@ class EssayCorrectFragment : Fragment() {
                 }else {
                     showProgress(false)
                     viewmodel?.downloadVideoFeedback(url!!) {
-                        hideProgress()
-                        val path = Environment
-                                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                        val file = File(path, "Palavrizapp/$it.mp4")
-                        if (Build.VERSION.SDK_INT >= 24) {
-                            requestStoragePermissioAndShowVideo(Uri.fromFile(file))
-                        } else {
-                            requestStoragePermissioAndShowVideo(Uri.fromFile(file))
+                        if (it == null){
+                            DialogHelper.showMessage(activity as Activity,"Erro", "Arquivo não encontrado!")
+                        }else {
+                            hideProgress()
+                            val path = Environment
+                                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                            val file = File(path, "Palavrizapp/$it.mp4")
+                            if (Build.VERSION.SDK_INT >= 24) {
+                                requestStoragePermissioAndShowVideo(Uri.fromFile(file))
+                            } else {
+                                requestStoragePermissioAndShowVideo(Uri.fromFile(file))
+                            }
                         }
                     }
                 }
@@ -178,7 +195,42 @@ class EssayCorrectFragment : Fragment() {
             isReadMode = true
             setupReadMode(essay)
         }
+        if (essay.isReviewMode == true){
+            setupReviewMode(essay)
+        }
     }
+
+    private fun setupReviewMode(essay: Essay) {
+        btn_send_again?.visibility = View.VISIBLE
+        btn_attachment_video_again?.visibility = View.VISIBLE
+        et_feedback_text?.visibility = View.VISIBLE
+        et_feedback_text?.isEnabled = true
+        tv_feedback_text?.visibility = View.GONE
+        et_feedback_text?.setText(essay.feedback?.text)
+
+        rootView.requestFocus()
+        btn_send_again?.setOnClickListener {
+
+            if (!isVideoUpdated){
+                val textFeedback = et_feedback_text?.text.toString()
+                viewmodel?.editTextEssay(essay, textFeedback)
+            }else{
+                if (videoUrl.isNullOrBlank()){
+                    DialogHelper.showOkMessage(activity as Activity, "", getString(R.string.essay_correction_no_video), {})
+                }else {
+                    viewmodel?.onUpdateEssayFeedback(essay, et_feedback_text?.text.toString(), videoUrl
+                            ?: "")
+                }
+            }
+
+        }
+        btn_attachment_video_again?.setOnClickListener {
+            requestStoragePermission(true)
+        }
+    }
+
+
+
 
     private fun setupSendFeedbackButton(essay: Essay) {
         btn_send_feedback?.setOnClickListener {
@@ -278,7 +330,7 @@ class EssayCorrectFragment : Fragment() {
         }
     }
 
-    fun requestStoragePermission() {
+    fun requestStoragePermission(isUpdate: Boolean = false) {
         if (ContextCompat.checkSelfPermission(activity as Activity,
                         Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -287,11 +339,11 @@ class EssayCorrectFragment : Fragment() {
                     REQUEST_READ_STORAGE)
 
         } else {
-            requestWriteStoragePermission()
+            requestWriteStoragePermission(isUpdate)
         }
     }
 
-    private fun requestWriteStoragePermission() {
+    private fun requestWriteStoragePermission(isUpdate: Boolean = false) {
         if (ContextCompat.checkSelfPermission(activity as Activity,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -301,7 +353,13 @@ class EssayCorrectFragment : Fragment() {
 
         } else {
             val i = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(i, SELECT_VIDEO)
+            i.putExtra(EXTRA_UPDATE, isUpdate)
+            if (isUpdate){
+                startActivityForResult(i, UPDATE_VIDEO)
+            }else{
+                startActivityForResult(i, SELECT_VIDEO)
+            }
+
         }
     }
 
@@ -372,7 +430,6 @@ class EssayCorrectFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_essay_correct, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
@@ -384,6 +441,12 @@ class EssayCorrectFragment : Fragment() {
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
+    }
+
+    override fun onResume() {
+
+        fakeEdit?.requestFocus()
+        super.onResume()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -405,11 +468,18 @@ class EssayCorrectFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == SELECT_VIDEO){
-            videoUrl = FileHelper.getRealPathFromURI(activity as Activity, data?.data ?: return)
-            val splittedPath = videoUrl?.split("/")
-            if (splittedPath != null) {
-                setupFilename(splittedPath[splittedPath.size-1], false)
-            }
+            getVideoPathAndSetupFilename(data)
+        }else if (resultCode == Activity.RESULT_OK && requestCode == UPDATE_VIDEO){
+            isVideoUpdated = true
+            getVideoPathAndSetupFilename(data)
+        }
+    }
+
+    fun getVideoPathAndSetupFilename(data: Intent?){
+        videoUrl = FileHelper.getRealPathFromURI(activity as Activity, data?.data ?: return)
+        val splittedPath = videoUrl?.split("/")
+        if (splittedPath != null) {
+            setupFilename(splittedPath[splittedPath.size-1], false)
         }
     }
 
@@ -424,11 +494,12 @@ class EssayCorrectFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(essay: Essay, isReadMode: Boolean = false) =
+        fun newInstance(essay: Essay, isReadMode: Boolean = false, isReviewMode: Boolean = false) =
                 EssayCorrectFragment().apply {
                     arguments = Bundle().apply {
                         putParcelable(Constants.EXTRA_ESSAY, essay)
                         putBoolean(Constants.EXTRA_ESSAY_READ_MODE, isReadMode)
+                        putBoolean(Constants.EXTRA_ESSAY_REVIEW_MODE, isReviewMode)
                     }
                 }
     }

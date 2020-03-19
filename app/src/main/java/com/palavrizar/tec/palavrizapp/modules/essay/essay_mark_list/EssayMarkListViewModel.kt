@@ -9,12 +9,20 @@ import com.palavrizar.tec.palavrizapp.utils.repositories.EssayRepository
 class EssayMarkListViewModel(application: Application) : AndroidViewModel(application) {
 
     private var essayRepository = EssayRepository(application)
-    var essayList = MutableLiveData<ArrayList<Essay>>()
+    var essayListLiveData = MutableLiveData<ArrayList<Essay>>()
+    var essayDoneListLiveData = MutableLiveData<ArrayList<Essay>>()
 
 
     fun getEssayList(){
         essayRepository.getEssayList {
-            essayList.postValue(it)
+            essayListLiveData.postValue(it)
+            getEssayDoneList()
+        }
+    }
+
+    fun getEssayDoneList(){
+        essayRepository.getEssayDoneList{
+            essayDoneListLiveData.postValue(it)
         }
     }
 

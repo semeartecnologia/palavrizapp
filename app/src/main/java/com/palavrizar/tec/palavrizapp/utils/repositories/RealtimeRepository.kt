@@ -228,7 +228,6 @@ class RealtimeRepository(val context: Context) {
         val childUpdates = HashMap<String, Any?>()
 
         essay.status = StatusEssay.NOT_READABLE
-        val a = essay
 
         childUpdates["/essaysWaiting/${essay.essayId}"] = null
         childUpdates["/essaysDone/$userId/${essay.essayId}"] = essay
@@ -239,16 +238,21 @@ class RealtimeRepository(val context: Context) {
         }
     }
 
-    fun getEssayDoneList(themeId: String, author: User, onCompletion: (ArrayList<Essay>) -> Unit){
+    fun getEssayDoneList(onCompletion: (ArrayList<Essay>) -> Unit){
         val reference = "essaysDone/"
         var essayList = arrayListOf<Essay>()
-        val queryReference = mDatabaseReference.child(reference).child("$themeId/")
-                .child("${author.userId}/")
+        val queryReference = mDatabaseReference.child(reference)
         queryReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 essayList.clear()
-                dataSnapshot.children.mapNotNullTo(essayList) { it.getValue<Essay>(Essay::class.java) }
-                onCompletion(essayList)
+                try {
+                    dataSnapshot.children.forEach {
+                        it.children.mapNotNullTo(essayList) { it.getValue<Essay>(Essay::class.java) }
+                    }
+                   onCompletion(essayList)
+                }catch(exception: Exception) {
+
+                }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -673,12 +677,22 @@ class RealtimeRepository(val context: Context) {
         })
     }
 
+    fun editEssayText(actualEssay: Essay, feedbackText: String, onCompletion: () -> Unit){
+        val childUpdates = HashMap<String, Any?>()
+        childUpdates["essays/${actualEssay.author?.userId}/${actualEssay.essayId}/feedback/text"] = feedbackText
+        childUpdates["essaysDone/${actualEssay.author?.userId}/${actualEssay.essayId}/feedback/text"] = feedbackText
+
+        mDatabaseReference.updateChildren(childUpdates).addOnCompleteListener {
+            onCompletion.invoke()
+        }
+    }
+
     fun setFeedbackOwnerOnEssay(essay: Essay, status: StatusEssay, onCompletion: () -> Unit){
         val childUpdates = HashMap<String, Any?>()
         if (status == StatusEssay.FEEDBACK_READY){
             essay.status = status
             childUpdates["/essaysWaiting/${essay.essayId}"] = null
-            childUpdates["/essaysDone/${essay.feedback?.user?.userId}/${essay.essayId}"] = essay
+            childUpdates["/essaysDone/${essay.author?.userId}/${essay.essayId}"] = essay
             childUpdates["/essays/${essay.author?.userId}/${essay.essayId}/feedback"] = essay.feedback
             childUpdates["/essays/${essay.author?.userId}/${essay.essayId}/status"] = status
         }else {

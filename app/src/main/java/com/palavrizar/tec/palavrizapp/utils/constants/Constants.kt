@@ -30,6 +30,7 @@ object Constants {
     const val EXTRA_ESSAY_RETRY = "extra_essay_retry"
     const val RESULT_NEGATIVE = 404
     const val EXTRA_ESSAY = "extra_essay"
+    const val EXTRA_ESSAY_REVIEW_MODE = "extra_review_mode"
     const val EXTRA_ESSAY_READ_MODE = "extra_essay_read"
     const val EXTRA_IMAGE_FULL_SCREEN = "extra_image_full"
     const val EXTRA_ESSAY_THEME = "extra_essay_theme"
